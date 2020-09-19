@@ -1,0 +1,52 @@
+disabled_rules: # rule identifiers to exclude from running
+  - cyclomatic_complexity
+  - vertical_parameter_alignment
+  - large_tuple
+  - identifier_name
+  
+opt_in_rules: # some rules are only opt-in
+  - closure_end_indentation
+  - closure_spacing
+  - contains_over_first_not_nil
+  - empty_count
+  - empty_string
+  - explicit_init
+  - first_where
+  - force_unwrapping
+  - joined_default_parameter
+  - let_var_whitespace
+  - literal_expression_end_indentation
+  - multiline_arguments
+  - multiline_parameters
+  - number_separator
+  - operator_usage_whitespace
+  - overridden_super_call
+  - pattern_matching_keywords
+  - prohibited_super_call
+  - redundant_nil_coalescing
+  - sorted_first_last
+  - sorted_imports
+  - yoda_condition
+
+excluded: # paths to ignore during linting. Takes precedence over `included`.
+ FeedShare/Supporting Files
+
+line_length: 150
+
+type_body_length:
+  warning: 300
+  error: 400
+
+file_length:
+  warning: 500
+  error: 1200
+
+type_name:
+  min_length: 4 # only warning
+  max_length: # warning and error
+    warning: 35
+    error: 40
+  excluded: App
+
+reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, junit, html, emoji)
+
