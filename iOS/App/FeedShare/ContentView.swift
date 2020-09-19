@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject private var launchData: LaunchListData = LaunchListData()
-    
+
     var body: some View {
         Text(launchData.username)
             .padding()
@@ -25,12 +25,12 @@ struct ContentView_Previews: PreviewProvider {
 
 class LaunchListData: ObservableObject {
     @Published var username: String
-    
+
     init() {
         self.username = "I don't know who you are"
         loadData()
     }
-    
+
     func loadData() {
         Network.shared.apollo.fetch(query: ContentViewQuery()) { result in
             switch result {
