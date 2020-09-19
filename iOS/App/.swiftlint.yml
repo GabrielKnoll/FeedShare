@@ -3,7 +3,7 @@ disabled_rules: # rule identifiers to exclude from running
   - vertical_parameter_alignment
   - large_tuple
   - identifier_name
-  
+
 opt_in_rules: # some rules are only opt-in
   - closure_end_indentation
   - closure_spacing
@@ -29,7 +29,8 @@ opt_in_rules: # some rules are only opt-in
   - yoda_condition
 
 excluded: # paths to ignore during linting. Takes precedence over `included`.
- FeedShare/Supporting Files
+  - FeedShare/Supporting Files
+  - FeedShare/API.swift
 
 line_length: 150
 
@@ -49,4 +50,3 @@ type_name:
   excluded: App
 
 reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, junit, html, emoji)
-
