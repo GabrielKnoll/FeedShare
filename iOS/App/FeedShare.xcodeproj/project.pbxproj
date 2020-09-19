@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F52755D525167BD700836462 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = F52755D425167BD700836462 /* Apollo */; };
 		F5D9B32F25166A990079F47B /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D9B32E25166A990079F47B /* R.generated.swift */; };
 		F5D9B34525166C4B0079F47B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F5D9B34725166C4B0079F47B /* Localizable.strings */; };
 		F5D9B34B251675700079F47B /* Rswift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5D9B34A251675700079F47B /* Rswift.framework */; };
@@ -50,6 +51,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F5D9B34B251675700079F47B /* Rswift.framework in Frameworks */,
+				F52755D525167BD700836462 /* Apollo in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +133,9 @@
 			dependencies = (
 			);
 			name = FeedShare;
+			packageProductDependencies = (
+				F52755D425167BD700836462 /* Apollo */,
+			);
 			productName = FeedShare;
 			productReference = F5E7F8E82516527A0036448D /* FeedShare.app */;
 			productType = "com.apple.product-type.application";
@@ -159,6 +164,9 @@
 				de,
 			);
 			mainGroup = F5E7F8DF2516527A0036448D;
+			packageReferences = (
+				F52755D325167BD700836462 /* XCRemoteSwiftPackageReference "apollo-ios" */,
+			);
 			productRefGroup = F5E7F8E92516527A0036448D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -456,6 +464,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F52755D325167BD700836462 /* XCRemoteSwiftPackageReference "apollo-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apollographql/apollo-ios.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.33.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F52755D425167BD700836462 /* Apollo */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F52755D325167BD700836462 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = Apollo;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F5E7F8E02516527A0036448D /* Project object */;
 }
