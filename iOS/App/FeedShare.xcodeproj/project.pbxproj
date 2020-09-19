@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F5D9B32B25166A540079F47B /* Rswift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5D9B30F2516631D0079F47B /* Rswift.framework */; };
-		F5D9B32C25166A540079F47B /* Rswift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F5D9B30F2516631D0079F47B /* Rswift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F5D9B32F25166A990079F47B /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D9B32E25166A990079F47B /* R.generated.swift */; };
 		F5D9B34525166C4B0079F47B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F5D9B34725166C4B0079F47B /* Localizable.strings */; };
+		F5D9B34B251675700079F47B /* Rswift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5D9B34A251675700079F47B /* Rswift.framework */; };
+		F5D9B34C251675710079F47B /* Rswift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F5D9B34A251675700079F47B /* Rswift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F5E7F8EC2516527A0036448D /* FeedShareApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E7F8EB2516527A0036448D /* FeedShareApp.swift */; };
 		F5E7F8EE2516527A0036448D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E7F8ED2516527A0036448D /* ContentView.swift */; };
 		F5E7F8F02516527B0036448D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5E7F8EF2516527B0036448D /* Assets.xcassets */; };
@@ -24,7 +24,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				F5D9B32C25166A540079F47B /* Rswift.framework in Embed Frameworks */,
+				F5D9B34C251675710079F47B /* Rswift.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -32,10 +32,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		F5D9B30F2516631D0079F47B /* Rswift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Rswift.framework; path = ../../Frameworks/Carthage/Build/iOS/Rswift.framework; sourceTree = "<group>"; };
 		F5D9B32E25166A990079F47B /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		F5D9B34625166C4B0079F47B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F5D9B34825166D5C0079F47B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F5D9B34A251675700079F47B /* Rswift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Rswift.framework; path = ../Frameworks/Carthage/Build/iOS/Rswift.framework; sourceTree = "<group>"; };
 		F5E7F8E82516527A0036448D /* FeedShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FeedShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5E7F8EB2516527A0036448D /* FeedShareApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedShareApp.swift; sourceTree = "<group>"; };
 		F5E7F8ED2516527A0036448D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -49,27 +49,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F5D9B32B25166A540079F47B /* Rswift.framework in Frameworks */,
+				F5D9B34B251675700079F47B /* Rswift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		F5D9B2DC25165C460079F47B /* Frameworks */ = {
+		F5D9B349251675700079F47B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F5D9B30F2516631D0079F47B /* Rswift.framework */,
+				F5D9B34A251675700079F47B /* Rswift.framework */,
 			);
-			path = Frameworks;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		F5E7F8DF2516527A0036448D = {
 			isa = PBXGroup;
 			children = (
-				F5D9B2DC25165C460079F47B /* Frameworks */,
 				F5E7F8EA2516527A0036448D /* FeedShare */,
 				F5E7F8E92516527A0036448D /* Products */,
+				F5D9B349251675700079F47B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
