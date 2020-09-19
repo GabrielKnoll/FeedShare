@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-import {schema, use} from 'nexus';
+import {schema, use, settings} from 'nexus';
 import {prisma} from 'nexus-plugin-prisma';
 import prismaClient from './prismaClient';
 import {objectType} from 'nexus/components/schema';
@@ -8,6 +8,12 @@ import {PageInfo, ConnectionArgs} from './connections/connection';
 import {findManyCursor} from './connections/findManyCursor';
 import {auth} from 'nexus-plugin-jwt-auth';
 import token from './utils/token';
+
+settings.change({
+  server: {
+    port: parseInt(process.env.PORT || '4000', 10),
+  },
+});
 
 use(
   prisma({

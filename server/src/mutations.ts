@@ -1,6 +1,7 @@
 import {schema} from 'nexus';
 import prismaClient from './prismaClient';
 import {stringArg} from 'nexus/components/schema';
+import token from './utils/token';
 
 schema.mutationType({
   definition(t) {
@@ -12,8 +13,8 @@ schema.mutationType({
         }),
       },
       resolve: async (_, args, ctx) => {
-        const user = ctx.token?.user;
-        if (!user) {
+        const {userId} = token(ctx);
+        if (!userId) {
           throw new Error('No user');
         }
 
@@ -27,7 +28,7 @@ schema.mutationType({
             message: args.message,
             author: {
               connect: {
-                id: user,
+                id: userId,
               },
             },
           },

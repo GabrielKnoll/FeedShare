@@ -1,0 +1,7 @@
+schema: ./api.graphql
+generates:
+  api.json:
+    plugins:
+      - introspection
+    config:
+      minify: true
