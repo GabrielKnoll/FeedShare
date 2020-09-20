@@ -18,6 +18,8 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -r --delete --quiet $TRAVIS_BUILD_DIR/server/.nexus/build buechele@buechele.cc:feedshare
+  script:
+    - rsync -r --delete $TRAVIS_BUILD_DIR/server/.nexus/build/ buechele@buechele.cc:feedshare
+    - ssh buechele@buechele.cc supervisorctl restart feedshare
   on:
     branch: main

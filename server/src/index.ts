@@ -47,16 +47,15 @@ schema.queryType({
           });
         },
       }),
-      resolve: async (_, _args, ctx) => {
-        return {
-          user: await prismaClient.user.findOne({
-            where: {
-              id: token(ctx).userId,
-            },
-          }),
-          personalFeed: 'http://localhost:4000/feed',
-        };
-      },
+      authorize: (_, __, ctx) => Boolean(token(ctx).userId),
+      resolve: async (_, _args, ctx) => ({
+        user: await prismaClient.user.findOne({
+          where: {
+            id: token(ctx).userId,
+          },
+        }),
+        personalFeed: 'https://feed.buechele.cc/feed',
+      }),
     }),
       t.field('shares', {
         type: objectType({
