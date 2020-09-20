@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({path: '../.env'});
 
 import {schema, use, settings} from 'nexus';
 import {prisma} from 'nexus-plugin-prisma';
