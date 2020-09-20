@@ -26,6 +26,7 @@ struct Episode: Identifiable {
 	let id: UUID
 	let episodeId: String
 	let title: String
+	let duration: String
 	let podcast: Podcast
 }
 
