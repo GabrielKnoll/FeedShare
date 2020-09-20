@@ -20,4 +20,4 @@ deploy:
   skip_cleanup: true
   script: rsync -r --delete --quiet $TRAVIS_BUILD_DIR/server/.nexus/build buechele@buechele:feedshare
   on:
-    branch: master
+    branch: main
