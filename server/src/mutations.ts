@@ -11,6 +11,9 @@ schema.mutationType({
         message: stringArg({
           required: false,
         }),
+        url: stringArg({
+          required: true,
+        }),
       },
       resolve: async (_, args, ctx) => {
         const {userId} = token(ctx);
