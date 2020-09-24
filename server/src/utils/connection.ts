@@ -21,4 +21,7 @@ export const ConnectionArgs = {
   after: stringArg({
     required: false,
   }),
+  before: stringArg({
+    required: false,
+  }),
 };
