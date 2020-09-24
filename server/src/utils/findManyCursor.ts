@@ -8,6 +8,7 @@ export type ConnectionCursor = string;
 
 export interface ConnectionArguments {
   after?: ConnectionCursor | null;
+  before?: ConnectionCursor | null;
   first: number;
 }
 
@@ -43,7 +44,7 @@ export async function findManyCursor<Model extends {id: string}>(
   }) => Promise<Model[]>,
   args: ConnectionArguments = {} as ConnectionArguments,
 ): Promise<Connection<Model>> {
-  if (args.first != null && args.first < 0) {
+  if (args?.first < 0) {
     throw new Error('first is less than 0');
   }
 
@@ -55,12 +56,21 @@ export async function findManyCursor<Model extends {id: string}>(
     cursor = {id: args.after};
   }
 
-  const nodes = await findMany({take, skip, cursor});
+  let nodes = await findMany({take, skip, cursor});
   const hasExtraNode = nodes.length === take;
 
   // Remove the extra node from the results
   if (hasExtraNode) {
     nodes.pop();
+  }
+
+  // cut off list before the cursor
+  if (args.before) {
+    let found = false;
+    nodes = nodes.filter((n) => {
+      found = found || n.id === args.before;
+      return !found;
+    });
   }
 
   // Get the start and end cursors

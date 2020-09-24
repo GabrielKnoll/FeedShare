@@ -5,7 +5,19 @@ schema.objectType({
   definition(t) {
     t.model.id();
     t.model.author();
-    t.model.episode();
     t.model.message();
+    t.field('attachment', {
+      type: 'Attachment',
+      resolve: async (root, _ctx, {db}) => {
+        const sharable = await db.share.findOne({
+          where: {id: root.id},
+          include: {episode: true, podcast: true},
+        });
+        if (!sharable) {
+          throw new Error('No attachment');
+        }
+        return sharable.episode ?? sharable.podcast;
+      },
+    });
   },
 });

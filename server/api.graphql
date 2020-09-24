@@ -2,6 +2,11 @@
 ### Do not make changes to this file directly
 
 
+interface Attachment {
+  id: String
+  title: String
+}
+
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
 `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO
@@ -9,7 +14,7 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
 """
 scalar DateTime
 
-type Episode {
+type Episode implements Attachment {
   id: String!
   podcast: Podcast!
   title: String!
@@ -21,7 +26,7 @@ The `JSON` scalar type represents JSON objects as specified by [ECMA-404](http:/
 scalar Json
 
 type Mutation {
-  createShare(message: String): Share
+  createShare(message: String, url: String!): Share
 }
 
 type PageInfo {
@@ -31,20 +36,19 @@ type PageInfo {
   startCursor: String
 }
 
-type Podcast {
+type Podcast implements Attachment {
   id: String!
   title: String!
 }
 
 type Query {
-  share(where: ShareWhereUniqueInput!): Share
   shares(after: String, first: Int!): ShareConnection!
   viewer: Viewer
 }
 
 type Share {
+  attachment: Attachment
   author: User!
-  episode: Episode!
   id: String!
   message: String
 }

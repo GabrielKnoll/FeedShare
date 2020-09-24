@@ -1,0 +1,77 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "Share",
+      "field": "podcast",
+      "type": "Podcast",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Share",
+          "field": "podcast"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Share",
+          "field": "podcast"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[podcastId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Share",
+          "field": "podcast"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Share",
+      "field": "podcastId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Share",
+      "field": "episodeId",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Share",
+      "field": "episode",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Podcast",
+      "field": "Share",
+      "type": "Share",
+      "arity": "List"
+    }
+  ]
+}

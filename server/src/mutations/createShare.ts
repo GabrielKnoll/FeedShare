@@ -1,10 +1,10 @@
-import {schema} from 'nexus';
-import prismaClient from './prismaClient';
 import {stringArg} from 'nexus/components/schema';
-import token from './utils/token';
+import {schema} from 'nexus';
+import parseToken from '../utils/parseToken';
 
-schema.mutationType({
-  definition(t) {
+schema.extendType({
+  type: 'Mutation',
+  definition: (t) => {
     t.field('createShare', {
       type: 'Share',
       args: {
@@ -15,15 +15,15 @@ schema.mutationType({
           required: true,
         }),
       },
-      resolve: async (_, args, ctx) => {
-        const {userId} = token(ctx);
+      resolve: async (_, args, {db, token}) => {
+        const {userId} = parseToken(token);
         if (!userId) {
           throw new Error('No user');
         }
 
-        return prismaClient.share.create({
+        return db.share.create({
           data: {
-            episode: {
+            podcast: {
               connect: {
                 id: '1',
               },
