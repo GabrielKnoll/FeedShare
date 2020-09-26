@@ -1,0 +1,17 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateField",
+      "model": "Episode",
+      "field": "ampId",
+      "type": "String"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Podcast",
+      "field": "ampId",
+      "type": "String"
+    }
+  ]
+}

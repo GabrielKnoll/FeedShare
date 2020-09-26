@@ -5,7 +5,7 @@ generator prisma_client {
 
 datasource db {
   provider = "postgres"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 model User {
@@ -24,21 +24,19 @@ model Share {
   podcastId String
   message   String?
   createdAt DateTime @default(now())
-  @@unique([episodeId, podcastId, authorId])
 }
 
 model Episode {
-  id              String   @default(uuid()) @id
+  id              String  @default(uuid()) @id
   title           String
   share           Share[]
-  podcast         Podcast  @relation(fields: [podcastId], references: [id])
+  podcast         Podcast @relation(fields: [podcastId], references: [id])
   podcastId       String
   description     String?
-  ampId           String?  @unique
+  ampId           Int?    @unique
   durationSeconds Int?
   url             String?
   ampApiResponse  Json?
-  updatedAt       DateTime @updatedAt
 }
 
 model Podcast {
@@ -46,11 +44,10 @@ model Podcast {
   title          String
   Episode        Episode[]
   Share          Share[]
-  ampId          String?   @unique
+  ampId          Int?      @unique
   publisher      String
   description    String?
   feed           String
   url            String?
   ampApiResponse Json?
-  updatedAt      DateTime  @updatedAt
 }

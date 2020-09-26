@@ -6,7 +6,7 @@ export const Attachment = interfaceType({
     t.string('id');
     t.string('title');
     t.resolveType((item) => {
-      if ('episodeId' in item) {
+      if ('podcastId' in item) {
         return 'Episode';
       } else {
         return 'Podcast';

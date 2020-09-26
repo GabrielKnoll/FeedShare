@@ -5,7 +5,7 @@ generator prisma_client {
 
 datasource db {
   provider = "postgres"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 model User {
@@ -24,7 +24,6 @@ model Share {
   podcastId String
   message   String?
   createdAt DateTime @default(now())
-  @@unique([episodeId, podcastId, authorId])
 }
 
 model Episode {

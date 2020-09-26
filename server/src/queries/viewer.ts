@@ -1,6 +1,7 @@
 import {objectType} from 'nexus/components/schema';
 import parseToken from '../utils/parseToken';
 import {schema} from 'nexus';
+import requireAuthorization from '../utils/requireAuthorization';
 
 schema.extendType({
   type: 'Query',
@@ -17,7 +18,7 @@ schema.extendType({
           });
         },
       }),
-      authorize: (_, __, {token}) => Boolean(parseToken(token).userId),
+      ...requireAuthorization,
       resolve: async (_, _args, {db, token}) => ({
         user: await db.user.findOne({
           where: {
