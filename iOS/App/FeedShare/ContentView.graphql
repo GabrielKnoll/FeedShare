@@ -1,7 +1,0 @@
-query ContentView {
-  viewer {
-    user {
-      handle
-    }
-  }
-}

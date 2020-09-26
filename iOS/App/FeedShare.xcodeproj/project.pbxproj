@@ -7,9 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		676217892516997000C5FE27 /* ContentView.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 676217882516997000C5FE27 /* ContentView.graphql */; };
 		6762178C2516A10A00C5FE27 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6762178B2516A10A00C5FE27 /* API.swift */; };
 		6762178E2516A1C700C5FE27 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6762178D2516A1C700C5FE27 /* Network.swift */; };
+		679D8178251FEFE3007A1DBE /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 679D8175251FA5BB007A1DBE /* SQLite.framework */; };
+		679D8179251FEFE3007A1DBE /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 679D8175251FA5BB007A1DBE /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		679D817D251FF078007A1DBE /* ApolloSQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 679D817B251FF076007A1DBE /* ApolloSQLite.framework */; };
+		679D817E251FF078007A1DBE /* ApolloSQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 679D817B251FF076007A1DBE /* ApolloSQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F57B51C12516994400DB7862 /* ShareRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57B51C02516994400DB7862 /* ShareRow.swift */; };
 		F5887B6B251F4C3C00010D30 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5887B6A251F4C3C00010D30 /* ShareViewController.swift */; };
 		F5887B6E251F4C3C00010D30 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5887B6C251F4C3C00010D30 /* MainInterface.storyboard */; };
@@ -58,7 +61,9 @@
 			files = (
 				F5D9B34C251675710079F47B /* Rswift.framework in Embed Frameworks */,
 				F5961CF7251793DC00F93697 /* Apollo.framework in Embed Frameworks */,
+				679D8179251FEFE3007A1DBE /* SQLite.framework in Embed Frameworks */,
 				F5961CFA2517946F00F93697 /* ApolloCore.framework in Embed Frameworks */,
+				679D817E251FF078007A1DBE /* ApolloSQLite.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -66,11 +71,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		676217882516997000C5FE27 /* ContentView.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ContentView.graphql; sourceTree = "<group>"; };
 		6762178B2516A10A00C5FE27 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		6762178D2516A1C700C5FE27 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		679D8164251F929A007A1DBE /* FeedStream.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FeedStream.graphql; sourceTree = "<group>"; };
 		679D8165251F9310007A1DBE /* ShareRow.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ShareRow.graphql; sourceTree = "<group>"; };
+		679D8175251FA5BB007A1DBE /* SQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SQLite.framework; path = ../Frameworks/Carthage/Build/iOS/SQLite.framework; sourceTree = "<group>"; };
+		679D817B251FF076007A1DBE /* ApolloSQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApolloSQLite.framework; path = ../Frameworks/Carthage/Build/iOS/ApolloSQLite.framework; sourceTree = "<group>"; };
 		F57B51C02516994400DB7862 /* ShareRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareRow.swift; sourceTree = "<group>"; };
 		F5887B68251F4C3C00010D30 /* FeedShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FeedShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5887B6A251F4C3C00010D30 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
@@ -104,7 +110,9 @@
 			files = (
 				F5D9B34B251675700079F47B /* Rswift.framework in Frameworks */,
 				F5961CF6251793DC00F93697 /* Apollo.framework in Frameworks */,
+				679D8178251FEFE3007A1DBE /* SQLite.framework in Frameworks */,
 				F5961CF92517946F00F93697 /* ApolloCore.framework in Frameworks */,
+				679D817D251FF078007A1DBE /* ApolloSQLite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,6 +146,8 @@
 				F5961CF82517946F00F93697 /* ApolloCore.framework */,
 				F5961CF5251793DC00F93697 /* Apollo.framework */,
 				F5D9B34A251675700079F47B /* Rswift.framework */,
+				679D8175251FA5BB007A1DBE /* SQLite.framework */,
+				679D817B251FF076007A1DBE /* ApolloSQLite.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -167,7 +177,6 @@
 				F5961CF32517937D00F93697 /* FeedShareApp.swift */,
 				6762178B2516A10A00C5FE27 /* API.swift */,
 				6762178D2516A1C700C5FE27 /* Network.swift */,
-				676217882516997000C5FE27 /* ContentView.graphql */,
 				F5E7F8EF2516527B0036448D /* Assets.xcassets */,
 				F57B51B92516988000DB7862 /* Interface */,
 				F5E7F90B251653830036448D /* Supporting Files */,
@@ -294,7 +303,6 @@
 			files = (
 				F5E7F8F32516527B0036448D /* Preview Assets.xcassets in Resources */,
 				F5D9B34525166C4B0079F47B /* Localizable.strings in Resources */,
-				676217892516997000C5FE27 /* ContentView.graphql in Resources */,
 				F5E7F8F02516527B0036448D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
