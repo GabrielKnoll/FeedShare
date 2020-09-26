@@ -1,0 +1,9 @@
+fragment Row on Share {
+  author {
+    handle
+  }
+  message
+  attachment {
+    title
+  }
+}
