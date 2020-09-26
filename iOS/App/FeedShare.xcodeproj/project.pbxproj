@@ -12,6 +12,9 @@
 		6762178E2516A1C700C5FE27 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6762178D2516A1C700C5FE27 /* Network.swift */; };
 		F57B51B8251696AA00DB7862 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57B51B7251696AA00DB7862 /* Models.swift */; };
 		F57B51C12516994400DB7862 /* ShareRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57B51C02516994400DB7862 /* ShareRow.swift */; };
+		F5887B6B251F4C3C00010D30 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5887B6A251F4C3C00010D30 /* ShareViewController.swift */; };
+		F5887B6E251F4C3C00010D30 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5887B6C251F4C3C00010D30 /* MainInterface.storyboard */; };
+		F5887B72251F4C3C00010D30 /* FeedShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F5887B68251F4C3C00010D30 /* FeedShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F5961CF2251790C900F93697 /* FeedStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5961CF1251790C900F93697 /* FeedStream.swift */; };
 		F5961CF42517937D00F93697 /* FeedShareApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5961CF32517937D00F93697 /* FeedShareApp.swift */; };
 		F5961CF6251793DC00F93697 /* Apollo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5961CF5251793DC00F93697 /* Apollo.framework */; };
@@ -26,7 +29,28 @@
 		F5E7F8F32516527B0036448D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5E7F8F22516527B0036448D /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		F5887B70251F4C3C00010D30 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F5E7F8E02516527A0036448D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F5887B67251F4C3C00010D30;
+			remoteInfo = FeedShareExtension;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
+		F5887B73251F4C3C00010D30 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				F5887B72251F4C3C00010D30 /* FeedShareExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F5D9B32D25166A540079F47B /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -48,6 +72,10 @@
 		6762178D2516A1C700C5FE27 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		F57B51B7251696AA00DB7862 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		F57B51C02516994400DB7862 /* ShareRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareRow.swift; sourceTree = "<group>"; };
+		F5887B68251F4C3C00010D30 /* FeedShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FeedShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		F5887B6A251F4C3C00010D30 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		F5887B6D251F4C3C00010D30 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		F5887B6F251F4C3C00010D30 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F5961CF1251790C900F93697 /* FeedStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedStream.swift; sourceTree = "<group>"; };
 		F5961CF32517937D00F93697 /* FeedShareApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedShareApp.swift; sourceTree = "<group>"; };
 		F5961CF5251793DC00F93697 /* Apollo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Apollo.framework; path = ../Frameworks/Carthage/Build/iOS/Apollo.framework; sourceTree = "<group>"; };
@@ -63,6 +91,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		F5887B65251F4C3C00010D30 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F5E7F8E52516527A0036448D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -93,6 +128,16 @@
 			path = Interface;
 			sourceTree = "<group>";
 		};
+		F5887B69251F4C3C00010D30 /* FeedShareExtension */ = {
+			isa = PBXGroup;
+			children = (
+				F5887B6A251F4C3C00010D30 /* ShareViewController.swift */,
+				F5887B6C251F4C3C00010D30 /* MainInterface.storyboard */,
+				F5887B6F251F4C3C00010D30 /* Info.plist */,
+			);
+			path = FeedShareExtension;
+			sourceTree = "<group>";
+		};
 		F5D9B349251675700079F47B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -107,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				F5E7F8EA2516527A0036448D /* FeedShare */,
+				F5887B69251F4C3C00010D30 /* FeedShareExtension */,
 				F5E7F8E92516527A0036448D /* Products */,
 				F5D9B349251675700079F47B /* Frameworks */,
 			);
@@ -116,6 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				F5E7F8E82516527A0036448D /* FeedShare.app */,
+				F5887B68251F4C3C00010D30 /* FeedShareExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -157,6 +204,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		F5887B67251F4C3C00010D30 /* FeedShareExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F5887B76251F4C3C00010D30 /* Build configuration list for PBXNativeTarget "FeedShareExtension" */;
+			buildPhases = (
+				F5887B64251F4C3C00010D30 /* Sources */,
+				F5887B65251F4C3C00010D30 /* Frameworks */,
+				F5887B66251F4C3C00010D30 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FeedShareExtension;
+			productName = FeedShareExtension;
+			productReference = F5887B68251F4C3C00010D30 /* FeedShareExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		F5E7F8E72516527A0036448D /* FeedShare */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F5E7F8F72516527B0036448D /* Build configuration list for PBXNativeTarget "FeedShare" */;
@@ -169,10 +233,12 @@
 				F5E7F8E42516527A0036448D /* Sources */,
 				F5E7F8E62516527A0036448D /* Resources */,
 				F5D9B32D25166A540079F47B /* Embed Frameworks */,
+				F5887B73251F4C3C00010D30 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				F5887B71251F4C3C00010D30 /* PBXTargetDependency */,
 			);
 			name = FeedShare;
 			packageProductDependencies = (
@@ -190,6 +256,9 @@
 				LastSwiftUpdateCheck = 1200;
 				LastUpgradeCheck = 1200;
 				TargetAttributes = {
+					F5887B67251F4C3C00010D30 = {
+						CreatedOnToolsVersion = 12.0.1;
+					};
 					F5E7F8E72516527A0036448D = {
 						CreatedOnToolsVersion = 12.0;
 					};
@@ -212,11 +281,20 @@
 			projectRoot = "";
 			targets = (
 				F5E7F8E72516527A0036448D /* FeedShare */,
+				F5887B67251F4C3C00010D30 /* FeedShareExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		F5887B66251F4C3C00010D30 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F5887B6E251F4C3C00010D30 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F5E7F8E62516527A0036448D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -314,6 +392,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		F5887B64251F4C3C00010D30 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F5887B6B251F4C3C00010D30 /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F5E7F8E42516527A0036448D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -330,7 +416,23 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		F5887B71251F4C3C00010D30 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F5887B67251F4C3C00010D30 /* FeedShareExtension */;
+			targetProxy = F5887B70251F4C3C00010D30 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
+		F5887B6C251F4C3C00010D30 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F5887B6D251F4C3C00010D30 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
 		F5D9B34725166C4B0079F47B /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -343,6 +445,44 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		F5887B74251F4C3C00010D30 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D795YX3ET6;
+				INFOPLIST_FILE = FeedShareExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.feedshare.FeedShare.FeedShareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F5887B75251F4C3C00010D30 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D795YX3ET6;
+				INFOPLIST_FILE = FeedShareExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.feedshare.FeedShare.FeedShareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		F5E7F8F52516527B0036448D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -466,6 +606,7 @@
 		F5E7F8F82516527B0036448D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -489,6 +630,7 @@
 		F5E7F8F92516527B0036448D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -512,6 +654,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		F5887B76251F4C3C00010D30 /* Build configuration list for PBXNativeTarget "FeedShareExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F5887B74251F4C3C00010D30 /* Debug */,
+				F5887B75251F4C3C00010D30 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F5E7F8E32516527A0036448D /* Build configuration list for PBXProject "FeedShare" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
