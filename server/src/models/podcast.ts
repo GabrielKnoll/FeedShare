@@ -7,5 +7,6 @@ schema.objectType({
     t.implements(Attachment);
     t.model.description();
     t.model.feed();
+    t.model.publisher();
   },
 });

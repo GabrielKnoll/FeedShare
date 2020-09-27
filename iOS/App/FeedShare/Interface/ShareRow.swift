@@ -8,53 +8,45 @@
 import SwiftUI
 
 struct ShareRow: View {
-  let share: FeedStreamQuery.Data.Share.Edge.Node
-  private let buttonAction = { print("button pressed") }
-  var body: some View {
-    VStack(alignment: .leading) {
-      HStack(alignment: .center, spacing: 15) {
-        Image("profile")
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-          .frame(width: 30, height: 30, alignment: .center)
-          .cornerRadius(15)
-        Text(share.fragments.row.author.handle)
-          .font(.headline)
-        Spacer()
-        Button(action: buttonAction) {
-          Image(systemName: "ellipsis")
+    let data: ShareFragment
+    @State private var showPopover: Bool = false
+    
+//    private let buttonAction =
+    var body: some View {
+        VStack(alignment: .leading) {
+            HStack(alignment: .center, spacing: 10) {
+                Image("profile")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 30, height: 30, alignment: .center)
+                    .cornerRadius(15)
+                Text(data.author.handle)
+                    .font(.headline)
+                Spacer()
+                Button(action: { showPopover = true }) {
+                    Image(systemName: "ellipsis")
+                }
+                .foregroundColor(.primary)
+                .font(.headline)
+                .popover(
+                    isPresented: self.$showPopover,
+                    arrowEdge: .bottom
+                ) { Text("Popover") }
+            }
+            if let message = data.message {
+                Text(message)
+            }
+            Spacer(minLength: 15)
+            if let attachment = data.attachment {
+                AttachmentItem(data: (attachment.fragments.attachmentFragment))
+            }
         }
-        .padding()
-        .foregroundColor(.black)
-        .font(.headline)
-      }
-      
-      Text(share.fragments.row.message ?? "")
-      HStack(alignment: .center, spacing: 15) {
-        Image("logo")
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-          .frame(width: 55, height: 55, alignment: .center)
-          .cornerRadius(15)
-        VStack(alignment: .leading, spacing: 3) {
-          Text(share.fragments.row.attachment?.title ?? "Title")
-            .font(.headline)
-          Text("Subtitle")
-            .font(.subheadline)
-            .foregroundColor(.secondary)
-          HStack {
-            Image(systemName: "clock")
-            Text("Duration")
-          }
-          .foregroundColor(.secondary)
-          .font(.caption)
-        }
-        Spacer()
-      }
-      Spacer()
+        .padding(10)
     }
-    .padding()
-  }
 }
 
-
+struct ShareRow_Previews: PreviewProvider {
+    static var previews: some View {
+        Text("Hello, World!")
+    }
+}

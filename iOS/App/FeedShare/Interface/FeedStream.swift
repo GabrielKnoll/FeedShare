@@ -16,15 +16,17 @@ struct FeedStream: View {
       ScrollView {
         LazyVStack {
           ForEach(0..<feedData.rows.count, id: \.self) { index in
-            ShareRow(share: feedData.rows[index].node!)
-              .padding()
-              .background(RoundedRectangle(cornerRadius: 10)
-                            .fill(Color(R.color.background() ?? .white))
-                            .padding()
-                            .shadow(color: Color(R.color.dropShadow() ?? .gray),
-                                    radius: 15,
-                                    x: 10.0,
-                                    y: 10.0))
+            if let node = feedData.rows[index].node {
+                ShareRow(data: node.fragments.shareFragment)
+                  .padding()
+                  .background(RoundedRectangle(cornerRadius: 10)
+                                .fill(Color(R.color.background() ?? .white))
+                                .padding()
+                                .shadow(color: Color(R.color.dropShadow() ?? .gray),
+                                        radius: 15,
+                                        x: 10.0,
+                                        y: 10.0))
+              }
           }
         }
         .navigationTitle("Feed")
@@ -45,12 +47,12 @@ struct FeedStream: View {
 
 class FeedData: ObservableObject {
   @Published var rows: [FeedStreamQuery.Data.Share.Edge] = []
-  
+
   init() {
     self.rows = []
     loadData()
   }
-  
+
   func loadData() {
     Network.shared.apollo.fetch(query: FeedStreamQuery()) { result in
       switch result {

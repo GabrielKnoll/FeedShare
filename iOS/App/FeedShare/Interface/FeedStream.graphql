@@ -3,7 +3,7 @@ query FeedStream {
     edges {
       cursor
       node {
-        ...Row
+        ...ShareFragment
       }
     }
   }

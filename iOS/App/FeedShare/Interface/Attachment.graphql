@@ -1,0 +1,14 @@
+fragment AttachmentFragment on Attachment {
+  title
+  artwork(size: 100)
+  ... on Episode {
+    durationSeconds
+    description
+    podcast {
+      title
+    }
+  }
+  ... on Podcast {
+    description
+  }
+}

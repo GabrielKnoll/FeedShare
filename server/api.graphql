@@ -56,6 +56,7 @@ type Podcast implements Attachment {
   description: String
   feed: String!
   id: String!
+  publisher: String!
   title: String!
 }
 
@@ -68,6 +69,7 @@ type Query {
 type Share {
   attachment: Attachment
   author: User!
+  createdAt: DateTime!
   id: String!
   message: String
 }

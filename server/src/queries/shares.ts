@@ -31,9 +31,6 @@ schema.extendType({
           (_args) =>
             db.share.findMany({
               ..._args,
-              select: {
-                id: true,
-              },
               orderBy: {
                 createdAt: 'desc',
               },

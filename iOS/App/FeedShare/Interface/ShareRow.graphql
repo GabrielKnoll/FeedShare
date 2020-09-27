@@ -1,9 +1,9 @@
-fragment Row on Share {
+fragment ShareFragment on Share {
   author {
     handle
   }
   message
   attachment {
-    title
+    ...AttachmentFragment
   }
 }

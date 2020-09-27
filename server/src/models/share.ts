@@ -6,6 +6,8 @@ schema.objectType({
     t.model.id();
     t.model.author();
     t.model.message();
+    t.model.createdAt();
+
     t.field('attachment', {
       type: 'Attachment',
       resolve: async (root, _ctx, {db}) => {
