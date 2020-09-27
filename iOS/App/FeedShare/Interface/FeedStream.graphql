@@ -1,0 +1,10 @@
+query FeedStream {
+  shares(first: 20){
+    edges {
+      cursor
+      node {
+        ...Row
+      }
+    }
+  }
+}
