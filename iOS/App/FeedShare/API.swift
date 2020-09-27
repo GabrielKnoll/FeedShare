@@ -218,6 +218,7 @@ public struct AttachmentFragment: GraphQLFragment {
       }
       ... on Podcast {
         description
+        publisher
       }
     }
     """
@@ -247,8 +248,8 @@ public struct AttachmentFragment: GraphQLFragment {
     return AttachmentFragment(unsafeResultMap: ["__typename": "Episode", "title": title, "artwork": artwork, "durationSeconds": durationSeconds, "description": description, "podcast": podcast.resultMap])
   }
 
-  public static func makePodcast(title: String, artwork: String? = nil, description: String? = nil) -> AttachmentFragment {
-    return AttachmentFragment(unsafeResultMap: ["__typename": "Podcast", "title": title, "artwork": artwork, "description": description])
+  public static func makePodcast(title: String, artwork: String? = nil, description: String? = nil, publisher: String) -> AttachmentFragment {
+    return AttachmentFragment(unsafeResultMap: ["__typename": "Podcast", "title": title, "artwork": artwork, "description": description, "publisher": publisher])
   }
 
   public var __typename: String {
@@ -427,6 +428,7 @@ public struct AttachmentFragment: GraphQLFragment {
         GraphQLField("title", type: .nonNull(.scalar(String.self))),
         GraphQLField("artwork", arguments: ["size": 100], type: .scalar(String.self)),
         GraphQLField("description", type: .scalar(String.self)),
+        GraphQLField("publisher", type: .nonNull(.scalar(String.self))),
       ]
     }
 
@@ -436,8 +438,8 @@ public struct AttachmentFragment: GraphQLFragment {
       self.resultMap = unsafeResultMap
     }
 
-    public init(title: String, artwork: String? = nil, description: String? = nil) {
-      self.init(unsafeResultMap: ["__typename": "Podcast", "title": title, "artwork": artwork, "description": description])
+    public init(title: String, artwork: String? = nil, description: String? = nil, publisher: String) {
+      self.init(unsafeResultMap: ["__typename": "Podcast", "title": title, "artwork": artwork, "description": description, "publisher": publisher])
     }
 
     public var __typename: String {
@@ -475,6 +477,15 @@ public struct AttachmentFragment: GraphQLFragment {
         resultMap.updateValue(newValue, forKey: "description")
       }
     }
+
+    public var publisher: String {
+      get {
+        return resultMap["publisher"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "publisher")
+      }
+    }
   }
 }
 
@@ -487,8 +498,11 @@ public struct ShareFragment: GraphQLFragment {
       author {
         __typename
         handle
+        displayName
+        profilePicture
       }
       message
+      createdAt
       attachment {
         __typename
         ...AttachmentFragment
@@ -503,6 +517,7 @@ public struct ShareFragment: GraphQLFragment {
       GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
       GraphQLField("author", type: .nonNull(.object(Author.selections))),
       GraphQLField("message", type: .scalar(String.self)),
+      GraphQLField("createdAt", type: .nonNull(.scalar(String.self))),
       GraphQLField("attachment", type: .object(Attachment.selections)),
     ]
   }
@@ -513,8 +528,8 @@ public struct ShareFragment: GraphQLFragment {
     self.resultMap = unsafeResultMap
   }
 
-  public init(author: Author, message: String? = nil, attachment: Attachment? = nil) {
-    self.init(unsafeResultMap: ["__typename": "Share", "author": author.resultMap, "message": message, "attachment": attachment.flatMap { (value: Attachment) -> ResultMap in value.resultMap }])
+  public init(author: Author, message: String? = nil, createdAt: String, attachment: Attachment? = nil) {
+    self.init(unsafeResultMap: ["__typename": "Share", "author": author.resultMap, "message": message, "createdAt": createdAt, "attachment": attachment.flatMap { (value: Attachment) -> ResultMap in value.resultMap }])
   }
 
   public var __typename: String {
@@ -544,6 +559,15 @@ public struct ShareFragment: GraphQLFragment {
     }
   }
 
+  public var createdAt: String {
+    get {
+      return resultMap["createdAt"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "createdAt")
+    }
+  }
+
   public var attachment: Attachment? {
     get {
       return (resultMap["attachment"] as? ResultMap).flatMap { Attachment(unsafeResultMap: $0) }
@@ -560,6 +584,8 @@ public struct ShareFragment: GraphQLFragment {
       return [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("handle", type: .nonNull(.scalar(String.self))),
+        GraphQLField("displayName", type: .nonNull(.scalar(String.self))),
+        GraphQLField("profilePicture", type: .scalar(String.self)),
       ]
     }
 
@@ -569,8 +595,8 @@ public struct ShareFragment: GraphQLFragment {
       self.resultMap = unsafeResultMap
     }
 
-    public init(handle: String) {
-      self.init(unsafeResultMap: ["__typename": "User", "handle": handle])
+    public init(handle: String, displayName: String, profilePicture: String? = nil) {
+      self.init(unsafeResultMap: ["__typename": "User", "handle": handle, "displayName": displayName, "profilePicture": profilePicture])
     }
 
     public var __typename: String {
@@ -588,6 +614,24 @@ public struct ShareFragment: GraphQLFragment {
       }
       set {
         resultMap.updateValue(newValue, forKey: "handle")
+      }
+    }
+
+    public var displayName: String {
+      get {
+        return resultMap["displayName"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "displayName")
+      }
+    }
+
+    public var profilePicture: String? {
+      get {
+        return resultMap["profilePicture"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "profilePicture")
       }
     }
   }
@@ -608,8 +652,8 @@ public struct ShareFragment: GraphQLFragment {
       self.resultMap = unsafeResultMap
     }
 
-    public static func makePodcast(title: String, artwork: String? = nil, description: String? = nil) -> Attachment {
-      return Attachment(unsafeResultMap: ["__typename": "Podcast", "title": title, "artwork": artwork, "description": description])
+    public static func makePodcast(title: String, artwork: String? = nil, description: String? = nil, publisher: String) -> Attachment {
+      return Attachment(unsafeResultMap: ["__typename": "Podcast", "title": title, "artwork": artwork, "description": description, "publisher": publisher])
     }
 
     public var __typename: String {

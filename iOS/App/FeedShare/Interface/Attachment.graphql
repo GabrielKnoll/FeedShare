@@ -10,5 +10,6 @@ fragment AttachmentFragment on Attachment {
   }
   ... on Podcast {
     description
+    publisher
   }
 }

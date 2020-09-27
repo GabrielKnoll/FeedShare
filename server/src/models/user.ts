@@ -11,5 +11,7 @@ schema.objectType({
       resolve: (parent, _, {token}) => parseToken(token).userId === parent.id,
     });
     t.model.Share();
+    t.model.displayName();
+    t.model.profilePicture();
   },
 });

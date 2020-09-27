@@ -90,9 +90,11 @@ input ShareWhereUniqueInput {
 }
 
 type User {
+  displayName: String!
   handle: String!
   id: String!
   isViewer: Boolean
+  profilePicture: String
   Share(after: ShareWhereUniqueInput, before: ShareWhereUniqueInput, first: Int, last: Int): [Share!]!
 }
 

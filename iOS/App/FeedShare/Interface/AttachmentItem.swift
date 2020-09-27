@@ -39,7 +39,7 @@ struct AttachmentItem: View {
                 }
                 
                 if let podcast = data.asPodcast {
-                    Text(podcast.title)
+                    Text(podcast.publisher)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }

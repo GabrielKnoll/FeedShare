@@ -1,8 +1,11 @@
 fragment ShareFragment on Share {
   author {
     handle
+    displayName
+    profilePicture
   }
   message
+  createdAt
   attachment {
     ...AttachmentFragment
   }

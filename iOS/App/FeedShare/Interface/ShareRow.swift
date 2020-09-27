@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import URLImage
 
 struct ShareRow: View {
     let data: ShareFragment
@@ -15,11 +16,23 @@ struct ShareRow: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack(alignment: .center, spacing: 10) {
-                Image("profile")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 30, height: 30, alignment: .center)
+//                Image("profile")
+//                    .resizable()
+//                    .aspectRatio(contentMode: .fit)
+//                    .frame(width: 30, height: 30, alignment: .center)
+//                    .cornerRadius(15)
+                if let url = URL(string: data.author.profilePicture ?? "") {
+                    URLImage(url, placeholder: Image(systemName: "circle")) { proxy in
+                        proxy.image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .clipped()
+                    }
+                    .frame(width: 30.0, height: 30.0)
                     .cornerRadius(15)
+                }
+                Text(data.author.displayName)
+                    .font(.headline)
                 Text(data.author.handle)
                     .font(.headline)
                 Spacer()
