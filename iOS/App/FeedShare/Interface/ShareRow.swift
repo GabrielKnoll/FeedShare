@@ -12,15 +12,9 @@ struct ShareRow: View {
     let data: ShareFragment
     @State private var showPopover: Bool = false
     
-//    private let buttonAction =
     var body: some View {
         VStack(alignment: .leading) {
             HStack(alignment: .center, spacing: 10) {
-//                Image("profile")
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fit)
-//                    .frame(width: 30, height: 30, alignment: .center)
-//                    .cornerRadius(15)
                 if let url = URL(string: data.author.profilePicture ?? "") {
                     URLImage(url, placeholder: Image(systemName: "circle")) { proxy in
                         proxy.image
@@ -28,13 +22,18 @@ struct ShareRow: View {
                             .aspectRatio(contentMode: .fill)
                             .clipped()
                     }
-                    .frame(width: 30.0, height: 30.0)
-                    .cornerRadius(15)
+                    .frame(width: 36.0, height: 36.0)
+                    .cornerRadius(18)
                 }
-                Text(data.author.displayName)
-                    .font(.headline)
-                Text(data.author.handle)
-                    .font(.headline)
+                VStack(alignment: .leading) {
+                    Text(data.author.displayName)
+                        .font(.headline)
+                        .lineLimit(1)
+                    Text("@\(data.author.handle)")
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                        .lineLimit(1)
+                }
                 Spacer()
                 Button(action: { showPopover = true }) {
                     Image(systemName: "ellipsis")
@@ -46,10 +45,11 @@ struct ShareRow: View {
                     arrowEdge: .bottom
                 ) { Text("Popover") }
             }
+            Spacer(minLength: 15)
             if let message = data.message {
                 Text(message)
+                Spacer(minLength: 15)
             }
-            Spacer(minLength: 15)
             if let attachment = data.attachment {
                 AttachmentItem(data: (attachment.fragments.attachmentFragment))
             }
