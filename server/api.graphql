@@ -3,8 +3,9 @@
 
 
 interface Attachment {
-  id: String
-  title: String
+  artwork(size: Int!): String
+  id: String!
+  title: String!
 }
 
 enum AttachmentType {
@@ -20,6 +21,9 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
 scalar DateTime
 
 type Episode implements Attachment {
+  artwork(size: Int!): String
+  description: String
+  durationSeconds: Int
   id: String!
   podcast: Podcast!
   title: String!
@@ -48,13 +52,16 @@ type PageInfo {
 }
 
 type Podcast implements Attachment {
+  artwork(size: Int!): String
+  description: String
+  feed: String!
   id: String!
   title: String!
 }
 
 type Query {
   attachmentForUrl(url: String!): Attachment
-  shares(after: String, first: Int!): ShareConnection!
+  shares(after: String, before: String, first: Int!): ShareConnection!
   viewer: Viewer
 }
 

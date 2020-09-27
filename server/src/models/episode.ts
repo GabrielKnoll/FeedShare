@@ -5,8 +5,8 @@ schema.objectType({
   name: 'Episode',
   definition(t) {
     t.implements(Attachment);
-    t.model.id();
-    t.model.title();
     t.model.podcast();
+    t.model.durationSeconds();
+    t.model.description();
   },
 });

@@ -68,6 +68,7 @@ export default async function (shareUrl: string) {
     publisher: ampApiPodcast.attributes.artistName,
     description: ampApiPodcast.attributes.description.standard,
     ampId: applePodcastId,
+    artwork: ampApiPodcast.attributes.artwork.url,
   };
   const podcast = await prismaClient.podcast.upsert({
     update: podcastData,
@@ -92,6 +93,7 @@ export default async function (shareUrl: string) {
     url: ampApiEpisode.attributes.websiteUrl,
     ampApiResponse: ampApiEpisode,
     ampId: appleEpisodeId,
+    artwork: ampApiEpisode.attributes.artwork.url,
   };
 
   const episode = await prismaClient.episode.upsert({
