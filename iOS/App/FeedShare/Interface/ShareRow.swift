@@ -13,7 +13,7 @@ struct ShareRow: View {
     @State private var showPopover: Bool = false
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 15) {
             HStack(alignment: .center, spacing: 10) {
                 if let url = URL(string: data.author.profilePicture ?? "") {
                     URLImage(url, placeholder: Image(systemName: "circle")) { proxy in
@@ -45,16 +45,20 @@ struct ShareRow: View {
                     arrowEdge: .bottom
                 ) { Text("Popover") }
             }
-            Spacer(minLength: 15)
             if let message = data.message {
                 Text(message)
-                Spacer(minLength: 15)
             }
             if let attachment = data.attachment {
                 AttachmentItem(data: (attachment.fragments.attachmentFragment))
             }
         }
-        .padding(10)
+        .padding(15)
+        .background(RoundedRectangle(cornerRadius: 22.0)
+                        .fill(Color(.white))
+                        .shadow(color: Color(UIColor(red: 0, green: 0, blue: 0, alpha: 0.05)),
+                                radius: 5.0,
+                                x: 0.0,
+                                y: 2.0))
     }
 }
 

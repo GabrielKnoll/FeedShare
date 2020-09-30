@@ -8,8 +8,8 @@ public final class FeedStreamQuery: GraphQLQuery {
   /// The raw GraphQL definition of this operation.
   public let operationDefinition: String =
     """
-    query FeedStream {
-      shares(first: 20) {
+    query FeedStream($before: String) {
+      shares(first: 20, before: $before) {
         __typename
         edges {
           __typename
@@ -27,7 +27,14 @@ public final class FeedStreamQuery: GraphQLQuery {
 
   public var queryDocument: String { return operationDefinition.appending("\n" + ShareFragment.fragmentDefinition).appending("\n" + AttachmentFragment.fragmentDefinition) }
 
-  public init() {
+  public var before: String?
+
+  public init(before: String? = nil) {
+    self.before = before
+  }
+
+  public var variables: GraphQLMap? {
+    return ["before": before]
   }
 
   public struct Data: GraphQLSelectionSet {
@@ -35,7 +42,7 @@ public final class FeedStreamQuery: GraphQLQuery {
 
     public static var selections: [GraphQLSelection] {
       return [
-        GraphQLField("shares", arguments: ["first": 20], type: .nonNull(.object(Share.selections))),
+        GraphQLField("shares", arguments: ["first": 20, "before": GraphQLVariable("before")], type: .nonNull(.object(Share.selections))),
       ]
     }
 

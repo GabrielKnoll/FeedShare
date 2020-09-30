@@ -1,5 +1,5 @@
-query FeedStream {
-  shares(first: 20){
+query FeedStream($before: String) {
+  shares(first: 20, before: $before){
     edges {
       cursor
       node {

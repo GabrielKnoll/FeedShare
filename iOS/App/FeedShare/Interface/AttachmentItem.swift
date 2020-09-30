@@ -21,13 +21,13 @@ struct AttachmentItem: View {
     
     var body: some View {
         HStack(alignment: .center, spacing: 10) {
-            if let url = URL(string: data.artwork ?? "") {
+            if let url = URL(string: data.artwork ?? "http://google.com") {
                 URLImage(url, placeholder: Image(systemName: "circle")) { proxy in
                     proxy.image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .clipped()
-                }.frame(width: 65.0, height: 65.0)
+                }.frame(width: 65.0, height: 65.0).cornerRadius(10)
             }
             VStack(alignment: .leading, spacing: 3) {
                 Text(data.title)
@@ -53,9 +53,12 @@ struct AttachmentItem: View {
                     .font(.caption)
                 }
             }
-            Spacer()
-        }.background(Color.secondary.opacity(0.1))
-        .cornerRadius(5)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(8)
+        .overlay(RoundedRectangle(cornerRadius: 15)
+                    .stroke(Color.secondary.opacity(0.2), lineWidth: 1))
+        .cornerRadius(15)
     }
 }
 
