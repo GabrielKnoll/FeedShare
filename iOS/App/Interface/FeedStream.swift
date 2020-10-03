@@ -5,15 +5,19 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
+import Logic
 import NetworkManager
 import SwiftUI
 
 public struct FeedStream: View {
+	@ObservedObject var viewModel: FeedStreamViewModel
+
 	private let buttonAction = { print("profile pressed") }
 	@State private var refreshing = false
-	private var feedData = [Share]()
 
-	public init() {}
+	public init(viewModel: FeedStreamViewModel) {
+		self.viewModel = viewModel
+	}
 
 	public var body: some View {
 		HStack(alignment: .center, spacing: 10) {
@@ -27,20 +31,18 @@ public struct FeedStream: View {
 		}.frame(height: 70)
 		RefreshableScrollView(refreshing: $refreshing) { //self.$feedData.loading
 			LazyVStack {
-				ForEach(0..<feedData.count, id: \.self) { index in
-					if let node = feedData[index] {
-						ShareRow(data: node)
-							.padding(.top, 5)
-							.padding(.trailing, 15)
-							.padding(.leading, 15)
-					}
+				ForEach(viewModel.shareResults, id: \.id) { share in
+					ShareRow(data: share)
+						.padding(.top, 5)
+						.padding(.trailing, 15)
+						.padding(.leading, 15)
 				}
 			}
 			.padding(.top, 10)
 			.padding(.bottom, 25)
 
 		}
-//		.background(Color(R.color.background() ?? .gray))
+		//		.background(Color(R.color.background() ?? .gray))
 		.background(Color.gray)
 		.ignoresSafeArea(edges: .vertical)
 	}

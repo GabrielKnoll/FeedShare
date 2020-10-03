@@ -7,7 +7,8 @@
 
 import Foundation
 
-public struct Share {
+public struct Share: Identifiable {
+
 	public init(author: Author, message: String?, createdAt: String, attachment: Attachment?) {
 		self.author = author
 		self.message = message
@@ -15,6 +16,7 @@ public struct Share {
 		self.attachment = attachment
 	}
 
+	public let id = UUID()
 	public let author: Author
 	public let message: String?
 	public let createdAt: String
