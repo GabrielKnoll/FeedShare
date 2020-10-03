@@ -6,25 +6,25 @@
 //
 
 import Apollo
+import Combine
 import Foundation
 import NetworkManager
 
 extension NetworkManager {
 	public static let live = Self(
-		launchListData: { fetch() })
-}
-
-private func fetch() -> [Share] {
-	var results = [Share]()
-	Network.shared.apollo.fetch(query: FeedStreamQuery()) { result in
-		switch result {
-		case .success(let graphQLResult):
-			results = parseResults(results: graphQLResult.data?.shares.edges ?? [])
-		case .failure(let error):
-			assertionFailure("Failure! Error: \(error)")
-		}
-	}
-	return results
+		feedData: {
+			return Future { promise in
+			Network.shared.apollo.fetch(query: FeedStreamQuery()) { result in
+				switch result {
+				case .success(let graphQLResult):
+					promise(.success(parseResults(results: graphQLResult.data?.shares.edges ?? [])))
+				case .failure(let error):
+					assertionFailure("Failure! Error: \(error)")
+					promise(.failure(error))
+				}
+			}
+			}
+		})
 }
 
 private func parseResults(results: [FeedStreamQuery.Data.Share.Edge]) -> [Share] {
