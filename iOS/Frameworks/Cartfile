@@ -1,3 +1,1 @@
 github "mac-cain13/R.swift.Library" "v5.2.0"
-github "apollographql/apollo-ios"
-github "stephencelis/SQLite.swift" ~> 0.12.0
