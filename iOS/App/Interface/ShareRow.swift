@@ -5,17 +5,18 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
+import NetworkManager
 import SwiftUI
 import URLImage
 
 struct ShareRow: View {
-    let data: ShareFragment
+	let data: Share
     @State private var showPopover: Bool = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 15) {
             HStack(alignment: .center, spacing: 10) {
-                if let url = URL(string: data.author.profilePicture ?? "") {
+				if let url = data.author.profilePicture {
                     URLImage(url, placeholder: Image(systemName: "circle")) { proxy in
                         proxy.image
                             .resizable()
@@ -49,7 +50,7 @@ struct ShareRow: View {
                 Text(message)
             }
             if let attachment = data.attachment {
-                AttachmentItem(data: (attachment.fragments.attachmentFragment))
+                AttachmentItem(data: (attachment))
             }
         }
         .padding(15)
@@ -59,11 +60,5 @@ struct ShareRow: View {
                                 radius: 5.0,
                                 x: 0.0,
                                 y: 2.0))
-    }
-}
-
-struct ShareRow_Previews: PreviewProvider {
-    static var previews: some View {
-        Text("Hello, World!")
     }
 }
