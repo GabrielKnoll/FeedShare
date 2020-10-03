@@ -17,7 +17,7 @@ public class FeedStreamViewModel: ObservableObject {
 	public init(networkManager: NetworkManager) {
 		feedRequestCancellable = networkManager
 			.feedData()
-			.sink(receiveCompletion: { _ in},
+			.sink(receiveCompletion: { _ in },
 				  receiveValue: { [weak self] shares in
 					guard let self = self else { return }
 					self.shareResults = shares })
