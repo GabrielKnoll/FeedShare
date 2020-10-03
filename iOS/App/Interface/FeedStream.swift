@@ -42,8 +42,7 @@ public struct FeedStream: View {
 			.padding(.bottom, 25)
 
 		}
-		//		.background(Color(R.color.background() ?? .gray))
-		.background(Color.gray)
+		.background(R.color.background.color)
 		.ignoresSafeArea(edges: .vertical)
 	}
 }
