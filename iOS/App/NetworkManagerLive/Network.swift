@@ -13,6 +13,7 @@ final class Network {
   static let shared = Network()
   private lazy var networkTransport: HTTPNetworkTransport = {
 
+	//swiftlint:disable:next force_unwrapping
 	let transport = HTTPNetworkTransport(url: URL(string: "https://feed.buechele.cc/graphql")!)
 	transport.delegate = self
 
@@ -20,10 +21,12 @@ final class Network {
   }()
 
   private lazy var store: ApolloStore = {
+	//swiftlint:disable force_unwrapping
 	let documentsPath = NSSearchPathForDirectoriesInDomains(
 	  .documentDirectory,
 	  .userDomainMask,
 	  true).first!
+	//swiftlint:enable force_unwrapping
 	let documentsURL = URL(fileURLWithPath: documentsPath)
 	let sqliteFileURL = documentsURL.appendingPathComponent("apollo.sqlite")
 	// swiftlint:disable:next force_try

@@ -5,8 +5,8 @@
 //  Created by Gabriel Knoll on 26.09.20.
 //
 
-import UIKit
 import Social
+import UIKit
 
 class ShareViewController: SLComposeServiceViewController {
 
@@ -18,7 +18,9 @@ class ShareViewController: SLComposeServiceViewController {
     override func didSelectPost() {
         // This is called after the user selects Post. Do the upload of contentText and/or NSExtensionContext attachments.
     
-        // Inform the host that we're done, so it un-blocks its UI. Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.
+        // Inform the host that we're done, so it un-blocks its UI.
+		//Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.
+		//swiftlint:disable:next force_unwrapping
         self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
     }
 
