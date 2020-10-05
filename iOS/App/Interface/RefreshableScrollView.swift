@@ -147,7 +147,8 @@ struct RefreshableKeyTypes {
         static func reduce(value: inout [PrefData], nextValue: () -> [PrefData]) {
             value.append(contentsOf: nextValue())
         }
-        
+
+		// swiftlint:disable:next nesting
         typealias Value = [PrefData]
     }
 }

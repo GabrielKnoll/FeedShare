@@ -20,30 +20,32 @@ public struct FeedStream: View {
 	}
 
 	public var body: some View {
-		HStack(alignment: .center, spacing: 10) {
-			Button(action: buttonAction) {
-				Image("profile")
-					.resizable()
-					.aspectRatio(contentMode: .fill)
-					.frame(width: 35, height: 35, alignment: .center)
-					.cornerRadius(18)
-			}
-		}.frame(height: 70)
-		RefreshableScrollView(refreshing: $refreshing) { //self.$feedData.loading
-			LazyVStack {
-				ForEach(viewModel.shareResults, id: \.id) { share in
-					ShareRow(data: share)
-						.padding(.top, 5)
-						.padding(.trailing, 15)
-						.padding(.leading, 15)
+		VStack {
+			HStack(alignment: .center, spacing: 10) {
+				Button(action: buttonAction) {
+					Image("profile", bundle: Bundle(identifier: "com.feedshare.Interface"))
+						.resizable()
+						.aspectRatio(contentMode: .fill)
+						.frame(width: 35, height: 35, alignment: .center)
+						.cornerRadius(18)
 				}
-			}
-			.padding(.top, 10)
-			.padding(.bottom, 25)
+			}.frame(height: 70)
+			RefreshableScrollView(refreshing: $refreshing) { //self.$feedData.loading
+				LazyVStack {
+					ForEach(viewModel.shareResults, id: \.id) { share in
+						ShareRow(data: share)
+							.padding(.top, 5)
+							.padding(.trailing, 15)
+							.padding(.leading, 15)
+					}
+				}
+				.padding(.top, 10)
+				.padding(.bottom, 25)
 
+			}
+			.background(Color(R.color.background() ?? .gray))
+			.ignoresSafeArea(edges: .vertical)
 		}
-		.background(R.color.background.color)
-		.ignoresSafeArea(edges: .vertical)
 	}
 }
 
@@ -82,6 +84,6 @@ public struct FeedStream: View {
 
 struct FeedStream_Previews: PreviewProvider {
 	static var previews: some View {
-		/*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
+		FeedStream(viewModel: FeedStreamViewModel(networkManager: NetworkManager.success))
 	}
 }

@@ -65,7 +65,6 @@ struct AttachmentItem: View {
 
 //struct Attachment_Previews: PreviewProvider {
 //    static var previews: some View {
-//        // swiftlint:disable:next force_try
 //       AttachmentItem(data: try! AttachmentFragment(jsonObject: [
 //           "title": "Luftpost Podcast",
 //           "artwork": "https://luftpost-podcast.de/cover.png",

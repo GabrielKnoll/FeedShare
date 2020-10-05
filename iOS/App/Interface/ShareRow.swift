@@ -36,9 +36,9 @@ struct ShareRow: View {
                         .lineLimit(1)
                 }
                 Spacer()
-                Button(action: { showPopover = true }) {
-                    Image(systemName: "ellipsis")
-                }
+				Button(action: { showPopover = true }) {
+					Image(systemName: "ellipsis")
+				}
                 .foregroundColor(.primary)
                 .font(.headline)
                 .popover(
