@@ -9,7 +9,7 @@ export type ConnectionCursor = string;
 export interface ConnectionArguments {
   after?: ConnectionCursor | null;
   before?: ConnectionCursor | null;
-  first: number;
+  last: number;
 }
 
 export interface PageInfo {
@@ -44,16 +44,16 @@ export async function findManyCursor<Model extends {id: string}>(
   }) => Promise<Model[]>,
   args: ConnectionArguments = {} as ConnectionArguments,
 ): Promise<Connection<Model>> {
-  if (args?.first < 0) {
-    throw new Error('first is less than 0');
+  if (args?.last < 0) {
+    throw new Error('last is less than 0');
   }
 
   let skip, cursor;
-  const take = args.first + 1;
+  const take = args.last + 1;
 
-  if (args.after) {
+  if (args.before) {
     skip = 1;
-    cursor = {id: args.after};
+    cursor = {id: args.before};
   }
 
   let nodes = await findMany({take, skip, cursor});
@@ -65,10 +65,10 @@ export async function findManyCursor<Model extends {id: string}>(
   }
 
   // cut off list before the cursor
-  if (args.before) {
+  if (args.after) {
     let found = false;
     nodes = nodes.filter((n) => {
-      found = found || n.id === args.before;
+      found = found || n.id === args.after;
       return !found;
     });
   }

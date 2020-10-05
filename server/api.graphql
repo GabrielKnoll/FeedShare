@@ -62,7 +62,7 @@ type Podcast implements Attachment {
 
 type Query {
   attachmentForUrl(url: String!): Attachment
-  shares(after: String, before: String, first: Int!): ShareConnection!
+  shares(after: String, before: String, last: Int!): ShareConnection!
   viewer: Viewer
 }
 

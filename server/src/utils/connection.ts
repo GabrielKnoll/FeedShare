@@ -15,7 +15,7 @@ export const PageInfo = objectType({
 });
 
 export const ConnectionArgs = {
-  first: intArg({
+  last: intArg({
     required: true,
   }),
   after: stringArg({
