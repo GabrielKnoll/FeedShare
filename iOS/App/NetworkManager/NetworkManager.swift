@@ -9,9 +9,9 @@ import Combine
 import Foundation
 
 public struct NetworkManager {
-	public var feedData: () -> Future<[Share], Error>
+	public var feedData: () -> Deferred<Future<[Share], Error>>
 
-	public init(feedData: @escaping () -> Future<[Share], Error>) {
+	public init(feedData: @escaping () -> Deferred<Future<[Share], Error>>) {
 		self.feedData = feedData
 	}
 }

@@ -12,8 +12,9 @@ extension NetworkManager {
 
 	public static let success = Self(
 		feedData: {
-			return Future { promise in
+			return Deferred { Future<[Share], Error> { promise in
 				promise(.success([MockShares.mockPodcast(), MockShares.mockEpisode()]))
+			}
 			}
 		}
 	)
