@@ -63,12 +63,17 @@ struct AttachmentItem: View {
     }
 }
 
-//struct Attachment_Previews: PreviewProvider {
-//    static var previews: some View {
-//       AttachmentItem(data: try! AttachmentFragment(jsonObject: [
-//           "title": "Luftpost Podcast",
-//           "artwork": "https://luftpost-podcast.de/cover.png",
-//           "__typename": "Podcast"
-//       ]))
-//    }
-//}
+struct Attachment_Previews: PreviewProvider {
+    static var previews: some View {
+		var results = [Share]()
+		let _ = NetworkManager.success.feedData()
+			.sink(receiveCompletion: { _ in },
+				  receiveValue: { result in
+					results = result
+				  })
+		return VStack {
+			AttachmentItem(data: results.first!.attachment!)
+			AttachmentItem(data: results[1].attachment!)
+		}
+    }
+}
