@@ -13,14 +13,15 @@ import NetworkManager
 extension NetworkManager {
 	public static let live = Self(
 		feedData: {
-			return Future { promise in
-			Network.shared.apollo.fetch(query: FeedStreamQuery()) { result in
-				switch result {
-				case .success(let graphQLResult):
-					promise(.success(parseResults(results: graphQLResult.data?.shares.edges ?? [])))
-				case .failure(let error):
-					assertionFailure("Failure! Error: \(error)")
-					promise(.failure(error))
+			return Deferred { Future<[Share], Error> { promise in
+				Network.shared.apollo.fetch(query: FeedStreamQuery()) { result in
+					switch result {
+					case .success(let graphQLResult):
+						promise(.success(parseResults(results: graphQLResult.data?.shares.edges ?? [])))
+					case .failure(let error):
+						assertionFailure("Failure! Error: \(error)")
+						promise(.failure(error))
+					}
 				}
 			}
 			}
