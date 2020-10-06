@@ -9,9 +9,14 @@ import Combine
 import Foundation
 
 public struct NetworkManager {
-	public var feedData: () -> Deferred<Future<[Share], Error>>
+	public var feedData: (String?, NMCachePolicy) -> Deferred<Future<[Share], Error>>
 
-	public init(feedData: @escaping () -> Deferred<Future<[Share], Error>>) {
+	public init(feedData: @escaping (String?, NMCachePolicy) -> Deferred<Future<[Share], Error>>) {
 		self.feedData = feedData
 	}
+}
+
+public enum NMCachePolicy {
+	case fetchIgnoringCacheData
+	case returnCacheDataAndFetch
 }

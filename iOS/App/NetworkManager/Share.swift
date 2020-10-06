@@ -9,11 +9,12 @@ import Foundation
 
 public struct Share: Identifiable {
 
-	public init(author: Author, message: String?, createdAt: String, attachment: Attachment?) {
+	public init(author: Author, message: String?, createdAt: String, attachment: Attachment?, cursor: String?) {
 		self.author = author
 		self.message = message
 		self.createdAt = createdAt
 		self.attachment = attachment
+		self.cursor = cursor
 	}
 
 	public let id = UUID()
@@ -21,6 +22,7 @@ public struct Share: Identifiable {
 	public let message: String?
 	public let createdAt: String
 	public let attachment: Attachment?
+	public let cursor: String?
 
 }
 

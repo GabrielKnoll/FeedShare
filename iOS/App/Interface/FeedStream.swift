@@ -13,7 +13,6 @@ public struct FeedStream: View {
 	@ObservedObject var viewModel: FeedStreamViewModel
 
 	private let buttonAction = { print("profile pressed") }
-	@State private var refreshing = false
 
 	public init(viewModel: FeedStreamViewModel) {
 		self.viewModel = viewModel
@@ -30,7 +29,7 @@ public struct FeedStream: View {
 						.cornerRadius(18)
 				}
 			}.frame(height: 70)
-			RefreshableScrollView(refreshing: $refreshing) { //self.$feedData.loading
+			RefreshableScrollView(refreshing: $viewModel.loading) {
 				LazyVStack {
 					ForEach(viewModel.shareResults, id: \.id) { share in
 						ShareRow(data: share)
@@ -48,39 +47,6 @@ public struct FeedStream: View {
 		}
 	}
 }
-
-//class FeedData: ObservableObject {
-//    @Published var rows: [FeedStreamQuery.Data.Share.Edge] = []
-//    @Published var loading: Bool = false {
-//        didSet {
-//            if oldValue == false && loading == true {
-//                //self.loading = true
-//                print("load data")
-//                loadData(before: self.rows.first?.cursor, cachePolicy: .fetchIgnoringCacheData)
-//
-//            }
-//        }
-//    }
-//
-//    init() {
-//        self.rows = []
-//        loadData()
-//    }
-//
-//    func loadData(before: String? = nil, cachePolicy: CachePolicy = .returnCacheDataAndFetch) {
-//        Network.shared.apollo.fetch(query: FeedStreamQuery(before: before), cachePolicy: cachePolicy) { result in
-//            switch result {
-//            case .success(let graphQLResult):
-//                print(graphQLResult.data?.shares.edges?.count)
-//                print(self.rows.count)
-//                self.rows = graphQLResult.data?.shares.edges ?? [] + self.rows
-//                //self.loading = false
-//            case .failure(let error):
-//                print("Failure! Error: \(error)")
-//            }
-//        }
-//    }
-//}
 
 struct FeedStream_Previews: PreviewProvider {
 	static var previews: some View {

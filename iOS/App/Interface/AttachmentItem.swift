@@ -66,14 +66,16 @@ struct AttachmentItem: View {
 struct Attachment_Previews: PreviewProvider {
     static var previews: some View {
 		var results = [Share]()
-		let _ = NetworkManager.success.feedData()
+		_ = NetworkManager.success.feedData(nil, .fetchIgnoringCacheData)
 			.sink(receiveCompletion: { _ in },
 				  receiveValue: { result in
 					results = result
 				  })
 		return VStack {
+			//swiftlint:disable force_unwrapping
 			AttachmentItem(data: results.first!.attachment!)
 			AttachmentItem(data: results[1].attachment!)
+			//swiftlint:enable force_unwrap
 		}
     }
 }
