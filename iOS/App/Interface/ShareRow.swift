@@ -62,3 +62,18 @@ struct ShareRow: View {
                                 y: 2.0))
     }
 }
+
+struct ShareRow_Previews: PreviewProvider {
+	static var previews: some View {
+		var results = [Share]()
+		let _ = NetworkManager.success.feedData()
+			.sink(receiveCompletion: { _ in },
+				  receiveValue: { result in
+					results = result
+				  })
+		VStack {
+			ShareRow(data: results.first!)
+			ShareRow(data: results[1])
+		}
+	}
+}
