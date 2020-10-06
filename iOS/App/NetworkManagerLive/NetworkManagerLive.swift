@@ -12,9 +12,9 @@ import NetworkManager
 
 extension NetworkManager {
 	public static let live = Self(
-		feedData: {
+		feedData: { before, policy in
 			return Deferred { Future<[Share], Error> { promise in
-				Network.shared.apollo.fetch(query: FeedStreamQuery()) { result in
+				Network.shared.apollo.fetch(query: FeedStreamQuery(before: before), cachePolicy: cachePolicy(policy)) { result in
 					switch result {
 					case .success(let graphQLResult):
 						promise(.success(parseResults(results: graphQLResult.data?.shares.edges ?? [])))
@@ -26,6 +26,15 @@ extension NetworkManager {
 			}
 			}
 		})
+}
+
+private func cachePolicy(_ policy: NMCachePolicy) -> CachePolicy {
+	switch policy {
+	case .fetchIgnoringCacheData:
+		return .fetchIgnoringCacheData
+	case .returnCacheDataAndFetch:
+		return .returnCacheDataAndFetch
+	}
 }
 
 private func parseResults(results: [FeedStreamQuery.Data.Share.Edge]) -> [Share] {
@@ -57,7 +66,7 @@ private func parseResults(results: [FeedStreamQuery.Data.Share.Edge]) -> [Share]
 		}
 
 		let attachment = Attachment(title: attachmentFragment.title, artwork: attachmentFragment.artwork, episode: episode, podcast: podcast)
-		let share = Share(author: author, message: fragment.message, createdAt: fragment.createdAt, attachment: attachment)
+		let share = Share(author: author, message: fragment.message, createdAt: fragment.createdAt, attachment: attachment, cursor: result.cursor)
 		shares.append(share)
 	}
 	return shares

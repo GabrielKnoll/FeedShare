@@ -11,7 +11,7 @@ import Foundation
 extension NetworkManager {
 
 	public static let success = Self(
-		feedData: {
+		feedData: { _, _ in
 			return Deferred { Future<[Share], Error> { promise in
 				promise(.success([MockShares.mockPodcast(), MockShares.mockEpisode()]))
 			}
@@ -31,7 +31,7 @@ private struct MockShares {
 								  description: "Spannende Länder, interessante Leute, tolle Geschichten.",
 								  publisher: "Daniel Büchele")
 		let mockAttachment = Attachment(title: "Luftpost Podcast", artwork: "https://luftpost-podcast.de/cover.png", episode: nil, podcast: mockPodcast)
-		return Share(author: mockAuthor, message: "Check out this podcast!", createdAt: "04.10.2020", attachment: mockAttachment)
+		return Share(author: mockAuthor, message: "Check out this podcast!", createdAt: "04.10.2020", attachment: mockAttachment, cursor: nil)
 	}
 
 	static func mockEpisode() -> Share {
@@ -47,6 +47,10 @@ private struct MockShares {
 								  description: "Sie erzählt von der Gastfreundschaft und viel zu viel Essen& Ausflüge in die Wüste",
 								  podcast: "Luftpost Podcast")
 		let mockAttachment = Attachment(title: "Luftpost | Senegal", artwork: "https://luftpost-podcast.de/cover.png", episode: mockEpisode, podcast: nil)
-		return Share(author: mockAuthor, message: "Check out this episode of Luftpost Podcast", createdAt: "04.10.2020", attachment: mockAttachment)
+		return Share(author: mockAuthor,
+					 message: "Check out this episode of Luftpost Podcast",
+					 createdAt: "04.10.2020",
+					 attachment: mockAttachment,
+					 cursor: nil)
 	}
 }
