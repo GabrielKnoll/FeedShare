@@ -1,35 +1,16 @@
 require('dotenv').config({path: '../.env'});
 
-import {use, settings} from 'nexus';
-import {prisma} from 'nexus-plugin-prisma';
-import prismaClient from './utils/prismaClient';
-import {auth} from 'nexus-plugin-jwt-auth';
+import schema from './schema';
+import {GraphQLServer} from 'graphql-yoga';
+import context from './utils/context';
 
-settings.change({
-  server: {
-    port: parseInt(process.env.PORT || '4000', 10),
-  },
+const server = new GraphQLServer({
+  // @ts-ignore
+  schema,
+  context,
 });
 
-use(
-  prisma({
-    client: {
-      instance: prismaClient,
-    },
-    features: {
-      crud: true,
-    },
-  }),
+server.start(
+  {port: process.env.PORT || 4000},
+  (options) => `Server is running on http://localhost:${options.port}`,
 );
-
-use(
-  auth({
-    appSecret: process.env.JWT_SECRET,
-  }),
-);
-
-// schema.queryType({
-//   definition(t) {
-//     t.crud.share();
-//   },
-// });

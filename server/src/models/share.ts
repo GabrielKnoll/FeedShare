@@ -1,6 +1,6 @@
-import {schema} from 'nexus';
+import {objectType} from '@nexus/schema';
 
-schema.objectType({
+export default objectType({
   name: 'Share',
   definition(t) {
     t.model.id();
@@ -10,8 +10,8 @@ schema.objectType({
 
     t.field('attachment', {
       type: 'Attachment',
-      resolve: async (root, _ctx, {db}) => {
-        const sharable = await db.share.findOne({
+      resolve: async (root, _ctx, {prismaClient}) => {
+        const sharable = await prismaClient.share.findOne({
           where: {id: root.id},
           include: {episode: true, podcast: true},
         });

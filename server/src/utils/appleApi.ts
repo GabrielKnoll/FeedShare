@@ -99,7 +99,7 @@ async function ampApiRequest<T>(
   return response.json();
 }
 
-export async function ampPodcast(id: string | null) {
+export async function ampPodcast(id?: string) {
   if (!id) {
     return;
   }
@@ -111,7 +111,7 @@ export async function ampPodcast(id: string | null) {
   }
 }
 
-export async function ampEpisode(id: string | null) {
+export async function ampEpisode(id?: string) {
   if (!id) {
     return;
   }

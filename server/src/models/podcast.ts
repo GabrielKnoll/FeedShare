@@ -1,11 +1,11 @@
-import {schema} from 'nexus';
-import {Attachment} from './attachment';
+import {intArg, objectType} from '@nexus/schema';
+import Attachment from './Attachment';
 
-schema.objectType({
+export default objectType({
   name: 'Podcast',
   definition(t) {
     t.implements(Attachment);
-    t.model.description();
+
     t.model.feed();
     t.model.publisher();
   },

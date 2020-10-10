@@ -1,12 +1,14 @@
-import parseToken from './parseToken';
-import {FieldAuthorizeResolver} from 'nexus/components/schema';
+import {FieldAuthorizeResolver} from '@nexus/schema';
 
 type AuthProp = {
   authorize: FieldAuthorizeResolver<any, any>;
 };
 
 const authProp: AuthProp = {
-  authorize: (_, __, {token}) => Boolean(parseToken(token).userId),
+  authorize: (_, __, {userId}) => {
+    console.log(userId);
+    return Boolean(userId);
+  },
 };
 
 export default authProp;

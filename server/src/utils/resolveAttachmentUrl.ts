@@ -2,23 +2,24 @@ import queryString from 'query-string';
 import {ampPodcast, ampEpisode} from './appleApi';
 import prismaClient from './prismaClient';
 import {PodcastCreateInput, EpisodeCreateInput} from '@prisma/client';
+import URL from 'url';
 
 const CACHE_DURATION = 24 * 60 * 60 * 1000;
 
 export default async function (shareUrl: string) {
-  const url = new URL(shareUrl);
-  let applePodcastId: string | null = null;
-  let appleEpisodeId: string | null = null;
+  const url = URL.parse(shareUrl);
+  let applePodcastId: string | undefined = undefined;
+  let appleEpisodeId: string | undefined = undefined;
 
   switch (url.hostname) {
     case 'podcasts.apple.com': {
       // https://podcasts.apple.com/de/podcast/pakistan/id409553739?i=1000477131403&l=en?l=en&i=1000477131403
-      let [country, podcast, episode, podcastID] = url.pathname
+      let [country, podcast, episode, podcastID] = (url.pathname ?? '')
         .split('/')
         .filter(Boolean);
       applePodcastId = podcastID.replace(/^id/, '');
-      let {i: id} = queryString.parse(url.search);
-      appleEpisodeId = Array.isArray(id) ? id[0] : id;
+      let {i: id} = queryString.parse(url.search ?? '');
+      appleEpisodeId = (Array.isArray(id) ? id[0] : id) ?? undefined;
       break;
     }
     default: {

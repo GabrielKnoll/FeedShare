@@ -1,4 +1,4 @@
-import {objectType, intArg, stringArg} from 'nexus/components/schema';
+import {objectType, intArg, stringArg} from '@nexus/schema';
 
 export const PageInfo = objectType({
   name: 'PageInfo',

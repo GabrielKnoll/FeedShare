@@ -1,9 +1,7 @@
-import {objectType} from 'nexus/components/schema';
-import parseToken from '../utils/parseToken';
-import {schema} from 'nexus';
+import {objectType, extendType} from '@nexus/schema';
 import requireAuthorization from '../utils/requireAuthorization';
 
-schema.extendType({
+export default extendType({
   type: 'Query',
   definition: (t) => {
     t.field('viewer', {
@@ -19,14 +17,16 @@ schema.extendType({
         },
       }),
       ...requireAuthorization,
-      resolve: async (_, _args, {db, token}) => ({
-        user: await db.user.findOne({
-          where: {
-            id: parseToken(token).userId,
-          },
-        }),
-        personalFeed: 'https://feed.buechele.cc/feed',
-      }),
+      resolve: async (_root, _args, {prismaClient, userId}) => {
+        return {
+          user: await prismaClient.user.findOne({
+            where: {
+              id: userId,
+            },
+          }),
+          personalFeed: 'https://feed.buechele.cc/feed',
+        };
+      },
     });
   },
 });

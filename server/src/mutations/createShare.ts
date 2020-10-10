@@ -1,6 +1,4 @@
-import {stringArg, enumType} from 'nexus/components/schema';
-import {schema} from 'nexus';
-import parseToken from '../utils/parseToken';
+import {extendType, stringArg, enumType} from '@nexus/schema';
 import {ShareCreateInput} from '@prisma/client';
 
 const AttachmentType = enumType({
@@ -8,7 +6,7 @@ const AttachmentType = enumType({
   name: 'AttachmentType',
 });
 
-schema.extendType({
+export default extendType({
   type: 'Mutation',
   definition: (t) => {
     t.field('createShare', {
@@ -25,9 +23,8 @@ schema.extendType({
       resolve: async (
         _,
         {message, attachmentId, attachmentType},
-        {db, token},
+        {prismaClient, userId},
       ) => {
-        const {userId} = parseToken(token);
         if (!userId) {
           throw new Error('No user');
         }
@@ -41,7 +38,7 @@ schema.extendType({
           episode?: ShareCreateInput['episode'];
         } = {};
         if (attachmentType === 'Episode') {
-          const res = await db.episode.findOne({
+          const res = await prismaClient.episode.findOne({
             where: {
               id: attachmentId,
             },
@@ -59,7 +56,7 @@ schema.extendType({
           };
         }
 
-        return db.share.create({
+        return prismaClient.share.create({
           data: {
             podcast: {
               connect: {
