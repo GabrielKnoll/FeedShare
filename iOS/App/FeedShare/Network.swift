@@ -32,7 +32,7 @@ final class Network {
 
   private(set) lazy var apollo: ApolloClient = {
     let client = ApolloClient(networkTransport: self.networkTransport, store: self.store)
-    client.cacheKeyForObject = { $0["id"] }
+    client.cacheKeyForObject = {$0["id"]}
     return client
   }()
 }

@@ -47,23 +47,24 @@ class FeedData: ObservableObject {
   @Published var loading: Bool = false {
     didSet {
       if oldValue == false && loading == true {
-        self.loading = true
-        loadAfterCursor()
+        fetchMore()
       }
     }
   }
   
   init() {
     self.rows = []
-    loadData()
+    loadData(cachePolicy: .returnCacheDataDontFetch)
+    fetchMore()
   }
   
-  func loadAfterCursor() {
+  func fetchMore() {
     Network.shared.apollo.store.withinReadTransaction({ transaction in
-      let data = try? transaction.read(
+      let data = try transaction.read(
         query: FeedStreamQuery()
       )
-      self.loadData(after: data?.shares.pageInfo?.endCursor, cachePolicy: .fetchIgnoringCacheData)
+      let cursor = data.shares.edges?.last??.cursor
+      self.loadData(after: cursor, cachePolicy: .fetchIgnoringCacheCompletely)
     })
   }
   
@@ -75,8 +76,19 @@ class FeedData: ObservableObject {
       self.loading = false
       switch result {
       case .success(let graphQLResult):
-        print("success")
-        self.rows.append(contentsOf: graphQLResult.data?.shares.edges?.compactMap { $0 } ?? [])
+        let result = graphQLResult.data?.shares.edges?.compactMap { $0 } ?? []
+        self.rows.append(contentsOf: result)
+        
+        // manually update cache
+        if (cachePolicy == .fetchIgnoringCacheCompletely) {
+          Network.shared.apollo.store.withinReadWriteTransaction({ transaction in
+            let query = FeedStreamQuery()
+            try transaction.update(query: query) { (data: inout FeedStreamQuery.Data) in
+              data.shares.edges?.append(contentsOf: result);
+            }
+          })
+        }
+        self.loading = false
       case .failure(let error):
         print("Failure! Error: \(error)")
       }
