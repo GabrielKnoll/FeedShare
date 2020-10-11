@@ -73,9 +73,11 @@ export async function findManyCursor<Model extends {id: string}>(
     });
   }
 
+  nodes = nodes.reverse();
+
   // Get the start and end cursors
-  const endCursor = nodes.length > 0 ? nodes[0].id : undefined;
-  const startCursor = nodes.length > 0 ? nodes[nodes.length - 1].id : undefined;
+  const startCursor = nodes.length > 0 ? nodes[0].id : undefined;
+  const endCursor = nodes.length > 0 ? nodes[nodes.length - 1].id : undefined;
   const hasPreviousPage = hasExtraNode;
   const hasNextPage = (skip ?? 0) > 0;
 

@@ -1,6 +1,7 @@
 import {objectType, extendType} from '@nexus/schema';
 import {findManyCursor} from '../utils/findManyCursor';
 import {ConnectionArgs, PageInfo} from '../utils/connection';
+import {Share} from '@prisma/client';
 
 export default extendType({
   type: 'Query',
@@ -26,7 +27,7 @@ export default extendType({
       args: ConnectionArgs,
       nullable: false,
       resolve: async (_parent, args, {prismaClient}) =>
-        findManyCursor<any>(
+        findManyCursor<Share>(
           (_args) =>
             prismaClient.share.findMany({
               ..._args,

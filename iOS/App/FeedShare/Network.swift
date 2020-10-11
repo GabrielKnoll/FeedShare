@@ -12,7 +12,7 @@ import Foundation
 final class Network {
   static let shared = Network()
   private lazy var networkTransport: HTTPNetworkTransport = {
-    let transport = HTTPNetworkTransport(url: URL(string: "https://feed.buechele.cc/graphql")!)
+    let transport = HTTPNetworkTransport(url: URL(string: "https://feed.buechele.cc/")!)
     transport.delegate = self
 
     return transport
@@ -30,7 +30,11 @@ final class Network {
     return ApolloStore(cache: sqliteCache)
   }()
 
-  private(set) lazy var apollo = ApolloClient(networkTransport: self.networkTransport, store: self.store)
+  private(set) lazy var apollo: ApolloClient = {
+    let client = ApolloClient(networkTransport: self.networkTransport, store: self.store)
+    client.cacheKeyForObject = { $0["id"] }
+    return client
+  }()
 }
 
 extension Network: HTTPNetworkTransportPreflightDelegate {
