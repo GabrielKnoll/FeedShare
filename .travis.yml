@@ -20,7 +20,7 @@ deploy:
   provider: script
   skip_cleanup: true
   script:
-    - rsync -r --delete $TRAVIS_BUILD_DIR/server/dist/ buechele@buechele.cc:feedshare
+    - rsync -r --delete $TRAVIS_BUILD_DIR/server/ buechele@buechele.cc:feedshare
     - ssh buechele@buechele.cc supervisorctl restart feedshare
   on:
     branch: main
