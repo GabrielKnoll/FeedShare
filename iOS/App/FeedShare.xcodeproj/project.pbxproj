@@ -15,7 +15,6 @@
 		F51CA077252785180091710E /* NetworkManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F51CA03F252784050091710E /* NetworkManager.framework */; };
 		F51CA078252785180091710E /* NetworkManager.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F51CA03F252784050091710E /* NetworkManager.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F51CA095252785B80091710E /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51CA091252785B80091710E /* Network.swift */; };
-		F51CA096252785B80091710E /* FeedStream.graphql in Resources */ = {isa = PBXBuildFile; fileRef = F51CA092252785B80091710E /* FeedStream.graphql */; };
 		F51CA097252785B80091710E /* NetworkManagerLive.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51CA093252785B80091710E /* NetworkManagerLive.swift */; };
 		F51CA098252785B80091710E /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51CA094252785B80091710E /* API.swift */; };
 		F539F1872528A5D10080412A /* Logic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F539F1802528A5D10080412A /* Logic.framework */; };
@@ -181,7 +180,6 @@
 		F51CA062252784D70091710E /* NetworkManagerLive.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NetworkManagerLive.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F51CA065252784D70091710E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F51CA091252785B80091710E /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
-		F51CA092252785B80091710E /* FeedStream.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FeedStream.graphql; sourceTree = "<group>"; };
 		F51CA093252785B80091710E /* NetworkManagerLive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManagerLive.swift; sourceTree = "<group>"; };
 		F51CA094252785B80091710E /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		F539F1802528A5D10080412A /* Logic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Logic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -304,7 +302,6 @@
 			isa = PBXGroup;
 			children = (
 				F51CA094252785B80091710E /* API.swift */,
-				F51CA092252785B80091710E /* FeedStream.graphql */,
 				F59828A625278FA400A8C2CB /* Attachment.graphql */,
 				F59828AA25278FA400A8C2CB /* FeedStream.graphql */,
 				F59828A725278FA400A8C2CB /* ShareRow.graphql */,
@@ -494,6 +491,7 @@
 			buildConfigurationList = F51CA06B252784D70091710E /* Build configuration list for PBXNativeTarget "NetworkManagerLive" */;
 			buildPhases = (
 				F51CA05F252784D70091710E /* Frameworks */,
+				F5B0C14B25362B7300DF95EF /* Generate Apollo GraphQL API */,
 				F51CA05D252784D70091710E /* Headers */,
 				F51CA05E252784D70091710E /* Sources */,
 				F51CA060252784D70091710E /* Resources */,
@@ -588,7 +586,6 @@
 				F5E7F8E52516527A0036448D /* Frameworks */,
 				F5D9B2E325165D150079F47B /* Carthage Copy Phase */,
 				F5E7F90C251654460036448D /* Swiftlint */,
-				6762178A25169B2800C5FE27 /* Generate Apollo GraphQL API */,
 				F5E7F8E42516527A0036448D /* Sources */,
 				F5E7F8E62516527A0036448D /* Resources */,
 				F5D9B32D25166A540079F47B /* Embed Frameworks */,
@@ -681,7 +678,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F51CA096252785B80091710E /* FeedStream.graphql in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -722,24 +718,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		6762178A25169B2800C5FE27 /* Generate Apollo GraphQL API */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Generate Apollo GraphQL API";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-			shellPath = /bin/sh;
-			shellScript = "# Go to the build root and search up the chain to find the Derived Data Path where the source packages are checked out.\nDERIVED_DATA_CANDIDATE=\"${BUILD_ROOT}\"\n\nwhile ! [ -d \"${DERIVED_DATA_CANDIDATE}/SourcePackages\" ]; do\n  if [ \"${DERIVED_DATA_CANDIDATE}\" = / ]; then\n    echo >&2 \"error: Unable to locate SourcePackages directory from BUILD_ROOT: '${BUILD_ROOT}'\"\n    exit 1\n  fi\n\n  DERIVED_DATA_CANDIDATE=\"$(dirname \"${DERIVED_DATA_CANDIDATE}\")\"\ndone\n\n# Grab a reference to the directory where scripts are checked out\nSCRIPT_PATH=\"${DERIVED_DATA_CANDIDATE}/SourcePackages/checkouts/apollo-ios/scripts\"\n\nif [ -z \"${SCRIPT_PATH}\" ]; then\n    echo >&2 \"error: Couldn't find the CLI script in your checked out SPM packages; make sure to add the framework to your project.\"\n    exit 1\nfi\n\ncd \"${SRCROOT}/${TARGET_NAME}/NetworkManager/Sources/NetworkManagerLive\"\n\"${SCRIPT_PATH}\"/run-bundled-codegen.sh codegen:generate --target=swift --includes=./**/*.graphql --localSchemaFile=\"../../../../server/api.json\" API.swift\n";
-		};
 		F5A0A7972528E7EF00429855 /* Rswift */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -779,6 +757,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "$SRCROOT/Rswift/rswift generate --accessLevel public \"$SRCROOT/Logic/Supporting Files/R.generated.swift\" \n";
+		};
+		F5B0C14B25362B7300DF95EF /* Generate Apollo GraphQL API */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Generate Apollo GraphQL API";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Go to the build root and search up the chain to find the Derived Data Path where the source packages are checked out.\nDERIVED_DATA_CANDIDATE=\"${BUILD_ROOT}\"\n\nwhile ! [ -d \"${DERIVED_DATA_CANDIDATE}/SourcePackages\" ]; do\n  if [ \"${DERIVED_DATA_CANDIDATE}\" = / ]; then\n    echo >&2 \"error: Unable to locate SourcePackages directory from BUILD_ROOT: '${BUILD_ROOT}'\"\n    exit 1\n  fi\n\n  DERIVED_DATA_CANDIDATE=\"$(dirname \"${DERIVED_DATA_CANDIDATE}\")\"\ndone\n\n# Grab a reference to the directory where scripts are checked out\nSCRIPT_PATH=\"${DERIVED_DATA_CANDIDATE}/SourcePackages/checkouts/apollo-ios/scripts\"\n\nif [ -z \"${SCRIPT_PATH}\" ]; then\n    echo >&2 \"error: Couldn't find the CLI script in your checked out SPM packages; make sure to add the framework to your project.\"\n    exit 1\nfi\n\ncd \"${SRCROOT}/${TARGET_NAME}/NetworkManagerLive/Supporting Files\"\n\"${SCRIPT_PATH}\"/run-bundled-codegen.sh codegen:generate --target=swift --includes=./**/*.graphql --localSchemaFile=\"../../server/api.json\" \"NetworkManagerLive/Supporting Files/API.swift\"\n";
 		};
 		F5D9B2E325165D150079F47B /* Carthage Copy Phase */ = {
 			isa = PBXShellScriptBuildPhase;
