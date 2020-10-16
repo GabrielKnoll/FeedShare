@@ -114,7 +114,8 @@ struct RefreshableScrollView<Content: View>: View {
     struct MovingView: View {
         var body: some View {
             GeometryReader { proxy in
-                Color.clear.preference(key: RefreshableKeyTypes.PrefKey.self, value: [RefreshableKeyTypes.PrefData(vType: .movingView, bounds: proxy.frame(in: .global))])
+                Color.clear.preference(key: RefreshableKeyTypes.PrefKey.self,
+									   value: [RefreshableKeyTypes.PrefData(vType: .movingView, bounds: proxy.frame(in: .global))])
             }.frame(height: 0)
         }
     }
@@ -122,7 +123,8 @@ struct RefreshableScrollView<Content: View>: View {
     struct FixedView: View {
         var body: some View {
             GeometryReader { proxy in
-                Color.clear.preference(key: RefreshableKeyTypes.PrefKey.self, value: [RefreshableKeyTypes.PrefData(vType: .fixedView, bounds: proxy.frame(in: .global))])
+                Color.clear.preference(key: RefreshableKeyTypes.PrefKey.self,
+									   value: [RefreshableKeyTypes.PrefData(vType: .fixedView, bounds: proxy.frame(in: .global))])
             }
         }
     }
@@ -145,7 +147,8 @@ struct RefreshableKeyTypes {
         static func reduce(value: inout [PrefData], nextValue: () -> [PrefData]) {
             value.append(contentsOf: nextValue())
         }
-        
+
+		// swiftlint:disable:next nesting
         typealias Value = [PrefData]
     }
 }

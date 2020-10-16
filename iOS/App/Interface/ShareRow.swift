@@ -5,17 +5,18 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
+import NetworkManager
 import SwiftUI
 import URLImage
 
 struct ShareRow: View {
-    let data: ShareFragment
+	let data: Share
     @State private var showPopover: Bool = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 15) {
             HStack(alignment: .center, spacing: 10) {
-                if let url = URL(string: data.author.profilePicture ?? "") {
+				if let url = data.author.profilePicture {
                     URLImage(url, placeholder: Image(systemName: "circle")) { proxy in
                         proxy.image
                             .resizable()
@@ -35,9 +36,9 @@ struct ShareRow: View {
                         .lineLimit(1)
                 }
                 Spacer()
-                Button(action: { showPopover = true }) {
-                    Image(systemName: "ellipsis")
-                }
+				Button(action: { showPopover = true }) {
+					Image(systemName: "ellipsis")
+				}
                 .foregroundColor(.primary)
                 .font(.headline)
                 .popover(
@@ -49,7 +50,7 @@ struct ShareRow: View {
                 Text(message)
             }
             if let attachment = data.attachment {
-                AttachmentItem(data: (attachment.fragments.attachmentFragment))
+                AttachmentItem(data: (attachment))
             }
         }
         .padding(15)
@@ -63,7 +64,18 @@ struct ShareRow: View {
 }
 
 struct ShareRow_Previews: PreviewProvider {
-    static var previews: some View {
-        Text("Hello, World!")
-    }
+	static var previews: some View {
+		var results = [Share]()
+		_ = NetworkManager.success.feedData(nil, .fetchIgnoringCacheData)
+			.sink(receiveCompletion: { _ in },
+				  receiveValue: { result in
+					results = result
+				  })
+		return VStack {
+			//swiftlint:disable force_unwrapping
+			ShareRow(data: results.first!)
+			ShareRow(data: results[1])
+			//swiftlint:enable force_unwrapping
+		}
+	}
 }

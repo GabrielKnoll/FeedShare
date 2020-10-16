@@ -5,6 +5,10 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
+import Interface
+import Logic
+import NetworkManager
+import NetworkManagerLive
 import SwiftUI
 
 @main
@@ -17,9 +21,9 @@ struct FeedShareApp: App {
 		UINavigationBar.appearance().scrollEdgeAppearance = appearance
 	}
 
-    var body: some Scene {
-        WindowGroup {
-           FeedStream()
-        }
-    }
+	var body: some Scene {
+		WindowGroup {
+			FeedStream(viewModel: FeedStreamViewModel(networkManager: NetworkManager.live))
+		}
+	}
 }

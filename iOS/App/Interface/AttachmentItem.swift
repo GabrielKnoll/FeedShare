@@ -5,11 +5,12 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
+import NetworkManager
 import SwiftUI
 import URLImage
 
 struct AttachmentItem: View {
-    let data: AttachmentFragment
+    let data: Attachment
     
     static let durationFormatter: DateComponentsFormatter = {
         let formatter = DateComponentsFormatter()
@@ -32,19 +33,19 @@ struct AttachmentItem: View {
             VStack(alignment: .leading, spacing: 3) {
                 Text(data.title)
                     .font(.headline)
-                if let episode = data.asEpisode {
-                    Text(episode.podcast.title)
+                if let episode = data.episode {
+                    Text(episode.podcast)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
                 
-                if let podcast = data.asPodcast {
+                if let podcast = data.podcast {
                     Text(podcast.publisher)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
                 
-                if let duration = data.asEpisode?.durationSeconds {
+                if let duration = data.episode?.durationSeconds {
                     HStack {
                         Image(systemName: "clock")
                         Text(AttachmentItem.durationFormatter.string(from: TimeInterval(duration)) ?? "")
@@ -64,11 +65,17 @@ struct AttachmentItem: View {
 
 struct Attachment_Previews: PreviewProvider {
     static var previews: some View {
-        // swiftlint:disable:next force_try
-        AttachmentItem(data: try! AttachmentFragment(jsonObject: [
-            "title": "Luftpost Podcast",
-            "artwork": "https://luftpost-podcast.de/cover.png",
-            "__typename": "Podcast"
-        ]))
+		var results = [Share]()
+		_ = NetworkManager.success.feedData(nil, .fetchIgnoringCacheData)
+			.sink(receiveCompletion: { _ in },
+				  receiveValue: { result in
+					results = result
+				  })
+		return VStack {
+			//swiftlint:disable force_unwrapping
+			AttachmentItem(data: results.first!.attachment!)
+			AttachmentItem(data: results[1].attachment!)
+			//swiftlint:enable force_unwrap
+		}
     }
 }
