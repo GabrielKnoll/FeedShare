@@ -25,8 +25,9 @@
 		F539F1952528A5ED0080412A /* Logic.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F539F1802528A5D10080412A /* Logic.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F539F1A02528A63B0080412A /* FeedStreamViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F539F19F2528A63B0080412A /* FeedStreamViewModel.swift */; };
 		F568163D252A24A500B987E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F568163C252A24A500B987E8 /* Assets.xcassets */; };
-		F5887B6B251F4C3C00010D30 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5887B6A251F4C3C00010D30 /* ShareViewController.swift */; };
-		F5887B6E251F4C3C00010D30 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5887B6C251F4C3C00010D30 /* MainInterface.storyboard */; };
+		F5822FB2253A11F900AAA348 /* CustomShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5822FB0253A11F900AAA348 /* CustomShareViewController.swift */; };
+		F5822FB3253A11F900AAA348 /* CustomShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5822FB1253A11F900AAA348 /* CustomShareViewController.xib */; };
+		F5822FB7253A14FE00AAA348 /* ShareNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5822FB6253A14FE00AAA348 /* ShareNavigationController.swift */; };
 		F5887B72251F4C3C00010D30 /* FeedShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F5887B68251F4C3C00010D30 /* FeedShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F5961CF42517937D00F93697 /* FeedShareApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5961CF32517937D00F93697 /* FeedShareApp.swift */; };
 		F598288025278C4300A8C2CB /* ApolloCore in Frameworks */ = {isa = PBXBuildFile; productRef = F598287F25278C4300A8C2CB /* ApolloCore */; };
@@ -186,9 +187,11 @@
 		F539F1832528A5D10080412A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F539F19F2528A63B0080412A /* FeedStreamViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStreamViewModel.swift; sourceTree = "<group>"; };
 		F568163C252A24A500B987E8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F5822FAF253A11F900AAA348 /* FeedShareExtension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FeedShareExtension-Bridging-Header.h"; sourceTree = "<group>"; };
+		F5822FB0253A11F900AAA348 /* CustomShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomShareViewController.swift; sourceTree = "<group>"; };
+		F5822FB1253A11F900AAA348 /* CustomShareViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomShareViewController.xib; sourceTree = "<group>"; };
+		F5822FB6253A14FE00AAA348 /* ShareNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareNavigationController.swift; sourceTree = "<group>"; };
 		F5887B68251F4C3C00010D30 /* FeedShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FeedShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		F5887B6A251F4C3C00010D30 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
-		F5887B6D251F4C3C00010D30 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		F5887B6F251F4C3C00010D30 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F5961CF32517937D00F93697 /* FeedShareApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedShareApp.swift; sourceTree = "<group>"; };
 		F598289625278F6100A8C2CB /* Interface.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Interface.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -333,9 +336,11 @@
 		F5887B69251F4C3C00010D30 /* FeedShareExtension */ = {
 			isa = PBXGroup;
 			children = (
-				F5887B6A251F4C3C00010D30 /* ShareViewController.swift */,
-				F5887B6C251F4C3C00010D30 /* MainInterface.storyboard */,
 				F5887B6F251F4C3C00010D30 /* Info.plist */,
+				F5822FB0253A11F900AAA348 /* CustomShareViewController.swift */,
+				F5822FB1253A11F900AAA348 /* CustomShareViewController.xib */,
+				F5822FAF253A11F900AAA348 /* FeedShareExtension-Bridging-Header.h */,
+				F5822FB6253A14FE00AAA348 /* ShareNavigationController.swift */,
 			);
 			path = FeedShareExtension;
 			sourceTree = "<group>";
@@ -628,6 +633,7 @@
 					};
 					F5887B67251F4C3C00010D30 = {
 						CreatedOnToolsVersion = 12.0.1;
+						LastSwiftMigration = 1200;
 					};
 					F598289525278F6100A8C2CB = {
 						CreatedOnToolsVersion = 12.0.1;
@@ -693,7 +699,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F5887B6E251F4C3C00010D30 /* MainInterface.storyboard in Resources */,
+				F5822FB3253A11F900AAA348 /* CustomShareViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -875,7 +881,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F5887B6B251F4C3C00010D30 /* ShareViewController.swift in Sources */,
+				F5822FB2253A11F900AAA348 /* CustomShareViewController.swift in Sources */,
+				F5822FB7253A14FE00AAA348 /* ShareNavigationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -949,14 +956,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		F5887B6C251F4C3C00010D30 /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F5887B6D251F4C3C00010D30 /* Base */,
-			);
-			name = MainInterface.storyboard;
-			sourceTree = "<group>";
-		};
 		F5A0A7B32528EB0F00429855 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1160,6 +1159,7 @@
 		F5887B74251F4C3C00010D30 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D795YX3ET6;
 				INFOPLIST_FILE = FeedShareExtension/Info.plist;
@@ -1171,6 +1171,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.feedshare.FeedShare.FeedShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "FeedShareExtension/FeedShareExtension-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1179,6 +1181,7 @@
 		F5887B75251F4C3C00010D30 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D795YX3ET6;
 				INFOPLIST_FILE = FeedShareExtension/Info.plist;
@@ -1190,6 +1193,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.feedshare.FeedShare.FeedShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "FeedShareExtension/FeedShareExtension-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
