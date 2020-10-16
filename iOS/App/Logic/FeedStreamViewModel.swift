@@ -14,7 +14,7 @@ public class FeedStreamViewModel: ObservableObject {
 	@Published public var loading = false {
 		didSet {
 			if oldValue == false && loading == true {
-				loadData(before: shareResults.first?.cursor, policy: .fetchIgnoringCacheData)
+				loadAfterCursor()
 			}
 		}
 	}
@@ -25,13 +25,18 @@ public class FeedStreamViewModel: ObservableObject {
 
 	public init(networkManager: NetworkManager) {
 		self.networkManager = networkManager
-		loadData(before: nil)
+		loadData(after: nil)
 	}
 
-	private func loadData(before: String?, policy: NMCachePolicy = .returnCacheDataAndFetch) {
+	private func loadAfterCursor() {
+		let cursor = networkManager.cursor()
+		loadData(after: cursor, policy: .fetchIgnoringCacheData)
+	}
+
+	private func loadData(after: String?, policy: NMCachePolicy = .returnCacheDataAndFetch) {
 		if !loading { loading = true }
 		feedRequestCancellable = networkManager
-			.feedData(before, policy)
+			.feedData(after, policy)
 			.sink(receiveCompletion: { _ in },
 				  receiveValue: { [weak self] shares in
 					guard let self = self else { return }

@@ -12,12 +12,13 @@ import NetworkManager
 
 extension NetworkManager {
 	public static let live = Self(
-		feedData: { before, policy in
+		feedData: { after, policy in
 			return Deferred { Future<[Share], Error> { promise in
-				Network.shared.apollo.fetch(query: FeedStreamQuery(before: before), cachePolicy: cachePolicy(policy)) { result in
+				Network.shared.apollo.fetch(query: FeedStreamQuery(after: after), cachePolicy: cachePolicy(policy)) { result in
 					switch result {
 					case .success(let graphQLResult):
-						promise(.success(parseResults(results: graphQLResult.data?.shares.edges ?? [])))
+						let data = (graphQLResult.data?.shares.edges as? [FeedStreamQuery.Data.Share.Edge])
+						promise(.success(parseResults(results: data ?? [])))
 					case .failure(let error):
 						assertionFailure("Failure! Error: \(error)")
 						promise(.failure(error))
@@ -25,7 +26,16 @@ extension NetworkManager {
 				}
 			}
 			}
-		})
+		},
+		cursor: { () -> String? in
+			var data: FeedStreamQuery.Data?
+			Network.shared.apollo.store.withinReadTransaction({ transaction in
+				data = try? transaction.read(query: FeedStreamQuery())
+			})
+			return data?.shares.pageInfo?.endCursor
+		}
+)
+
 }
 
 private func cachePolicy(_ policy: NMCachePolicy) -> CachePolicy {

@@ -16,7 +16,8 @@ extension NetworkManager {
 				promise(.success([MockShares.mockPodcast(), MockShares.mockEpisode()]))
 			}
 			}
-		}
+		},
+		cursor: { nil }
 	)
 }
 

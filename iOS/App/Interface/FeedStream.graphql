@@ -1,5 +1,8 @@
 query FeedStream($after: String) {
   shares(last: 20, after: $after){
+    pageInfo {
+      endCursor
+    }
     edges {
       cursor
       node {
