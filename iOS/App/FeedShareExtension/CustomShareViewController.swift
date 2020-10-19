@@ -5,17 +5,25 @@
 //  Created by Gabriel Knoll on 16.10.20.
 //
 
+import Interface
+import SwiftUI
 import UIKit
 
 class CustomShareViewController: UIViewController {
-	@IBOutlet weak var helloLabel: UILabel!
 
 	override func viewDidLoad() {
         super.viewDidLoad()
-		view.backgroundColor = .lightGray
-		helloLabel.text = "Hello World"
+		view.backgroundColor = Interface.R.color.background()
 		addNavItems()
-    }
+		addHostingController()
+		view.backgroundColor = UIColor(dynamicProvider: { traits in
+			switch traits.userInterfaceStyle {
+			case .dark:
+				return .darkGray
+			default:
+				return .white
+			}})
+	}
 
 	private func addNavItems() {
 		navigationItem.title = "FeedShare"
@@ -28,11 +36,34 @@ class CustomShareViewController: UIViewController {
 
 	}
 
+	private func addHostingController() {
+		let controller = UIHostingController(rootView: TestView())
+		addChild(controller)
+		view.addSubview(controller.view)
+		controller.view.translatesAutoresizingMaskIntoConstraints = false
+		NSLayoutConstraint.activate([
+			controller.view.topAnchor.constraint(equalTo: view.topAnchor, constant: (navigationController?.navigationBar.frame.height ?? 0) + 20),
+			controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
+			controller.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+			controller.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15)
+		])
+		controller.view.backgroundColor = .clear
+		controller.didMove(toParent: self)
+	}
+
 	@objc private func cancelAction() {
 		extensionContext?.cancelRequest(withError: NSError(domain: "com.feedshare.Feedshare", code: 0, userInfo: nil))
 	}
 
 	@objc private func sendAction() {
 		extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
+	}
+}
+
+struct TestView: View {
+	var body: some View {
+		VStack {
+			Text("Hello World")
+		}
 	}
 }
