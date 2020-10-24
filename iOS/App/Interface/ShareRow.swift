@@ -10,13 +10,13 @@ import SwiftUI
 import URLImage
 
 struct ShareRow: View {
-	let data: Share
+    let data: Share
     @State private var showPopover: Bool = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 15) {
             HStack(alignment: .center, spacing: 10) {
-				if let url = data.author.profilePicture {
+                if let url = data.author.profilePicture {
                     URLImage(url, placeholder: Image(systemName: "circle")) { proxy in
                         proxy.image
                             .resizable()
@@ -36,9 +36,9 @@ struct ShareRow: View {
                         .lineLimit(1)
                 }
                 Spacer()
-				Button(action: { showPopover = true }) {
-					Image(systemName: "ellipsis")
-				}
+                Button(action: { showPopover = true }) {
+                    Image(systemName: "ellipsis")
+                }
                 .foregroundColor(.primary)
                 .font(.headline)
                 .popover(
@@ -64,18 +64,18 @@ struct ShareRow: View {
 }
 
 struct ShareRow_Previews: PreviewProvider {
-	static var previews: some View {
-		var results = [Share]()
-		_ = NetworkManager.success.feedData(nil, .fetchIgnoringCacheData)
-			.sink(receiveCompletion: { _ in },
-				  receiveValue: { result in
-					results = result
-				  })
-		return VStack {
-			//swiftlint:disable force_unwrapping
-			ShareRow(data: results.first!)
-			ShareRow(data: results[1])
-			//swiftlint:enable force_unwrapping
-		}
-	}
+    static var previews: some View {
+        var results = [Share]()
+        _ = NetworkManager.success.feedData(nil, true)
+            .sink(receiveCompletion: { _ in },
+                  receiveValue: { result in
+                    results = result
+                  })
+        return VStack {
+            //swiftlint:disable force_unwrapping
+            ShareRow(data: results.first!)
+            ShareRow(data: results[1])
+            //swiftlint:enable force_unwrapping
+        }
+    }
 }

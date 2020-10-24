@@ -11,10 +11,6 @@ public final class FeedStreamQuery: GraphQLQuery {
     query FeedStream($after: String) {
       shares(last: 20, after: $after) {
         __typename
-        pageInfo {
-          __typename
-          endCursor
-        }
         edges {
           __typename
           cursor
@@ -76,7 +72,6 @@ public final class FeedStreamQuery: GraphQLQuery {
       public static var selections: [GraphQLSelection] {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("pageInfo", type: .object(PageInfo.selections)),
           GraphQLField("edges", type: .list(.object(Edge.selections))),
         ]
       }
@@ -87,8 +82,8 @@ public final class FeedStreamQuery: GraphQLQuery {
         self.resultMap = unsafeResultMap
       }
 
-      public init(pageInfo: PageInfo? = nil, edges: [Edge?]? = nil) {
-        self.init(unsafeResultMap: ["__typename": "ShareConnection", "pageInfo": pageInfo.flatMap { (value: PageInfo) -> ResultMap in value.resultMap }, "edges": edges.flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in value.resultMap } } }])
+      public init(edges: [Edge?]? = nil) {
+        self.init(unsafeResultMap: ["__typename": "ShareConnection", "edges": edges.flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in value.resultMap } } }])
       }
 
       public var __typename: String {
@@ -100,60 +95,12 @@ public final class FeedStreamQuery: GraphQLQuery {
         }
       }
 
-      public var pageInfo: PageInfo? {
-        get {
-          return (resultMap["pageInfo"] as? ResultMap).flatMap { PageInfo(unsafeResultMap: $0) }
-        }
-        set {
-          resultMap.updateValue(newValue?.resultMap, forKey: "pageInfo")
-        }
-      }
-
       public var edges: [Edge?]? {
         get {
           return (resultMap["edges"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Edge?] in value.map { (value: ResultMap?) -> Edge? in value.flatMap { (value: ResultMap) -> Edge in Edge(unsafeResultMap: value) } } }
         }
         set {
           resultMap.updateValue(newValue.flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in value.resultMap } } }, forKey: "edges")
-        }
-      }
-
-      public struct PageInfo: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["PageInfo"]
-
-        public static var selections: [GraphQLSelection] {
-          return [
-            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLField("endCursor", type: .scalar(String.self)),
-          ]
-        }
-
-        public private(set) var resultMap: ResultMap
-
-        public init(unsafeResultMap: ResultMap) {
-          self.resultMap = unsafeResultMap
-        }
-
-        public init(endCursor: String? = nil) {
-          self.init(unsafeResultMap: ["__typename": "PageInfo", "endCursor": endCursor])
-        }
-
-        public var __typename: String {
-          get {
-            return resultMap["__typename"]! as! String
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "__typename")
-          }
-        }
-
-        public var endCursor: String? {
-          get {
-            return resultMap["endCursor"] as? String
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "endCursor")
-          }
         }
       }
 
