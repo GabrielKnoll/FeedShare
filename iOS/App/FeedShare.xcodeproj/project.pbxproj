@@ -25,6 +25,7 @@
 		F539F1952528A5ED0080412A /* Logic.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F539F1802528A5D10080412A /* Logic.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F539F1A02528A63B0080412A /* FeedStreamViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F539F19F2528A63B0080412A /* FeedStreamViewModel.swift */; };
 		F568163D252A24A500B987E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F568163C252A24A500B987E8 /* Assets.xcassets */; };
+		F56832D8253E2D8100730B7A /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56832D7253E2D8100730B7A /* PostView.swift */; };
 		F5822FB2253A11F900AAA348 /* CustomShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5822FB0253A11F900AAA348 /* CustomShareViewController.swift */; };
 		F5822FB3253A11F900AAA348 /* CustomShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5822FB1253A11F900AAA348 /* CustomShareViewController.xib */; };
 		F5822FB7253A14FE00AAA348 /* ShareNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5822FB6253A14FE00AAA348 /* ShareNavigationController.swift */; };
@@ -56,6 +57,10 @@
 		F5D9B34C251675710079F47B /* Rswift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F5D9B34A251675700079F47B /* Rswift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F5E7F8F02516527B0036448D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5E7F8EF2516527B0036448D /* Assets.xcassets */; };
 		F5E7F8F32516527B0036448D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5E7F8F22516527B0036448D /* Preview Assets.xcassets */; };
+		F5F27D6325475EFD00163278 /* Interface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F598289625278F6100A8C2CB /* Interface.framework */; };
+		F5F27D6425475EFD00163278 /* Interface.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F598289625278F6100A8C2CB /* Interface.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F5F27D6725475EFD00163278 /* Logic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F539F1802528A5D10080412A /* Logic.framework */; };
+		F5F27D6825475EFD00163278 /* Logic.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F539F1802528A5D10080412A /* Logic.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +112,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = F598289525278F6100A8C2CB;
 			remoteInfo = Interface;
+		};
+		F5F27D6525475EFD00163278 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F5E7F8E02516527A0036448D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F598289525278F6100A8C2CB;
+			remoteInfo = Interface;
+		};
+		F5F27D6925475EFD00163278 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F5E7F8E02516527A0036448D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F539F17F2528A5D10080412A;
+			remoteInfo = Logic;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -171,6 +190,18 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F5F27D6B25475EFD00163278 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F5F27D6425475EFD00163278 /* Interface.framework in Embed Frameworks */,
+				F5F27D6825475EFD00163278 /* Logic.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -187,6 +218,7 @@
 		F539F1832528A5D10080412A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F539F19F2528A63B0080412A /* FeedStreamViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStreamViewModel.swift; sourceTree = "<group>"; };
 		F568163C252A24A500B987E8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F56832D7253E2D8100730B7A /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		F5822FAF253A11F900AAA348 /* FeedShareExtension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FeedShareExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		F5822FB0253A11F900AAA348 /* CustomShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomShareViewController.swift; sourceTree = "<group>"; };
 		F5822FB1253A11F900AAA348 /* CustomShareViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomShareViewController.xib; sourceTree = "<group>"; };
@@ -251,6 +283,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5F27D6325475EFD00163278 /* Interface.framework in Frameworks */,
+				F5F27D6725475EFD00163278 /* Logic.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,6 +375,7 @@
 				F5822FB1253A11F900AAA348 /* CustomShareViewController.xib */,
 				F5822FAF253A11F900AAA348 /* FeedShareExtension-Bridging-Header.h */,
 				F5822FB6253A14FE00AAA348 /* ShareNavigationController.swift */,
+				F56832D7253E2D8100730B7A /* PostView.swift */,
 			);
 			path = FeedShareExtension;
 			sourceTree = "<group>";
@@ -548,10 +583,13 @@
 				F5887B64251F4C3C00010D30 /* Sources */,
 				F5887B65251F4C3C00010D30 /* Frameworks */,
 				F5887B66251F4C3C00010D30 /* Resources */,
+				F5F27D6B25475EFD00163278 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				F5F27D6625475EFD00163278 /* PBXTargetDependency */,
+				F5F27D6A25475EFD00163278 /* PBXTargetDependency */,
 			);
 			name = FeedShareExtension;
 			productName = FeedShareExtension;
@@ -882,6 +920,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F5822FB2253A11F900AAA348 /* CustomShareViewController.swift in Sources */,
+				F56832D8253E2D8100730B7A /* PostView.swift in Sources */,
 				F5822FB7253A14FE00AAA348 /* ShareNavigationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -952,6 +991,16 @@
 			isa = PBXTargetDependency;
 			target = F598289525278F6100A8C2CB /* Interface */;
 			targetProxy = F59828BF25278FD800A8C2CB /* PBXContainerItemProxy */;
+		};
+		F5F27D6625475EFD00163278 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F598289525278F6100A8C2CB /* Interface */;
+			targetProxy = F5F27D6525475EFD00163278 /* PBXContainerItemProxy */;
+		};
+		F5F27D6A25475EFD00163278 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F539F17F2528A5D10080412A /* Logic */;
+			targetProxy = F5F27D6925475EFD00163278 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1203,6 +1252,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				APPLY_RULES_IN_COPY_HEADERS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1234,6 +1284,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				APPLY_RULES_IN_COPY_HEADERS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

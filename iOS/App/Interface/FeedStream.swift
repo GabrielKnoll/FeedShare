@@ -31,7 +31,7 @@ public struct FeedStream: View {
 		RefreshableScrollView(refreshing: $viewModel.loading) {
 			LazyVStack {
 				ForEach(viewModel.shareResults, id: \.id) { share in
-					ShareRow(data: share)
+					ShareRow(data: share, isEditable: false)
 						.padding(.top, 5)
 						.padding(.trailing, 15)
 						.padding(.leading, 15)

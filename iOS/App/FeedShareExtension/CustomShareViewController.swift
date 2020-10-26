@@ -16,13 +16,7 @@ class CustomShareViewController: UIViewController {
 		view.backgroundColor = Interface.R.color.background()
 		addNavItems()
 		addHostingController()
-		view.backgroundColor = UIColor(dynamicProvider: { traits in
-			switch traits.userInterfaceStyle {
-			case .dark:
-				return .darkGray
-			default:
-				return .white
-			}})
+		view.backgroundColor = R.color.background()
 	}
 
 	private func addNavItems() {
@@ -37,7 +31,7 @@ class CustomShareViewController: UIViewController {
 	}
 
 	private func addHostingController() {
-		let controller = UIHostingController(rootView: TestView())
+		let controller = UIHostingController(rootView: PostView())
 		addChild(controller)
 		view.addSubview(controller.view)
 		controller.view.translatesAutoresizingMaskIntoConstraints = false
@@ -57,13 +51,5 @@ class CustomShareViewController: UIViewController {
 
 	@objc private func sendAction() {
 		extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
-	}
-}
-
-struct TestView: View {
-	var body: some View {
-		VStack {
-			Text("Hello World")
-		}
 	}
 }
