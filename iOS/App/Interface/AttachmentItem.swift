@@ -22,7 +22,7 @@ public struct AttachmentItem: View {
         formatter.allowedUnits = [ .hour, .minute, .second ]
         formatter.zeroFormattingBehavior = [ .dropLeading, .pad ]
         return formatter
-      }()
+    }()
     
 	public var body: some View {
         HStack(alignment: .center, spacing: 10) {
@@ -69,17 +69,17 @@ public struct AttachmentItem: View {
 
 struct Attachment_Previews: PreviewProvider {
     static var previews: some View {
-		var results = [Share]()
-		_ = NetworkManager.success.feedData(nil, .fetchIgnoringCacheData)
-			.sink(receiveCompletion: { _ in },
-				  receiveValue: { result in
-					results = result
-				  })
-		return VStack {
-			//swiftlint:disable force_unwrapping
-			AttachmentItem(data: results.first!.attachment!)
-			AttachmentItem(data: results[1].attachment!)
-			//swiftlint:enable force_unwrap
-		}
+        var results = [Share]()
+        _ = NetworkManager.success.feedData(nil, true)
+            .sink(receiveCompletion: { _ in },
+                  receiveValue: { result in
+                    results = result
+                  })
+        return VStack {
+            //swiftlint:disable force_unwrapping
+            AttachmentItem(data: results.first!.attachment!)
+            AttachmentItem(data: results[1].attachment!)
+            //swiftlint:enable force_unwrap
+        }
     }
 }

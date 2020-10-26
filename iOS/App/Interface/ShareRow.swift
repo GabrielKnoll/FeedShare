@@ -106,7 +106,7 @@ class EditorCoordinator: NSObject, UITextViewDelegate {
 struct ShareRow_Previews: PreviewProvider {
 	static var previews: some View {
 		var results = [Share]()
-		_ = NetworkManager.success.feedData(nil, .fetchIgnoringCacheData)
+		_ = NetworkManager.success.feedData(nil, true)
 			.sink(receiveCompletion: { _ in },
 				  receiveValue: { result in
 					results = result

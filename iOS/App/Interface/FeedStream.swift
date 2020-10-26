@@ -30,7 +30,7 @@ public struct FeedStream: View {
 		}.frame(height: 70)
 		RefreshableScrollView(refreshing: $viewModel.loading) {
 			LazyVStack {
-				ForEach(viewModel.shareResults, id: \.id) { share in
+				ForEach(viewModel.shareResults.reversed(), id: \.id) { share in
 					ShareRow(data: share, isEditable: false)
 						.padding(.top, 5)
 						.padding(.trailing, 15)
@@ -47,7 +47,7 @@ public struct FeedStream: View {
 }
 
 struct FeedStream_Previews: PreviewProvider {
-	static var previews: some View {
-		FeedStream(viewModel: FeedStreamViewModel(networkManager: NetworkManager.success))
-	}
+    static var previews: some View {
+        FeedStream(viewModel: FeedStreamViewModel(networkManager: NetworkManager.success))
+    }
 }
