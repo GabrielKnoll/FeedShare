@@ -35,7 +35,7 @@ scalar JSONObject
 
 type Mutation {
   createShare(attachmentId: String!, attachmentType: AttachmentType, message: String): Share
-  upsertUser(twitterId: String!, twitterToken: String!, twitterTokenSecret: String!): User
+  createViewer(twitterId: String!, twitterToken: String!, twitterTokenSecret: String!): Viewer
 }
 
 type PageInfo {
@@ -87,6 +87,7 @@ type User {
 }
 
 type Viewer {
-  personalFeed: String
-  user: User
+  personalFeed: String!
+  token: String!
+  user: User!
 }

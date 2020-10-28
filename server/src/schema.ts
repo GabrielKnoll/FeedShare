@@ -1,12 +1,13 @@
 import {nexusSchemaPrisma} from 'nexus-plugin-prisma/schema';
 import prismaClient from './utils/prismaClient';
 import {asNexusMethod, makeSchema} from '@nexus/schema';
-import AttachmentForUrl from './queries/AttachmentForUrl';
-import Viewer from './queries/Viewer';
-import Shares from './queries/Shares';
-import UpsertUser from './mutations/UpsertUser';
-import CreateShare from './mutations/createShare';
+import attachmentForUrl from './queries/attachmentForUrl';
+import viewer from './queries/viewer';
+import shares from './queries/shares';
+import createViewer from './mutations/createViewer';
+import createShare from './mutations/createShare';
 import User from './models/User';
+import Viewer from './models/Viewer';
 import Attachment from './models/Attachment';
 import Podcast from './models/Podcast';
 import Episode from './models/Episode';
@@ -28,16 +29,23 @@ export default makeSchema({
   types: [
     asNexusMethod(JSONObjectResolver, 'json'),
     asNexusMethod(DateTimeResolver, 'date'),
-    AttachmentForUrl,
+
+    // modesl
     Viewer,
     User,
     Attachment,
     Podcast,
     Episode,
     Share,
-    Shares,
-    UpsertUser,
-    CreateShare,
+
+    // queries
+    attachmentForUrl,
+    shares,
+    viewer,
+
+    // mutations
+    createViewer,
+    createShare,
   ],
   plugins: [
     nexusSchemaPrisma({

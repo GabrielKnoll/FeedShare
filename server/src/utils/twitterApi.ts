@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
 import queryString from 'query-string';
 import {hmacsign} from 'oauth-sign';
+import env from './env';
 
 async function twitterApiRequest<T>(
   path: string,
@@ -9,13 +10,11 @@ async function twitterApiRequest<T>(
   qs: {[key: string]: string},
 ): Promise<{data: T}> {
   const timestamp = Math.round(new Date().getTime() / 1000);
-  const consumerKey = '';
-  const consumerSecret = '';
 
   const url = 'https://api.twitter.com' + path;
   const nonce = Math.random().toString(36);
   const params = {
-    oauth_consumer_key: consumerKey,
+    oauth_consumer_key: env.TWITTER_COMSUMER_KEY,
     oauth_nonce: nonce,
     oauth_signature_method: 'HMAC-SHA1' as const,
     oauth_timestamp: String(timestamp),
@@ -27,7 +26,7 @@ async function twitterApiRequest<T>(
     method,
     url,
     params,
-    consumerSecret,
+    env.TWITTER_CONSUMER_SECRET,
     tokenSecret,
   );
 

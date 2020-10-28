@@ -2,24 +2,32 @@ import {PrismaClient} from '@prisma/client';
 import prismaClient from './prismaClient';
 import jwt from 'jsonwebtoken';
 import {ContextCallback} from 'graphql-yoga/dist/types';
+import env from './env';
+
+type ParsedToken = {
+  userId: string;
+};
 
 export type Context = {
   prismaClient: PrismaClient;
-  userId?: string;
-};
+  token?: string;
+} & Partial<ParsedToken>;
 
-const context: ContextCallback = ({request}): Context => {
-  const auth = request.headers.authorization?.match(/^Bearer (.+)$/);
-  let userId;
+function parseToken(token: string) {
   try {
-    if (auth && jwt.verify(auth[1], 'secret')) {
-      const parsed = jwt.decode(auth[1]);
-      if (typeof parsed !== 'string') {
-        userId = parsed?.userId;
-      }
+    if (token && jwt.verify(token, env.JWT_SECRET)) {
+      return jwt.decode(token) as ParsedToken;
     }
   } catch (e) {}
-  return {prismaClient, userId};
+}
+
+export function generateToken(parsed: ParsedToken): string {
+  return jwt.sign(parsed, env.JWT_SECRET);
+}
+
+const context: ContextCallback = ({request}): Context => {
+  const auth = request.headers.authorization?.match(/^Bearer (.+)$/) ?? [];
+  return {prismaClient, ...parseToken(auth[1]), token: auth[1]};
 };
 
 export default context;

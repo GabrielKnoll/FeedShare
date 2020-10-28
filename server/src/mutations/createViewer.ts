@@ -1,11 +1,13 @@
 import {extendType, stringArg} from '@nexus/schema';
+import {getViewer} from '../models/Viewer';
 import {twitterProfile} from '../utils/twitterApi';
+import {generateToken} from '../utils/context';
 
 export default extendType({
   type: 'Mutation',
   definition: (t) => {
-    t.field('upsertUser', {
-      type: 'User',
+    t.field('createViewer', {
+      type: 'Viewer',
       args: {
         twitterId: stringArg({
           required: true,
@@ -20,7 +22,7 @@ export default extendType({
       resolve: async (
         _,
         {twitterId, twitterToken, twitterTokenSecret},
-        {prismaClient},
+        ctx,
       ) => {
         const {
           data: {
@@ -34,27 +36,30 @@ export default extendType({
           handle,
           displayName,
           profilePicture,
-          TwitterAccount: {
-            connect: {
-              id: twitterId,
-            },
-            create: {
-              id: twitterId,
-              secret: twitterTokenSecret,
-              token: twitterToken,
-            },
-          },
         };
 
-        const user = prismaClient.user.upsert({
-          create: payload,
+        const user = await ctx.prismaClient.user.upsert({
+          create: {
+            ...payload,
+            TwitterAccount: {
+              create: {
+                id: twitterId,
+                secret: twitterTokenSecret,
+                token: twitterToken,
+              },
+            },
+          },
           update: payload,
           where: {
             twitterAccountId: twitterId,
           },
         });
 
-        return user;
+        const token = generateToken({
+          userId: user.id,
+        });
+
+        return getViewer(user, {...ctx, token});
       },
     });
   },
