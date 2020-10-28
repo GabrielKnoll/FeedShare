@@ -5,17 +5,19 @@
 //  Created by Gabriel Knoll on 16.10.20.
 //
 
+import Interface
+import SwiftUI
 import UIKit
 
 class CustomShareViewController: UIViewController {
-	@IBOutlet weak var helloLabel: UILabel!
 
 	override func viewDidLoad() {
         super.viewDidLoad()
-		view.backgroundColor = .lightGray
-		helloLabel.text = "Hello World"
+		view.backgroundColor = Interface.R.color.background()
 		addNavItems()
-    }
+		addHostingController()
+		view.backgroundColor = R.color.background()
+	}
 
 	private func addNavItems() {
 		navigationItem.title = "FeedShare"
@@ -26,6 +28,21 @@ class CustomShareViewController: UIViewController {
 		let sendBarButton = UIBarButtonItem(title: "Teilen", style: .done, target: self, action: #selector(sendAction))
 		navigationItem.setRightBarButton(sendBarButton, animated: false)
 
+	}
+
+	private func addHostingController() {
+		let controller = UIHostingController(rootView: PostView())
+		addChild(controller)
+		view.addSubview(controller.view)
+		controller.view.translatesAutoresizingMaskIntoConstraints = false
+		NSLayoutConstraint.activate([
+			controller.view.topAnchor.constraint(equalTo: view.topAnchor, constant: (navigationController?.navigationBar.frame.height ?? 0) + 20),
+			controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
+			controller.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+			controller.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15)
+		])
+		controller.view.backgroundColor = .clear
+		controller.didMove(toParent: self)
 	}
 
 	@objc private func cancelAction() {

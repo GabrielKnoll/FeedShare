@@ -21,11 +21,11 @@ extension NetworkManager {
                     case .success(let graphQLResult):
                         let data = (graphQLResult.data?.shares.edges as? [FeedStreamQuery.Data.Share.Edge]) ?? []
                         
-                        if (fetchNew) {
+                        if fetchNew {
                             // manually append to cache
                             Network.shared.apollo.store.withinReadWriteTransaction({ transaction in
                                 try transaction.update(query: FeedStreamQuery()) { (cache: inout FeedStreamQuery.Data) in
-                                    cache.shares.edges?.append(contentsOf: data);
+                                    cache.shares.edges?.append(contentsOf: data)
                                 }
                             })
                         }

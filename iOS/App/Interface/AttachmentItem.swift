@@ -9,7 +9,11 @@ import NetworkManager
 import SwiftUI
 import URLImage
 
-struct AttachmentItem: View {
+public struct AttachmentItem: View {
+	public init(data: Attachment) {
+		self.data = data
+	}
+
     let data: Attachment
     
     static let durationFormatter: DateComponentsFormatter = {
@@ -20,7 +24,7 @@ struct AttachmentItem: View {
         return formatter
     }()
     
-    var body: some View {
+	public var body: some View {
         HStack(alignment: .center, spacing: 10) {
             if let url = URL(string: data.artwork ?? "http://google.com") {
                 URLImage(url, placeholder: Image(systemName: "circle")) { proxy in

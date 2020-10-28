@@ -39,7 +39,7 @@ public class FeedStreamViewModel: ObservableObject {
             .sink(receiveCompletion: { _ in },
                   receiveValue: { [weak self] shares in
                     guard let self = self else { return }
-                    if (fetchNew) {
+                    if fetchNew {
                         self.shareResults.append(contentsOf: shares)
                     } else {
                         self.shareResults = shares

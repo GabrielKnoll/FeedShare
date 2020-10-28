@@ -10,40 +10,40 @@ import NetworkManager
 import SwiftUI
 
 public struct FeedStream: View {
-    @ObservedObject var viewModel: FeedStreamViewModel
-    
-    private let buttonAction = { print("profile pressed") }
-    
-    public init(viewModel: FeedStreamViewModel) {
-        self.viewModel = viewModel
-    }
-    
-    public var body: some View {
-        HStack(alignment: .center, spacing: 10) {
-            Button(action: buttonAction) {
-                Image("profile", bundle: Bundle(identifier: "com.feedshare.Interface"))
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 35, height: 35, alignment: .center)
-                    .cornerRadius(18)
-            }
-        }.frame(height: 70)
-        RefreshableScrollView(refreshing: $viewModel.loading) {
-            LazyVStack {
-                ForEach(viewModel.shareResults.reversed(), id: \.id) {share in
-                    ShareRow(data: share)
-                        .padding(.top, 5)
-                        .padding(.trailing, 15)
-                        .padding(.leading, 15)
-                }
-            }
-            .padding(.top, 10)
-            .padding(.bottom, 25)
-            
-        }
-        .background(Color(R.color.background() ?? .gray))
-        .ignoresSafeArea(edges: .vertical)
-    }
+	@ObservedObject var viewModel: FeedStreamViewModel
+
+	private let buttonAction = { print("profile pressed") }
+
+	public init(viewModel: FeedStreamViewModel) {
+		self.viewModel = viewModel
+	}
+
+	public var body: some View {
+		HStack(alignment: .center, spacing: 10) {
+			Button(action: buttonAction) {
+				Image("profile", bundle: Bundle(identifier: "com.feedshare.Interface"))
+					.resizable()
+					.aspectRatio(contentMode: .fill)
+					.frame(width: 35, height: 35, alignment: .center)
+					.cornerRadius(18)
+			}
+		}.frame(height: 70)
+		RefreshableScrollView(refreshing: $viewModel.loading) {
+			LazyVStack {
+				ForEach(viewModel.shareResults.reversed(), id: \.id) { share in
+					ShareRow(data: share, isEditable: false)
+						.padding(.top, 5)
+						.padding(.trailing, 15)
+						.padding(.leading, 15)
+				}
+			}
+			.padding(.top, 10)
+			.padding(.bottom, 25)
+
+		}
+		.background(Color(R.color.background() ?? .gray))
+		.ignoresSafeArea(edges: .vertical)
+	}
 }
 
 struct FeedStream_Previews: PreviewProvider {
