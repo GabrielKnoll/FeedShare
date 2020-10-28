@@ -3,12 +3,14 @@ import prismaClient from './utils/prismaClient';
 import {asNexusMethod, makeSchema} from '@nexus/schema';
 import AttachmentForUrl from './queries/AttachmentForUrl';
 import Viewer from './queries/Viewer';
+import Shares from './queries/Shares';
+import UpsertUser from './mutations/UpsertUser';
+import CreateShare from './mutations/createShare';
 import User from './models/User';
 import Attachment from './models/Attachment';
 import Podcast from './models/Podcast';
 import Episode from './models/Episode';
 import Share from './models/Share';
-import Shares from './queries/Shares';
 import {DateTimeResolver, JSONObjectResolver} from 'graphql-scalars';
 
 export default makeSchema({
@@ -34,6 +36,8 @@ export default makeSchema({
     Episode,
     Share,
     Shares,
+    UpsertUser,
+    CreateShare,
   ],
   plugins: [
     nexusSchemaPrisma({
