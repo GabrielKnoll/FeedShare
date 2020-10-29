@@ -16,6 +16,7 @@
     "@graphql-codegen/cli": "^1.17.8",
     "@graphql-codegen/introspection": "^1.17.8",
     "@prisma/cli": "2.8.1",
+    "@types/cheerio": "^0.22.22",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/node-fetch": "^2.5.7",
     "@types/ws": "^7.2.7",
@@ -26,6 +27,7 @@
   "dependencies": {
     "@nexus/schema": "^0.16.0",
     "@prisma/client": "^2.10.0",
+    "cheerio": "^1.0.0-rc.3",
     "dotenv": "^8.2.0",
     "env-var": "^6.3.0",
     "graphql": "^15.3.0",
