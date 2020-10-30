@@ -10,6 +10,8 @@ const e = {
     .get('TWITTER_CONSUMER_SECRET')
     .required()
     .asString(),
+  SPOTIFY_CLIENT_ID: env.get('SPOTIFY_CLIENT_ID').required().asString(),
+  SPOTIFY_CLIENT_SECRET: env.get('SPOTIFY_CLIENT_SECRET').required().asString(),
 };
 
 const set = new Set(Object.keys(parsed));

@@ -1,13 +1,20 @@
 import {ampPodcast, ampEpisode} from './appleApi';
 import prismaClient from './prismaClient';
-import {PodcastCreateInput, EpisodeCreateInput} from '@prisma/client';
+import {
+  PodcastCreateInput,
+  EpisodeCreateInput,
+  Episode,
+  Podcast,
+} from '@prisma/client';
 import URL from 'url';
 import fetch from 'node-fetch';
 import cheerio from 'cheerio';
 import apple from './parser/apple';
 import castro from './parser/castro';
 import overcast from './parser/overcast';
-import pocketcast from './parser/pocketcast';
+import pocketcasts from './parser/pocketcasts';
+import spotify from './parser/spotify';
+import {NexusGenEnums} from 'nexus-typegen';
 
 const CACHE_DURATION = 24 * 60 * 60 * 1000;
 
@@ -16,21 +23,59 @@ export async function fetchPage(url: URL.UrlWithStringQuery) {
   return cheerio.load(pageContent);
 }
 
-export type PodcastInfo = {
+interface BaseParserResult {
   applePodcastId?: string;
-  appleEpisodeId?: string;
   rssFeed?: string;
-};
+  type: NexusGenEnums['AttachmentType'];
+}
+
+interface ParserResultPodcast extends BaseParserResult {
+  type: 'Podcast';
+  spotifyPodcastId?: string;
+}
+
+interface ParserResultEpisode extends BaseParserResult {
+  type: 'Episode';
+  episodeUrl?: string;
+  episodeTitle?: string;
+  appleEpisodeId?: string;
+  spotifyEpisodeId?: string;
+}
+
+export type ParserResult = ParserResultPodcast | ParserResultEpisode;
 
 const PARSER: Record<
   string,
-  (url: URL.UrlWithStringQuery) => Promise<PodcastInfo>
+  (url: URL.UrlWithStringQuery) => Promise<ParserResult>
 > = {
   'podcasts.apple.com': apple,
   'castro.fm': castro,
   'overcast.fm': overcast,
-  'pca.st': pocketcast,
+  'pca.st': pocketcasts,
+  'open.spotify.com': spotify,
 };
+
+async function fetchFromCache<T extends NexusGenEnums['AttachmentType']>(
+  type: T,
+  field: 'ampId' | 'spotifyId',
+  value: string,
+): Promise<(T extends 'Podcast' ? Podcast : Episode) | null> {
+  const findFirst = {
+    where: {
+      AND: {
+        [field]: value,
+        updatedAt: {
+          gt: new Date(new Date().getTime() - CACHE_DURATION),
+        },
+      },
+    },
+  };
+  if (type === 'Podcast') {
+    return prismaClient.podcast.findFirst(findFirst);
+  } else {
+    return prismaClient.episode.findFirst(findFirst);
+  }
+}
 
 export default async function (shareUrl: string) {
   const url = URL.parse(shareUrl);
@@ -40,7 +85,14 @@ export default async function (shareUrl: string) {
     throw new Error(`Unknown share URL: ${url}`);
   }
 
-  let {applePodcastId, appleEpisodeId, rssFeed} = await parser(url);
+  let parserResult = await parser(url);
+
+  const LOOKUP_RESOLVER = {
+    appleEpisodeId: () => {},
+    spotifyEpisodeId: () => {},
+    spotifyPodcastId: () => {},
+    applePodcastId: () => {},
+  };
 
   // cached values
   if (appleEpisodeId) {
