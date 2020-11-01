@@ -15,7 +15,7 @@ const app = express();
 const server = new ApolloServer({
   schema,
   context,
-  extensions: [() => new ErrorReporter()],
+  plugins: [ErrorReporter],
   formatError: (err) => {
     if (!(err instanceof AuthenticationError)) {
       return new ApolloError(err.message);

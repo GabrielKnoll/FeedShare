@@ -1,16 +1,39 @@
 import {Timber} from '@timberio/node';
 import env from './env';
+import {ApolloServerPlugin} from 'apollo-server-plugin-base';
+import {Context} from './context';
+import {ApolloError} from 'apollo-server-express';
 
-export default class ErrorReporter {
-  private timberClient: Timber;
+const timber = new Timber(env.TIMBER_TOKEN, env.TIMBER_SOUCE_ID);
 
-  constructor() {
-    this.timberClient = new Timber(env.TIMBER_TOKEN, env.TIMBER_SOUCE_ID);
-  }
-  didEncounterErrors(errors: Error[]): Promise<any> {
-    errors.map(console.error);
-    return Promise.all(
-      errors.map((error: Error) => this.timberClient.error(error.message)),
-    );
-  }
-}
+const plugin: ApolloServerPlugin<Context> = {
+  requestDidStart() {
+    return {
+      async didEncounterErrors({
+        errors,
+        context: {userId},
+        request: {query, variables, operationName},
+        debug,
+      }) {
+        await Promise.all(
+          errors.map((e) => {
+            const message = (e as ApolloError).stack ?? e.message;
+            if (debug) {
+              console.error(message);
+            } else {
+              return timber.error<any>(message, {
+                errorName: e.name,
+                userId,
+                query,
+                operationName,
+                variables_json: variables,
+              });
+            }
+          }),
+        );
+      },
+    };
+  },
+};
+
+export default plugin;
