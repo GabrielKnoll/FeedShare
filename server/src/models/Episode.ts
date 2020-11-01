@@ -1,11 +1,12 @@
 import {intArg, objectType} from '@nexus/schema';
-import Attachment from './Attachment';
 
 export default objectType({
   name: 'Episode',
   definition(t) {
-    t.implements(Attachment);
-
+    t.model.id();
+    t.model.title();
+    t.model.artwork();
+    t.model.description();
     t.model.podcast();
     t.model.durationSeconds();
   },

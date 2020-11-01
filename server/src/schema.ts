@@ -1,14 +1,13 @@
 import {nexusSchemaPrisma} from 'nexus-plugin-prisma/schema';
 import prismaClient from './utils/prismaClient';
 import {asNexusMethod, makeSchema} from '@nexus/schema';
-import attachmentForUrl from './queries/attachmentForUrl';
+import resolveShareUrl from './queries/resolveShareUrl';
 import viewer from './queries/viewer';
 import shares from './queries/shares';
 import createViewer from './mutations/createViewer';
 import createShare from './mutations/createShare';
 import User from './models/User';
 import Viewer from './models/Viewer';
-import Attachment from './models/Attachment';
 import Podcast from './models/Podcast';
 import Episode from './models/Episode';
 import Share from './models/Share';
@@ -33,13 +32,12 @@ export default makeSchema({
     // modesl
     Viewer,
     User,
-    Attachment,
     Podcast,
     Episode,
     Share,
 
     // queries
-    attachmentForUrl,
+    resolveShareUrl,
     shares,
     viewer,
 

@@ -26,4 +26,10 @@ describe('Apple', () => {
       type: 'Episode',
     });
   });
+
+  it('garbage', async () => {
+    expect(
+      apple(URL.parse('https://podcasts.apple.com/garbage')),
+    ).rejects.toThrowError();
+  });
 });

@@ -1,10 +1,4 @@
-import {extendType, stringArg, enumType} from '@nexus/schema';
-import {ShareCreateInput} from '@prisma/client';
-
-const AttachmentType = enumType({
-  members: ['Podcast', 'Episode'],
-  name: 'AttachmentType',
-});
+import {extendType, stringArg} from '@nexus/schema';
 
 export default extendType({
   type: 'Mutation',
@@ -15,55 +9,22 @@ export default extendType({
         message: stringArg({
           required: false,
         }),
-        attachmentId: stringArg({
+        episodeId: stringArg({
           required: true,
         }),
-        attachmentType: AttachmentType,
       },
-      resolve: async (
-        _,
-        {message, attachmentId, attachmentType},
-        {prismaClient, userId},
-      ) => {
+      resolve: async (_, {message, episodeId}, {prismaClient, userId}) => {
         if (!userId) {
           throw new Error('No user');
         }
 
-        if (!attachmentType) {
-          throw new Error('No attachmentType');
-        }
-
-        let podcastId = attachmentId;
-        let episode: {
-          episode?: ShareCreateInput['episode'];
-        } = {};
-        if (attachmentType === 'Episode') {
-          const res = await prismaClient.episode.findOne({
-            where: {
-              id: attachmentId,
-            },
-          });
-          if (!res) {
-            throw new Error('Episode not found');
-          }
-          podcastId = res.podcastId;
-          episode = {
-            episode: {
-              connect: {
-                id: attachmentId,
-              },
-            },
-          };
-        }
-
         return prismaClient.share.create({
           data: {
-            podcast: {
+            episode: {
               connect: {
-                id: podcastId,
+                id: episodeId,
               },
             },
-            ...episode,
             message: message,
             author: {
               connect: {

@@ -18,7 +18,7 @@ describe('Catro', () => {
     );
     expect(res).toEqual({
       applePodcastId: '409553739',
-      rssFeed: 'https://luftpost-podcast.de/feed/podcast/',
+      // rssFeed: 'https://luftpost-podcast.de/feed/podcast/',
       type: 'Podcast',
     });
   });
@@ -27,9 +27,15 @@ describe('Catro', () => {
     const res = await castro(URL.parse('https://castro.fm/episode/Xrshui'));
     expect(res).toEqual({
       applePodcastId: '409553739',
-      rssFeed: 'https://luftpost-podcast.de/feed/podcast/',
+      // rssFeed: 'https://luftpost-podcast.de/feed/podcast/',
       type: 'Episode',
       episodeTitle: 'Senegal',
     });
+  });
+
+  it('garbage', async () => {
+    expect(
+      castro(URL.parse('https://castro.fm/garbage')),
+    ).rejects.toThrowError();
   });
 });

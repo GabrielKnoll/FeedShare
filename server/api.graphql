@@ -2,25 +2,13 @@
 ### Do not make changes to this file directly
 
 
-interface Attachment {
-  artwork(size: Int!): String
-  description: String
-  id: String!
-  title: String!
-}
-
-enum AttachmentType {
-  Episode
-  Podcast
-}
-
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
 scalar DateTime
 
-type Episode implements Attachment {
-  artwork(size: Int!): String
+type Episode {
+  artwork: String
   description: String
   durationSeconds: Int
   id: String!
@@ -34,7 +22,7 @@ The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](
 scalar JSONObject
 
 type Mutation {
-  createShare(attachmentId: String!, attachmentType: AttachmentType, message: String): Share
+  createShare(episodeId: String!, message: String): Share
   createViewer(twitterId: String!, twitterToken: String!, twitterTokenSecret: String!): Viewer
 }
 
@@ -45,25 +33,31 @@ type PageInfo {
   startCursor: String
 }
 
-type Podcast implements Attachment {
-  artwork(size: Int!): String
+type Podcast {
+  artwork: String
   description: String
   feed: String!
   id: String!
+  latestEpisodes(length: Int = 10): [Episode]!
   publisher: String!
   title: String!
 }
 
 type Query {
-  attachmentForUrl(url: String!): Attachment
+  resolveShareUrl(url: String!): ResolvedShareUrl
   shares(after: String, before: String, last: Int!): ShareConnection!
   viewer: Viewer
 }
 
+type ResolvedShareUrl {
+  episode: Episode
+  podcast: Podcast
+}
+
 type Share {
-  attachment: Attachment
   author: User!
   createdAt: DateTime!
+  episode: Episode!
   id: String!
   message: String
 }

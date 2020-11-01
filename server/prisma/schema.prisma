@@ -30,13 +30,11 @@ model Share {
   id        String   @default(uuid()) @id
   authorId  String
   author    User     @relation(fields: [authorId], references: [id])
-  episodeId String?
-  episode   Episode? @relation(fields: [episodeId], references: [id])
-  podcast   Podcast  @relation(fields: [podcastId], references: [id])
-  podcastId String
+  episodeId String
+  episode   Episode  @relation(fields: [episodeId], references: [id])
   message   String?
   createdAt DateTime @default(now())
-  @@unique([episodeId, podcastId, authorId])
+  @@unique([episodeId, authorId])
 }
 
 model Episode {
@@ -60,7 +58,6 @@ model Podcast {
   id                 String    @default(uuid()) @id
   title              String
   Episode            Episode[]
-  Share              Share[]
   ampId              String?   @unique
   spotifyId          String?   @unique
   publisher          String

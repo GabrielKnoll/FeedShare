@@ -1,4 +1,6 @@
 import fetch from 'node-fetch';
+import {Parser} from 'prettier';
+import {ParserResult} from './resolveShareUrl';
 
 let AMP_TOKEN: string | null = null;
 
@@ -9,6 +11,7 @@ async function ampApiRequest<T>(
   data: T[];
   next?: string;
 }> {
+  url = 'https://amp-api.podcasts.apple.com/v1/catalog/us' + url;
   const token = await ampApiToken();
   const response = await fetch(url, {
     headers: {
@@ -24,40 +27,43 @@ async function ampApiRequest<T>(
   return response.json();
 }
 
-export async function ampPodcast(id?: string) {
-  if (!id) {
+export async function ampPodcast({applePodcastId}: ParserResult) {
+  if (!applePodcastId) {
     return;
   }
   const result = await ampApiRequest<AppleApi.AmpPodcast>(
-    `https://amp-api.podcasts.apple.com/v1/catalog/us/podcasts/${id}`,
+    `/podcasts/${applePodcastId}`,
   );
-  if (result?.data?.length > 0) {
-    return result.data[0];
-  }
+  return result?.data?.shift();
 }
 
-export async function ampEpisode(id?: string) {
-  if (!id) {
+export async function ampEpisode(parserResult: ParserResult) {
+  if (parserResult.type !== 'Episode' || !parserResult.applePodcastId) {
     return;
   }
-  const result = await ampApiRequest<AppleApi.AmpEpisode>(
-    `https://amp-api.podcasts.apple.com/v1/catalog/us/podcast-episodes/${id}`,
-  );
-  return result?.data?.find((episode) => episode.id === id);
-}
 
-export async function ampEpisodeForUrl(podcastId: string, url: string) {
-  const result = await ampApiRequest<AppleApi.AmpEpisode>(
-    `https://amp-api.podcasts.apple.com/v1/catalog/us/podcasts/${podcastId}/episodes?limit=50`,
-  );
-  result?.data?.find((episode) => episode.attributes.websiteUrl === url);
-}
-
-export async function ampEpisodeForTitle(podcastId: string, title: string) {
-  const result = await ampApiRequest<AppleApi.AmpEpisode>(
-    `https://amp-api.podcasts.apple.com/v1/catalog/us/podcasts/${podcastId}/episodes?limit=50`,
-  );
-  result?.data?.find((episode) => episode.attributes.name === title);
+  if (parserResult.appleEpisodeId) {
+    const result = await ampApiRequest<AppleApi.AmpEpisode>(
+      `/podcast-episodes/${parserResult.appleEpisodeId}`,
+    );
+    return result?.data?.find(
+      (episode) => episode.id === parserResult.appleEpisodeId,
+    );
+  } else if (parserResult.episodeUrl) {
+    const result = await ampApiRequest<AppleApi.AmpEpisode>(
+      `/podcasts/${parserResult.applePodcastId}/episodes?limit=50`,
+    );
+    return result?.data?.find(
+      (episode) => episode.attributes.websiteUrl === parserResult.episodeUrl,
+    );
+  } else if (parserResult.episodeTitle) {
+    const result = await ampApiRequest<AppleApi.AmpEpisode>(
+      `/podcasts/${parserResult.applePodcastId}/episodes?limit=50`,
+    );
+    return result?.data?.find(
+      (episode) => episode.attributes.name === parserResult.episodeTitle,
+    );
+  }
 }
 
 async function ampApiToken(): Promise<string | null> {

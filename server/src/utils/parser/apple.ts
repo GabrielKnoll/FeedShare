@@ -1,5 +1,5 @@
 import queryString from 'query-string';
-import {ParserResult} from '../resolveAttachmentUrl';
+import {ParserResult} from '../resolveShareUrl';
 import URL from 'url';
 
 export default async function (
@@ -12,8 +12,14 @@ export default async function (
   let {i: id} = queryString.parse(url.search ?? '');
 
   const appleEpisodeId = (Array.isArray(id) ? id[0] : id) ?? undefined;
+  const applePodcastId = podcastID?.replace(/^id/, '');
+
+  if (!appleEpisodeId && !applePodcastId) {
+    throw new Error('Apple: Unable to parse');
+  }
+
   return {
-    applePodcastId: podcastID.replace(/^id/, ''),
+    applePodcastId,
     appleEpisodeId,
     type: appleEpisodeId ? 'Episode' : 'Podcast',
   };

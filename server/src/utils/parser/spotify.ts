@@ -1,4 +1,4 @@
-import {ParserResult} from '../resolveAttachmentUrl';
+import {ParserResult} from '../resolveShareUrl';
 import URL from 'url';
 
 export default async function (
@@ -8,8 +8,8 @@ export default async function (
   // https://open.spotify.com/episode/55gZ1maECkQeb3j5hQjxEq?si=kBfIC3cmRhiYLsNV0LXAVg
   let [type, id] = (url.pathname ?? '').split('/').filter(Boolean);
 
-  if (type !== 'show' && type !== 'episode') {
-    throw new Error(`Spotify: unknown type ${type}`);
+  if (!id || (type !== 'show' && type !== 'episode')) {
+    throw new Error(`Spotify: unable to parse`);
   }
 
   return {

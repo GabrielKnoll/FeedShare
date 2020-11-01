@@ -16,7 +16,7 @@ describe('PocketCasts', () => {
     );
     expect(res).toEqual({
       applePodcastId: '409553739',
-      rssFeed: 'https://luftpost-podcast.de/feed/podcast/',
+      // rssFeed: 'https://luftpost-podcast.de/feed/podcast/',
       type: 'Podcast',
     });
   });
@@ -28,7 +28,7 @@ describe('PocketCasts', () => {
     expect(res).toEqual({
       applePodcastId: '409553739',
       episodeTitle: 'Senegal',
-      rssFeed: 'https://luftpost-podcast.de/feed/podcast/',
+      // rssFeed: 'https://luftpost-podcast.de/feed/podcast/',
       type: 'Episode',
     });
   });
@@ -37,7 +37,7 @@ describe('PocketCasts', () => {
     const res = await pocketcasts(URL.parse('https://pca.st/FG3H'));
     expect(res).toEqual({
       applePodcastId: '409553739',
-      rssFeed: 'https://luftpost-podcast.de/feed/podcast/',
+      // rssFeed: 'https://luftpost-podcast.de/feed/podcast/',
       type: 'Podcast',
     });
   });
@@ -47,8 +47,14 @@ describe('PocketCasts', () => {
     expect(res).toEqual({
       applePodcastId: '409553739',
       episodeTitle: 'Senegal',
-      rssFeed: 'https://luftpost-podcast.de/feed/podcast/',
+      // rssFeed: 'https://luftpost-podcast.de/feed/podcast/',
       type: 'Episode',
     });
+  });
+
+  it('garbage', async () => {
+    expect(
+      pocketcasts(URL.parse('https://pca.st/garbage')),
+    ).rejects.toThrowError();
   });
 });

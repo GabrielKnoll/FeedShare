@@ -25,4 +25,10 @@ describe('Spotify', () => {
       spotifyEpisodeId: '55gZ1maECkQeb3j5hQjxEq',
     });
   });
+
+  it('garbage', async () => {
+    expect(
+      spotify(URL.parse('https://open.spotify.com/garbage')),
+    ).rejects.toThrowError();
+  });
 });

@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
 import env from './env';
+import {ParserResult} from './resolveShareUrl';
 
 let accessToken: string | null = null;
 let accessTokenExpiry = new Date();
@@ -32,7 +33,7 @@ async function spotifyApiToken() {
   }
 }
 
-export async function spotifyApiRequest<T extends 'show' | 'episode'>(
+async function spotifyApiRequest<T extends 'show' | 'episode'>(
   type: T,
   id: string,
   retries?: number,
@@ -68,4 +69,28 @@ export async function spotifyApiRequest<T extends 'show' | 'episode'>(
     return;
   }
   return data;
+}
+
+export async function spotifyPodcastAndEpisode(
+  parserResult: ParserResult,
+): Promise<[SpotifyAPI.Show | undefined, SpotifyAPI.Episode | undefined]> {
+  let spotifyPodcast: SpotifyAPI.Show | undefined;
+  let spotifyEpisode: SpotifyAPI.Episode | undefined;
+  if (parserResult.type === 'Episode' && parserResult.spotifyEpisodeId) {
+    const data = await spotifyApiRequest(
+      'episode',
+      parserResult.spotifyEpisodeId,
+    );
+    if (data) {
+      const {show, ...withoutShow} = data;
+      spotifyPodcast = show;
+      spotifyEpisode = withoutShow;
+    }
+  } else if (parserResult.type === 'Podcast' && parserResult.spotifyPodcastId) {
+    spotifyPodcast = await spotifyApiRequest(
+      'show',
+      parserResult.spotifyPodcastId,
+    );
+  }
+  return [spotifyPodcast, spotifyEpisode];
 }

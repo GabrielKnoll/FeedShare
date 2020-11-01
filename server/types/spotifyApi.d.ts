@@ -1,15 +1,15 @@
 declare namespace SpotifyAPI {
-  interface ExternalUrls {
+  type ExternalUrls = {
     spotify: string;
-  }
+  };
 
-  interface Image {
+  type Image = {
     height: number;
     url: string;
     width: number;
-  }
+  };
 
-  interface Episode {
+  type Episode = {
     audio_preview_url: string;
     description: string;
     duration_ms: number;
@@ -27,11 +27,11 @@ declare namespace SpotifyAPI {
     release_date_precision: string;
     type: string;
     uri: string;
-  }
+  };
 
-  interface Show {
+  type Show = {
     available_markets: string[];
-    copyrights: any[];
+    copyrights: string[];
     description: string;
     explicit: boolean;
     external_urls: ExternalUrls;
@@ -46,7 +46,7 @@ declare namespace SpotifyAPI {
     total_episodes: number;
     type: string;
     uri: string;
-  }
+  };
 
   type ShowsResponse = {
     episodes: {
@@ -55,7 +55,7 @@ declare namespace SpotifyAPI {
       limit: number;
       next: string;
       offset: number;
-      previous?: any;
+      previous?: string;
       total: number;
     };
   } & Show;
