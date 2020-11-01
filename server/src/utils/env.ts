@@ -1,5 +1,7 @@
 import env from 'env-var';
-const {parsed} = require('dotenv').config({path: __dirname + '/../../../.env'});
+const {parsed = {}} = require('dotenv').config({
+  path: __dirname + '/../../../.env',
+});
 
 const ci = env.get('CI').asBool();
 
