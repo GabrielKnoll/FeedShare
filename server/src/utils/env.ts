@@ -12,15 +12,17 @@ const e = {
     .asString(),
   SPOTIFY_CLIENT_ID: env.get('SPOTIFY_CLIENT_ID').required().asString(),
   SPOTIFY_CLIENT_SECRET: env.get('SPOTIFY_CLIENT_SECRET').required().asString(),
+  APOLLO_KEY: env.get('APOLLO_KEY').asString(),
+  APOLLO_GRAPH_VARIANT: env
+    .get('APOLLO_GRAPH_VARIANT')
+    .asEnum(['dev', 'current']),
+  APOLLO_SCHEMA_REPORTING: env.get('APOLLO_SCHEMA_REPORTING').asBool(),
+  TIMBER_SOUCE_ID: env.get('TIMBER_SOUCE_ID').required().asString(),
+  TIMBER_TOKEN: env.get('TIMBER_TOKEN').required().asString(),
 };
 
 const set = new Set(Object.keys(parsed));
-Object.keys(e).forEach((key) => {
-  if (!set.has(key)) {
-    throw new Error(`${key} not defined in .env`);
-  }
-  set.delete(key);
-});
+Object.keys(e).forEach((key) => set.delete(key));
 if (set.size > 0) {
   throw new Error(`${[...set].join(', ')} not declared in ${__filename}`);
 }

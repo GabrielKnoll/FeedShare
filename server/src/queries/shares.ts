@@ -2,6 +2,7 @@ import {objectType, extendType} from '@nexus/schema';
 import {findManyCursor} from '../utils/findManyCursor';
 import {ConnectionArgs, PageInfo} from '../utils/connection';
 import {Share} from '@prisma/client';
+import requireAuthorization from '../utils/requireAuthorization';
 
 export default extendType({
   type: 'Query',
@@ -26,6 +27,7 @@ export default extendType({
       }),
       args: ConnectionArgs,
       nullable: false,
+      ...requireAuthorization,
       resolve: async (_parent, args, {prismaClient}) =>
         findManyCursor<Share>(
           (_args) =>

@@ -1,18 +1,35 @@
 import schema from './schema';
-import {GraphQLServer} from 'graphql-yoga';
+import express from 'express';
+import {
+  ApolloServer,
+  AuthenticationError,
+  ApolloError,
+} from 'apollo-server-express';
 import context from './utils/context';
 import env from './utils/env';
+import ErrorReporter from './utils/ErrorReporter';
 import feed from './routes/feed';
 
-const server = new GraphQLServer({
-  // @ts-ignore
+const app = express();
+
+const server = new ApolloServer({
   schema,
   context,
+  extensions: [() => new ErrorReporter()],
+  formatError: (err) => {
+    if (!(err instanceof AuthenticationError)) {
+      return new ApolloError(err.message);
+    }
+    return err;
+  },
 });
 
-server.start(
-  {port: env.PORT},
-  (options) => `Server is running on http://localhost:${options.port}`,
-);
+server.applyMiddleware({app, path: '/graphql'});
 
-server.express.get(`/feed/:handle`, feed);
+app.get(`/feed/:handle`, feed);
+
+app.listen({port: env.PORT}, () =>
+  console.log(
+    `🚀 Server ready at http://localhost:${env.PORT}${server.graphqlPath}`,
+  ),
+);

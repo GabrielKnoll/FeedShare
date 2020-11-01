@@ -5,10 +5,7 @@ type AuthProp = {
 };
 
 const authProp: AuthProp = {
-  authorize: (_, __, {userId}) => {
-    console.log(userId);
-    return Boolean(userId);
-  },
+  authorize: (_, __, {userId}) => Boolean(userId),
 };
 
 export default authProp;

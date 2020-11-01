@@ -1,6 +1,6 @@
 import {nexusSchemaPrisma} from 'nexus-plugin-prisma/schema';
 import prismaClient from './utils/prismaClient';
-import {asNexusMethod, makeSchema} from '@nexus/schema';
+import {asNexusMethod, fieldAuthorizePlugin, makeSchema} from '@nexus/schema';
 import resolveShareUrl from './queries/resolveShareUrl';
 import viewer from './queries/viewer';
 import shares from './queries/shares';
@@ -12,6 +12,7 @@ import Podcast from './models/Podcast';
 import Episode from './models/Episode';
 import Share from './models/Share';
 import {DateTimeResolver, JSONObjectResolver} from 'graphql-scalars';
+import {AuthenticationError} from 'apollo-server-express';
 
 export default makeSchema({
   typegenAutoConfig: {
@@ -48,6 +49,9 @@ export default makeSchema({
   plugins: [
     nexusSchemaPrisma({
       prismaClient: () => prismaClient,
+    }),
+    fieldAuthorizePlugin({
+      formatError: () => new AuthenticationError('Not authorized'),
     }),
   ],
 });

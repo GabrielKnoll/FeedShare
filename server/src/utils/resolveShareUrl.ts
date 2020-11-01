@@ -104,7 +104,7 @@ export default async function (
   const parser = url.hostname ? PARSER[url.hostname] : undefined;
 
   if (!parser) {
-    throw new Error(`Unknown share URL: ${url}`);
+    throw new Error(`Unknown share URL: ${shareUrl}`);
   }
 
   const parserResult = await parser(url);

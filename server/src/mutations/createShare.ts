@@ -1,4 +1,5 @@
 import {extendType, stringArg} from '@nexus/schema';
+import requireAuthorization from '../utils/requireAuthorization';
 
 export default extendType({
   type: 'Mutation',
@@ -13,12 +14,9 @@ export default extendType({
           required: true,
         }),
       },
-      resolve: async (_, {message, episodeId}, {prismaClient, userId}) => {
-        if (!userId) {
-          throw new Error('No user');
-        }
-
-        return prismaClient.share.create({
+      ...requireAuthorization,
+      resolve: async (_, {message, episodeId}, {prismaClient, userId}) =>
+        prismaClient.share.create({
           data: {
             episode: {
               connect: {
@@ -32,8 +30,7 @@ export default extendType({
               },
             },
           },
-        });
-      },
+        }),
     });
   },
 });
