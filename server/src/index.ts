@@ -1,10 +1,6 @@
 import schema from './schema';
 import express from 'express';
-import {
-  ApolloServer,
-  AuthenticationError,
-  ApolloError,
-} from 'apollo-server-express';
+import {ApolloServer, ApolloError} from 'apollo-server-express';
 import context from './utils/context';
 import env from './utils/env';
 import ErrorReporter from './utils/ErrorReporter';

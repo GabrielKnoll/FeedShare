@@ -26,7 +26,9 @@ const e = {
   APOLLO_GRAPH_VARIANT: env
     .get('APOLLO_GRAPH_VARIANT')
     .asEnum(['dev', 'current']),
-  APOLLO_SCHEMA_REPORTING: env.get('APOLLO_SCHEMA_REPORTING').asBool(),
+  APOLLO_SCHEMA_REPORTING: env
+    .get('APOLLO_SCHEMA_REPORTING')
+    .asEnum(['true', 'false']),
   TIMBER_SOUCE_ID: env.get('TIMBER_SOUCE_ID').required(!ci).asString(),
   TIMBER_TOKEN: env.get('TIMBER_TOKEN').required(!ci).asString(),
 };
