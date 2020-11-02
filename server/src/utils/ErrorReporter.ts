@@ -12,43 +12,41 @@ const plugin: ApolloServerPlugin<Context> = {
     const start = performance.now();
     return {
       willSendResponse({debug, request: {query, operationName}}) {
-        const time = performance.now() - start;
+        const took = performance.now() - start;
         if (operationName === 'IntrospectionQuery') {
           return;
         }
 
         if (debug) {
-          console.info(`Request took: ${time}ms, ${operationName}`);
+          console.info(`Request took: ${took}ms, ${operationName}`);
         } else {
-          return timber.info<any>(`Request took: ${time}ms`, {
-            time,
+          timber.info<any>(`Request took: ${took}ms`, {
+            took,
             query,
             operationName,
           });
         }
       },
-      async didEncounterErrors({
+      didEncounterErrors({
         errors,
         context: {userId},
         request: {query, variables, operationName},
         debug,
       }) {
-        await Promise.all(
-          errors.map((e) => {
-            const message = (e as ApolloError).stack ?? e.message;
-            if (debug) {
-              console.error(message);
-            } else {
-              return timber.error<any>(message, {
-                errorName: e.name,
-                userId,
-                query,
-                operationName,
-                variables_json: variables,
-              });
-            }
-          }),
-        );
+        errors.forEach((e) => {
+          const message = (e as ApolloError).stack ?? e.message;
+          if (debug) {
+            console.error(message);
+          } else {
+            timber.error<any>(message, {
+              errorName: e.name,
+              userId,
+              query,
+              operationName,
+              variables_json: variables,
+            });
+          }
+        });
       },
     };
   },
