@@ -17,11 +17,13 @@ const server = new ApolloServer({
   context,
   plugins: [ErrorReporter],
   formatError: (err) => {
-    if (!(err instanceof AuthenticationError)) {
+    if (!(err instanceof ApolloError)) {
       return new ApolloError(err.message);
     }
     return err;
   },
+  introspection: true,
+  playground: true,
 });
 
 server.applyMiddleware({app, path: '/graphql'});
