@@ -1,0 +1,11 @@
+fragment EpisodeFragment on Episode {
+  title
+  artwork
+  durationSeconds
+  description
+  podcast {
+    title
+    description
+    publisher
+  }
+}

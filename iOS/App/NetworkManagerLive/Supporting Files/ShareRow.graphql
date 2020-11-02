@@ -6,7 +6,7 @@ fragment ShareFragment on Share {
   }
   message
   createdAt
-  attachment {
-    ...AttachmentFragment
+  episode {
+    ...EpisodeFragment
   }
 }

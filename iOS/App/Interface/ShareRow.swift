@@ -35,9 +35,11 @@ public struct ShareRow: View {
 					.cornerRadius(18)
 				}
 				VStack(alignment: .leading) {
-					Text(data.author.displayName)
-						.font(.headline)
-						.lineLimit(1)
+                    if let displayName = data.author.displayName {
+                        Text(displayName)
+                            .font(.headline)
+                            .lineLimit(1)
+                    }
 					Text("@\(data.author.handle)")
 						.font(.footnote)
 						.foregroundColor(.secondary)
@@ -59,9 +61,7 @@ public struct ShareRow: View {
 			} else if let message = data.message {
 				Text(message)
 			}
-			if let attachment = data.attachment {
-				AttachmentItem(data: (attachment))
-			}
+            AttachmentItem(data: data.episode)
 		}
 		.padding(15)
 		.background(RoundedRectangle(cornerRadius: 22.0)

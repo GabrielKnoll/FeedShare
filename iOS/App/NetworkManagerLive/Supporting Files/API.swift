@@ -26,7 +26,7 @@ public final class FeedStreamQuery: GraphQLQuery {
 
   public let operationName: String = "FeedStream"
 
-  public var queryDocument: String { return operationDefinition.appending("\n" + ShareFragment.fragmentDefinition).appending("\n" + AttachmentFragment.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending("\n" + ShareFragment.fragmentDefinition).appending("\n" + EpisodeFragment.fragmentDefinition) }
 
   public var after: String?
 
@@ -218,41 +218,35 @@ public final class FeedStreamQuery: GraphQLQuery {
   }
 }
 
-public struct AttachmentFragment: GraphQLFragment {
+public struct EpisodeFragment: GraphQLFragment {
   /// The raw GraphQL definition of this fragment.
   public static let fragmentDefinition: String =
     """
-    fragment AttachmentFragment on Attachment {
+    fragment EpisodeFragment on Episode {
       __typename
       title
-      artwork(size: 100)
-      ... on Episode {
-        durationSeconds
-        description
-        podcast {
-          __typename
-          title
-        }
-      }
-      ... on Podcast {
+      artwork
+      durationSeconds
+      description
+      podcast {
+        __typename
+        title
         description
         publisher
       }
     }
     """
 
-  public static let possibleTypes: [String] = ["Episode", "Podcast"]
+  public static let possibleTypes: [String] = ["Episode"]
 
   public static var selections: [GraphQLSelection] {
     return [
-      GraphQLTypeCase(
-        variants: ["Episode": AsEpisode.selections, "Podcast": AsPodcast.selections],
-        default: [
-          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("title", type: .nonNull(.scalar(String.self))),
-          GraphQLField("artwork", arguments: ["size": 100], type: .scalar(String.self)),
-        ]
-      )
+      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+      GraphQLField("title", type: .nonNull(.scalar(String.self))),
+      GraphQLField("artwork", type: .scalar(String.self)),
+      GraphQLField("durationSeconds", type: .scalar(Int.self)),
+      GraphQLField("description", type: .scalar(String.self)),
+      GraphQLField("podcast", type: .nonNull(.object(Podcast.selections))),
     ]
   }
 
@@ -262,12 +256,8 @@ public struct AttachmentFragment: GraphQLFragment {
     self.resultMap = unsafeResultMap
   }
 
-  public static func makeEpisode(title: String, artwork: String? = nil, durationSeconds: Int? = nil, description: String? = nil, podcast: AsEpisode.Podcast) -> AttachmentFragment {
-    return AttachmentFragment(unsafeResultMap: ["__typename": "Episode", "title": title, "artwork": artwork, "durationSeconds": durationSeconds, "description": description, "podcast": podcast.resultMap])
-  }
-
-  public static func makePodcast(title: String, artwork: String? = nil, description: String? = nil, publisher: String) -> AttachmentFragment {
-    return AttachmentFragment(unsafeResultMap: ["__typename": "Podcast", "title": title, "artwork": artwork, "description": description, "publisher": publisher])
+  public init(title: String, artwork: String? = nil, durationSeconds: Int? = nil, description: String? = nil, podcast: Podcast) {
+    self.init(unsafeResultMap: ["__typename": "Episode", "title": title, "artwork": artwork, "durationSeconds": durationSeconds, "description": description, "podcast": podcast.resultMap])
   }
 
   public var __typename: String {
@@ -297,154 +287,40 @@ public struct AttachmentFragment: GraphQLFragment {
     }
   }
 
-  public var asEpisode: AsEpisode? {
+  public var durationSeconds: Int? {
     get {
-      if !AsEpisode.possibleTypes.contains(__typename) { return nil }
-      return AsEpisode(unsafeResultMap: resultMap)
+      return resultMap["durationSeconds"] as? Int
     }
     set {
-      guard let newValue = newValue else { return }
-      resultMap = newValue.resultMap
+      resultMap.updateValue(newValue, forKey: "durationSeconds")
     }
   }
 
-  public struct AsEpisode: GraphQLSelectionSet {
-    public static let possibleTypes: [String] = ["Episode"]
-
-    public static var selections: [GraphQLSelection] {
-      return [
-        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-        GraphQLField("title", type: .nonNull(.scalar(String.self))),
-        GraphQLField("artwork", arguments: ["size": 100], type: .scalar(String.self)),
-        GraphQLField("durationSeconds", type: .scalar(Int.self)),
-        GraphQLField("description", type: .scalar(String.self)),
-        GraphQLField("podcast", type: .nonNull(.object(Podcast.selections))),
-      ]
-    }
-
-    public private(set) var resultMap: ResultMap
-
-    public init(unsafeResultMap: ResultMap) {
-      self.resultMap = unsafeResultMap
-    }
-
-    public init(title: String, artwork: String? = nil, durationSeconds: Int? = nil, description: String? = nil, podcast: Podcast) {
-      self.init(unsafeResultMap: ["__typename": "Episode", "title": title, "artwork": artwork, "durationSeconds": durationSeconds, "description": description, "podcast": podcast.resultMap])
-    }
-
-    public var __typename: String {
-      get {
-        return resultMap["__typename"]! as! String
-      }
-      set {
-        resultMap.updateValue(newValue, forKey: "__typename")
-      }
-    }
-
-    public var title: String {
-      get {
-        return resultMap["title"]! as! String
-      }
-      set {
-        resultMap.updateValue(newValue, forKey: "title")
-      }
-    }
-
-    public var artwork: String? {
-      get {
-        return resultMap["artwork"] as? String
-      }
-      set {
-        resultMap.updateValue(newValue, forKey: "artwork")
-      }
-    }
-
-    public var durationSeconds: Int? {
-      get {
-        return resultMap["durationSeconds"] as? Int
-      }
-      set {
-        resultMap.updateValue(newValue, forKey: "durationSeconds")
-      }
-    }
-
-    public var description: String? {
-      get {
-        return resultMap["description"] as? String
-      }
-      set {
-        resultMap.updateValue(newValue, forKey: "description")
-      }
-    }
-
-    public var podcast: Podcast {
-      get {
-        return Podcast(unsafeResultMap: resultMap["podcast"]! as! ResultMap)
-      }
-      set {
-        resultMap.updateValue(newValue.resultMap, forKey: "podcast")
-      }
-    }
-
-    public struct Podcast: GraphQLSelectionSet {
-      public static let possibleTypes: [String] = ["Podcast"]
-
-      public static var selections: [GraphQLSelection] {
-        return [
-          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("title", type: .nonNull(.scalar(String.self))),
-        ]
-      }
-
-      public private(set) var resultMap: ResultMap
-
-      public init(unsafeResultMap: ResultMap) {
-        self.resultMap = unsafeResultMap
-      }
-
-      public init(title: String) {
-        self.init(unsafeResultMap: ["__typename": "Podcast", "title": title])
-      }
-
-      public var __typename: String {
-        get {
-          return resultMap["__typename"]! as! String
-        }
-        set {
-          resultMap.updateValue(newValue, forKey: "__typename")
-        }
-      }
-
-      public var title: String {
-        get {
-          return resultMap["title"]! as! String
-        }
-        set {
-          resultMap.updateValue(newValue, forKey: "title")
-        }
-      }
-    }
-  }
-
-  public var asPodcast: AsPodcast? {
+  public var description: String? {
     get {
-      if !AsPodcast.possibleTypes.contains(__typename) { return nil }
-      return AsPodcast(unsafeResultMap: resultMap)
+      return resultMap["description"] as? String
     }
     set {
-      guard let newValue = newValue else { return }
-      resultMap = newValue.resultMap
+      resultMap.updateValue(newValue, forKey: "description")
     }
   }
 
-  public struct AsPodcast: GraphQLSelectionSet {
+  public var podcast: Podcast {
+    get {
+      return Podcast(unsafeResultMap: resultMap["podcast"]! as! ResultMap)
+    }
+    set {
+      resultMap.updateValue(newValue.resultMap, forKey: "podcast")
+    }
+  }
+
+  public struct Podcast: GraphQLSelectionSet {
     public static let possibleTypes: [String] = ["Podcast"]
 
     public static var selections: [GraphQLSelection] {
       return [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("title", type: .nonNull(.scalar(String.self))),
-        GraphQLField("artwork", arguments: ["size": 100], type: .scalar(String.self)),
         GraphQLField("description", type: .scalar(String.self)),
         GraphQLField("publisher", type: .nonNull(.scalar(String.self))),
       ]
@@ -456,8 +332,8 @@ public struct AttachmentFragment: GraphQLFragment {
       self.resultMap = unsafeResultMap
     }
 
-    public init(title: String, artwork: String? = nil, description: String? = nil, publisher: String) {
-      self.init(unsafeResultMap: ["__typename": "Podcast", "title": title, "artwork": artwork, "description": description, "publisher": publisher])
+    public init(title: String, description: String? = nil, publisher: String) {
+      self.init(unsafeResultMap: ["__typename": "Podcast", "title": title, "description": description, "publisher": publisher])
     }
 
     public var __typename: String {
@@ -475,15 +351,6 @@ public struct AttachmentFragment: GraphQLFragment {
       }
       set {
         resultMap.updateValue(newValue, forKey: "title")
-      }
-    }
-
-    public var artwork: String? {
-      get {
-        return resultMap["artwork"] as? String
-      }
-      set {
-        resultMap.updateValue(newValue, forKey: "artwork")
       }
     }
 
@@ -521,9 +388,9 @@ public struct ShareFragment: GraphQLFragment {
       }
       message
       createdAt
-      attachment {
+      episode {
         __typename
-        ...AttachmentFragment
+        ...EpisodeFragment
       }
     }
     """
@@ -536,7 +403,7 @@ public struct ShareFragment: GraphQLFragment {
       GraphQLField("author", type: .nonNull(.object(Author.selections))),
       GraphQLField("message", type: .scalar(String.self)),
       GraphQLField("createdAt", type: .nonNull(.scalar(String.self))),
-      GraphQLField("attachment", type: .object(Attachment.selections)),
+      GraphQLField("episode", type: .nonNull(.object(Episode.selections))),
     ]
   }
 
@@ -546,8 +413,8 @@ public struct ShareFragment: GraphQLFragment {
     self.resultMap = unsafeResultMap
   }
 
-  public init(author: Author, message: String? = nil, createdAt: String, attachment: Attachment? = nil) {
-    self.init(unsafeResultMap: ["__typename": "Share", "author": author.resultMap, "message": message, "createdAt": createdAt, "attachment": attachment.flatMap { (value: Attachment) -> ResultMap in value.resultMap }])
+  public init(author: Author, message: String? = nil, createdAt: String, episode: Episode) {
+    self.init(unsafeResultMap: ["__typename": "Share", "author": author.resultMap, "message": message, "createdAt": createdAt, "episode": episode.resultMap])
   }
 
   public var __typename: String {
@@ -586,12 +453,12 @@ public struct ShareFragment: GraphQLFragment {
     }
   }
 
-  public var attachment: Attachment? {
+  public var episode: Episode {
     get {
-      return (resultMap["attachment"] as? ResultMap).flatMap { Attachment(unsafeResultMap: $0) }
+      return Episode(unsafeResultMap: resultMap["episode"]! as! ResultMap)
     }
     set {
-      resultMap.updateValue(newValue?.resultMap, forKey: "attachment")
+      resultMap.updateValue(newValue.resultMap, forKey: "episode")
     }
   }
 
@@ -602,7 +469,7 @@ public struct ShareFragment: GraphQLFragment {
       return [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("handle", type: .nonNull(.scalar(String.self))),
-        GraphQLField("displayName", type: .nonNull(.scalar(String.self))),
+        GraphQLField("displayName", type: .scalar(String.self)),
         GraphQLField("profilePicture", type: .scalar(String.self)),
       ]
     }
@@ -613,7 +480,7 @@ public struct ShareFragment: GraphQLFragment {
       self.resultMap = unsafeResultMap
     }
 
-    public init(handle: String, displayName: String, profilePicture: String? = nil) {
+    public init(handle: String, displayName: String? = nil, profilePicture: String? = nil) {
       self.init(unsafeResultMap: ["__typename": "User", "handle": handle, "displayName": displayName, "profilePicture": profilePicture])
     }
 
@@ -635,9 +502,9 @@ public struct ShareFragment: GraphQLFragment {
       }
     }
 
-    public var displayName: String {
+    public var displayName: String? {
       get {
-        return resultMap["displayName"]! as! String
+        return resultMap["displayName"] as? String
       }
       set {
         resultMap.updateValue(newValue, forKey: "displayName")
@@ -654,13 +521,13 @@ public struct ShareFragment: GraphQLFragment {
     }
   }
 
-  public struct Attachment: GraphQLSelectionSet {
-    public static let possibleTypes: [String] = ["Episode", "Podcast"]
+  public struct Episode: GraphQLSelectionSet {
+    public static let possibleTypes: [String] = ["Episode"]
 
     public static var selections: [GraphQLSelection] {
       return [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-        GraphQLFragmentSpread(AttachmentFragment.self),
+        GraphQLFragmentSpread(EpisodeFragment.self),
       ]
     }
 
@@ -668,10 +535,6 @@ public struct ShareFragment: GraphQLFragment {
 
     public init(unsafeResultMap: ResultMap) {
       self.resultMap = unsafeResultMap
-    }
-
-    public static func makePodcast(title: String, artwork: String? = nil, description: String? = nil, publisher: String) -> Attachment {
-      return Attachment(unsafeResultMap: ["__typename": "Podcast", "title": title, "artwork": artwork, "description": description, "publisher": publisher])
     }
 
     public var __typename: String {
@@ -699,9 +562,9 @@ public struct ShareFragment: GraphQLFragment {
         self.resultMap = unsafeResultMap
       }
 
-      public var attachmentFragment: AttachmentFragment {
+      public var episodeFragment: EpisodeFragment {
         get {
-          return AttachmentFragment(unsafeResultMap: resultMap)
+          return EpisodeFragment(unsafeResultMap: resultMap)
         }
         set {
           resultMap += newValue.resultMap

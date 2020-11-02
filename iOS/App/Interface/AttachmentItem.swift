@@ -10,11 +10,11 @@ import SwiftUI
 import URLImage
 
 public struct AttachmentItem: View {
-	public init(data: Attachment) {
+	public init(data: Episode) {
 		self.data = data
 	}
 
-    let data: Attachment
+    let data: Episode
     
     static let durationFormatter: DateComponentsFormatter = {
         let formatter = DateComponentsFormatter()
@@ -37,19 +37,14 @@ public struct AttachmentItem: View {
             VStack(alignment: .leading, spacing: 3) {
                 Text(data.title)
                     .font(.headline)
-                if let episode = data.episode {
-                    Text(episode.podcast)
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }
+                Text(data.podcast.title)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                Text(data.podcast.publisher)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
                 
-                if let podcast = data.podcast {
-                    Text(podcast.publisher)
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }
-                
-                if let duration = data.episode?.durationSeconds {
+                if let duration = data.durationSeconds {
                     HStack {
                         Image(systemName: "clock")
                         Text(AttachmentItem.durationFormatter.string(from: TimeInterval(duration)) ?? "")
@@ -77,8 +72,8 @@ struct Attachment_Previews: PreviewProvider {
                   })
         return VStack {
             //swiftlint:disable force_unwrapping
-            AttachmentItem(data: results.first!.attachment!)
-            AttachmentItem(data: results[1].attachment!)
+            AttachmentItem(data: results.first!.episode)
+            AttachmentItem(data: results[1].episode)
             //swiftlint:enable force_unwrap
         }
     }

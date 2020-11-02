@@ -45,33 +45,25 @@ extension NetworkManager {
 private func parseResults(results: [FeedStreamQuery.Data.Share.Edge]) -> [Share] {
     var shares = [Share]()
     for result in results {
-        guard let fragment = result.node?.fragments.shareFragment,
-              let attachmentFragment = fragment.attachment?.fragments.attachmentFragment else { continue }
-        
-        var podcast: Podcast?
-        var episode: Episode?
+        guard let fragment = result.node?.fragments.shareFragment else { continue }
         
         let author = Author(handle: fragment.author.handle,
                             displayName: fragment.author.displayName,
                             profilePicture: URL(string: fragment.author.profilePicture ?? ""))
         
-        if let podAttachment = attachmentFragment.asPodcast {
-            podcast = Podcast(title: podAttachment.title,
-                              artwork: podAttachment.artwork,
-                              description: podAttachment.description,
-                              publisher: podAttachment.publisher)
-        }
+        let podcast = Podcast(title: fragment.episode.fragments.episodeFragment.podcast.title,
+                              artwork: nil,
+                              description: fragment.episode.fragments.episodeFragment.podcast.description,
+                              publisher: fragment.episode.fragments.episodeFragment.podcast.publisher)
         
-        if let epAttachment = attachmentFragment.asEpisode {
-            episode = Episode(title: epAttachment.title,
-                              artwork: epAttachment.artwork,
-                              durationSeconds: epAttachment.durationSeconds,
-                              description: epAttachment.description,
-                              podcast: epAttachment.podcast.title)
-        }
         
-        let attachment = Attachment(title: attachmentFragment.title, artwork: attachmentFragment.artwork, episode: episode, podcast: podcast)
-        let share = Share(author: author, message: fragment.message, createdAt: fragment.createdAt, attachment: attachment, cursor: result.cursor)
+        let episode = Episode(title: fragment.episode.fragments.episodeFragment.title,
+                              artwork: fragment.episode.fragments.episodeFragment.artwork,
+                              durationSeconds: fragment.episode.fragments.episodeFragment.durationSeconds,
+                              description: fragment.episode.fragments.episodeFragment.description,
+                              podcast: podcast)
+        
+        let share = Share(author: author, message: fragment.message, createdAt: fragment.createdAt, episode: episode, cursor: result.cursor)
         shares.append(share)
     }
     return shares

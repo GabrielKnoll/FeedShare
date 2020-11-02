@@ -9,11 +9,11 @@ import Foundation
 
 public struct Share: Identifiable {
 
-	public init(author: Author, message: String?, createdAt: String, attachment: Attachment?, cursor: String?) {
+	public init(author: Author, message: String?, createdAt: String, episode: Episode, cursor: String?) {
 		self.author = author
 		self.message = message
 		self.createdAt = createdAt
-		self.attachment = attachment
+		self.episode = episode
 		self.cursor = cursor
 	}
 
@@ -21,39 +21,25 @@ public struct Share: Identifiable {
 	public let author: Author
 	public let message: String?
 	public let createdAt: String
-	public let attachment: Attachment?
+	public let episode: Episode
 	public let cursor: String?
 
 }
 
 public struct Author {
-	public init(handle: String, displayName: String, profilePicture: URL?) {
+	public init(handle: String, displayName: String?, profilePicture: URL?) {
 		self.handle = handle
 		self.displayName = displayName
 		self.profilePicture = profilePicture
 	}
 
 	public let handle: String
-	public let displayName: String
+	public let displayName: String?
 	public let profilePicture: URL?
 }
 
-public struct Attachment {
-	public init(title: String, artwork: String?, episode: Episode?, podcast: Podcast?) {
-		self.title = title
-		self.artwork = artwork
-		self.episode = episode
-		self.podcast = podcast
-	}
-
-	public let title: String
-	public let artwork: String?
-	public let episode: Episode?
-	public let podcast: Podcast?
-}
-
 public struct Episode {
-	public init(title: String, artwork: String?, durationSeconds: Int?, description: String?, podcast: String) {
+	public init(title: String, artwork: String?, durationSeconds: Int?, description: String?, podcast: Podcast) {
 		self.title = title
 		self.artwork = artwork
 		self.durationSeconds = durationSeconds
@@ -65,7 +51,7 @@ public struct Episode {
 	public let artwork: String?
 	public let durationSeconds: Int?
 	public let description: String?
-	public let podcast: String
+	public let podcast: Podcast
 }
 
 public struct Podcast {

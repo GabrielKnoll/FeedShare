@@ -228,7 +228,7 @@
 		F5961CF32517937D00F93697 /* FeedShareApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedShareApp.swift; sourceTree = "<group>"; };
 		F598289625278F6100A8C2CB /* Interface.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Interface.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F598289925278F6100A8C2CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F59828A625278FA400A8C2CB /* Attachment.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Attachment.graphql; sourceTree = "<group>"; };
+		F59828A625278FA400A8C2CB /* Episode.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Episode.graphql; sourceTree = "<group>"; };
 		F59828A725278FA400A8C2CB /* ShareRow.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ShareRow.graphql; sourceTree = "<group>"; };
 		F59828A825278FA400A8C2CB /* AttachmentItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentItem.swift; sourceTree = "<group>"; };
 		F59828A925278FA400A8C2CB /* ShareRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareRow.swift; sourceTree = "<group>"; };
@@ -339,7 +339,7 @@
 			isa = PBXGroup;
 			children = (
 				F51CA094252785B80091710E /* API.swift */,
-				F59828A625278FA400A8C2CB /* Attachment.graphql */,
+				F59828A625278FA400A8C2CB /* Episode.graphql */,
 				F59828AA25278FA400A8C2CB /* FeedStream.graphql */,
 				F59828A725278FA400A8C2CB /* ShareRow.graphql */,
 				F51CA065252784D70091710E /* Info.plist */,
