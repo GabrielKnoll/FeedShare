@@ -39,6 +39,9 @@ extension NetworkManager {
             }
             }
         }
+//        upsertUser: {_ in
+//            Network.shared.apollo.perform(mutation: GraphQLMutation);
+//        }
     )
 }
 

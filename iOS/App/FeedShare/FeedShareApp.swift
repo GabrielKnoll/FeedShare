@@ -13,9 +13,11 @@ import SwiftUI
 
 @main
 struct FeedShareApp: App {
+    let twitter: TwitterService
 
 	init() {
 		let appearance = UINavigationBarAppearance()
+        self.twitter = TwitterService()
 		appearance.configureWithOpaqueBackground()
 		appearance.backgroundColor = R.color.background()
 		UINavigationBar.appearance().scrollEdgeAppearance = appearance
@@ -23,7 +25,11 @@ struct FeedShareApp: App {
 
 	var body: some Scene {
 		WindowGroup {
-			FeedStream(viewModel: FeedStreamViewModel(networkManager: NetworkManager.live))
-		}
+            if self.twitter.credential?.userId == nil {
+                Login().environmentObject(self.twitter)
+            } else {
+                FeedStream(viewModel: FeedStreamViewModel(networkManager: NetworkManager.live))
+            }
+        }
 	}
 }
