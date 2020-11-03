@@ -1,7 +1,7 @@
-import SwiftUI
 import Combine
 import CommonCrypto
-import Security
+import NetworkManager
+import SwiftUI
 
 let TWITTER_CONSUMER_KEY = "kNJJx5p6sScuPD3z7ZUg13WW2"
 let TWITTER_CONSUMER_SECRET = "1CkHK3Hc88m1st8odzx27dpDzl30YS4vZJ40xvdlNdAGkJj9jk"
@@ -36,7 +36,13 @@ public struct RequestAccessTokenResponse {
 
 public class TwitterService: NSObject, ObservableObject {
     
-    public let objectWillChange = PassthroughSubject<TwitterService,Never>()
+    private let viewerModel: ViewerModel
+    
+    public init(viewerModel: ViewerModel) {
+        self.viewerModel = viewerModel
+    }
+    
+    public let objectWillChange = PassthroughSubject<TwitterService, Never>()
     
     @Published public var authUrl: URL? {
         willSet { self.objectWillChange.send(self) }
@@ -81,6 +87,11 @@ public class TwitterService: NSObject, ObservableObject {
                     // Process Completed Successfully!
                     DispatchQueue.main.async {
                         self.credential = accessTokenResponse
+                        self.viewerModel.twitterSignIn(
+                            twitterId: accessTokenResponse.userId,
+                            twitterToken: accessTokenResponse.accessToken,
+                            twitterTokenSecret: accessTokenResponse.accessTokenSecret
+                        )
                         self.authUrl = nil
                     }
                 }
@@ -113,7 +124,7 @@ public class TwitterService: NSObject, ObservableObject {
         return "OAuth " + parts.sorted().joined(separator: ", ")
     }
     
-    func signatureKey(_ consumerSecret: String,_ oauthTokenSecret: String?) -> String {
+    func signatureKey(_ consumerSecret: String, _ oauthTokenSecret: String?) -> String {
         guard let oauthSecret = oauthTokenSecret?.urlEncoded
         else { return consumerSecret.urlEncoded+"&" }
         
@@ -130,8 +141,9 @@ public class TwitterService: NSObject, ObservableObject {
         return result.sorted().joined(separator: "&")
     }
     
-    func signatureBaseString(_ httpMethod: String = "POST",_ url: String,
-                             _ params: [String:Any]) -> String {
+    func signatureBaseString(_ httpMethod: String = "POST",
+                             _ url: String,
+                             _ params: [String: Any]) -> String {
         let parameterString = signatureParameterString(params: params)
         return httpMethod + "&" + url.urlEncoded + "&" + parameterString.urlEncoded
     }
@@ -144,29 +156,33 @@ public class TwitterService: NSObject, ObservableObject {
         return data.base64EncodedString()
     }
     
-    func oauthSignature(httpMethod: String = "POST", url: String,
-                        params: [String: Any], consumerSecret: String,
+    func oauthSignature(httpMethod: String = "POST",
+                        url: String,
+                        params: [String: Any],
+                        consumerSecret: String,
                         oauthTokenSecret: String? = nil) -> String {
         let signingKey = signatureKey(consumerSecret, oauthTokenSecret)
         let signatureBase = signatureBaseString(httpMethod, url, params)
         return hmac_sha1(signingKey: signingKey, signatureBase: signatureBase)
     }
     
-    func requestOAuthToken(args: RequestOAuthTokenInput,_ complete: @escaping (RequestOAuthTokenResponse) -> Void) {
+    func requestOAuthToken(args: RequestOAuthTokenInput, _ complete: @escaping (RequestOAuthTokenResponse) -> Void) {
         let request = (url: "https://api.twitter.com/oauth/request_token", httpMethod: "POST")
         let callback = args.callbackScheme + "://success"
         
         var params: [String: Any] = [
-            "oauth_callback" : callback,
-            "oauth_consumer_key" : args.consumerKey,
-            "oauth_nonce" : UUID().uuidString, // nonce can be any 32-bit string made up of random ASCII values
-            "oauth_signature_method" : "HMAC-SHA1",
-            "oauth_timestamp" : String(Int(NSDate().timeIntervalSince1970)),
-            "oauth_version" : "1.0"
+            "oauth_callback": callback,
+            "oauth_consumer_key": args.consumerKey,
+            "oauth_nonce": UUID().uuidString, // nonce can be any 32-bit string made up of random ASCII values
+            "oauth_signature_method": "HMAC-SHA1",
+            "oauth_timestamp": String(Int(NSDate().timeIntervalSince1970)),
+            "oauth_version": "1.0"
         ]
         // Build the OAuth Signature from Parameters
-        params["oauth_signature"] = oauthSignature(httpMethod: request.httpMethod, url: request.url,
-                                                   params: params, consumerSecret: args.consumerSecret)
+        params["oauth_signature"] = oauthSignature(httpMethod: request.httpMethod,
+                                                   url: request.url,
+                                                   params: params,
+                                                   consumerSecret: args.consumerSecret)
         
         // Once OAuth Signature is included in our parameters, build the authorization header
         let authHeader = authorizationHeader(params: params)
@@ -175,7 +191,7 @@ public class TwitterService: NSObject, ObservableObject {
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = request.httpMethod
         urlRequest.setValue(authHeader, forHTTPHeaderField: "Authorization")
-        let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: urlRequest) { (data, _, _) in
             guard let data = data else { return }
             guard let dataString = String(data: data, encoding: .utf8) else { return }
             // dataString should return: oauth_token=XXXX&oauth_token_secret=YYYY&oauth_callback_confirmed=true
@@ -193,18 +209,20 @@ public class TwitterService: NSObject, ObservableObject {
         let request = (url: "https://api.twitter.com/oauth/access_token", httpMethod: "POST")
         
         var params: [String: Any] = [
-            "oauth_token" : args.requestToken,
-            "oauth_verifier" : args.oauthVerifier,
-            "oauth_consumer_key" : args.consumerKey,
-            "oauth_nonce" : UUID().uuidString, // nonce can be any 32-bit string made up of random ASCII values
-            "oauth_signature_method" : "HMAC-SHA1",
-            "oauth_timestamp" : String(Int(NSDate().timeIntervalSince1970)),
-            "oauth_version" : "1.0"
+            "oauth_token": args.requestToken,
+            "oauth_verifier": args.oauthVerifier,
+            "oauth_consumer_key": args.consumerKey,
+            "oauth_nonce": UUID().uuidString, // nonce can be any 32-bit string made up of random ASCII values
+            "oauth_signature_method": "HMAC-SHA1",
+            "oauth_timestamp": String(Int(NSDate().timeIntervalSince1970)),
+            "oauth_version": "1.0"
         ]
         
         // Build the OAuth Signature from Parameters
-        params["oauth_signature"] = oauthSignature(httpMethod: request.httpMethod, url: request.url,
-                                                   params: params, consumerSecret: args.consumerSecret,
+        params["oauth_signature"] = oauthSignature(httpMethod: request.httpMethod,
+                                                   url: request.url,
+                                                   params: params,
+                                                   consumerSecret: args.consumerSecret,
                                                    oauthTokenSecret: args.requestTokenSecret)
         
         // Once OAuth Signature is included in our parameters, build the authorization header
@@ -214,36 +232,20 @@ public class TwitterService: NSObject, ObservableObject {
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = request.httpMethod
         urlRequest.setValue(authHeader, forHTTPHeaderField: "Authorization")
-        let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: urlRequest) { (data, _, _) in
             guard let data = data else { return }
             guard let dataString = String(data: data, encoding: .utf8) else { return }
             let attributes = dataString.urlQueryStringParameters
-            print(attributes)
             let result = RequestAccessTokenResponse(accessToken: attributes["oauth_token"] ?? "",
                                                     accessTokenSecret: attributes["oauth_token_secret"] ?? "",
                                                     userId: attributes["user_id"] ?? "",
                                                     screenName: attributes["screen_name"] ?? "")
+            
             complete(result)
         }
         task.resume()
     }
-    
-    func upsertAccount(response: RequestAccessTokenResponse) {
-        
-    }
-    
-    func storeInKeychain(response: RequestAccessTokenResponse) {
-        let keychainItemQuery = [
-            kSecValueData: "token".data(using: .utf8)!,
-            kSecAttrAccount: response.screenName,
-            kSecAttrServer: "feedshare.com",
-            kSecClass: kSecClassInternetPassword
-        ] as CFDictionary
-        let status = SecItemAdd(keychainItemQuery, nil)
-        print("Operation finished with status: \(status)")
-    }
 }
-
 
 extension String {
     var urlEncoded: String {
@@ -252,7 +254,7 @@ extension String {
         return self.addingPercentEncoding(withAllowedCharacters: charset)!
     }
     
-    var urlQueryStringParameters: Dictionary<String, String> {
+    var urlQueryStringParameters: [String: String] {
         // breaks apart query string into a dictionary of values
         var params = [String: String]()
         let items = self.split(separator: "&")

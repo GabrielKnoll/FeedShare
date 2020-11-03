@@ -13,23 +13,23 @@ import SwiftUI
 
 @main
 struct FeedShareApp: App {
-    let twitter: TwitterService
-
-	init() {
-		let appearance = UINavigationBarAppearance()
-        self.twitter = TwitterService()
-		appearance.configureWithOpaqueBackground()
-		appearance.backgroundColor = R.color.background()
-		UINavigationBar.appearance().scrollEdgeAppearance = appearance
-	}
-
-	var body: some Scene {
-		WindowGroup {
-            if self.twitter.credential?.userId == nil {
-                Login().environmentObject(self.twitter)
+    @ObservedObject var viewerModel: ViewerModel
+    
+    init() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = R.color.background()
+        self.viewerModel = ViewerModel(networkManager: NetworkManager.live)
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+    }
+    
+    var body: some Scene {
+        WindowGroup {
+            if !self.viewerModel.isLoggedIn {
+                Login(viewerModel: self.viewerModel)
             } else {
                 FeedStream(viewModel: FeedStreamViewModel(networkManager: NetworkManager.live))
             }
         }
-	}
+    }
 }

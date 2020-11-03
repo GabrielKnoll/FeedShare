@@ -16,7 +16,13 @@ extension NetworkManager {
 				promise(.success([MockShares.mockEpisode(), MockShares.mockEpisode()]))
 			}
 			}
-		}
+		},
+        createViewer: { _, _, _ in
+            return Deferred { Future<Viewer, Error> { promise in
+                promise(.success(Viewer(token: "token")))
+            }
+            }
+        }
 	)
 }
 
@@ -27,7 +33,8 @@ private struct MockShares {
                                 displayName: "Gabriel Knoll",
                                 profilePicture: URL(string: "https://pbs.twimg.com/profile_images/1216776408984363010/a9zddy5o_400x400.jpg"))
         let mockPodcast = Podcast(title: "Luftpost",
-                                  artwork: "https://luftpost-podcast.de/cover.png", description: "Spannende Länder, interessante Leute, tolle Geschichten.",
+                                  artwork: "https://luftpost-podcast.de/cover.png",
+                                  description: "Spannende Länder, interessante Leute, tolle Geschichten.",
                                   publisher: "Daniel Büchele")
         let mockEpisode = Episode(title: "Senegal",
                                   artwork: "https://luftpost-podcast.de/senegal/",

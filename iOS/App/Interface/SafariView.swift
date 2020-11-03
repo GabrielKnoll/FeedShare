@@ -1,5 +1,5 @@
-import SwiftUI
 import SafariServices
+import SwiftUI
 
 final class CustomSafariViewController: UIViewController {
     var url: URL? {
@@ -8,10 +8,12 @@ final class CustomSafariViewController: UIViewController {
         }
     }
     private var safariViewController: SFSafariViewController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
     }
+    
     private func configure() {
         // Remove the previous safari child view controller if not nil
         if let safariViewController = safariViewController {

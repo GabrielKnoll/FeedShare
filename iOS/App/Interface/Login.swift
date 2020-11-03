@@ -1,21 +1,25 @@
-import SwiftUI
 import Logic
+import NetworkManager
+import SwiftUI
 
 public struct Login: View {
-    @EnvironmentObject var twitter: TwitterService
-    
-    public init() {}
+    @ObservedObject var viewerModel: ViewerModel
+    @ObservedObject var twitter: TwitterService
+
+    public init(viewerModel: ViewerModel) {
+        self.viewerModel = viewerModel
+        self.twitter = TwitterService(viewerModel: viewerModel)
+    }
     
     public var body: some View {
         VStack {
-            Button(action: {self.twitter.authorize()}) {
+            Button(action: { self.twitter.authorize() }) {
                 Text("Login with Twitter")
             }
-            
             Text(twitter.credential?.userId ?? "")
             Text(twitter.credential?.screenName ?? "")
         }.onOpenURL { url in
-            print ("Open URL: \(url)")
+            print("Open URL: \(url)")
             let callbackUrl = URL(string: "twittersdk://")
             let callbackScheme = callbackUrl?.scheme
             if url.scheme?.caseInsensitiveCompare(callbackScheme ?? "") != .orderedSame { return }
@@ -29,6 +33,6 @@ public struct Login: View {
 
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
-        Login().environmentObject(TwitterService())
+        Login(viewerModel: ViewerModel(networkManager: NetworkManager.success))
     }
 }

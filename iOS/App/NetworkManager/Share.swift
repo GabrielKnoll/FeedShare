@@ -26,6 +26,14 @@ public struct Share: Identifiable {
 
 }
 
+public struct Viewer {
+    public init(token: String) {
+        self.token = token
+    }
+
+    public let token: String
+}
+
 public struct Author {
 	public init(handle: String, displayName: String?, profilePicture: URL?) {
 		self.handle = handle

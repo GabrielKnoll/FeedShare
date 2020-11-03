@@ -38,10 +38,30 @@ extension NetworkManager {
                 }
             }
             }
+        },
+        createViewer: {twitterId, twitterToken, twitterTokenSecret in
+            return Deferred { Future<Viewer, Error> { promise in
+                Network.shared.apollo.perform(mutation: CreateViewerMutation(
+                    twitterId: twitterId,
+                    twitterToken: twitterToken,
+                    twitterTokenSecret: twitterTokenSecret
+                )) { result in
+                    switch result {
+                    case .success(let graphQLResult):
+                        print(graphQLResult)
+                        if let viewer = graphQLResult.data?.createViewer {
+                            promise(.success(Viewer(token: viewer.token)))
+                        } else {
+                            
+                        }
+                    case .failure(let error):
+                        assertionFailure("Failure! Error: \(error)")
+                        promise(.failure(error))
+                    }
+                }
+            }
+            }
         }
-//        upsertUser: {_ in
-//            Network.shared.apollo.perform(mutation: GraphQLMutation);
-//        }
     )
 }
 
@@ -58,7 +78,6 @@ private func parseResults(results: [FeedStreamQuery.Data.Share.Edge]) -> [Share]
                               artwork: nil,
                               description: fragment.episode.fragments.episodeFragment.podcast.description,
                               publisher: fragment.episode.fragments.episodeFragment.podcast.publisher)
-        
         
         let episode = Episode(title: fragment.episode.fragments.episodeFragment.title,
                               artwork: fragment.episode.fragments.episodeFragment.artwork,

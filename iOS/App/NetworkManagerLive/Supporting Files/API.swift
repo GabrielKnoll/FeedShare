@@ -218,6 +218,103 @@ public final class FeedStreamQuery: GraphQLQuery {
   }
 }
 
+public final class CreateViewerMutation: GraphQLMutation {
+  /// The raw GraphQL definition of this operation.
+  public let operationDefinition: String =
+    """
+    mutation CreateViewer($twitterId: String!, $twitterToken: String!, $twitterTokenSecret: String!) {
+      createViewer(twitterId: $twitterId, twitterToken: $twitterToken, twitterTokenSecret: $twitterTokenSecret) {
+        __typename
+        token
+      }
+    }
+    """
+
+  public let operationName: String = "CreateViewer"
+
+  public var twitterId: String
+  public var twitterToken: String
+  public var twitterTokenSecret: String
+
+  public init(twitterId: String, twitterToken: String, twitterTokenSecret: String) {
+    self.twitterId = twitterId
+    self.twitterToken = twitterToken
+    self.twitterTokenSecret = twitterTokenSecret
+  }
+
+  public var variables: GraphQLMap? {
+    return ["twitterId": twitterId, "twitterToken": twitterToken, "twitterTokenSecret": twitterTokenSecret]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes: [String] = ["Mutation"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("createViewer", arguments: ["twitterId": GraphQLVariable("twitterId"), "twitterToken": GraphQLVariable("twitterToken"), "twitterTokenSecret": GraphQLVariable("twitterTokenSecret")], type: .object(CreateViewer.selections)),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(createViewer: CreateViewer? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "createViewer": createViewer.flatMap { (value: CreateViewer) -> ResultMap in value.resultMap }])
+    }
+
+    public var createViewer: CreateViewer? {
+      get {
+        return (resultMap["createViewer"] as? ResultMap).flatMap { CreateViewer(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "createViewer")
+      }
+    }
+
+    public struct CreateViewer: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Viewer"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("token", type: .nonNull(.scalar(String.self))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(token: String) {
+        self.init(unsafeResultMap: ["__typename": "Viewer", "token": token])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var token: String {
+        get {
+          return resultMap["token"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "token")
+        }
+      }
+    }
+  }
+}
+
 public struct EpisodeFragment: GraphQLFragment {
   /// The raw GraphQL definition of this fragment.
   public static let fragmentDefinition: String =
