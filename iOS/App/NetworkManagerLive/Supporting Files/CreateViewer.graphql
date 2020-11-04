@@ -1,5 +1,9 @@
 mutation CreateViewer($twitterId: String!, $twitterToken: String!, $twitterTokenSecret: String!) {
   createViewer(twitterId: $twitterId, twitterToken: $twitterToken, twitterTokenSecret: $twitterTokenSecret) {
     token
+    user {
+      id
+      handle
+    }
   }
 }

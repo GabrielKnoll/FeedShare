@@ -19,7 +19,7 @@ extension NetworkManager {
 		},
         createViewer: { _, _, _ in
             return Deferred { Future<Viewer, Error> { promise in
-                promise(.success(Viewer(token: "token")))
+                promise(.success(Viewer(id: "id", token: "token", handle: "handle")))
             }
             }
         }

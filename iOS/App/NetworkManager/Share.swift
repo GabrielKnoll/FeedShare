@@ -27,10 +27,14 @@ public struct Share: Identifiable {
 }
 
 public struct Viewer {
-    public init(token: String) {
+    public init(id: String, token: String, handle: String) {
         self.token = token
+        self.id = id
+        self.handle = handle
     }
 
+    public let id: String
+    public let handle: String
     public let token: String
 }
 

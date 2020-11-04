@@ -50,7 +50,7 @@ extension NetworkManager {
                     case .success(let graphQLResult):
                         print(graphQLResult)
                         if let viewer = graphQLResult.data?.createViewer {
-                            promise(.success(Viewer(token: viewer.token)))
+                            promise(.success(Viewer(id: viewer.user.id, token: viewer.token, handle: viewer.user.handle)))
                         } else {
                             
                         }

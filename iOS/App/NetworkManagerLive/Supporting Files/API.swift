@@ -226,6 +226,11 @@ public final class CreateViewerMutation: GraphQLMutation {
       createViewer(twitterId: $twitterId, twitterToken: $twitterToken, twitterTokenSecret: $twitterTokenSecret) {
         __typename
         token
+        user {
+          __typename
+          id
+          handle
+        }
       }
     }
     """
@@ -281,6 +286,7 @@ public final class CreateViewerMutation: GraphQLMutation {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("token", type: .nonNull(.scalar(String.self))),
+          GraphQLField("user", type: .nonNull(.object(User.selections))),
         ]
       }
 
@@ -290,8 +296,8 @@ public final class CreateViewerMutation: GraphQLMutation {
         self.resultMap = unsafeResultMap
       }
 
-      public init(token: String) {
-        self.init(unsafeResultMap: ["__typename": "Viewer", "token": token])
+      public init(token: String, user: User) {
+        self.init(unsafeResultMap: ["__typename": "Viewer", "token": token, "user": user.resultMap])
       }
 
       public var __typename: String {
@@ -309,6 +315,64 @@ public final class CreateViewerMutation: GraphQLMutation {
         }
         set {
           resultMap.updateValue(newValue, forKey: "token")
+        }
+      }
+
+      public var user: User {
+        get {
+          return User(unsafeResultMap: resultMap["user"]! as! ResultMap)
+        }
+        set {
+          resultMap.updateValue(newValue.resultMap, forKey: "user")
+        }
+      }
+
+      public struct User: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["User"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("id", type: .nonNull(.scalar(String.self))),
+            GraphQLField("handle", type: .nonNull(.scalar(String.self))),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(id: String, handle: String) {
+          self.init(unsafeResultMap: ["__typename": "User", "id": id, "handle": handle])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var id: String {
+          get {
+            return resultMap["id"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "id")
+          }
+        }
+
+        public var handle: String {
+          get {
+            return resultMap["handle"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "handle")
+          }
         }
       }
     }
