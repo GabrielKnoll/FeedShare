@@ -3,11 +3,9 @@ import NetworkManager
 import SwiftUI
 
 public struct Login: View {
-    @ObservedObject var viewerModel: ViewerModel
     @ObservedObject var twitter: TwitterService
 
     public init(viewerModel: ViewerModel) {
-        self.viewerModel = viewerModel
         self.twitter = TwitterService(viewerModel: viewerModel)
     }
     
