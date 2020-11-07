@@ -1,6 +1,6 @@
 import queryString from 'query-string';
-import {ParserResult} from '../resolveShareUrl';
 import URL from 'url';
+import {ParserResult} from '../../queries/resolveShareUrl';
 
 export default async function (
   url: URL.UrlWithStringQuery,

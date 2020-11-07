@@ -1,5 +1,6 @@
-import {fetchPage, ParserResult} from '../resolveShareUrl';
 import URL from 'url';
+import {ParserResult} from '../../queries/resolveShareUrl';
+import fetchPage from '../fetchPage';
 
 export default async function (
   url: URL.UrlWithStringQuery,
