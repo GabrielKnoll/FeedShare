@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
+import {ParserResult} from '../queries/resolveShareUrl';
 import env from './env';
-import {ParserResult} from './resolveShareUrl';
 
 let accessToken: string | null = null;
 let accessTokenExpiry = new Date();

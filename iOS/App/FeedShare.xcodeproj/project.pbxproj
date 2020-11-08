@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		67870FB02550CE66005F89DD /* ViewerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67870FAF2550CE66005F89DD /* ViewerModel.swift */; };
+		67970D312557602800BD891D /* UserManagementInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67970D302557602800BD891D /* UserManagementInterceptor.swift */; };
+		67970D3C25578BF900BD891D /* ViewerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67870FAF2550CE66005F89DD /* ViewerModel.swift */; };
 		67AB12822544879B001CC7ED /* TwitterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB12812544879B001CC7ED /* TwitterService.swift */; };
 		67AB1288254487E0001CC7ED /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB1287254487E0001CC7ED /* Login.swift */; };
 		67AB129E25448D5E001CC7ED /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB129D25448D5E001CC7ED /* SafariView.swift */; };
@@ -211,6 +212,7 @@
 /* Begin PBXFileReference section */
 		67870FAD2550C6CB005F89DD /* CreateViewer.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateViewer.graphql; sourceTree = "<group>"; };
 		67870FAF2550CE66005F89DD /* ViewerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewerModel.swift; sourceTree = "<group>"; };
+		67970D302557602800BD891D /* UserManagementInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagementInterceptor.swift; sourceTree = "<group>"; };
 		67AB12812544879B001CC7ED /* TwitterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterService.swift; sourceTree = "<group>"; };
 		67AB1287254487E0001CC7ED /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		67AB129D25448D5E001CC7ED /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
@@ -339,6 +341,7 @@
 			children = (
 				F51CA09B252785BF0091710E /* Supporting Files */,
 				F51CA091252785B80091710E /* Network.swift */,
+				67970D302557602800BD891D /* UserManagementInterceptor.swift */,
 				F51CA093252785B80091710E /* NetworkManagerLive.swift */,
 			);
 			path = NetworkManagerLive;
@@ -915,6 +918,7 @@
 			files = (
 				F51CA097252785B80091710E /* NetworkManagerLive.swift in Sources */,
 				F51CA098252785B80091710E /* API.swift in Sources */,
+				67970D312557602800BD891D /* UserManagementInterceptor.swift in Sources */,
 				F51CA095252785B80091710E /* Network.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -924,7 +928,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F5A0A7922528E70500429855 /* Extension+Rswift.swift in Sources */,
-				67870FB02550CE66005F89DD /* ViewerModel.swift in Sources */,
+				67970D3C25578BF900BD891D /* ViewerModel.swift in Sources */,
 				F539F1A02528A63B0080412A /* FeedStreamViewModel.swift in Sources */,
 				F5A0A7A22528E92000429855 /* R.generated.swift in Sources */,
 				67AB12822544879B001CC7ED /* TwitterService.swift in Sources */,
@@ -1586,8 +1590,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apollographql/apollo-ios.git";
 			requirement = {
-				kind = exactVersion;
-				version = 0.33.0;
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.36.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
