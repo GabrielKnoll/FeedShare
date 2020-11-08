@@ -1,5 +1,6 @@
 import Apollo
 import Foundation
+import NetworkManager
 
 class UserManagementInterceptor: ApolloInterceptor {
     func interceptAsync<Operation: GraphQLOperation>(
@@ -8,10 +9,13 @@ class UserManagementInterceptor: ApolloInterceptor {
         response: HTTPResponse<Operation>?,
         completion: @escaping (Result<GraphQLResult<Operation.Data>, Error>) -> Void) {
         
-        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhMDRhZjI4Ni00ZWM5LTQzMzYtYmRkMy01MDY4MDNiYjFmNTEifQ.0t_u5vYM_kRpNY03YXMT7S1-Fzn1OGE1EWJbdEnmCnA"
-        request.addHeader(name: "Authentication", value: "Bearer: \(token)")
+        if let data = UserDefaults.standard.value(forKey: "viewer") as? Data {
+            let viewer = try? PropertyListDecoder().decode(Viewer.self, from: data)
+            if let token = viewer?.token {
+                request.addHeader(name: "Authorization", value: "Bearer \(token)")
+            }
+        }
         
-        print(request)
         chain.proceedAsync(request: request,
                            response: response,
                            completion: completion)

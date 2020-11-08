@@ -13,7 +13,7 @@ import URLImage
 struct PostView: View {
 	
 	var data: Share {
-		let mockAuthor = Author(handle: "gabriel",
+		let mockAuthor = User(handle: "gabriel",
 								displayName: "Gabriel Knoll",
 								profilePicture: URL(string: "https://pbs.twimg.com/profile_images/1216776408984363010/a9zddy5o_400x400.jpg"))
         let mockPodcast = Podcast(title: "Luftpost Podcast", artwork: nil, description: "Description", publisher: "Daniel Büchele")

@@ -48,9 +48,9 @@ extension NetworkManager {
                 )) { result in
                     switch result {
                     case .success(let graphQLResult):
-                        print(graphQLResult)
                         if let viewer = graphQLResult.data?.createViewer {
-                            promise(.success(Viewer(id: viewer.user.id, token: viewer.token, handle: viewer.user.handle)))
+                            let user = User(handle: viewer.user.handle, displayName: "", profilePicture: nil)
+                            promise(.success(Viewer(id: viewer.user.id, token: viewer.token, user: user)))
                         } else {
                             
                         }
@@ -70,7 +70,7 @@ private func parseResults(results: [FeedStreamQuery.Data.Share.Edge]) -> [Share]
     for result in results {
         guard let fragment = result.node?.fragments.shareFragment else { continue }
         
-        let author = Author(handle: fragment.author.handle,
+        let author = User(handle: fragment.author.handle,
                             displayName: fragment.author.displayName,
                             profilePicture: URL(string: fragment.author.profilePicture ?? ""))
         

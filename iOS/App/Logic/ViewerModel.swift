@@ -8,7 +8,6 @@
 import Combine
 import Foundation
 import NetworkManager
-import Security
 
 public class ViewerModel: ObservableObject {
     private let networkManager: NetworkManager
@@ -39,33 +38,15 @@ public class ViewerModel: ObservableObject {
     
     private func persistViewer() {
         if let viewer = self.viewer {
-            let token = viewer.token.data(using: .utf8)!
-            
-            let updateFields = [
-                kSecAttrAccount: viewer.id,
-                kSecValueData: token
-            ] as [CFString: Any]
-            
-            var status = SecItemUpdate(keychainQuery as CFDictionary, updateFields as CFDictionary)
-            if status == errSecItemNotFound {
-                status = SecItemAdd(keychainQuery.merging(updateFields) { (_, new) in new } as CFDictionary, nil)
-            }
-            
-            print("Operation finished with status: \(status)")
+            UserDefaults.standard.set(try? PropertyListEncoder().encode(viewer), forKey: "viewer")
         } else {
-            SecItemDelete(keychainQuery as CFDictionary)
+            UserDefaults.standard.removeObject(forKey: "viewer")
         }
     }
     
     private func restoreViewer() -> Viewer? {
-        var item: CFTypeRef?
-        SecItemCopyMatching(keychainQuery as CFDictionary, &item)
-        
-        if let existingItem = item as? [String: Any],
-           let tokenData = existingItem[kSecValueData as String] as? Data,
-           let token = String(data: tokenData, encoding: String.Encoding.utf8),
-           let id = existingItem[kSecAttrAccount as String] as? String {
-            return Viewer(id: id, token: token, handle: "todo")
+        if let data = UserDefaults.standard.value(forKey: "viewer") as? Data {
+            return try? PropertyListDecoder().decode(Viewer.self, from: data)
         }
         return nil
     }

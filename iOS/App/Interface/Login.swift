@@ -17,7 +17,6 @@ public struct Login: View {
             Text(twitter.credential?.userId ?? "")
             Text(twitter.credential?.screenName ?? "")
         }.onOpenURL { url in
-            print("Open URL: \(url)")
             let callbackUrl = URL(string: "twittersdk://")
             let callbackScheme = callbackUrl?.scheme
             if url.scheme?.caseInsensitiveCompare(callbackScheme ?? "") != .orderedSame { return }

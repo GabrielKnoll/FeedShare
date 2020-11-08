@@ -9,7 +9,7 @@ import Foundation
 
 public struct Share: Identifiable {
 
-	public init(author: Author, message: String?, createdAt: String, episode: Episode, cursor: String?) {
+	public init(author: User, message: String?, createdAt: String, episode: Episode, cursor: String?) {
 		self.author = author
 		self.message = message
 		self.createdAt = createdAt
@@ -18,7 +18,7 @@ public struct Share: Identifiable {
 	}
 
 	public let id = UUID()
-	public let author: Author
+	public let author: User
 	public let message: String?
 	public let createdAt: String
 	public let episode: Episode
@@ -26,19 +26,19 @@ public struct Share: Identifiable {
 
 }
 
-public struct Viewer {
-    public init(id: String, token: String, handle: String) {
+public struct Viewer: Codable {
+    public init(id: String, token: String, user: User) {
         self.token = token
         self.id = id
-        self.handle = handle
+        self.user = user
     }
 
     public let id: String
-    public let handle: String
+    public let user: User
     public let token: String
 }
 
-public struct Author {
+public struct User: Codable {
 	public init(handle: String, displayName: String?, profilePicture: URL?) {
 		self.handle = handle
 		self.displayName = displayName
