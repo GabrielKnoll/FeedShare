@@ -1,0 +1,16 @@
+query Viewer {
+  viewer {
+      ...ViewerFragment
+  }
+}
+
+fragment ViewerFragment on Viewer {
+  token
+  personalFeed
+  user {
+    id
+    handle
+    displayName
+    profilePicture
+  }
+}

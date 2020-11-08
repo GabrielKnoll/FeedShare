@@ -225,17 +225,14 @@ public final class CreateViewerMutation: GraphQLMutation {
     mutation CreateViewer($twitterId: String!, $twitterToken: String!, $twitterTokenSecret: String!) {
       createViewer(twitterId: $twitterId, twitterToken: $twitterToken, twitterTokenSecret: $twitterTokenSecret) {
         __typename
-        token
-        user {
-          __typename
-          id
-          handle
-        }
+        ...ViewerFragment
       }
     }
     """
 
   public let operationName: String = "CreateViewer"
+
+  public var queryDocument: String { return operationDefinition.appending("\n" + ViewerFragment.fragmentDefinition) }
 
   public var twitterId: String
   public var twitterToken: String
@@ -285,8 +282,7 @@ public final class CreateViewerMutation: GraphQLMutation {
       public static var selections: [GraphQLSelection] {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("token", type: .nonNull(.scalar(String.self))),
-          GraphQLField("user", type: .nonNull(.object(User.selections))),
+          GraphQLFragmentSpread(ViewerFragment.self),
         ]
       }
 
@@ -294,10 +290,6 @@ public final class CreateViewerMutation: GraphQLMutation {
 
       public init(unsafeResultMap: ResultMap) {
         self.resultMap = unsafeResultMap
-      }
-
-      public init(token: String, user: User) {
-        self.init(unsafeResultMap: ["__typename": "Viewer", "token": token, "user": user.resultMap])
       }
 
       public var __typename: String {
@@ -309,69 +301,129 @@ public final class CreateViewerMutation: GraphQLMutation {
         }
       }
 
-      public var token: String {
+      public var fragments: Fragments {
         get {
-          return resultMap["token"]! as! String
+          return Fragments(unsafeResultMap: resultMap)
         }
         set {
-          resultMap.updateValue(newValue, forKey: "token")
+          resultMap += newValue.resultMap
         }
       }
 
-      public var user: User {
-        get {
-          return User(unsafeResultMap: resultMap["user"]! as! ResultMap)
-        }
-        set {
-          resultMap.updateValue(newValue.resultMap, forKey: "user")
-        }
-      }
-
-      public struct User: GraphQLSelectionSet {
-        public static let possibleTypes: [String] = ["User"]
-
-        public static var selections: [GraphQLSelection] {
-          return [
-            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLField("id", type: .nonNull(.scalar(String.self))),
-            GraphQLField("handle", type: .nonNull(.scalar(String.self))),
-          ]
-        }
-
+      public struct Fragments {
         public private(set) var resultMap: ResultMap
 
         public init(unsafeResultMap: ResultMap) {
           self.resultMap = unsafeResultMap
         }
 
-        public init(id: String, handle: String) {
-          self.init(unsafeResultMap: ["__typename": "User", "id": id, "handle": handle])
-        }
-
-        public var __typename: String {
+        public var viewerFragment: ViewerFragment {
           get {
-            return resultMap["__typename"]! as! String
+            return ViewerFragment(unsafeResultMap: resultMap)
           }
           set {
-            resultMap.updateValue(newValue, forKey: "__typename")
+            resultMap += newValue.resultMap
           }
         }
+      }
+    }
+  }
+}
 
-        public var id: String {
-          get {
-            return resultMap["id"]! as! String
-          }
-          set {
-            resultMap.updateValue(newValue, forKey: "id")
-          }
+public final class ViewerQuery: GraphQLQuery {
+  /// The raw GraphQL definition of this operation.
+  public let operationDefinition: String =
+    """
+    query Viewer {
+      viewer {
+        __typename
+        ...ViewerFragment
+      }
+    }
+    """
+
+  public let operationName: String = "Viewer"
+
+  public var queryDocument: String { return operationDefinition.appending("\n" + ViewerFragment.fragmentDefinition) }
+
+  public init() {
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes: [String] = ["Query"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("viewer", type: .object(Viewer.selections)),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(viewer: Viewer? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Query", "viewer": viewer.flatMap { (value: Viewer) -> ResultMap in value.resultMap }])
+    }
+
+    public var viewer: Viewer? {
+      get {
+        return (resultMap["viewer"] as? ResultMap).flatMap { Viewer(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "viewer")
+      }
+    }
+
+    public struct Viewer: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Viewer"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(ViewerFragment.self),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
         }
 
-        public var handle: String {
+        public var viewerFragment: ViewerFragment {
           get {
-            return resultMap["handle"]! as! String
+            return ViewerFragment(unsafeResultMap: resultMap)
           }
           set {
-            resultMap.updateValue(newValue, forKey: "handle")
+            resultMap += newValue.resultMap
           }
         }
       }
@@ -730,6 +782,151 @@ public struct ShareFragment: GraphQLFragment {
         set {
           resultMap += newValue.resultMap
         }
+      }
+    }
+  }
+}
+
+public struct ViewerFragment: GraphQLFragment {
+  /// The raw GraphQL definition of this fragment.
+  public static let fragmentDefinition: String =
+    """
+    fragment ViewerFragment on Viewer {
+      __typename
+      token
+      personalFeed
+      user {
+        __typename
+        id
+        handle
+        displayName
+        profilePicture
+      }
+    }
+    """
+
+  public static let possibleTypes: [String] = ["Viewer"]
+
+  public static var selections: [GraphQLSelection] {
+    return [
+      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+      GraphQLField("token", type: .nonNull(.scalar(String.self))),
+      GraphQLField("personalFeed", type: .nonNull(.scalar(String.self))),
+      GraphQLField("user", type: .nonNull(.object(User.selections))),
+    ]
+  }
+
+  public private(set) var resultMap: ResultMap
+
+  public init(unsafeResultMap: ResultMap) {
+    self.resultMap = unsafeResultMap
+  }
+
+  public init(token: String, personalFeed: String, user: User) {
+    self.init(unsafeResultMap: ["__typename": "Viewer", "token": token, "personalFeed": personalFeed, "user": user.resultMap])
+  }
+
+  public var __typename: String {
+    get {
+      return resultMap["__typename"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "__typename")
+    }
+  }
+
+  public var token: String {
+    get {
+      return resultMap["token"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "token")
+    }
+  }
+
+  public var personalFeed: String {
+    get {
+      return resultMap["personalFeed"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "personalFeed")
+    }
+  }
+
+  public var user: User {
+    get {
+      return User(unsafeResultMap: resultMap["user"]! as! ResultMap)
+    }
+    set {
+      resultMap.updateValue(newValue.resultMap, forKey: "user")
+    }
+  }
+
+  public struct User: GraphQLSelectionSet {
+    public static let possibleTypes: [String] = ["User"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("id", type: .nonNull(.scalar(String.self))),
+        GraphQLField("handle", type: .nonNull(.scalar(String.self))),
+        GraphQLField("displayName", type: .scalar(String.self)),
+        GraphQLField("profilePicture", type: .scalar(String.self)),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(id: String, handle: String, displayName: String? = nil, profilePicture: String? = nil) {
+      self.init(unsafeResultMap: ["__typename": "User", "id": id, "handle": handle, "displayName": displayName, "profilePicture": profilePicture])
+    }
+
+    public var __typename: String {
+      get {
+        return resultMap["__typename"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    public var id: String {
+      get {
+        return resultMap["id"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "id")
+      }
+    }
+
+    public var handle: String {
+      get {
+        return resultMap["handle"]! as! String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "handle")
+      }
+    }
+
+    public var displayName: String? {
+      get {
+        return resultMap["displayName"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "displayName")
+      }
+    }
+
+    public var profilePicture: String? {
+      get {
+        return resultMap["profilePicture"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "profilePicture")
       }
     }
   }

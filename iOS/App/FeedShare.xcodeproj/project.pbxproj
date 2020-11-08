@@ -213,6 +213,7 @@
 		67870FAD2550C6CB005F89DD /* CreateViewer.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateViewer.graphql; sourceTree = "<group>"; };
 		67870FAF2550CE66005F89DD /* ViewerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewerModel.swift; sourceTree = "<group>"; };
 		67970D302557602800BD891D /* UserManagementInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagementInterceptor.swift; sourceTree = "<group>"; };
+		67970D462558ADF400BD891D /* Viewer.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = Viewer.graphql; sourceTree = "<group>"; };
 		67AB12812544879B001CC7ED /* TwitterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterService.swift; sourceTree = "<group>"; };
 		67AB1287254487E0001CC7ED /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		67AB129D25448D5E001CC7ED /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
@@ -355,6 +356,7 @@
 				F59828AA25278FA400A8C2CB /* FeedStream.graphql */,
 				F59828A725278FA400A8C2CB /* ShareRow.graphql */,
 				67870FAD2550C6CB005F89DD /* CreateViewer.graphql */,
+				67970D462558ADF400BD891D /* Viewer.graphql */,
 				F51CA065252784D70091710E /* Info.plist */,
 			);
 			path = "Supporting Files";

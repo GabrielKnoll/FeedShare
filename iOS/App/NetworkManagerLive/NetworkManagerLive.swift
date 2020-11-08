@@ -49,8 +49,20 @@ extension NetworkManager {
                     switch result {
                     case .success(let graphQLResult):
                         if let viewer = graphQLResult.data?.createViewer {
-                            let user = User(handle: viewer.user.handle, displayName: "", profilePicture: nil)
-                            promise(.success(Viewer(id: viewer.user.id, token: viewer.token, user: user)))
+                            
+                            var pic: URL?
+                            if let profilePicture = viewer.fragments.viewerFragment.user.profilePicture {
+                                pic = URL(string: profilePicture)
+                            }
+                            
+                            let user = User(
+                                handle: viewer.fragments.viewerFragment.user.handle,
+                                displayName: viewer.fragments.viewerFragment.user.displayName,
+                                profilePicture: pic)
+                            promise(.success(Viewer(
+                                                id: viewer.fragments.viewerFragment.user.id,
+                                                token: viewer.fragments.viewerFragment.token,
+                                                user: user)))
                         } else {
                             
                         }
@@ -71,8 +83,8 @@ private func parseResults(results: [FeedStreamQuery.Data.Share.Edge]) -> [Share]
         guard let fragment = result.node?.fragments.shareFragment else { continue }
         
         let author = User(handle: fragment.author.handle,
-                            displayName: fragment.author.displayName,
-                            profilePicture: URL(string: fragment.author.profilePicture ?? ""))
+                          displayName: fragment.author.displayName,
+                          profilePicture: URL(string: fragment.author.profilePicture ?? ""))
         
         let podcast = Podcast(title: fragment.episode.fragments.episodeFragment.podcast.title,
                               artwork: nil,
