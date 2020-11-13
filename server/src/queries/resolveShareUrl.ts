@@ -17,6 +17,7 @@ import overcast from '../utils/parser/overcast';
 import pocketcasts from '../utils/parser/pocketcasts';
 import spotify from '../utils/parser/spotify';
 import {spotifyPodcastAndEpisode} from '../utils/spotifyApi';
+import {ApiResponse} from 'podcastdx-client/dist/types';
 
 export default extendType({
   type: 'Query',
@@ -69,6 +70,7 @@ interface BaseParserResult {
 interface ParserResultPodcast extends BaseParserResult {
   type: 'Podcast';
   spotifyPodcastId?: string;
+  podcastIndexPodcast?: ApiResponse.PodcastFeed;
 }
 
 interface ParserResultEpisode extends BaseParserResult {

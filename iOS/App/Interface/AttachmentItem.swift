@@ -26,7 +26,7 @@ public struct AttachmentItem: View {
     
 	public var body: some View {
         HStack(alignment: .center, spacing: 10) {
-            if let url = URL(string: data.artwork ?? "http://google.com") {
+            if let url = URL(string: data.artwork ?? "") {
                 URLImage(url, placeholder: Image(systemName: "circle")) { proxy in
                     proxy.image
                         .resizable()
@@ -38,9 +38,6 @@ public struct AttachmentItem: View {
                 Text(data.title)
                     .font(.headline)
                 Text(data.podcast.title)
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                Text(data.podcast.publisher)
                     .font(.subheadline)
                     .foregroundColor(.secondary)
                 

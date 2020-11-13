@@ -45,6 +45,7 @@
     "nexus-plugin-prisma": "^0.23.1",
     "node-fetch": "^2.6.1",
     "oauth-sign": "^0.9.0",
+    "podcastdx-client": "^2.4.1",
     "query-string": "^6.13.2",
     "xmlbuilder2": "^2.2.0"
   },

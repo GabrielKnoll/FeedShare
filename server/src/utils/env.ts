@@ -31,6 +31,11 @@ const e = {
     .asEnum(['true', 'false']),
   TIMBER_SOUCE_ID: env.get('TIMBER_SOUCE_ID').required(!ci).asString(),
   TIMBER_TOKEN: env.get('TIMBER_TOKEN').required(!ci).asString(),
+  PODCAST_INDEX_KEY: env.get('PODCAST_INDEX_KEY').required(!ci).asString(),
+  PODCAST_INDEX_SECRET: env
+    .get('PODCAST_INDEX_SECRET')
+    .required(!ci)
+    .asString(),
 };
 
 const set = new Set(Object.keys(parsed));
