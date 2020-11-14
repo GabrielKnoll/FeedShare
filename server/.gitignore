@@ -5,3 +5,4 @@ node_modules
 .tmp_build
 .vercel
 dist
+newrelic_agent.log

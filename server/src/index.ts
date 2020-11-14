@@ -3,7 +3,7 @@ import express from 'express';
 import {ApolloServer, ApolloError} from 'apollo-server-express';
 import context from './utils/context';
 import env from './utils/env';
-import ErrorReporter from './utils/ErrorReporter';
+import NewRelicPlugin from '@newrelic/apollo-server-plugin';
 import feed from './routes/feed';
 
 const app = express();
@@ -11,7 +11,7 @@ const app = express();
 const server = new ApolloServer({
   schema,
   context,
-  plugins: [ErrorReporter],
+  plugins: env.NODE_ENV === 'production' ? [NewRelicPlugin] : [],
   formatError: (err) => {
     if (!(err instanceof ApolloError)) {
       return new ApolloError(err.message);

@@ -6,6 +6,7 @@ const {parsed = {}} = require('dotenv').config({
 const ci = env.get('CI').asBool();
 
 const e = {
+  NODE_ENV: env.get('NODE_ENV').asString(),
   DATABASE_URL: env.get('DATABASE_URL').required(!ci).asString(),
   JWT_SECRET: env.get('JWT_SECRET').required(!ci).asString(),
   PORT: env.get('PORT').required(!ci).asIntPositive(),
@@ -29,11 +30,13 @@ const e = {
   APOLLO_SCHEMA_REPORTING: env
     .get('APOLLO_SCHEMA_REPORTING')
     .asEnum(['true', 'false']),
-  TIMBER_SOUCE_ID: env.get('TIMBER_SOUCE_ID').required(!ci).asString(),
-  TIMBER_TOKEN: env.get('TIMBER_TOKEN').required(!ci).asString(),
   PODCAST_INDEX_KEY: env.get('PODCAST_INDEX_KEY').required(!ci).asString(),
   PODCAST_INDEX_SECRET: env
     .get('PODCAST_INDEX_SECRET')
+    .required(!ci)
+    .asString(),
+  NEW_RELIC_LICENSE_KEY: env
+    .get('NEW_RELIC_LICENSE_KEY')
     .required(!ci)
     .asString(),
 };
