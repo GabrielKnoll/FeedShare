@@ -1,4 +1,4 @@
-fragment EpisodeFragment on Episode {
+fragment EpisodeAttachmentFragment on Episode {
   title
   artwork
   durationSeconds

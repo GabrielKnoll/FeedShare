@@ -9,7 +9,6 @@ import UIKit
 
 @objc(ShareNavigationController)
 class ShareNavigationController: UINavigationController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
 

@@ -4,11 +4,11 @@
 import Apollo
 import Foundation
 
-public final class FeedStreamQuery: GraphQLQuery {
+public final class FeedStreamModelQuery: GraphQLQuery {
   /// The raw GraphQL definition of this operation.
   public let operationDefinition: String =
     """
-    query FeedStream($after: String) {
+    query FeedStreamModel($after: String) {
       shares(last: 20, after: $after) {
         __typename
         edges {
@@ -24,9 +24,9 @@ public final class FeedStreamQuery: GraphQLQuery {
     }
     """
 
-  public let operationName: String = "FeedStream"
+  public let operationName: String = "FeedStreamModel"
 
-  public var queryDocument: String { return operationDefinition.appending("\n" + ShareFragment.fragmentDefinition).appending("\n" + EpisodeFragment.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending("\n" + ShareFragment.fragmentDefinition).appending("\n" + EpisodeAttachmentFragment.fragmentDefinition) }
 
   public var after: String?
 
@@ -218,6 +218,107 @@ public final class FeedStreamQuery: GraphQLQuery {
   }
 }
 
+public final class ViewerModelQuery: GraphQLQuery {
+  /// The raw GraphQL definition of this operation.
+  public let operationDefinition: String =
+    """
+    query ViewerModel {
+      viewer {
+        __typename
+        ...ViewerFragment
+      }
+    }
+    """
+
+  public let operationName: String = "ViewerModel"
+
+  public var queryDocument: String { return operationDefinition.appending("\n" + ViewerFragment.fragmentDefinition) }
+
+  public init() {
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes: [String] = ["Query"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("viewer", type: .object(Viewer.selections)),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(viewer: Viewer? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Query", "viewer": viewer.flatMap { (value: Viewer) -> ResultMap in value.resultMap }])
+    }
+
+    public var viewer: Viewer? {
+      get {
+        return (resultMap["viewer"] as? ResultMap).flatMap { Viewer(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "viewer")
+      }
+    }
+
+    public struct Viewer: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Viewer"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(ViewerFragment.self),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var viewerFragment: ViewerFragment {
+          get {
+            return ViewerFragment(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+      }
+    }
+  }
+}
+
 public final class CreateViewerMutation: GraphQLMutation {
   /// The raw GraphQL definition of this operation.
   public let operationDefinition: String =
@@ -330,112 +431,11 @@ public final class CreateViewerMutation: GraphQLMutation {
   }
 }
 
-public final class ViewerQuery: GraphQLQuery {
-  /// The raw GraphQL definition of this operation.
-  public let operationDefinition: String =
-    """
-    query Viewer {
-      viewer {
-        __typename
-        ...ViewerFragment
-      }
-    }
-    """
-
-  public let operationName: String = "Viewer"
-
-  public var queryDocument: String { return operationDefinition.appending("\n" + ViewerFragment.fragmentDefinition) }
-
-  public init() {
-  }
-
-  public struct Data: GraphQLSelectionSet {
-    public static let possibleTypes: [String] = ["Query"]
-
-    public static var selections: [GraphQLSelection] {
-      return [
-        GraphQLField("viewer", type: .object(Viewer.selections)),
-      ]
-    }
-
-    public private(set) var resultMap: ResultMap
-
-    public init(unsafeResultMap: ResultMap) {
-      self.resultMap = unsafeResultMap
-    }
-
-    public init(viewer: Viewer? = nil) {
-      self.init(unsafeResultMap: ["__typename": "Query", "viewer": viewer.flatMap { (value: Viewer) -> ResultMap in value.resultMap }])
-    }
-
-    public var viewer: Viewer? {
-      get {
-        return (resultMap["viewer"] as? ResultMap).flatMap { Viewer(unsafeResultMap: $0) }
-      }
-      set {
-        resultMap.updateValue(newValue?.resultMap, forKey: "viewer")
-      }
-    }
-
-    public struct Viewer: GraphQLSelectionSet {
-      public static let possibleTypes: [String] = ["Viewer"]
-
-      public static var selections: [GraphQLSelection] {
-        return [
-          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLFragmentSpread(ViewerFragment.self),
-        ]
-      }
-
-      public private(set) var resultMap: ResultMap
-
-      public init(unsafeResultMap: ResultMap) {
-        self.resultMap = unsafeResultMap
-      }
-
-      public var __typename: String {
-        get {
-          return resultMap["__typename"]! as! String
-        }
-        set {
-          resultMap.updateValue(newValue, forKey: "__typename")
-        }
-      }
-
-      public var fragments: Fragments {
-        get {
-          return Fragments(unsafeResultMap: resultMap)
-        }
-        set {
-          resultMap += newValue.resultMap
-        }
-      }
-
-      public struct Fragments {
-        public private(set) var resultMap: ResultMap
-
-        public init(unsafeResultMap: ResultMap) {
-          self.resultMap = unsafeResultMap
-        }
-
-        public var viewerFragment: ViewerFragment {
-          get {
-            return ViewerFragment(unsafeResultMap: resultMap)
-          }
-          set {
-            resultMap += newValue.resultMap
-          }
-        }
-      }
-    }
-  }
-}
-
-public struct EpisodeFragment: GraphQLFragment {
+public struct EpisodeAttachmentFragment: GraphQLFragment {
   /// The raw GraphQL definition of this fragment.
   public static let fragmentDefinition: String =
     """
-    fragment EpisodeFragment on Episode {
+    fragment EpisodeAttachmentFragment on Episode {
       __typename
       title
       artwork
@@ -603,7 +603,7 @@ public struct ShareFragment: GraphQLFragment {
       createdAt
       episode {
         __typename
-        ...EpisodeFragment
+        ...EpisodeAttachmentFragment
       }
     }
     """
@@ -740,7 +740,7 @@ public struct ShareFragment: GraphQLFragment {
     public static var selections: [GraphQLSelection] {
       return [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-        GraphQLFragmentSpread(EpisodeFragment.self),
+        GraphQLFragmentSpread(EpisodeAttachmentFragment.self),
       ]
     }
 
@@ -775,9 +775,9 @@ public struct ShareFragment: GraphQLFragment {
         self.resultMap = unsafeResultMap
       }
 
-      public var episodeFragment: EpisodeFragment {
+      public var episodeAttachmentFragment: EpisodeAttachmentFragment {
         get {
-          return EpisodeFragment(unsafeResultMap: resultMap)
+          return EpisodeAttachmentFragment(unsafeResultMap: resultMap)
         }
         set {
           resultMap += newValue.resultMap

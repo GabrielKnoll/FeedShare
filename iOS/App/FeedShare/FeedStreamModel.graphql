@@ -1,4 +1,4 @@
-query FeedStream($after: String) {
+query FeedStreamModel($after: String) {
   shares(last: 20, after: $after){
     edges {
       cursor

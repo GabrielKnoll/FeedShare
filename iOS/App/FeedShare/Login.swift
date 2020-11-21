@@ -1,17 +1,12 @@
-import Logic
-import NetworkManager
 import SwiftUI
 
 public struct Login: View {
-    @ObservedObject var twitter: TwitterService
+    @EnvironmentObject var viewerModel: ViewerModel
+    @ObservedObject var twitter = TwitterService()
 
-    public init(viewerModel: ViewerModel) {
-        self.twitter = TwitterService(viewerModel: viewerModel)
-    }
-    
     public var body: some View {
         VStack {
-            Button(action: { self.twitter.authorize() }) {
+            Button(action: { self.twitter.authorize(viewerModel: self.viewerModel) }) {
                 Text("Login with Twitter")
             }
             Text(twitter.credential?.userId ?? "")
@@ -30,6 +25,6 @@ public struct Login: View {
 
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
-        Login(viewerModel: ViewerModel(networkManager: NetworkManager.success))
+        Login()
     }
 }

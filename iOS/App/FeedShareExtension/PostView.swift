@@ -5,40 +5,41 @@
 //  Created by Gabriel Knoll on 19.10.20.
 //
 
-import Interface
-import NetworkManager
 import SwiftUI
 import URLImage
 
 struct PostView: View {
-	
-	var data: Share {
-		let mockAuthor = User(handle: "gabriel",
-								displayName: "Gabriel Knoll",
-								profilePicture: URL(string: "https://pbs.twimg.com/profile_images/1216776408984363010/a9zddy5o_400x400.jpg"))
-        let mockPodcast = Podcast(title: "Luftpost Podcast", artwork: nil, description: "Description", publisher: "Daniel Büchele")
-		let mockEpisode = Episode(title: "Senegal",
-								  artwork: "https://luftpost-podcast.de/senegal/",
-								  durationSeconds: 3_820,
-								  description: "Sie erzählt von der Gastfreundschaft und viel zu viel Essen& Ausflüge in die Wüste",
-								  podcast: mockPodcast)
-        
-		return Share(author: mockAuthor,
-					 message: "Check out this episode of Luftpost Podcast",
-					 createdAt: "04.10.2020",
-					 episode: mockEpisode,
-					 cursor: nil)
-	}
-	
-	@State private var shareText: String = "What did you like about this episode?"
+    /*
+     var data: Share {
+     	let mockAuthor = User(handle: "gabriel",
+     							displayName: "Gabriel Knoll",
+     							profilePicture: URL(string: "https://pbs.twimg.com/profile_images/1216776408984363010/a9zddy5o_400x400.jpg"))
+     let mockPodcast = Podcast(title: "Luftpost Podcast", artwork: nil, description: "Description", publisher: "Daniel Büchele")
+     	let mockEpisode = Episode(title: "Senegal",
+     							  artwork: "https://luftpost-podcast.de/senegal/",
+     							  durationSeconds: 3_820,
+     							  description: "Sie erzählt von der Gastfreundschaft und viel zu viel Essen& Ausflüge in die Wüste",
+     							  podcast: mockPodcast)
 
-	var body: some View {
-		ShareRow(data: data, isEditable: true)
-	}
+     	return Share(author: mockAuthor,
+     				 message: "Check out this episode of Luftpost Podcast",
+     				 createdAt: "04.10.2020",
+     				 episode: mockEpisode,
+     				 cursor: nil)
+     }
+     */
+
+    @State private var shareText: String = "What did you like about this episode?"
+
+    var body: some View {
+        // ShareRow(data: data, isEditable: true)
+
+        Text("test")
+    }
 }
 
 struct PostView_Previews: PreviewProvider {
-	static var previews: some View {
-		PostView()
-	}
+    static var previews: some View {
+        PostView()
+    }
 }
