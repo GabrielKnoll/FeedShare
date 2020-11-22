@@ -11,7 +11,12 @@ import Network
 
 public class ViewerModel: ObservableObject {
     static let shared = ViewerModel()
-    @Published var viewer: ViewerFragment?
+    public let objectWillChange = PassthroughSubject<ViewerModel, Never>()
+    @Published var viewer: ViewerFragment? {
+        didSet {
+            objectWillChange.send(self)
+        }
+    }
     @Published var initialized: Bool = false
 
     public init() {

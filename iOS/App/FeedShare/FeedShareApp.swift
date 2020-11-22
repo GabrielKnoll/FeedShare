@@ -20,14 +20,16 @@ struct FeedShareApp: App {
 
     var body: some Scene {
         WindowGroup {
-            if self.viewerModel.initialized {
-                if viewerModel.viewer != nil {
-                    FeedStream()
+            VStack {
+                if self.viewerModel.initialized {
+                    if false {
+                        FeedStream()
+                    } else {
+                        Onboarding().environmentObject(viewerModel)
+                    }
                 } else {
-                    Login().environmentObject(viewerModel)
+                    Text("Loading")
                 }
-            } else {
-                Text("Loading")
             }
         }
     }

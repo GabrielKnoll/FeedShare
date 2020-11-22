@@ -17,6 +17,7 @@ model User {
   Share            Share[]
   twitterAccountId String?         @unique
   TwitterAccount   TwitterAccount? @relation(fields: [twitterAccountId], references: [id])
+  feedCheckedAt    DateTime?
 }
 
 model TwitterAccount {
@@ -68,4 +69,19 @@ model Podcast {
   spotifyApiResponse Json?
   updatedAt          DateTime  @updatedAt
   artwork            String?
+}
+
+enum PodcastClientId {
+  Castro
+  ApplePodcasts
+  Overcast
+  PocketCasts
+  Spotify
+}
+
+model PodcastClient {
+  id           PodcastClientId @id
+  displayName  String
+  icon         String
+  subscribeUrl String
 }

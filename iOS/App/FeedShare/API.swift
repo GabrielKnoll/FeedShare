@@ -4,6 +4,61 @@
 import Apollo
 import Foundation
 
+public enum PodcastClientId: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+  public typealias RawValue = String
+  case applePodcasts
+  case castro
+  case overcast
+  case pocketCasts
+  case spotify
+  /// Auto generated constant for unknown enum values
+  case __unknown(RawValue)
+
+  public init?(rawValue: RawValue) {
+    switch rawValue {
+      case "ApplePodcasts": self = .applePodcasts
+      case "Castro": self = .castro
+      case "Overcast": self = .overcast
+      case "PocketCasts": self = .pocketCasts
+      case "Spotify": self = .spotify
+      default: self = .__unknown(rawValue)
+    }
+  }
+
+  public var rawValue: RawValue {
+    switch self {
+      case .applePodcasts: return "ApplePodcasts"
+      case .castro: return "Castro"
+      case .overcast: return "Overcast"
+      case .pocketCasts: return "PocketCasts"
+      case .spotify: return "Spotify"
+      case .__unknown(let value): return value
+    }
+  }
+
+  public static func == (lhs: PodcastClientId, rhs: PodcastClientId) -> Bool {
+    switch (lhs, rhs) {
+      case (.applePodcasts, .applePodcasts): return true
+      case (.castro, .castro): return true
+      case (.overcast, .overcast): return true
+      case (.pocketCasts, .pocketCasts): return true
+      case (.spotify, .spotify): return true
+      case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+      default: return false
+    }
+  }
+
+  public static var allCases: [PodcastClientId] {
+    return [
+      .applePodcasts,
+      .castro,
+      .overcast,
+      .pocketCasts,
+      .spotify,
+    ]
+  }
+}
+
 public final class FeedStreamModelQuery: GraphQLQuery {
   /// The raw GraphQL definition of this operation.
   public let operationDefinition: String =
@@ -212,6 +267,114 @@ public final class FeedStreamModelQuery: GraphQLQuery {
               }
             }
           }
+        }
+      }
+    }
+  }
+}
+
+public final class PodcastClientsQuery: GraphQLQuery {
+  /// The raw GraphQL definition of this operation.
+  public let operationDefinition: String =
+    """
+    query PodcastClients {
+      podcastClient {
+        __typename
+        id
+        icon
+        displayName
+      }
+    }
+    """
+
+  public let operationName: String = "PodcastClients"
+
+  public init() {
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes: [String] = ["Query"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("podcastClient", type: .list(.object(PodcastClient.selections))),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(podcastClient: [PodcastClient?]? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Query", "podcastClient": podcastClient.flatMap { (value: [PodcastClient?]) -> [ResultMap?] in value.map { (value: PodcastClient?) -> ResultMap? in value.flatMap { (value: PodcastClient) -> ResultMap in value.resultMap } } }])
+    }
+
+    public var podcastClient: [PodcastClient?]? {
+      get {
+        return (resultMap["podcastClient"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [PodcastClient?] in value.map { (value: ResultMap?) -> PodcastClient? in value.flatMap { (value: ResultMap) -> PodcastClient in PodcastClient(unsafeResultMap: value) } } }
+      }
+      set {
+        resultMap.updateValue(newValue.flatMap { (value: [PodcastClient?]) -> [ResultMap?] in value.map { (value: PodcastClient?) -> ResultMap? in value.flatMap { (value: PodcastClient) -> ResultMap in value.resultMap } } }, forKey: "podcastClient")
+      }
+    }
+
+    public struct PodcastClient: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["PodcastClient"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(PodcastClientId.self))),
+          GraphQLField("icon", type: .nonNull(.scalar(String.self))),
+          GraphQLField("displayName", type: .nonNull(.scalar(String.self))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: PodcastClientId, icon: String, displayName: String) {
+        self.init(unsafeResultMap: ["__typename": "PodcastClient", "id": id, "icon": icon, "displayName": displayName])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: PodcastClientId {
+        get {
+          return resultMap["id"]! as! PodcastClientId
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      public var icon: String {
+        get {
+          return resultMap["icon"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "icon")
+        }
+      }
+
+      public var displayName: String {
+        get {
+          return resultMap["displayName"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "displayName")
         }
       }
     }

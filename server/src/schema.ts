@@ -4,11 +4,14 @@ import {asNexusMethod, fieldAuthorizePlugin, makeSchema} from '@nexus/schema';
 import resolveShareUrl from './queries/resolveShareUrl';
 import viewer from './queries/viewer';
 import shares from './queries/shares';
+import podcastClient from './queries/podcastClient';
 import createViewer from './mutations/createViewer';
 import createShare from './mutations/createShare';
 import User from './models/User';
 import Viewer from './models/Viewer';
 import Podcast from './models/Podcast';
+import PodcastClient from './models/PodcastClient';
+import PodcastClientId from './models/PodcastClientId';
 import Episode from './models/Episode';
 import Share from './models/Share';
 import {DateTimeResolver, JSONObjectResolver} from 'graphql-scalars';
@@ -36,11 +39,14 @@ export default makeSchema({
     Podcast,
     Episode,
     Share,
+    PodcastClient,
+    PodcastClientId,
 
     // queries
     resolveShareUrl,
     shares,
     viewer,
+    podcastClient,
 
     // mutations
     createViewer,

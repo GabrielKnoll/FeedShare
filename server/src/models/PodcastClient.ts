@@ -1,6 +1,10 @@
-import {enumType} from '@nexus/schema';
+import {objectType} from '@nexus/schema';
 
-export default enumType({
+export default objectType({
   name: 'PodcastClient',
-  members: ['Castro', 'ApplePodcasts', 'Overcast', 'PocketCasts', 'Spotify'],
+  definition(t) {
+    t.model.id();
+    t.model.displayName();
+    t.model.icon();
+  },
 });

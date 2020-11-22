@@ -51,11 +51,17 @@ type Podcast implements Artwork {
   id: String!
   latestEpisodes(length: Int = 5): [Episode]!
   publisher: String!
-  subscribeLink(client: PodcastClient): String
+  subscribeLink(client: PodcastClientId): String
   title: String!
 }
 
-enum PodcastClient {
+type PodcastClient {
+  displayName: String!
+  icon: String!
+  id: PodcastClientId!
+}
+
+enum PodcastClientId {
   ApplePodcasts
   Castro
   Overcast
@@ -64,6 +70,7 @@ enum PodcastClient {
 }
 
 type Query {
+  podcastClient: [PodcastClient]
   resolveShareUrl(url: String!): ResolvedShareUrl
   shares(after: String, before: String, last: Int!): ShareConnection!
   viewer: Viewer

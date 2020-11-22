@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		670F00E62569C14000A05BB6 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00E52569C14000A05BB6 /* Onboarding.swift */; };
+		670F00E82569C27400A05BB6 /* OnboardingNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00E72569C27400A05BB6 /* OnboardingNotifications.swift */; };
+		670F00EA2569CE4800A05BB6 /* OnboardingPodcastClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00E92569CE4800A05BB6 /* OnboardingPodcastClient.swift */; };
+		670F00ED2569F47C00A05BB6 /* OnboardingPodcastClientModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00EC2569F47C00A05BB6 /* OnboardingPodcastClientModel.swift */; };
 		6734F2A825609DC400BB95E5 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 6734F2A725609DC400BB95E5 /* URLImage */; };
 		6734F2AA25609DC400BB95E5 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 6734F2A925609DC400BB95E5 /* Apollo */; };
 		6734F2AC25609DC400BB95E5 /* ApolloSQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 6734F2AB25609DC400BB95E5 /* ApolloSQLite */; };
@@ -15,7 +19,7 @@
 		67970D4B25608FAF00BD891D /* UserManagementInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67970D302557602800BD891D /* UserManagementInterceptor.swift */; };
 		67970D4D25608FB500BD891D /* FeedStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59828AC25278FA400A8C2CB /* FeedStream.swift */; };
 		67970D4E25608FB500BD891D /* ShareRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59828A925278FA400A8C2CB /* ShareRow.swift */; };
-		67970D4F25608FB500BD891D /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB1287254487E0001CC7ED /* Login.swift */; };
+		67970D4F25608FB500BD891D /* OnboardingLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB1287254487E0001CC7ED /* OnboardingLogin.swift */; };
 		67970D5025608FB500BD891D /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB129D25448D5E001CC7ED /* SafariView.swift */; };
 		67970D5125608FB500BD891D /* RefreshableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59828AB25278FA400A8C2CB /* RefreshableScrollView.swift */; };
 		67970D5225608FB500BD891D /* EpisodeAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59828A825278FA400A8C2CB /* EpisodeAttachment.swift */; };
@@ -82,11 +86,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		670F00E52569C14000A05BB6 /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
+		670F00E72569C27400A05BB6 /* OnboardingNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNotifications.swift; sourceTree = "<group>"; };
+		670F00E92569CE4800A05BB6 /* OnboardingPodcastClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPodcastClient.swift; sourceTree = "<group>"; };
+		670F00EB2569EE7F00A05BB6 /* OnboardingPodcastClient.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = OnboardingPodcastClient.graphql; sourceTree = "<group>"; };
+		670F00EC2569F47C00A05BB6 /* OnboardingPodcastClientModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPodcastClientModel.swift; sourceTree = "<group>"; };
 		67870FAF2550CE66005F89DD /* ViewerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewerModel.swift; sourceTree = "<group>"; };
 		67970D302557602800BD891D /* UserManagementInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagementInterceptor.swift; sourceTree = "<group>"; };
 		67970D462558ADF400BD891D /* ViewerModel.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ViewerModel.graphql; sourceTree = "<group>"; };
 		67AB12812544879B001CC7ED /* TwitterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterService.swift; sourceTree = "<group>"; };
-		67AB1287254487E0001CC7ED /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
+		67AB1287254487E0001CC7ED /* OnboardingLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingLogin.swift; sourceTree = "<group>"; };
 		67AB129D25448D5E001CC7ED /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
 		F51CA091252785B80091710E /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		F51CA094252785B80091710E /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
@@ -188,7 +197,12 @@
 				F59828AC25278FA400A8C2CB /* FeedStream.swift */,
 				F539F19F2528A63B0080412A /* FeedStreamModel.swift */,
 				F59828AA25278FA400A8C2CB /* FeedStreamModel.graphql */,
-				67AB1287254487E0001CC7ED /* Login.swift */,
+				670F00E52569C14000A05BB6 /* Onboarding.swift */,
+				67AB1287254487E0001CC7ED /* OnboardingLogin.swift */,
+				670F00E72569C27400A05BB6 /* OnboardingNotifications.swift */,
+				670F00E92569CE4800A05BB6 /* OnboardingPodcastClient.swift */,
+				670F00EB2569EE7F00A05BB6 /* OnboardingPodcastClient.graphql */,
+				670F00EC2569F47C00A05BB6 /* OnboardingPodcastClientModel.swift */,
 				F59828A825278FA400A8C2CB /* EpisodeAttachment.swift */,
 				F59828A625278FA400A8C2CB /* EpisodeAttachment.graphql */,
 				F59828AB25278FA400A8C2CB /* RefreshableScrollView.swift */,
@@ -449,9 +463,13 @@
 				67970D5425608FBC00BD891D /* ViewerModel.swift in Sources */,
 				67970D5625608FBC00BD891D /* FeedStreamModel.swift in Sources */,
 				67970D4A25608FAF00BD891D /* API.swift in Sources */,
-				67970D4F25608FB500BD891D /* Login.swift in Sources */,
+				67970D4F25608FB500BD891D /* OnboardingLogin.swift in Sources */,
 				67970D4B25608FAF00BD891D /* UserManagementInterceptor.swift in Sources */,
+				670F00E62569C14000A05BB6 /* Onboarding.swift in Sources */,
 				67970D4D25608FB500BD891D /* FeedStream.swift in Sources */,
+				670F00EA2569CE4800A05BB6 /* OnboardingPodcastClient.swift in Sources */,
+				670F00ED2569F47C00A05BB6 /* OnboardingPodcastClientModel.swift in Sources */,
+				670F00E82569C27400A05BB6 /* OnboardingNotifications.swift in Sources */,
 				67970D5125608FB500BD891D /* RefreshableScrollView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

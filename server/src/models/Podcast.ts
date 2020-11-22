@@ -4,7 +4,7 @@ import {ApolloError, UserInputError} from 'apollo-server-express';
 import {latestEpisodes} from '../utils/appleApi';
 import UnreachableCaseError from '../utils/UnreachableCaseError';
 import Artwork from './Artwork';
-import PodcastClient from './PodcastClient';
+import PodcastClientId from './PodcastClientId';
 
 export default objectType({
   name: 'Podcast',
@@ -31,7 +31,7 @@ export default objectType({
       type: 'String',
       nullable: true,
       args: {
-        client: PodcastClient,
+        client: PodcastClientId,
       },
       resolve({feed}, {client}) {
         if (!client) {

@@ -1,16 +1,16 @@
 import SwiftUI
 
-public struct Login: View {
+public struct OnboardingLogin: View {
     @EnvironmentObject var viewerModel: ViewerModel
     @ObservedObject var twitter = TwitterService()
-
+    var onNext: () -> Void
+    
     public var body: some View {
         VStack {
+            Text("FeedShare allows you to recommend podcast episodes to your friends and listen to their recommendations")
             Button(action: { self.twitter.authorize(viewerModel: self.viewerModel) }) {
                 Text("Login with Twitter")
             }
-            Text(twitter.credential?.userId ?? "")
-            Text(twitter.credential?.screenName ?? "")
         }.onOpenURL { url in
             let callbackUrl = URL(string: "twittersdk://")
             let callbackScheme = callbackUrl?.scheme
@@ -19,12 +19,10 @@ public struct Login: View {
             NotificationCenter.default.post(notification)
         }.sheet(isPresented: self.$twitter.showSheet) {
             SafariView(url: self.$twitter.authUrl)
-        }
-    }
-}
-
-struct Login_Previews: PreviewProvider {
-    static var previews: some View {
-        Login()
+        }.onReceive(viewerModel.objectWillChange, perform: { vm in
+            if vm.viewer != nil {
+                onNext()
+            }
+        })
     }
 }

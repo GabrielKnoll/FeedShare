@@ -1,0 +1,7 @@
+query PodcastClients {
+  podcastClient {
+    id
+    icon
+    displayName
+  }
+}
