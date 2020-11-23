@@ -44,10 +44,6 @@ class TwitterService: NSObject, ObservableObject {
         willSet { objectWillChange.send(self) }
     }
 
-    @Published public var credential: RequestAccessTokenResponse? {
-        willSet { objectWillChange.send(self) }
-    }
-
     func authorize(viewerModel: ViewerModel) {
         showSheet = true // opens the sheet containing our safari view
 
@@ -78,7 +74,6 @@ class TwitterService: NSObject, ObservableObject {
                 self.requestAccessToken(args: accessTokenInput) { accessTokenResponse in
                     // Process Completed Successfully!
                     DispatchQueue.main.async {
-                        self.credential = accessTokenResponse
                         viewerModel.twitterSignIn(
                             twitterId: accessTokenResponse.userId,
                             twitterToken: accessTokenResponse.accessToken,

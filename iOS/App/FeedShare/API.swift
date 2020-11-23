@@ -280,14 +280,14 @@ public final class PodcastClientsQuery: GraphQLQuery {
     query PodcastClients {
       podcastClient {
         __typename
-        id
-        icon
-        displayName
+        ...ViewerClient
       }
     }
     """
 
   public let operationName: String = "PodcastClients"
+
+  public var queryDocument: String { return operationDefinition.appending("\n" + ViewerClient.fragmentDefinition) }
 
   public init() {
   }
@@ -326,9 +326,7 @@ public final class PodcastClientsQuery: GraphQLQuery {
       public static var selections: [GraphQLSelection] {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("id", type: .nonNull(.scalar(PodcastClientId.self))),
-          GraphQLField("icon", type: .nonNull(.scalar(String.self))),
-          GraphQLField("displayName", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(ViewerClient.self),
         ]
       }
 
@@ -351,30 +349,29 @@ public final class PodcastClientsQuery: GraphQLQuery {
         }
       }
 
-      public var id: PodcastClientId {
+      public var fragments: Fragments {
         get {
-          return resultMap["id"]! as! PodcastClientId
+          return Fragments(unsafeResultMap: resultMap)
         }
         set {
-          resultMap.updateValue(newValue, forKey: "id")
+          resultMap += newValue.resultMap
         }
       }
 
-      public var icon: String {
-        get {
-          return resultMap["icon"]! as! String
-        }
-        set {
-          resultMap.updateValue(newValue, forKey: "icon")
-        }
-      }
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
 
-      public var displayName: String {
-        get {
-          return resultMap["displayName"]! as! String
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
         }
-        set {
-          resultMap.updateValue(newValue, forKey: "displayName")
+
+        public var viewerClient: ViewerClient {
+          get {
+            return ViewerClient(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
         }
       }
     }
@@ -746,6 +743,76 @@ public struct EpisodeAttachmentFragment: GraphQLFragment {
       set {
         resultMap.updateValue(newValue, forKey: "publisher")
       }
+    }
+  }
+}
+
+public struct ViewerClient: GraphQLFragment {
+  /// The raw GraphQL definition of this fragment.
+  public static let fragmentDefinition: String =
+    """
+    fragment ViewerClient on PodcastClient {
+      __typename
+      id
+      icon
+      displayName
+    }
+    """
+
+  public static let possibleTypes: [String] = ["PodcastClient"]
+
+  public static var selections: [GraphQLSelection] {
+    return [
+      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+      GraphQLField("id", type: .nonNull(.scalar(PodcastClientId.self))),
+      GraphQLField("icon", type: .nonNull(.scalar(String.self))),
+      GraphQLField("displayName", type: .nonNull(.scalar(String.self))),
+    ]
+  }
+
+  public private(set) var resultMap: ResultMap
+
+  public init(unsafeResultMap: ResultMap) {
+    self.resultMap = unsafeResultMap
+  }
+
+  public init(id: PodcastClientId, icon: String, displayName: String) {
+    self.init(unsafeResultMap: ["__typename": "PodcastClient", "id": id, "icon": icon, "displayName": displayName])
+  }
+
+  public var __typename: String {
+    get {
+      return resultMap["__typename"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "__typename")
+    }
+  }
+
+  public var id: PodcastClientId {
+    get {
+      return resultMap["id"]! as! PodcastClientId
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "id")
+    }
+  }
+
+  public var icon: String {
+    get {
+      return resultMap["icon"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "icon")
+    }
+  }
+
+  public var displayName: String {
+    get {
+      return resultMap["displayName"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "displayName")
     }
   }
 }

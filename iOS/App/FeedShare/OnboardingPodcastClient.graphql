@@ -1,7 +1,11 @@
-query PodcastClients {
-  podcastClient {
+fragment ViewerClient on PodcastClient {
     id
     icon
     displayName
+}
+
+query PodcastClients {
+  podcastClient {
+    ...ViewerClient
   }
 }

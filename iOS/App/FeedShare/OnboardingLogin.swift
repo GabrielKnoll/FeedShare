@@ -3,12 +3,16 @@ import SwiftUI
 public struct OnboardingLogin: View {
     @EnvironmentObject var viewerModel: ViewerModel
     @ObservedObject var twitter = TwitterService()
+    @State var buttonDisabled = false
     var onNext: () -> Void
     
     public var body: some View {
         VStack {
             Text("FeedShare allows you to recommend podcast episodes to your friends and listen to their recommendations")
-            Button(action: { self.twitter.authorize(viewerModel: self.viewerModel) }) {
+            Button(action: {
+                buttonDisabled = true
+                self.twitter.authorize(viewerModel: self.viewerModel)
+            }) {
                 Text("Login with Twitter")
             }
         }.onOpenURL { url in
@@ -19,8 +23,8 @@ public struct OnboardingLogin: View {
             NotificationCenter.default.post(notification)
         }.sheet(isPresented: self.$twitter.showSheet) {
             SafariView(url: self.$twitter.authUrl)
-        }.onReceive(viewerModel.objectWillChange, perform: { vm in
-            if vm.viewer != nil {
+        }.onReceive(viewerModel.$viewer, perform: { viewer in
+            if viewer != nil {
                 onNext()
             }
         })

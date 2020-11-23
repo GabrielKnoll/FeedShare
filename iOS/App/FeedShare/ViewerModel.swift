@@ -11,18 +11,29 @@ import Network
 
 public class ViewerModel: ObservableObject {
     static let shared = ViewerModel()
-    public let objectWillChange = PassthroughSubject<ViewerModel, Never>()
-    @Published var viewer: ViewerFragment? {
+    
+    @Published var viewerClient: ViewerClient? = {
+        if let resultMap = UserDefaults.standard.dictionary(forKey: "ViewerClient") {
+            return ViewerClient(unsafeResultMap: resultMap)
+        }
+        return nil
+    }() {
         didSet {
-            objectWillChange.send(self)
+            UserDefaults.standard.set(viewerClient?.jsonObject, forKey: "ViewerClient")
         }
     }
+    @Published var viewer: ViewerFragment?
     @Published var initialized: Bool = false
-
+    @Published var setupFinshed: Bool = UserDefaults.standard.bool(forKey: "setupFinished") {
+        didSet {
+            UserDefaults.standard.setValue(self.setupFinshed, forKey: "setupFinished")
+        }
+    }
+    
     public init() {
         fetch()
     }
-
+    
     func fetch(fetchNew: Bool = false) {
         Network.shared.apollo.fetch(
             query: ViewerModelQuery(),
@@ -37,12 +48,12 @@ public class ViewerModel: ObservableObject {
                 }
             case let .failure(error):
                 self.viewer = nil
-                print("Failure! Error: \(error)")
+                print("viewerModel fetch Failure! Error: \(error)")
             }
             self.initialized = true
         }
     }
-
+    
     func twitterSignIn(
         twitterId: String,
         twitterToken: String,
@@ -65,11 +76,18 @@ public class ViewerModel: ObservableObject {
                         }
                     }
                 }
-
+                
             case let .failure(error):
                 self.viewer = nil
-                print("Failure! Error: \(error)")
+                print("twitterSignIn Failure! Error: \(error)")
             }
         }
+    }
+    
+    func logout() {
+        viewer = nil
+        Network.shared.apollo.clearCache()
+        viewerClient = nil
+        setupFinshed = false
     }
 }

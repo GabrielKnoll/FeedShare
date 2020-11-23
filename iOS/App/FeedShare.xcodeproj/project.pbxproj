@@ -11,6 +11,9 @@
 		670F00E82569C27400A05BB6 /* OnboardingNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00E72569C27400A05BB6 /* OnboardingNotifications.swift */; };
 		670F00EA2569CE4800A05BB6 /* OnboardingPodcastClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00E92569CE4800A05BB6 /* OnboardingPodcastClient.swift */; };
 		670F00ED2569F47C00A05BB6 /* OnboardingPodcastClientModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00EC2569F47C00A05BB6 /* OnboardingPodcastClientModel.swift */; };
+		670F00EF256AD1B300A05BB6 /* OnboardingFeedlink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00EE256AD1B300A05BB6 /* OnboardingFeedlink.swift */; };
+		670F00F4256C3CFB00A05BB6 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00F3256C3CFB00A05BB6 /* Loading.swift */; };
+		670F00F6256C4F3F00A05BB6 /* Tabbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00F5256C4F3F00A05BB6 /* Tabbar.swift */; };
 		6734F2A825609DC400BB95E5 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 6734F2A725609DC400BB95E5 /* URLImage */; };
 		6734F2AA25609DC400BB95E5 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 6734F2A925609DC400BB95E5 /* Apollo */; };
 		6734F2AC25609DC400BB95E5 /* ApolloSQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 6734F2AB25609DC400BB95E5 /* ApolloSQLite */; };
@@ -91,6 +94,9 @@
 		670F00E92569CE4800A05BB6 /* OnboardingPodcastClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPodcastClient.swift; sourceTree = "<group>"; };
 		670F00EB2569EE7F00A05BB6 /* OnboardingPodcastClient.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = OnboardingPodcastClient.graphql; sourceTree = "<group>"; };
 		670F00EC2569F47C00A05BB6 /* OnboardingPodcastClientModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPodcastClientModel.swift; sourceTree = "<group>"; };
+		670F00EE256AD1B300A05BB6 /* OnboardingFeedlink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeedlink.swift; sourceTree = "<group>"; };
+		670F00F3256C3CFB00A05BB6 /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
+		670F00F5256C4F3F00A05BB6 /* Tabbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tabbar.swift; sourceTree = "<group>"; };
 		67870FAF2550CE66005F89DD /* ViewerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewerModel.swift; sourceTree = "<group>"; };
 		67970D302557602800BD891D /* UserManagementInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagementInterceptor.swift; sourceTree = "<group>"; };
 		67970D462558ADF400BD891D /* ViewerModel.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ViewerModel.graphql; sourceTree = "<group>"; };
@@ -191,6 +197,8 @@
 			isa = PBXGroup;
 			children = (
 				F5961CF32517937D00F93697 /* FeedShareApp.swift */,
+				670F00F3256C3CFB00A05BB6 /* Loading.swift */,
+				670F00F5256C4F3F00A05BB6 /* Tabbar.swift */,
 				F51CA094252785B80091710E /* API.swift */,
 				F51CA091252785B80091710E /* Network.swift */,
 				67970D302557602800BD891D /* UserManagementInterceptor.swift */,
@@ -203,6 +211,7 @@
 				670F00E92569CE4800A05BB6 /* OnboardingPodcastClient.swift */,
 				670F00EB2569EE7F00A05BB6 /* OnboardingPodcastClient.graphql */,
 				670F00EC2569F47C00A05BB6 /* OnboardingPodcastClientModel.swift */,
+				670F00EE256AD1B300A05BB6 /* OnboardingFeedlink.swift */,
 				F59828A825278FA400A8C2CB /* EpisodeAttachment.swift */,
 				F59828A625278FA400A8C2CB /* EpisodeAttachment.graphql */,
 				F59828AB25278FA400A8C2CB /* RefreshableScrollView.swift */,
@@ -464,13 +473,16 @@
 				67970D5625608FBC00BD891D /* FeedStreamModel.swift in Sources */,
 				67970D4A25608FAF00BD891D /* API.swift in Sources */,
 				67970D4F25608FB500BD891D /* OnboardingLogin.swift in Sources */,
+				670F00EF256AD1B300A05BB6 /* OnboardingFeedlink.swift in Sources */,
 				67970D4B25608FAF00BD891D /* UserManagementInterceptor.swift in Sources */,
 				670F00E62569C14000A05BB6 /* Onboarding.swift in Sources */,
 				67970D4D25608FB500BD891D /* FeedStream.swift in Sources */,
 				670F00EA2569CE4800A05BB6 /* OnboardingPodcastClient.swift in Sources */,
 				670F00ED2569F47C00A05BB6 /* OnboardingPodcastClientModel.swift in Sources */,
+				670F00F6256C4F3F00A05BB6 /* Tabbar.swift in Sources */,
 				670F00E82569C27400A05BB6 /* OnboardingNotifications.swift in Sources */,
 				67970D5125608FB500BD891D /* RefreshableScrollView.swift in Sources */,
+				670F00F4256C3CFB00A05BB6 /* Loading.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
