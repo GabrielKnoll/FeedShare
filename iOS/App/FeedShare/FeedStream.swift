@@ -9,11 +9,24 @@ import SwiftUI
 
 public struct FeedStream: View {
     @StateObject var feedStreamModel = FeedStreamModel()
-
+    @State private var feedType = 0
+    
     public var body: some View {
         VStack {
-            HStack {
-                Text("Logo")
+            VStack {
+                HStack {
+                    Text("LOGO").font(.headline)
+                    Spacer()
+                    Button(action: {}) {
+                        Text("Create")
+                    }
+                }.padding(15)
+                Picker(selection: $feedType, label: Text("What is your favorite color?")) {
+                    Text("Friends").tag(0)
+                    Text("Personal").tag(1)
+                    Text("Global").tag(2)
+                }
+                .pickerStyle(SegmentedPickerStyle())
             }
             RefreshableScrollView(refreshing: $feedStreamModel.loading) {
                 LazyVStack {

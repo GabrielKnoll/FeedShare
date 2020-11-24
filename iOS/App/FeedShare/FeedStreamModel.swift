@@ -33,8 +33,7 @@ public class FeedStreamModel: ObservableObject {
                 self.shares.append(contentsOf: data)
                 // check for new results
                 self.loadData(after: data.last?.cursor)
-            case let .failure(error):
-                print("initializeFromCache Failure! Error: \(error)")
+            case .failure(_):
                 self.loadData()
             }
         }

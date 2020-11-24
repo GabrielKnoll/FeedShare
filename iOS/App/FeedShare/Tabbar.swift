@@ -9,13 +9,13 @@ import SwiftUI
 
 public struct Tabbar: View {
     private let height = CGFloat(80)
-    private let offsetHeight = CGFloat(400)
+    private let offsetHeight = CGFloat(-400)
     
     @EnvironmentObject var viewerModel: ViewerModel
     @State private var settingsVisible = false {
         didSet {
             withAnimation {
-                self.offset = settingsVisible ? -offsetHeight : 0
+                self.offset = settingsVisible ? offsetHeight : 0
             }
         }
     }
@@ -34,7 +34,7 @@ public struct Tabbar: View {
                     })
                     .frame(width: geometry.size.width, height: geometry.size.height)
                     .background(Color.black)
-                    .opacity(0.1)
+                    .opacity(0.3)
                 }
             }
             .animation(.easeInOut(duration: 0.2))
@@ -88,12 +88,16 @@ public struct Tabbar: View {
             .gesture(DragGesture()
                         .onChanged { gesture in
                             if settingsVisible {
-                                self.offset = gesture.translation.height - offsetHeight
+                                self.offset = offsetHeight + gesture.translation.height
                             }
                         }
                         .onEnded { gesture in
-                            if (gesture.translation.height > 20) {
+                            if gesture.translation.height > 20 {
                                 self.settingsVisible = false
+                            } else {
+                                withAnimation {
+                                    self.offset = offsetHeight
+                                }
                             }
                         }
             )
