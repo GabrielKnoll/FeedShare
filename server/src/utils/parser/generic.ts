@@ -5,39 +5,53 @@ import fetchPage from '../fetchPage';
 export default async function (
   url: URL.UrlWithStringQuery,
 ): Promise<ParserResult> {
-  // find iTunes ID on page
   const $ = await fetchPage(url);
-  const itunesId = $('a[href*="apple.com/"]')
-    .toArray()
-    .map((el) => {
-      const link = URL.parse(el.attribs['href']);
-      if (link.hostname?.endsWith('apple.com')) {
-        const matches = link.path?.match(/\Wid(\d+)\W/) ?? [];
-        if (matches.length > 0) {
-          return parseInt(matches[1], 10);
+
+  let itunesId: string | undefined;
+  // Smart App Banner: <meta name="apple-itunes-app" content="app-id=XXXXXXXXXX">
+  const smartAppBanner = $('meta[name="apple-itunes-app"]').attr('content');
+  const [_, id] = smartAppBanner?.match(/app-id=(\d+)/) ?? [];
+  itunesId = id;
+
+  // find iTunes ID on page
+  if (!itunesId) {
+    itunesId = $('a[href*="apple.com/"]')
+      .toArray()
+      .map((el) => {
+        const url = el.attribs['href'];
+        if (url.includes('podcast')) {
+          const [_, id] = url.match(/\Wid(\d+)/) ?? [];
+          return id;
         }
-      }
-    })
-    .filter(Boolean)
-    .pop();
-
-  if (itunesId) {
-    return {
-      itunesId,
-    };
+      })
+      .filter(Boolean)
+      .shift();
   }
 
+  let feeds: string[] | undefined;
   // try finding podcast from RSS feed
-  const feeds = $('link[type="application/rss+xml"]')
-    .toArray()
-    .map((e) => e.attribs['href'])
-    .filter(Boolean);
-
-  if (feeds.length > 0) {
-    return {
-      feeds,
-    };
+  if (!itunesId) {
+    feeds = $('link[type="application/rss+xml"]')
+      .toArray()
+      .map((e) => e.attribs['href'])
+      .filter(Boolean);
   }
 
-  throw new Error('Generic: Unable to parse');
+  if (!itunesId && !feeds) {
+    throw new Error('Generic: Unable to parse');
+  }
+
+  const audioSrc = $('audio').attr('src');
+  const sourceSrc = $('audio source').attr('src');
+  const downloadLink = $('a[href$=".mp3"]').attr('href');
+
+  const ogTitle = $('meta[property="og:title"]').attr('content');
+  const pageTitle = $('title').text();
+
+  return {
+    feeds,
+    itunesId: itunesId ? parseInt(itunesId, 10) : undefined,
+    enclosureUrl: audioSrc ?? sourceSrc ?? downloadLink,
+    episodeTitle: ogTitle ?? pageTitle,
+  };
 }

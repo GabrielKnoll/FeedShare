@@ -27,7 +27,7 @@ server.applyMiddleware({app, path: '/graphql'});
 app.get(`/feed/:feedToken`, feed);
 
 app.listen({port: env.PORT}, () =>
-  console.log(
+  console.info(
     `🚀 Server ready at http://localhost:${env.PORT}${server.graphqlPath}`,
   ),
 );

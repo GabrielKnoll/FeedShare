@@ -1,6 +1,6 @@
 import {extendType, stringArg, objectType} from '@nexus/schema';
 import requireAuthorization from '../utils/requireAuthorization';
-import {Episode, Podcast} from '@prisma/client';
+import {Episode} from '@prisma/client';
 import URL from 'url';
 import fetch from 'node-fetch';
 import cheerio from 'cheerio';
@@ -34,11 +34,51 @@ export default extendType({
         }),
       },
       ...requireAuthorization,
-      resolve: async (_root, {url}) => {
-        const {episode, podcast} = await resolve(url);
+      resolve: async (_root, {url}, {prismaClient}) => {
+        const parsedUrl = URL.parse(url);
+        const parser = PARSER[parsedUrl.hostname ?? ''] ?? generic;
+        const parserResult = await parser(parsedUrl);
+
+        const podcast = await fetchPodcast(
+          parserResult.itunesId,
+          parserResult.feeds,
+        );
+
+        let episode: Episode | undefined;
+        if (podcast) {
+          episode = await fetchEpisode(
+            podcast.id,
+            parserResult.enclosureUrl,
+            parserResult.episodeTitle,
+            url,
+          );
+        }
+
+        // log resolve
+        const payload = {
+          url,
+          episode: {
+            connect: {
+              id: episode?.id,
+            },
+          },
+          podcast: {
+            connect: {
+              id: podcast?.id,
+            },
+          },
+        };
+        await prismaClient.urlResolve.upsert({
+          create: payload,
+          update: payload,
+          where: {
+            url,
+          },
+        });
+
         return {
           episode,
-          podcast: podcast,
+          podcast,
         };
       },
     });
@@ -53,6 +93,7 @@ export async function fetchPage(url: URL.UrlWithStringQuery) {
 export type ParserResult = {
   itunesId?: number;
   feeds?: string[];
+  episodeUrl?: string;
   episodeTitle?: string;
   enclosureUrl?: string;
 };
@@ -66,30 +107,3 @@ const PARSER: Record<
   'overcast.fm': overcast,
   'pca.st': pocketcasts,
 };
-
-async function resolve(
-  shareUrl: string,
-): Promise<{
-  podcast?: Podcast;
-  episode?: Episode;
-}> {
-  const url = URL.parse(shareUrl);
-  const parser = PARSER[url.hostname ?? ''] ?? generic;
-  const parserResult = await parser(url);
-
-  const podcast = await fetchPodcast(parserResult.itunesId, parserResult.feeds);
-  if (!podcast) {
-    return {};
-  }
-
-  let episode: Episode | undefined;
-  if (parserResult.enclosureUrl || parserResult.episodeTitle) {
-    episode = await fetchEpisode(
-      podcast.id,
-      parserResult.enclosureUrl,
-      parserResult.episodeTitle,
-    );
-  }
-
-  return {podcast, episode};
-}

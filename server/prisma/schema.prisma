@@ -42,10 +42,10 @@ model Share {
 }
 
 model Episode {
-  id              Int      @id
+  id              Int          @id
   title           String
   share           Share[]
-  podcast         Podcast  @relation(fields: [podcastId], references: [id])
+  podcast         Podcast      @relation(fields: [podcastId], references: [id])
   podcastId       Int
   description     String?
   durationSeconds Int?
@@ -55,18 +55,31 @@ model Episode {
   enclosureLength Int
   artwork         String?
   url             String?
+  apiResponse     Json
+  Reolve          UrlResolve[]
 }
 
 model Podcast {
-  id          Int       @id
+  id          Int          @id
   title       String
   Episode     Episode[]
-  itunesId    Int       @unique
+  itunesId    Int          @unique
   publisher   String
   description String?
-  feed        String    @unique
+  feed        String       @unique
   url         String?
   artwork     String?
+  apiResponse Json
+  Reolve      UrlResolve[]
+}
+
+model UrlResolve {
+  url       String   @id
+  createdAt DateTime @default(now())
+  podcast   Podcast? @relation(fields: [podcastId], references: [id])
+  episode   Episode? @relation(fields: [episodeId], references: [id])
+  episodeId Int?
+  podcastId Int?
 }
 
 enum PodcastClientId {
