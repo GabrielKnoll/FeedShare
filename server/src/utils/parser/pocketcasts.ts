@@ -12,8 +12,7 @@ export default async function (
 
   if (type === 'itunes' && id) {
     return {
-      type: 'Podcast',
-      applePodcastId: id,
+      itunesId: parseInt(id, 10),
     };
   }
 
@@ -22,20 +21,18 @@ export default async function (
   // https://pca.st/episode/e9efaa6f-08f6-4acc-934a-81430bd97013
   const $ = await fetchPage(url);
   // const rssFeed = $('.rss_button a').first().attr('href');
-  const applePodcastId = idFromAppleUrl(
-    $('.itunes_button a').first().attr('href'),
-  );
+  const iid = idFromAppleUrl($('.itunes_button a').first().attr('href'));
 
-  if (!applePodcastId) {
+  if (!iid) {
     throw new Error('PocketCasts: unable to parse');
   }
+  const itunesId = parseInt(iid, 10);
 
   const episodeTitle =
     $('#episode_date').parent().children('h1').text() || undefined;
 
   return {
-    applePodcastId,
+    itunesId,
     episodeTitle,
-    type: episodeTitle ? 'Episode' : 'Podcast',
   };
 }

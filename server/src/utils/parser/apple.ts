@@ -1,27 +1,33 @@
 import queryString from 'query-string';
 import URL from 'url';
 import {ParserResult} from '../../queries/resolveShareUrl';
+import {ampEpisode} from '../appleApi';
 
 export default async function (
   url: URL.UrlWithStringQuery,
 ): Promise<ParserResult> {
   // https://podcasts.apple.com/de/podcast/pakistan/id409553739?i=1000477131403&l=en?l=en&i=1000477131403
-  let [country, podcast, episode, podcastID] = (url.pathname ?? '')
+  let [_country, _podcast, _episode, podcastID] = (url.pathname ?? '')
     .split('/')
     .filter(Boolean);
   let {i: id} = queryString.parse(url.search ?? '');
 
-  const appleEpisodeId = (Array.isArray(id) ? id[0] : id) ?? undefined;
-  const applePodcastId = podcastID?.replace(/^id/, '');
-
-  if (!appleEpisodeId && !applePodcastId) {
+  const iid = podcastID?.replace(/^id/, '');
+  if (!iid) {
     throw new Error('Apple: Unable to parse');
+  }
+  const itunesId = parseInt(iid, 10);
+  const appleEpisodeId = (Array.isArray(id) ? id[0] : id) ?? undefined;
+
+  let enclosureUrl: string | undefined;
+  if (appleEpisodeId) {
+    const episode = await ampEpisode(appleEpisodeId);
+    enclosureUrl = episode?.attributes.assetUrl;
   }
 
   return {
-    applePodcastId,
-    appleEpisodeId,
-    type: appleEpisodeId ? 'Episode' : 'Podcast',
+    itunesId,
+    enclosureUrl,
   };
 }
 

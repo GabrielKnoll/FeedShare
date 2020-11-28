@@ -27,7 +27,7 @@ export function getViewer(
 ): NexusGenRootTypes['Viewer'] {
   return {
     user,
-    personalFeed: `https://feed.buechele.cc/feed/${user.handle}`,
+    personalFeed: `https://feed.buechele.cc/feed/${user.feedToken}`,
     token: context.token!,
   };
 }

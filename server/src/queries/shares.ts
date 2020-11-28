@@ -1,8 +1,10 @@
 import {objectType, extendType} from '@nexus/schema';
+import FeedType from '../models/FeedType';
 import {findManyCursor} from '../utils/findManyCursor';
 import {ConnectionArgs, PageInfo} from '../utils/connection';
 import {Share} from '@prisma/client';
 import requireAuthorization from '../utils/requireAuthorization';
+import {shareWhere} from '../models/Share';
 
 export default extendType({
   type: 'Query',
@@ -25,20 +27,27 @@ export default extendType({
           });
         },
       }),
-      args: ConnectionArgs,
+      args: {
+        ...ConnectionArgs,
+        feedType: FeedType,
+      },
       nullable: false,
       ...requireAuthorization,
-      resolve: async (_parent, args, {prismaClient}) =>
-        findManyCursor<Share>(
+      resolve: async (_parent, args, ctx) => {
+        const where = await shareWhere(ctx, args.feedType);
+
+        return findManyCursor<Share>(
           (_args) =>
-            prismaClient.share.findMany({
+            ctx.prismaClient.share.findMany({
+              where,
               ..._args,
               orderBy: {
                 createdAt: 'desc',
               },
             }),
           args,
-        ),
+        );
+      },
     });
   },
 });

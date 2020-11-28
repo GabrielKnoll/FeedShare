@@ -18,11 +18,6 @@ const e = {
     .get('TWITTER_CONSUMER_SECRET')
     .required(!ci)
     .asString(),
-  SPOTIFY_CLIENT_ID: env.get('SPOTIFY_CLIENT_ID').required(!ci).asString(),
-  SPOTIFY_CLIENT_SECRET: env
-    .get('SPOTIFY_CLIENT_SECRET')
-    .required(!ci)
-    .asString(),
   APOLLO_KEY: env.get('APOLLO_KEY').asString(),
   APOLLO_GRAPH_VARIANT: env
     .get('APOLLO_GRAPH_VARIANT')
@@ -39,6 +34,7 @@ const e = {
     .get('NEW_RELIC_LICENSE_KEY')
     .required(!ci)
     .asString(),
+  IMGIX_TOKEN: env.get('IMGIX_TOKEN').required(!ci).asString(),
 };
 
 const set = new Set(Object.keys(parsed));

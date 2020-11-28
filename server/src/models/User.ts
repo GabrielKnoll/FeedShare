@@ -1,4 +1,5 @@
 import {objectType} from '@nexus/schema';
+import imageField from '../utils/imageField';
 
 export default objectType({
   name: 'User',
@@ -9,8 +10,7 @@ export default objectType({
       type: 'Boolean',
       resolve: (parent, _, {userId}) => userId === parent.id,
     });
-    // t.model.Share();
     t.model.displayName();
-    t.model.profilePicture();
+    imageField(t, 'profilePicture');
   },
 });

@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import queryString from 'query-string';
+import queryString, {StringifiableRecord} from 'query-string';
 import {hmacsign} from 'oauth-sign';
 import env from './env';
 
@@ -7,8 +7,11 @@ async function twitterApiRequest<T>(
   path: string,
   token: string,
   tokenSecret: string,
-  qs: {[key: string]: string},
-): Promise<{data: T}> {
+  qs: StringifiableRecord = {},
+): Promise<T> {
+  // remove undefined properties from qs
+  Object.keys(qs).forEach((key) => qs[key] === undefined && delete qs[key]);
+
   const timestamp = Math.round(new Date().getTime() / 1000);
 
   const url = 'https://api.twitter.com' + path;
@@ -40,7 +43,7 @@ async function twitterApiRequest<T>(
     )
     .join(', ');
 
-  const result = await fetch(`${url}?${queryString.stringify(qs)}`, {
+  const result = await fetch(`${url}?${qs ? queryString.stringify(qs) : ''}`, {
     method,
     headers: {
       Authorization: `OAuth ${a}`,
@@ -59,12 +62,40 @@ export async function twitterProfile(
   token: string,
   tokenSecret: string,
 ) {
-  return await twitterApiRequest<{
-    name: string;
-    username: string;
-    profile_image_url: string;
-    id: string;
+  const res = await twitterApiRequest<{
+    data: {
+      name: string;
+      username: string;
+      profile_image_url: string;
+      id: string;
+    };
   }>('/2/users/' + id, token, tokenSecret, {
     'user.fields': 'profile_image_url',
   });
+  // rewrite URL to full size image
+  res.data.profile_image_url = res.data.profile_image_url.replace(
+    /'_normal\.jpg$/,
+    '.jpg',
+  );
+  return res;
+}
+
+export async function twitterFollowing(token: string, tokenSecret: string) {
+  const allIds: string[] = [];
+  let cursor: string | undefined;
+  while (cursor !== '0') {
+    const {ids, next_cursor_str} = await twitterApiRequest<{
+      ids: string[];
+      next_cursor: number;
+      next_cursor_str: string;
+      previous_cursor: number;
+      previous_cursor_str: string;
+    }>('/1.1/friends/ids.json', token, tokenSecret, {
+      stringify_ids: 'true',
+      cursor,
+    });
+    cursor = next_cursor_str;
+    allIds.push(...ids);
+  }
+  return allIds;
 }

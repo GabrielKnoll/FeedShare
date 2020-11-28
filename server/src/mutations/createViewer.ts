@@ -1,7 +1,8 @@
 import {extendType, stringArg} from '@nexus/schema';
 import {getViewer} from '../models/Viewer';
-import {twitterProfile} from '../utils/twitterApi';
+import {twitterFollowing, twitterProfile} from '../utils/twitterApi';
 import {generateToken} from '../utils/context';
+import feedToken from '../utils/feedToken';
 
 export default extendType({
   type: 'Mutation',
@@ -24,13 +25,25 @@ export default extendType({
         {twitterId, twitterToken, twitterTokenSecret},
         ctx,
       ) => {
-        const {
-          data: {
-            name: displayName,
-            profile_image_url: profilePicture,
-            username: handle,
+        const [
+          {
+            data: {
+              name: displayName,
+              profile_image_url: profilePicture,
+              username: handle,
+            },
           },
-        } = await twitterProfile(twitterId, twitterToken, twitterTokenSecret);
+          following,
+          twitterAccount,
+        ] = await Promise.all([
+          twitterProfile(twitterId, twitterToken, twitterTokenSecret),
+          twitterFollowing(twitterToken, twitterTokenSecret),
+          ctx.prismaClient.twitterAccount.findOne({
+            where: {
+              id: twitterId,
+            },
+          }),
+        ]);
 
         const payload = {
           handle,
@@ -38,28 +51,41 @@ export default extendType({
           profilePicture,
         };
 
-        const user = await ctx.prismaClient.user.upsert({
-          create: {
-            ...payload,
-            TwitterAccount: {
-              create: {
-                id: twitterId,
-                secret: twitterTokenSecret,
-                token: twitterToken,
+        const twitterPayload = {
+          id: twitterId,
+          secret: twitterTokenSecret,
+          token: twitterToken,
+          following,
+        };
+
+        const user = twitterAccount
+          ? await ctx.prismaClient.user.update({
+              data: {
+                ...payload,
+                twitterAccount: {
+                  update: twitterPayload,
+                },
               },
-            },
-          },
-          update: payload,
-          where: {
-            twitterAccountId: twitterId,
-          },
-        });
+              where: {
+                id: twitterAccount.userId,
+              },
+            })
+          : await ctx.prismaClient.user.create({
+              data: {
+                ...payload,
+                feedToken: feedToken(),
+                twitterAccount: {
+                  create: twitterPayload,
+                },
+              },
+            });
 
-        const token = generateToken({
-          userId: user.id,
+        return getViewer(user, {
+          ...ctx,
+          token: generateToken({
+            userId: user.id,
+          }),
         });
-
-        return getViewer(user, {...ctx, token});
       },
     });
   },

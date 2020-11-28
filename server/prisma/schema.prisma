@@ -9,66 +9,64 @@ datasource db {
 }
 
 model User {
-  id               String          @default(uuid()) @id
-  handle           String
-  displayName      String?
-  profilePicture   String?
-  createdAt        DateTime        @default(now())
-  Share            Share[]
-  twitterAccountId String?         @unique
-  TwitterAccount   TwitterAccount? @relation(fields: [twitterAccountId], references: [id])
-  feedCheckedAt    DateTime?
+  id             String          @id @default(uuid())
+  handle         String
+  displayName    String?
+  profilePicture String?
+  createdAt      DateTime        @default(now())
+  Share          Share[]
+  feedCheckedAt  DateTime?
+  twitterAccount TwitterAccount?
+  feedToken      String          @unique
 }
 
 model TwitterAccount {
-  id     String  @unique @id
-  token  String?
-  secret String?
-  User   User
+  id        String   @id
+  token     String?
+  secret    String?
+  following String[]
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique
 }
 
 model Share {
-  id        String   @default(uuid()) @id
+  id        String   @id @default(uuid())
   authorId  String
   author    User     @relation(fields: [authorId], references: [id])
-  episodeId String
+  episodeId Int
   episode   Episode  @relation(fields: [episodeId], references: [id])
   message   String?
   createdAt DateTime @default(now())
+
   @@unique([episodeId, authorId])
 }
 
 model Episode {
-  id                 String   @default(uuid()) @id
-  title              String
-  share              Share[]
-  podcast            Podcast  @relation(fields: [podcastId], references: [id])
-  podcastId          String
-  description        String?
-  ampId              String?  @unique
-  spotifyId          String?  @unique
-  durationSeconds    Int?
-  url                String?
-  ampApiResponse     Json?
-  spotifyApiResponse Json?
-  updatedAt          DateTime @updatedAt
-  artwork            String?
+  id              Int      @id
+  title           String
+  share           Share[]
+  podcast         Podcast  @relation(fields: [podcastId], references: [id])
+  podcastId       Int
+  description     String?
+  durationSeconds Int?
+  enclosureUrl    String
+  enclosureType   String
+  datePublished   DateTime
+  enclosureLength Int
+  artwork         String?
+  url             String?
 }
 
 model Podcast {
-  id                 String    @default(uuid()) @id
-  title              String
-  Episode            Episode[]
-  ampId              String?   @unique
-  spotifyId          String?   @unique
-  publisher          String
-  description        String?
-  feed               String
-  url                String?
-  ampApiResponse     Json?
-  spotifyApiResponse Json?
-  updatedAt          DateTime  @updatedAt
-  artwork            String?
+  id          Int       @id
+  title       String
+  Episode     Episode[]
+  itunesId    Int       @unique
+  publisher   String
+  description String?
+  feed        String    @unique
+  url         String?
+  artwork     String?
 }
 
 enum PodcastClientId {
@@ -76,7 +74,7 @@ enum PodcastClientId {
   ApplePodcasts
   Overcast
   PocketCasts
-  Spotify
+  GooglePodcasts
 }
 
 model PodcastClient {

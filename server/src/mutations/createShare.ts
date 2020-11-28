@@ -1,4 +1,4 @@
-import {extendType, stringArg} from '@nexus/schema';
+import {extendType, stringArg, intArg} from '@nexus/schema';
 import requireAuthorization from '../utils/requireAuthorization';
 
 export default extendType({
@@ -10,7 +10,7 @@ export default extendType({
         message: stringArg({
           required: false,
         }),
-        episodeId: stringArg({
+        episodeId: intArg({
           required: true,
         }),
       },

@@ -1,7 +1,4 @@
-import prismaClient from './prismaClient';
 import fetch from 'node-fetch';
-import {EpisodeCreateInput, Podcast} from '@prisma/client';
-import {ParserResult} from '../queries/resolveShareUrl';
 
 let AMP_TOKEN: string | null = null;
 
@@ -28,43 +25,11 @@ async function ampApiRequest<T>(
   return response.json();
 }
 
-export async function ampPodcast({applePodcastId}: ParserResult) {
-  if (!applePodcastId) {
-    return;
-  }
-  const result = await ampApiRequest<AppleApi.AmpPodcast>(
-    `/podcasts/${applePodcastId}`,
+export async function ampEpisode(appleEpisodeId: string) {
+  const result = await ampApiRequest<AppleApi.AmpEpisode>(
+    `/podcast-episodes/${appleEpisodeId}`,
   );
-  return result?.data?.shift();
-}
-
-export async function ampEpisode(parserResult: ParserResult) {
-  if (parserResult.type !== 'Episode' || !parserResult.applePodcastId) {
-    return;
-  }
-
-  if (parserResult.appleEpisodeId) {
-    const result = await ampApiRequest<AppleApi.AmpEpisode>(
-      `/podcast-episodes/${parserResult.appleEpisodeId}`,
-    );
-    return result?.data?.find(
-      (episode) => episode.id === parserResult.appleEpisodeId,
-    );
-  } else if (parserResult.episodeUrl) {
-    const result = await ampApiRequest<AppleApi.AmpEpisode>(
-      `/podcasts/${parserResult.applePodcastId}/episodes?limit=50`,
-    );
-    return result?.data?.find(
-      (episode) => episode.attributes.websiteUrl === parserResult.episodeUrl,
-    );
-  } else if (parserResult.episodeTitle) {
-    const result = await ampApiRequest<AppleApi.AmpEpisode>(
-      `/podcasts/${parserResult.applePodcastId}/episodes?limit=50`,
-    );
-    return result?.data?.find(
-      (episode) => episode.attributes.name === parserResult.episodeTitle,
-    );
-  }
+  return result?.data?.find((episode) => episode.id === appleEpisodeId);
 }
 
 async function ampApiToken(): Promise<string | null> {
@@ -96,51 +61,4 @@ async function ampApiToken(): Promise<string | null> {
   } = JSON.parse(uri);
 
   return data.MEDIA_API.token;
-}
-
-export async function latestEpisodes(
-  podcast: Podcast,
-  limit: number | null = 5,
-) {
-  const {ampId} = podcast;
-  if (!ampId) {
-    return [];
-  }
-  const {data} = await ampApiRequest<AppleApi.AmpEpisode>(
-    `/podcasts/${ampId}/episodes?limit=${limit}`,
-  );
-
-  const results = await Promise.all(
-    data.map((e) =>
-      prismaClient.episode.upsert({
-        create: episodePayload(e, ampId),
-        update: episodePayload(e, ampId),
-        where: {
-          ampId: e.id,
-        },
-      }),
-    ),
-  );
-
-  return results.filter(Boolean);
-}
-
-export function episodePayload(
-  ampEpisode: AppleApi.AmpEpisode,
-  applePodcastId: string,
-): EpisodeCreateInput {
-  return {
-    podcast: {
-      connect: {
-        ampId: applePodcastId,
-      },
-    },
-    title: ampEpisode.attributes.name,
-    durationSeconds: ampEpisode.attributes.durationInMilliseconds / 1000,
-    description: ampEpisode.attributes.description.standard,
-    url: ampEpisode.attributes.websiteUrl,
-    ampApiResponse: ampEpisode,
-    ampId: ampEpisode?.id,
-    artwork: ampEpisode.attributes.artwork.url,
-  };
 }

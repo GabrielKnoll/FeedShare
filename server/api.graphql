@@ -2,29 +2,25 @@
 ### Do not make changes to this file directly
 
 
-interface Artwork {
-  artwork(format: ArtworkFormat, size: Int): String
-}
-
-enum ArtworkFormat {
-  heic
-  jpg
-  png
-  webp
-}
-
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
 scalar DateTime
 
-type Episode implements Artwork {
-  artwork(format: ArtworkFormat, size: Int): String
+type Episode {
+  artwork(scale: Int!, size: Int!): String
+  datePublished: DateTime!
   description: String
   durationSeconds: Int
-  id: String!
+  id: Int!
   podcast: Podcast!
   title: String!
+}
+
+enum FeedType {
+  Friends
+  Global
+  Personal
 }
 
 """
@@ -33,7 +29,7 @@ The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](
 scalar JSONObject
 
 type Mutation {
-  createShare(episodeId: String!, message: String): Share
+  createShare(episodeId: Int!, message: String): Share
   createViewer(twitterId: String!, twitterToken: String!, twitterTokenSecret: String!): Viewer
 }
 
@@ -44,12 +40,12 @@ type PageInfo {
   startCursor: String
 }
 
-type Podcast implements Artwork {
-  artwork(format: ArtworkFormat, size: Int): String
+type Podcast {
+  artwork(scale: Int!, size: Int!): String
   description: String
   feed: String!
-  id: String!
-  latestEpisodes(length: Int = 5): [Episode]!
+  id: Int!
+  latestEpisodes(length: Int = 10): [Episode]
   publisher: String!
   subscribeLink(client: PodcastClientId): String
   title: String!
@@ -64,15 +60,15 @@ type PodcastClient {
 enum PodcastClientId {
   ApplePodcasts
   Castro
+  GooglePodcasts
   Overcast
   PocketCasts
-  Spotify
 }
 
 type Query {
   podcastClient: [PodcastClient]
   resolveShareUrl(url: String!): ResolvedShareUrl
-  shares(after: String, before: String, last: Int!): ShareConnection!
+  shares(after: String, before: String, feedType: FeedType, last: Int!): ShareConnection!
   viewer: Viewer
 }
 
@@ -104,7 +100,7 @@ type User {
   handle: String!
   id: String!
   isViewer: Boolean
-  profilePicture: String
+  profilePicture(scale: Int!, size: Int!): String
 }
 
 type Viewer {

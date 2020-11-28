@@ -1,15 +1,15 @@
 import {objectType, intArg} from '@nexus/schema';
 import {Podcast} from '@prisma/client';
 import {ApolloError, UserInputError} from 'apollo-server-express';
-import {latestEpisodes} from '../utils/appleApi';
+import {latestEpisodes} from '../utils/podcastIndex';
+import imageField from '../utils/imageField';
 import UnreachableCaseError from '../utils/UnreachableCaseError';
-import Artwork from './Artwork';
 import PodcastClientId from './PodcastClientId';
 
 export default objectType({
   name: 'Podcast',
   definition(t) {
-    t.implements(Artwork);
+    imageField(t, 'artwork');
     t.model.id();
     t.model.title();
     t.model.description();
@@ -18,13 +18,14 @@ export default objectType({
     t.field('latestEpisodes', {
       type: 'Episode',
       list: true,
-      nullable: false,
+      nullable: true,
       args: {
         length: intArg({
-          default: 5,
+          default: 10,
         }),
       },
-      resolve: (root, {length}) => latestEpisodes(root as Podcast, length),
+      resolve: (root, {length}) =>
+        latestEpisodes(root as Podcast, length ?? 10),
     });
 
     t.field('subscribeLink', {
@@ -52,10 +53,10 @@ export default objectType({
             return `overcast://x-callback-url/add?url=${encodeURIComponent(
               feed,
             )}`;
-          case 'Spotify':
-            return `castro://subscribe/${url}`;
           case 'PocketCasts':
             return `pktc://subscribe/${url}`;
+          case 'GooglePodcasts':
+            return `todo`;
           default:
             throw new UnreachableCaseError(client);
         }

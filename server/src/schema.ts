@@ -12,6 +12,7 @@ import Viewer from './models/Viewer';
 import Podcast from './models/Podcast';
 import PodcastClient from './models/PodcastClient';
 import PodcastClientId from './models/PodcastClientId';
+import FeedType from './models/FeedType';
 import Episode from './models/Episode';
 import Share from './models/Share';
 import {DateTimeResolver, JSONObjectResolver} from 'graphql-scalars';
@@ -41,6 +42,7 @@ export default makeSchema({
     Share,
     PodcastClient,
     PodcastClientId,
+    FeedType,
 
     // queries
     resolveShareUrl,

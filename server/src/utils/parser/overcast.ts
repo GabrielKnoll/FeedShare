@@ -11,32 +11,33 @@ export default async function (
   // https://overcast.fm/itunes1357986673/tony-basilios-next-level-network-family-of-podcasts
   const [id] = (url.pathname ?? '').split('/').filter(Boolean);
   if (id?.startsWith('itunes')) {
-    const [_, applePodcastId] = id.match(/^itunes(\d+)$/) ?? [];
+    const [_, iid] = id.match(/^itunes(\d+)$/) ?? [];
+    const itunesId = parseInt(iid, 10);
+
     return {
-      applePodcastId,
-      type: 'Podcast',
+      itunesId,
     };
   }
 
   const $ = await fetchPage(url);
-  const applePodcastId = idFromAppleUrl(
+  const iid = idFromAppleUrl(
     $('.externalbadges a[href^="https://podcasts.apple.com/podcast/"]')
       .first()
       .attr('href'),
   );
-
-  if (!applePodcastId) {
+  if (!iid) {
     throw new Error('Overcast: Unable to parse');
   }
+  const itunesId = parseInt(iid, 10);
+
   // const rssFeed = $('img[src="/img/badge-rss.svg"]').parent().attr('href');
-  const episodeUrl = $('#audiotimestamplink')
+  const enclosureUrl = $('#audiotimestamplink')
     .parent()
     .children('a:contains("Website")')
     .attr('href');
 
   return {
-    applePodcastId,
-    episodeUrl,
-    type: episodeUrl ? 'Episode' : 'Podcast',
+    itunesId,
+    enclosureUrl,
   };
 }

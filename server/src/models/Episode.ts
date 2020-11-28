@@ -1,5 +1,5 @@
 import {objectType} from '@nexus/schema';
-import Artwork from './Artwork';
+import imageField from '../utils/imageField';
 
 export default objectType({
   name: 'Episode',
@@ -9,7 +9,7 @@ export default objectType({
     t.model.description();
     t.model.podcast();
     t.model.durationSeconds();
-
-    t.implements(Artwork);
+    t.model.datePublished();
+    imageField(t, 'artwork');
   },
 });

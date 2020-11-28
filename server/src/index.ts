@@ -24,7 +24,7 @@ const server = new ApolloServer({
 
 server.applyMiddleware({app, path: '/graphql'});
 
-app.get(`/feed/:handle`, feed);
+app.get(`/feed/:feedToken`, feed);
 
 app.listen({port: env.PORT}, () =>
   console.log(

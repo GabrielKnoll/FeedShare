@@ -10,7 +10,7 @@ export default async function (
 
   if (type === 'itunes' && id) {
     // https://castro.fm/itunes/1172218725
-    return {applePodcastId: id, type: 'Podcast'};
+    return {itunesId: parseInt(id, 10)};
   }
 
   const $ = await fetchPage(url);
@@ -18,30 +18,23 @@ export default async function (
     '#co-supertop-castro-open-in a[href^="https://overcast.fm/itunes"]',
   ).attr('href');
   if (overcastLink) {
-    const [_, applePodcastId] =
+    const [_, iid] =
       overcastLink.match(/https:\/\/overcast\.fm\/itunes(\d+)/) ?? [];
+    const itunesId = parseInt(iid, 10);
 
-    if (!applePodcastId) {
+    if (!itunesId) {
       throw new Error('Castro: Unable to parse');
     }
     // const rssFeed = $('img[alt="Subscribe to RSS"]').parent().attr('href');
-
+    let episodeTitle: string | undefined;
     if (type === 'episode') {
-      let episodeTitle =
-        $('#co-supertop-castro-metadata h1').text() || undefined;
-      if (episodeTitle) {
-        return {
-          applePodcastId,
-          episodeTitle,
-          type: 'Episode',
-        };
-      }
-    } else {
-      return {
-        applePodcastId,
-        type: 'Podcast',
-      };
+      episodeTitle = $('#co-supertop-castro-metadata h1').text() || undefined;
     }
+
+    return {
+      itunesId,
+      episodeTitle,
+    };
   }
   throw new Error('Castro: Unable to parse');
 }
