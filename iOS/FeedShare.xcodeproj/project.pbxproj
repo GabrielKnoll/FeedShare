@@ -18,7 +18,6 @@
 		6734F2AA25609DC400BB95E5 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 6734F2A925609DC400BB95E5 /* Apollo */; };
 		6734F2AC25609DC400BB95E5 /* ApolloSQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 6734F2AB25609DC400BB95E5 /* ApolloSQLite */; };
 		67970D4925608FAF00BD891D /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51CA091252785B80091710E /* Network.swift */; };
-		67970D4A25608FAF00BD891D /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51CA094252785B80091710E /* API.swift */; };
 		67970D4B25608FAF00BD891D /* UserManagementInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67970D302557602800BD891D /* UserManagementInterceptor.swift */; };
 		67970D4D25608FB500BD891D /* FeedStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59828AC25278FA400A8C2CB /* FeedStream.swift */; };
 		67970D4E25608FB500BD891D /* ShareRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59828A925278FA400A8C2CB /* ShareRow.swift */; };
@@ -31,6 +30,8 @@
 		67970D5625608FBC00BD891D /* FeedStreamModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F539F19F2528A63B0080412A /* FeedStreamModel.swift */; };
 		67B942742574080000412CDC /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B942732574080000412CDC /* Settings.swift */; };
 		67B94276257451ED00412CDC /* PodcastClientRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B94275257451EC00412CDC /* PodcastClientRow.swift */; };
+		67B9427A25745F2900412CDC /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B9427925745F2900412CDC /* API.swift */; };
+		67B94281257467E500412CDC /* Rswift in Frameworks */ = {isa = PBXBuildFile; productRef = 67B94280257467E500412CDC /* Rswift */; };
 		F56832D8253E2D8100730B7A /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56832D7253E2D8100730B7A /* PostView.swift */; };
 		F5822FB2253A11F900AAA348 /* CustomShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5822FB0253A11F900AAA348 /* CustomShareViewController.swift */; };
 		F5822FB3253A11F900AAA348 /* CustomShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5822FB1253A11F900AAA348 /* CustomShareViewController.xib */; };
@@ -39,8 +40,6 @@
 		F5961CF42517937D00F93697 /* FeedShareApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5961CF32517937D00F93697 /* FeedShareApp.swift */; };
 		F5D9B32F25166A990079F47B /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D9B32E25166A990079F47B /* R.generated.swift */; };
 		F5D9B34525166C4B0079F47B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F5D9B34725166C4B0079F47B /* Localizable.strings */; };
-		F5D9B34B251675700079F47B /* Rswift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5D9B34A251675700079F47B /* Rswift.framework */; };
-		F5D9B34C251675710079F47B /* Rswift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F5D9B34A251675700079F47B /* Rswift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F5E7F8F02516527B0036448D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5E7F8EF2516527B0036448D /* Assets.xcassets */; };
 		F5E7F8F32516527B0036448D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5E7F8F22516527B0036448D /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -65,17 +64,6 @@
 				F5887B72251F4C3C00010D30 /* FeedShareExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F5D9B32D25166A540079F47B /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				F5D9B34C251675710079F47B /* Rswift.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		F5F27D6B25475EFD00163278 /* Embed Frameworks */ = {
@@ -108,8 +96,8 @@
 		67B942732574080000412CDC /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		67B94275257451EC00412CDC /* PodcastClientRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastClientRow.swift; sourceTree = "<group>"; };
 		67B942772574525E00412CDC /* PodcastClientRow.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PodcastClientRow.graphql; sourceTree = "<group>"; };
+		67B9427925745F2900412CDC /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		F51CA091252785B80091710E /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
-		F51CA094252785B80091710E /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		F539F19F2528A63B0080412A /* FeedStreamModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStreamModel.swift; sourceTree = "<group>"; };
 		F56832D7253E2D8100730B7A /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		F5822FAF253A11F900AAA348 /* FeedShareExtension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FeedShareExtension-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -149,9 +137,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				6734F2A825609DC400BB95E5 /* URLImage in Frameworks */,
+				67B94281257467E500412CDC /* Rswift in Frameworks */,
 				6734F2AC25609DC400BB95E5 /* ApolloSQLite in Frameworks */,
 				6734F2AA25609DC400BB95E5 /* Apollo in Frameworks */,
-				F5D9B34B251675700079F47B /* Rswift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,7 +195,6 @@
 				67B942732574080000412CDC /* Settings.swift */,
 				67B94275257451EC00412CDC /* PodcastClientRow.swift */,
 				67B942772574525E00412CDC /* PodcastClientRow.graphql */,
-				F51CA094252785B80091710E /* API.swift */,
 				F51CA091252785B80091710E /* Network.swift */,
 				67970D302557602800BD891D /* UserManagementInterceptor.swift */,
 				F59828AC25278FA400A8C2CB /* FeedStream.swift */,
@@ -247,6 +234,7 @@
 		F5E7F90B251653830036448D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				67B9427925745F2900412CDC /* API.swift */,
 				F5D9B32E25166A990079F47B /* R.generated.swift */,
 				F5E7F8F42516527B0036448D /* Info.plist */,
 				F5D9B34725166C4B0079F47B /* Localizable.strings */,
@@ -287,11 +275,10 @@
 				67970D5A2560936300BD891D /* Apollo GraphQL codegen */,
 				F5E7F90A251653520036448D /* RSwift */,
 				F5E7F8E52516527A0036448D /* Frameworks */,
-				F5D9B2E325165D150079F47B /* Carthage Copy Phase */,
 				F5E7F90C251654460036448D /* Swiftlint */,
+				67B9427825745D9B00412CDC /* SwiftFormat */,
 				F5E7F8E42516527A0036448D /* Sources */,
 				F5E7F8E62516527A0036448D /* Resources */,
-				F5D9B32D25166A540079F47B /* Embed Frameworks */,
 				F5887B73251F4C3C00010D30 /* Embed App Extensions */,
 			);
 			buildRules = (
@@ -304,6 +291,7 @@
 				6734F2A725609DC400BB95E5 /* URLImage */,
 				6734F2A925609DC400BB95E5 /* Apollo */,
 				6734F2AB25609DC400BB95E5 /* ApolloSQLite */,
+				67B94280257467E500412CDC /* Rswift */,
 			);
 			productName = FeedShare;
 			productReference = F5E7F8E82516527A0036448D /* FeedShare.app */;
@@ -340,6 +328,7 @@
 			packageReferences = (
 				67CCCB852520FE7A00BA99F4 /* XCRemoteSwiftPackageReference "url-image" */,
 				F598287E25278C4300A8C2CB /* XCRemoteSwiftPackageReference "apollo-ios" */,
+				67B9427B25745F9E00412CDC /* XCRemoteSwiftPackageReference "R.swift" */,
 			);
 			productRefGroup = F5E7F8E92516527A0036448D /* Products */;
 			projectDirPath = "";
@@ -389,31 +378,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Go to the build root and search up the chain to find the Derived Data Path where the source packages are checked out.\nDERIVED_DATA_CANDIDATE=\"${BUILD_ROOT}\"\nwhile ! [ -d \"${DERIVED_DATA_CANDIDATE}/SourcePackages\" ]; do\n  if [ \"${DERIVED_DATA_CANDIDATE}\" = / ]; then\n    echo >&2 \"error: Unable to locate SourcePackages directory from BUILD_ROOT: '${BUILD_ROOT}'\"\n    exit 1\n  fi\n\n  DERIVED_DATA_CANDIDATE=\"$(dirname \"${DERIVED_DATA_CANDIDATE}\")\"\ndone\n\n# Grab a reference to the directory where scripts are checked out\nSCRIPT_PATH=\"${DERIVED_DATA_CANDIDATE}/SourcePackages/checkouts/apollo-ios/scripts\"\n\nif [ -z \"${SCRIPT_PATH}\" ]; then\n    echo >&2 \"error: Couldn't find the CLI script in your checked out SPM packages; make sure to add the framework to your project.\"\n    exit 1\nfi\n\ncd \"${SRCROOT}/${TARGET_NAME}/\"\n\"${SCRIPT_PATH}\"/run-bundled-codegen.sh codegen:generate --target=swift --includes=./**/*.graphql --localSchemaFile=\"../../../server/api.json\" \"API.swift\"\n";
+			shellScript = "# Go to the build root and search up the chain to find the Derived Data Path where the source packages are checked out.\nDERIVED_DATA_CANDIDATE=\"${BUILD_ROOT}\"\nwhile ! [ -d \"${DERIVED_DATA_CANDIDATE}/SourcePackages\" ]; do\n  if [ \"${DERIVED_DATA_CANDIDATE}\" = / ]; then\n    echo >&2 \"error: Unable to locate SourcePackages directory from BUILD_ROOT: '${BUILD_ROOT}'\"\n    exit 1\n  fi\n\n  DERIVED_DATA_CANDIDATE=\"$(dirname \"${DERIVED_DATA_CANDIDATE}\")\"\ndone\n\n# Grab a reference to the directory where scripts are checked out\nSCRIPT_PATH=\"${DERIVED_DATA_CANDIDATE}/SourcePackages/checkouts/apollo-ios/scripts\"\n\nif [ -z \"${SCRIPT_PATH}\" ]; then\n    echo >&2 \"error: Couldn't find the CLI script in your checked out SPM packages; make sure to add the framework to your project.\"\n    exit 1\nfi\n\ncd \"${SRCROOT}/${TARGET_NAME}/\"\n\"${SCRIPT_PATH}\"/run-bundled-codegen.sh codegen:generate --target=swift --includes=./**/*.graphql --localSchemaFile=\"../../server/api.json\" \"Supporting Files/API.swift\"\n";
 		};
-		F5D9B2E325165D150079F47B /* Carthage Copy Phase */ = {
+		67B9427825745D9B00412CDC /* SwiftFormat */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/../Frameworks/Carthage/Build/iOS/Rswift.framework",
-				"$(SRCROOT)/../Frameworks/Carthage/Build/iOS/Apollo.framework",
-				"$(SRCROOT)/../Frameworks/Carthage/Build/iOS/ApolloCore.framework",
 			);
-			name = "Carthage Copy Phase";
+			name = SwiftFormat;
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Rswift.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Apollo.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/ApolloCore.framework",
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n\n";
+			shellScript = "cd BuildTools\nSDKROOT=macosx\n\n#Temporarily uncomment the following line to update your packages (based on the versions defined in BuildTools/Package.swift)\n#swift package update\n\n#Run your build tool - using swiftformat as an example\nswift run -c release swiftformat \"$SRCROOT\"\n";
 		};
 		F5E7F90A251653520036448D /* RSwift */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -433,7 +416,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "$SRCROOT/Rswift/rswift generate --accessLevel public \"$SRCROOT/FeedShare/Supporting Files/R.generated.swift\" \n";
+			shellScript = "cd BuildTools\nSDKROOT=macosx\nswift run -c release rswift generate \"$SRCROOT/FeedShare/Supporting Files/R.generated.swift\"\n";
 		};
 		F5E7F90C251654460036448D /* Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -479,7 +462,6 @@
 				67970D4E25608FB500BD891D /* ShareRow.swift in Sources */,
 				67970D5425608FBC00BD891D /* ViewerModel.swift in Sources */,
 				67970D5625608FBC00BD891D /* FeedStreamModel.swift in Sources */,
-				67970D4A25608FAF00BD891D /* API.swift in Sources */,
 				67970D4F25608FB500BD891D /* OnboardingLogin.swift in Sources */,
 				670F00EF256AD1B300A05BB6 /* OnboardingFeedlink.swift in Sources */,
 				67B94276257451ED00412CDC /* PodcastClientRow.swift in Sources */,
@@ -492,6 +474,7 @@
 				670F00E82569C27400A05BB6 /* OnboardingNotifications.swift in Sources */,
 				67970D5125608FB500BD891D /* RefreshableScrollView.swift in Sources */,
 				67B942742574080000412CDC /* Settings.swift in Sources */,
+				67B9427A25745F2900412CDC /* API.swift in Sources */,
 				670F00F4256C3CFB00A05BB6 /* Loading.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -775,6 +758,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		67B9427B25745F9E00412CDC /* XCRemoteSwiftPackageReference "R.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mac-cain13/R.swift.Library";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.3.0;
+			};
+		};
 		67CCCB852520FE7A00BA99F4 /* XCRemoteSwiftPackageReference "url-image" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/dmytro-anokhin/url-image.git";
@@ -823,6 +814,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F598287E25278C4300A8C2CB /* XCRemoteSwiftPackageReference "apollo-ios" */;
 			productName = ApolloSQLite;
+		};
+		67B94280257467E500412CDC /* Rswift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 67B9427B25745F9E00412CDC /* XCRemoteSwiftPackageReference "R.swift" */;
+			productName = Rswift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -11,7 +11,7 @@ import Network
 
 public class ViewerModel: ObservableObject {
     static let shared = ViewerModel()
-    
+
     @Published var viewerClient: Client? = {
         if let resultMap = UserDefaults.standard.dictionary(forKey: "ViewerClient") {
             return Client(unsafeResultMap: resultMap)
@@ -22,18 +22,19 @@ public class ViewerModel: ObservableObject {
             UserDefaults.standard.set(viewerClient?.jsonObject, forKey: "ViewerClient")
         }
     }
+
     @Published var viewer: ViewerFragment?
     @Published var initialized: Bool = false
     @Published var setupFinshed: Bool = UserDefaults.standard.bool(forKey: "setupFinished") {
         didSet {
-            UserDefaults.standard.setValue(self.setupFinshed, forKey: "setupFinished")
+            UserDefaults.standard.setValue(setupFinshed, forKey: "setupFinished")
         }
     }
-    
+
     public init() {
         fetch()
     }
-    
+
     func fetch(fetchNew: Bool = false) {
         Network.shared.apollo.fetch(
             query: ViewerModelQuery(),
@@ -53,7 +54,7 @@ public class ViewerModel: ObservableObject {
             self.initialized = true
         }
     }
-    
+
     func twitterSignIn(
         twitterId: String,
         twitterToken: String,
@@ -75,14 +76,14 @@ public class ViewerModel: ObservableObject {
                     )
                     try transaction.write(data: data, forQuery: ViewerModelQuery())
                 }
-                
+
             case let .failure(error):
                 self.viewer = nil
                 print("twitterSignIn Failure! Error: \(error)")
             }
         }
     }
-    
+
     func logout() {
         viewer = nil
         Network.shared.apollo.clearCache()

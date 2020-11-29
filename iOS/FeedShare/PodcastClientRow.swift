@@ -10,15 +10,13 @@ import URLImage
 
 public struct PodcastClientRow: View {
     let client: Client
-    
+
     init(client: Client) {
         self.client = client
     }
-    
+
     public var body: some View {
-        Button(action: {
-            
-        }) {
+        Button(action: {}) {
             HStack {
                 HStack {
                     URLImage(URL(string: client.icon)!, placeholder: Image(systemName: "circle")) { proxy in

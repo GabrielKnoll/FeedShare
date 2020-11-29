@@ -8,7 +8,7 @@ import Foundation
 
 public class OnboardingPodcastClientModel: ObservableObject {
     @Published public var podcastClients = [Client]()
-    
+
     public init() {
         Network.shared.apollo.fetch(query: PodcastClientsQuery(),
                                     cachePolicy: .returnCacheDataAndFetch) { result in

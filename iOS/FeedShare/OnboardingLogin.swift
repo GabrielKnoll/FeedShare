@@ -5,7 +5,7 @@ public struct OnboardingLogin: View {
     @ObservedObject var twitter = TwitterService()
     @State var buttonDisabled = false
     var onNext: () -> Void
-    
+
     public var body: some View {
         VStack {
             Text("FeedShare allows you to recommend podcast episodes to your friends and listen to their recommendations")

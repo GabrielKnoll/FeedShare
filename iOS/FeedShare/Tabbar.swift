@@ -9,7 +9,7 @@ import SwiftUI
 
 public struct Tabbar: View {
     private let offsetHeight = CGFloat(0)
-    
+
     @EnvironmentObject var viewerModel: ViewerModel
     @State private var settingsVisible = false {
         didSet {
@@ -18,9 +18,9 @@ public struct Tabbar: View {
             }
         }
     }
-    
+
     @State private var offset = CGFloat(0)
-    
+
     public var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .bottom) {
@@ -31,24 +31,24 @@ public struct Tabbar: View {
                             settingsVisible = false
                         }
                         .gesture(DragGesture()
-                                    .onChanged { gesture in
-                                        if gesture.translation.height > 0 {
-                                            self.offset = offsetHeight + gesture.translation.height
-                                        }
+                            .onChanged { gesture in
+                                if gesture.translation.height > 0 {
+                                    self.offset = offsetHeight + gesture.translation.height
+                                }
+                            }
+                            .onEnded { gesture in
+                                if gesture.translation.height > 20 {
+                                    self.settingsVisible = false
+                                } else {
+                                    withAnimation {
+                                        self.offset = offsetHeight
                                     }
-                                    .onEnded { gesture in
-                                        if gesture.translation.height > 20 {
-                                            self.settingsVisible = false
-                                        } else {
-                                            withAnimation {
-                                                self.offset = offsetHeight
-                                            }
-                                        }
-                                    }
+                                }
+                            }
                         )
                         .edgesIgnoringSafeArea(.all)
                 }
-                
+
                 VStack {
                     Spacer()
                     VStack {
@@ -59,14 +59,13 @@ public struct Tabbar: View {
                                 },
                                 set: {
                                     self.settingsVisible = $0
-                                })
+                                }
+                            )
                             Settings(settingsVisible: settingsBinding)
                         } else {
                             HStack {
                                 Spacer()
-                                Button(action: {
-                                    
-                                }) {
+                                Button(action: {}) {
                                     Image(systemName: "house.fill")
                                 }.padding(10)
                                 Spacer()
@@ -91,20 +90,20 @@ public struct Tabbar: View {
                             y: 0.0)
                     .offset(x: 0, y: offset + geometry.safeAreaInsets.bottom)
                     .gesture(DragGesture()
-                                .onChanged { gesture in
-                                    if settingsVisible {
-                                        self.offset = offsetHeight + gesture.translation.height
-                                    }
+                        .onChanged { gesture in
+                            if settingsVisible {
+                                self.offset = offsetHeight + gesture.translation.height
+                            }
+                        }
+                        .onEnded { gesture in
+                            if gesture.translation.height > 20 {
+                                self.settingsVisible = false
+                            } else {
+                                withAnimation {
+                                    self.offset = offsetHeight
                                 }
-                                .onEnded { gesture in
-                                    if gesture.translation.height > 20 {
-                                        self.settingsVisible = false
-                                    } else {
-                                        withAnimation {
-                                            self.offset = offsetHeight
-                                        }
-                                    }
-                                }
+                            }
+                        }
                     )
                 }
                 .animation(.easeInOut(duration: 0.2))

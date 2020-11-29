@@ -5,9 +5,8 @@ public struct OnboardingFeedlink: View {
     @StateObject var model = OnboardingPodcastClientModel()
     @EnvironmentObject var viewerModel: ViewerModel
     @State private var finishDisabled = true
-    
+
     public var body: some View {
-        
         let client = viewerModel.viewerClient?.displayName ?? "your Podcast app"
         VStack {
             Text("To get Podcast recommendations from your friends right into \(client), subscribe to your personal feed:")

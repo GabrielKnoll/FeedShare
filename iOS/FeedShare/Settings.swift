@@ -13,7 +13,7 @@ public struct Settings: View {
     @State private var notifications = false
     @State private var logoutAlert = false
     @Binding var settingsVisible: Bool
-    
+
     public var body: some View {
         VStack {
             HStack {
@@ -34,16 +34,16 @@ public struct Settings: View {
             }
             Text(viewerModel.viewer?.user.displayName ?? "").font(.headline)
             Text(viewerModel.viewer?.user.handle ?? "").font(.subheadline)
-            
+
             VStack(alignment: .leading) {
                 if let client = viewerModel.viewerClient {
                     Text("Your Podcast client").bold()
                     PodcastClientRow(client: client)
                 }
-                
+
                 Text("Notifications").bold()
                 Toggle("Get notified when your friends recommend an episode", isOn: $notifications)
-                
+
                 Button(action: {
                     self.logoutAlert = true
                 }) {
@@ -63,6 +63,5 @@ public struct Settings: View {
                 }
             }
         }.padding(15)
-        
     }
 }

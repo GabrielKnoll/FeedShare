@@ -10,7 +10,7 @@ import SwiftUI
 public struct FeedStream: View {
     @StateObject var feedStreamModel = FeedStreamModel()
     @State private var feedType = 0
-    
+
     public var body: some View {
         VStack {
             VStack {

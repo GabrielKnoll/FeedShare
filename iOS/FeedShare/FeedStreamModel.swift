@@ -33,7 +33,7 @@ public class FeedStreamModel: ObservableObject {
                 self.shares.append(contentsOf: data)
                 // check for new results
                 self.loadData(after: data.last?.cursor)
-            case .failure(_):
+            case .failure:
                 self.loadData()
             }
         }
@@ -56,7 +56,6 @@ public class FeedStreamModel: ObservableObject {
                             cache.shares.edges?.append(contentsOf: contents)
                         }
                     } catch {
-                        
                         if let data = graphQLResult.data {
                             // create cache
                             try transaction.write(data: data, forQuery: FeedStreamModelQuery())

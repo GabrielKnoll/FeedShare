@@ -31,11 +31,9 @@ opt_in_rules: # some rules are only opt-in
   - yoda_condition
 
 excluded: # paths to ignore during linting. Takes precedence over `included`.
-  - FeedShare/Supporting Files
-  - FeedShare/API.swift
-  - NetworkManagerLive/Supporting Files
-  - Interface/Supporting Files
-  - Logic/Supporting Files
+  - FeedShare/Supporting Files/
+  - BuildTools
+  - Supporting Files
 
 line_length: 150
 
