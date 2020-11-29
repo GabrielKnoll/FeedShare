@@ -29,6 +29,8 @@
 		67970D5425608FBC00BD891D /* ViewerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67870FAF2550CE66005F89DD /* ViewerModel.swift */; };
 		67970D5525608FBC00BD891D /* TwitterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB12812544879B001CC7ED /* TwitterService.swift */; };
 		67970D5625608FBC00BD891D /* FeedStreamModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F539F19F2528A63B0080412A /* FeedStreamModel.swift */; };
+		67B942742574080000412CDC /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B942732574080000412CDC /* Settings.swift */; };
+		67B94276257451ED00412CDC /* PodcastClientRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B94275257451EC00412CDC /* PodcastClientRow.swift */; };
 		F56832D8253E2D8100730B7A /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56832D7253E2D8100730B7A /* PostView.swift */; };
 		F5822FB2253A11F900AAA348 /* CustomShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5822FB0253A11F900AAA348 /* CustomShareViewController.swift */; };
 		F5822FB3253A11F900AAA348 /* CustomShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5822FB1253A11F900AAA348 /* CustomShareViewController.xib */; };
@@ -103,6 +105,9 @@
 		67AB12812544879B001CC7ED /* TwitterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterService.swift; sourceTree = "<group>"; };
 		67AB1287254487E0001CC7ED /* OnboardingLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingLogin.swift; sourceTree = "<group>"; };
 		67AB129D25448D5E001CC7ED /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
+		67B942732574080000412CDC /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		67B94275257451EC00412CDC /* PodcastClientRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastClientRow.swift; sourceTree = "<group>"; };
+		67B942772574525E00412CDC /* PodcastClientRow.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PodcastClientRow.graphql; sourceTree = "<group>"; };
 		F51CA091252785B80091710E /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		F51CA094252785B80091710E /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		F539F19F2528A63B0080412A /* FeedStreamModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStreamModel.swift; sourceTree = "<group>"; };
@@ -199,6 +204,9 @@
 				F5961CF32517937D00F93697 /* FeedShareApp.swift */,
 				670F00F3256C3CFB00A05BB6 /* Loading.swift */,
 				670F00F5256C4F3F00A05BB6 /* Tabbar.swift */,
+				67B942732574080000412CDC /* Settings.swift */,
+				67B94275257451EC00412CDC /* PodcastClientRow.swift */,
+				67B942772574525E00412CDC /* PodcastClientRow.graphql */,
 				F51CA094252785B80091710E /* API.swift */,
 				F51CA091252785B80091710E /* Network.swift */,
 				67970D302557602800BD891D /* UserManagementInterceptor.swift */,
@@ -474,6 +482,7 @@
 				67970D4A25608FAF00BD891D /* API.swift in Sources */,
 				67970D4F25608FB500BD891D /* OnboardingLogin.swift in Sources */,
 				670F00EF256AD1B300A05BB6 /* OnboardingFeedlink.swift in Sources */,
+				67B94276257451ED00412CDC /* PodcastClientRow.swift in Sources */,
 				67970D4B25608FAF00BD891D /* UserManagementInterceptor.swift in Sources */,
 				670F00E62569C14000A05BB6 /* Onboarding.swift in Sources */,
 				67970D4D25608FB500BD891D /* FeedStream.swift in Sources */,
@@ -482,6 +491,7 @@
 				670F00F6256C4F3F00A05BB6 /* Tabbar.swift in Sources */,
 				670F00E82569C27400A05BB6 /* OnboardingNotifications.swift in Sources */,
 				67970D5125608FB500BD891D /* RefreshableScrollView.swift in Sources */,
+				67B942742574080000412CDC /* Settings.swift in Sources */,
 				670F00F4256C3CFB00A05BB6 /* Loading.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

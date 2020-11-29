@@ -73,7 +73,6 @@ class TwitterService: NSObject, ObservableObject {
                                                                oauthVerifier: verifier)
                 self.requestAccessToken(args: accessTokenInput) { accessTokenResponse in
                     // Process Completed Successfully!
-                    print(accessTokenResponse)
                     DispatchQueue.main.async {
                         viewerModel.twitterSignIn(
                             twitterId: accessTokenResponse.userId,

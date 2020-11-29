@@ -56,8 +56,11 @@ public class FeedStreamModel: ObservableObject {
                             cache.shares.edges?.append(contentsOf: contents)
                         }
                     } catch {
-                        // create cache
-                        try transaction.write(data: graphQLResult.data!, forQuery: FeedStreamModelQuery())
+                        
+                        if let data = graphQLResult.data {
+                            // create cache
+                            try transaction.write(data: data, forQuery: FeedStreamModelQuery())
+                        }
                     }
                 }
 

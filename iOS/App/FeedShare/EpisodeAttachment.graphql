@@ -1,11 +1,12 @@
 fragment EpisodeAttachmentFragment on Episode {
   title
-  artwork
+  artwork(size: 65, scale: 2)
   durationSeconds
   description
   podcast {
     title
     description
     publisher
+    artwork(size: 65, scale: 2)
   }
 }

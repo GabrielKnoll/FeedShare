@@ -25,7 +25,7 @@ public struct EpisodeAttachment: View {
 
     public var body: some View {
         HStack(alignment: .center, spacing: 10) {
-            if let url = URL(string: data.artwork ?? "") {
+            if let url = URL(string: data.podcast.artwork ?? "") {
                 URLImage(url, placeholder: Image(systemName: "circle")) { proxy in
                     proxy.image
                         .resizable()
@@ -36,6 +36,7 @@ public struct EpisodeAttachment: View {
             VStack(alignment: .leading, spacing: 3) {
                 Text(data.title)
                     .font(.headline)
+                    .lineLimit(1)
                 Text(data.podcast.title)
                     .font(.subheadline)
                     .foregroundColor(.secondary)

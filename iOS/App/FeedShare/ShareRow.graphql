@@ -2,7 +2,7 @@ fragment ShareFragment on Share {
   author {
     handle
     displayName
-    profilePicture
+    profilePicture(size: 100, scale: 2)
   }
   message
   createdAt

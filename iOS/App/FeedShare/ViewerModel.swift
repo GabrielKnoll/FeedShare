@@ -12,9 +12,9 @@ import Network
 public class ViewerModel: ObservableObject {
     static let shared = ViewerModel()
     
-    @Published var viewerClient: ViewerClient? = {
+    @Published var viewerClient: Client? = {
         if let resultMap = UserDefaults.standard.dictionary(forKey: "ViewerClient") {
-            return ViewerClient(unsafeResultMap: resultMap)
+            return Client(unsafeResultMap: resultMap)
         }
         return nil
     }() {
@@ -47,7 +47,7 @@ public class ViewerModel: ObservableObject {
                     self.fetch(fetchNew: true)
                 }
             case let .failure(error):
-                self.viewer = nil
+                self.logout()
                 print("viewerModel fetch Failure! Error: \(error)")
             }
             self.initialized = true
@@ -68,13 +68,12 @@ public class ViewerModel: ObservableObject {
                 self.viewer = viewerFragment
                 // manually update ViewerModelQuery cache
                 Network.shared.apollo.store.withinReadWriteTransaction { transaction in
-                    try transaction.update(query: ViewerModelQuery()) { (cache: inout ViewerModelQuery.Data) in
-                        if cache.viewer != nil {
-                            cache.viewer?.fragments.viewerFragment = viewerFragment
-                        } else {
-                            cache.viewer = ViewerModelQuery.Data.Viewer(unsafeResultMap: viewerFragment.resultMap)
-                        }
-                    }
+                    let data = try ViewerModelQuery.Data(
+                        viewer: ViewerModelQuery.Data.Viewer(
+                            ViewerFragment(unsafeResultMap: viewerFragment.resultMap)
+                        )
+                    )
+                    try transaction.write(data: data, forQuery: ViewerModelQuery())
                 }
                 
             case let .failure(error):

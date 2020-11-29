@@ -5,7 +5,7 @@ fragment ViewerFragment on Viewer {
     id
     handle
     displayName
-    profilePicture
+    profilePicture(size: 100, scale: 2)
   }
 }
 

@@ -15,12 +15,15 @@ struct FeedShareApp: App {
     var body: some Scene {
         WindowGroup {
             ZStack {
-                Loading()
-                if self.viewerModel.setupFinshed {
-                    FeedStream()
-                    Tabbar()
+                if viewerModel.initialized {
+                    if viewerModel.setupFinshed, viewerModel.viewer != nil {
+                        FeedStream()
+                        Tabbar()
+                    } else {
+                        Onboarding()
+                    }
                 } else {
-                    Onboarding()
+                    Loading()
                 }
             }
             .environmentObject(viewerModel)

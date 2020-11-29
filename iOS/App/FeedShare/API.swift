@@ -8,9 +8,9 @@ public enum PodcastClientId: RawRepresentable, Equatable, Hashable, CaseIterable
   public typealias RawValue = String
   case applePodcasts
   case castro
+  case googlePodcasts
   case overcast
   case pocketCasts
-  case spotify
   /// Auto generated constant for unknown enum values
   case __unknown(RawValue)
 
@@ -18,9 +18,9 @@ public enum PodcastClientId: RawRepresentable, Equatable, Hashable, CaseIterable
     switch rawValue {
       case "ApplePodcasts": self = .applePodcasts
       case "Castro": self = .castro
+      case "GooglePodcasts": self = .googlePodcasts
       case "Overcast": self = .overcast
       case "PocketCasts": self = .pocketCasts
-      case "Spotify": self = .spotify
       default: self = .__unknown(rawValue)
     }
   }
@@ -29,9 +29,9 @@ public enum PodcastClientId: RawRepresentable, Equatable, Hashable, CaseIterable
     switch self {
       case .applePodcasts: return "ApplePodcasts"
       case .castro: return "Castro"
+      case .googlePodcasts: return "GooglePodcasts"
       case .overcast: return "Overcast"
       case .pocketCasts: return "PocketCasts"
-      case .spotify: return "Spotify"
       case .__unknown(let value): return value
     }
   }
@@ -40,9 +40,9 @@ public enum PodcastClientId: RawRepresentable, Equatable, Hashable, CaseIterable
     switch (lhs, rhs) {
       case (.applePodcasts, .applePodcasts): return true
       case (.castro, .castro): return true
+      case (.googlePodcasts, .googlePodcasts): return true
       case (.overcast, .overcast): return true
       case (.pocketCasts, .pocketCasts): return true
-      case (.spotify, .spotify): return true
       case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
       default: return false
     }
@@ -52,9 +52,9 @@ public enum PodcastClientId: RawRepresentable, Equatable, Hashable, CaseIterable
     return [
       .applePodcasts,
       .castro,
+      .googlePodcasts,
       .overcast,
       .pocketCasts,
-      .spotify,
     ]
   }
 }
@@ -280,14 +280,14 @@ public final class PodcastClientsQuery: GraphQLQuery {
     query PodcastClients {
       podcastClient {
         __typename
-        ...ViewerClient
+        ...Client
       }
     }
     """
 
   public let operationName: String = "PodcastClients"
 
-  public var queryDocument: String { return operationDefinition.appending("\n" + ViewerClient.fragmentDefinition) }
+  public var queryDocument: String { return operationDefinition.appending("\n" + Client.fragmentDefinition) }
 
   public init() {
   }
@@ -326,7 +326,7 @@ public final class PodcastClientsQuery: GraphQLQuery {
       public static var selections: [GraphQLSelection] {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLFragmentSpread(ViewerClient.self),
+          GraphQLFragmentSpread(Client.self),
         ]
       }
 
@@ -365,9 +365,9 @@ public final class PodcastClientsQuery: GraphQLQuery {
           self.resultMap = unsafeResultMap
         }
 
-        public var viewerClient: ViewerClient {
+        public var client: Client {
           get {
-            return ViewerClient(unsafeResultMap: resultMap)
+            return Client(unsafeResultMap: resultMap)
           }
           set {
             resultMap += newValue.resultMap
@@ -598,7 +598,7 @@ public struct EpisodeAttachmentFragment: GraphQLFragment {
     fragment EpisodeAttachmentFragment on Episode {
       __typename
       title
-      artwork
+      artwork(size: 65, scale: 2)
       durationSeconds
       description
       podcast {
@@ -606,6 +606,7 @@ public struct EpisodeAttachmentFragment: GraphQLFragment {
         title
         description
         publisher
+        artwork(size: 65, scale: 2)
       }
     }
     """
@@ -616,7 +617,7 @@ public struct EpisodeAttachmentFragment: GraphQLFragment {
     return [
       GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
       GraphQLField("title", type: .nonNull(.scalar(String.self))),
-      GraphQLField("artwork", type: .scalar(String.self)),
+      GraphQLField("artwork", arguments: ["size": 65, "scale": 2], type: .scalar(String.self)),
       GraphQLField("durationSeconds", type: .scalar(Int.self)),
       GraphQLField("description", type: .scalar(String.self)),
       GraphQLField("podcast", type: .nonNull(.object(Podcast.selections))),
@@ -696,6 +697,7 @@ public struct EpisodeAttachmentFragment: GraphQLFragment {
         GraphQLField("title", type: .nonNull(.scalar(String.self))),
         GraphQLField("description", type: .scalar(String.self)),
         GraphQLField("publisher", type: .nonNull(.scalar(String.self))),
+        GraphQLField("artwork", arguments: ["size": 65, "scale": 2], type: .scalar(String.self)),
       ]
     }
 
@@ -705,8 +707,8 @@ public struct EpisodeAttachmentFragment: GraphQLFragment {
       self.resultMap = unsafeResultMap
     }
 
-    public init(title: String, description: String? = nil, publisher: String) {
-      self.init(unsafeResultMap: ["__typename": "Podcast", "title": title, "description": description, "publisher": publisher])
+    public init(title: String, description: String? = nil, publisher: String, artwork: String? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Podcast", "title": title, "description": description, "publisher": publisher, "artwork": artwork])
     }
 
     public var __typename: String {
@@ -744,14 +746,23 @@ public struct EpisodeAttachmentFragment: GraphQLFragment {
         resultMap.updateValue(newValue, forKey: "publisher")
       }
     }
+
+    public var artwork: String? {
+      get {
+        return resultMap["artwork"] as? String
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "artwork")
+      }
+    }
   }
 }
 
-public struct ViewerClient: GraphQLFragment {
+public struct Client: GraphQLFragment {
   /// The raw GraphQL definition of this fragment.
   public static let fragmentDefinition: String =
     """
-    fragment ViewerClient on PodcastClient {
+    fragment Client on PodcastClient {
       __typename
       id
       icon
@@ -827,7 +838,7 @@ public struct ShareFragment: GraphQLFragment {
         __typename
         handle
         displayName
-        profilePicture
+        profilePicture(size: 100, scale: 2)
       }
       message
       createdAt
@@ -913,7 +924,7 @@ public struct ShareFragment: GraphQLFragment {
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("handle", type: .nonNull(.scalar(String.self))),
         GraphQLField("displayName", type: .scalar(String.self)),
-        GraphQLField("profilePicture", type: .scalar(String.self)),
+        GraphQLField("profilePicture", arguments: ["size": 100, "scale": 2], type: .scalar(String.self)),
       ]
     }
 
@@ -1030,7 +1041,7 @@ public struct ViewerFragment: GraphQLFragment {
         id
         handle
         displayName
-        profilePicture
+        profilePicture(size: 100, scale: 2)
       }
     }
     """
@@ -1101,7 +1112,7 @@ public struct ViewerFragment: GraphQLFragment {
         GraphQLField("id", type: .nonNull(.scalar(String.self))),
         GraphQLField("handle", type: .nonNull(.scalar(String.self))),
         GraphQLField("displayName", type: .scalar(String.self)),
-        GraphQLField("profilePicture", type: .scalar(String.self)),
+        GraphQLField("profilePicture", arguments: ["size": 100, "scale": 2], type: .scalar(String.self)),
       ]
     }
 
