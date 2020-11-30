@@ -19,7 +19,7 @@ struct RefreshableScrollView<Content: View>: View {
     }
 
     var body: some View {
-        return VStack {
+        VStack {
             ScrollView {
                 ZStack(alignment: .top) {
                     MovingView()
@@ -152,7 +152,7 @@ enum RefreshableKeyTypes {
 
 struct ActivityRep: UIViewRepresentable {
     func makeUIView(context _: UIViewRepresentableContext<ActivityRep>) -> UIActivityIndicatorView {
-        return UIActivityIndicatorView()
+        UIActivityIndicatorView()
     }
 
     func updateUIView(_ uiView: UIActivityIndicatorView, context _: UIViewRepresentableContext<ActivityRep>) {

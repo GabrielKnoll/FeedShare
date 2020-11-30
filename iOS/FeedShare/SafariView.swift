@@ -40,7 +40,7 @@ struct SafariView: UIViewControllerRepresentable {
     @Binding var url: URL?
 
     func makeUIViewController(context _: UIViewControllerRepresentableContext<SafariView>) -> CustomSafariViewController {
-        return CustomSafariViewController()
+        CustomSafariViewController()
     }
 
     func updateUIViewController(_ safariViewController: CustomSafariViewController,

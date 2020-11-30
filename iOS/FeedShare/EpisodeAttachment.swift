@@ -61,7 +61,7 @@ public struct EpisodeAttachment: View {
 
 struct Attachment_Previews: PreviewProvider {
     static var previews: some View {
-        return VStack {
+        VStack {
             // swiftlint:disable force_unwrapping
 //            AttachmentItem(data: results.first!.episode)
 //            AttachmentItem(data: results[1].episode)

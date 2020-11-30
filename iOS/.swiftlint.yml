@@ -5,6 +5,9 @@ disabled_rules: # rule identifiers to exclude from running
   - identifier_name
   - trailing_whitespace
   - multiple_closures_with_trailing_closure
+  - trailing_comma
+  - opening_brace
+  - superfluous_disable_command
 
 opt_in_rules: # some rules are only opt-in
   - closure_end_indentation

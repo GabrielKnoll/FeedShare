@@ -103,7 +103,7 @@ class EditorCoordinator: NSObject, UITextViewDelegate {
 
 struct ShareRow_Previews: PreviewProvider {
     static var previews: some View {
-        return Group {
+        Group {
             VStack {
                 // swiftlint:disable force_unwrapping
                 //				ShareRow(data: results.first!, isEditable: false)
