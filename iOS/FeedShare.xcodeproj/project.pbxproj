@@ -17,6 +17,7 @@
 		6734F2A825609DC400BB95E5 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 6734F2A725609DC400BB95E5 /* URLImage */; };
 		6734F2AA25609DC400BB95E5 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 6734F2A925609DC400BB95E5 /* Apollo */; };
 		6734F2AC25609DC400BB95E5 /* ApolloSQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 6734F2AB25609DC400BB95E5 /* ApolloSQLite */; };
+		67578480257476D500BC8548 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6757847F257476D500BC8548 /* R.generated.swift */; };
 		67970D4925608FAF00BD891D /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51CA091252785B80091710E /* Network.swift */; };
 		67970D4B25608FAF00BD891D /* UserManagementInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67970D302557602800BD891D /* UserManagementInterceptor.swift */; };
 		67970D4D25608FB500BD891D /* FeedStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59828AC25278FA400A8C2CB /* FeedStream.swift */; };
@@ -38,7 +39,6 @@
 		F5822FB7253A14FE00AAA348 /* ShareNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5822FB6253A14FE00AAA348 /* ShareNavigationController.swift */; };
 		F5887B72251F4C3C00010D30 /* FeedShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F5887B68251F4C3C00010D30 /* FeedShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F5961CF42517937D00F93697 /* FeedShareApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5961CF32517937D00F93697 /* FeedShareApp.swift */; };
-		F5D9B32F25166A990079F47B /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D9B32E25166A990079F47B /* R.generated.swift */; };
 		F5D9B34525166C4B0079F47B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F5D9B34725166C4B0079F47B /* Localizable.strings */; };
 		F5E7F8F02516527B0036448D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5E7F8EF2516527B0036448D /* Assets.xcassets */; };
 		F5E7F8F32516527B0036448D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5E7F8F22516527B0036448D /* Preview Assets.xcassets */; };
@@ -87,6 +87,7 @@
 		670F00EE256AD1B300A05BB6 /* OnboardingFeedlink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeedlink.swift; sourceTree = "<group>"; };
 		670F00F3256C3CFB00A05BB6 /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
 		670F00F5256C4F3F00A05BB6 /* Tabbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tabbar.swift; sourceTree = "<group>"; };
+		6757847F257476D500BC8548 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		67870FAF2550CE66005F89DD /* ViewerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewerModel.swift; sourceTree = "<group>"; };
 		67970D302557602800BD891D /* UserManagementInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagementInterceptor.swift; sourceTree = "<group>"; };
 		67970D462558ADF400BD891D /* ViewerModel.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ViewerModel.graphql; sourceTree = "<group>"; };
@@ -114,7 +115,6 @@
 		F59828AA25278FA400A8C2CB /* FeedStreamModel.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FeedStreamModel.graphql; sourceTree = "<group>"; };
 		F59828AB25278FA400A8C2CB /* RefreshableScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshableScrollView.swift; sourceTree = "<group>"; };
 		F59828AC25278FA400A8C2CB /* FeedStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedStream.swift; sourceTree = "<group>"; };
-		F5D9B32E25166A990079F47B /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		F5D9B34625166C4B0079F47B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F5D9B34825166D5C0079F47B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F5D9B34A251675700079F47B /* Rswift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Rswift.framework; path = ../Frameworks/Carthage/Build/iOS/Rswift.framework; sourceTree = "<group>"; };
@@ -235,7 +235,7 @@
 			isa = PBXGroup;
 			children = (
 				67B9427925745F2900412CDC /* API.swift */,
-				F5D9B32E25166A990079F47B /* R.generated.swift */,
+				6757847F257476D500BC8548 /* R.generated.swift */,
 				F5E7F8F42516527B0036448D /* Info.plist */,
 				F5D9B34725166C4B0079F47B /* Localizable.strings */,
 			);
@@ -364,7 +364,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		67970D5A2560936300BD891D /* Apollo GraphQL codegen */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputFileListPaths = (
@@ -382,7 +382,7 @@
 		};
 		67B9427825745D9B00412CDC /* SwiftFormat */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputFileListPaths = (
@@ -400,7 +400,7 @@
 		};
 		F5E7F90A251653520036448D /* RSwift */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputFileListPaths = (
@@ -453,7 +453,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F5D9B32F25166A990079F47B /* R.generated.swift in Sources */,
 				67970D5525608FBC00BD891D /* TwitterService.swift in Sources */,
 				F5961CF42517937D00F93697 /* FeedShareApp.swift in Sources */,
 				67970D4925608FAF00BD891D /* Network.swift in Sources */,
@@ -466,6 +465,7 @@
 				670F00EF256AD1B300A05BB6 /* OnboardingFeedlink.swift in Sources */,
 				67B94276257451ED00412CDC /* PodcastClientRow.swift in Sources */,
 				67970D4B25608FAF00BD891D /* UserManagementInterceptor.swift in Sources */,
+				67578480257476D500BC8548 /* R.generated.swift in Sources */,
 				670F00E62569C14000A05BB6 /* Onboarding.swift in Sources */,
 				67970D4D25608FB500BD891D /* FeedStream.swift in Sources */,
 				670F00EA2569CE4800A05BB6 /* OnboardingPodcastClient.swift in Sources */,

@@ -95,5 +95,4 @@ fastlane/screenshots/de-DE
 fastlane/test_output
 
 # R.swift
-*.generated.swift
 .env
