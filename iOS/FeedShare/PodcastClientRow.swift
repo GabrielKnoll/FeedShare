@@ -19,12 +19,7 @@ public struct PodcastClientRow: View {
         Button(action: {}) {
             HStack {
                 HStack {
-                    URLImage(URL(string: client.icon)!, placeholder: Image(systemName: "circle")) { proxy in
-                        proxy.image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .clipped()
-                    }.frame(width: 44.0, height: 44.0).cornerRadius(10)
+                    Artwork(url: client.icon, size: 44.0)
                     Text(client.displayName)
                     Spacer()
                     Image(systemName: "chevron.right")

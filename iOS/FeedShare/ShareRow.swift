@@ -23,16 +23,7 @@ public struct ShareRow: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: 15) {
             HStack(alignment: .center, spacing: 10) {
-                if let pp = data.author.profilePicture, let url = URL(string: pp) {
-                    URLImage(url, placeholder: Image(systemName: "circle")) { proxy in
-                        proxy.image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .clipped()
-                    }
-                    .frame(width: 36.0, height: 36.0)
-                    .cornerRadius(18)
-                }
+                ProfilePicture(url: data.author.profilePicture, size: 36.0)
                 VStack(alignment: .leading) {
                     if let displayName = data.author.displayName {
                         Text(displayName)

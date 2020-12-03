@@ -1,5 +1,4 @@
 import SwiftUI
-import URLImage
 
 public struct OnboardingPodcastClient: View {
     @StateObject var model = OnboardingPodcastClientModel()
@@ -14,16 +13,7 @@ public struct OnboardingPodcastClient: View {
                     viewerModel.viewerClient = client
                     onNext()
                 }) {
-                    HStack {
-                        URLImage(URL(string: client.icon)!, placeholder: Image(systemName: "circle")) { proxy in
-                            proxy.image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .clipped()
-                        }.frame(width: 44.0, height: 44.0).cornerRadius(10)
-                        Text(client.displayName)
-                        Spacer()
-                    }.padding(10)
+                    PodcastClientRow(client: client)
                 }
             }
         }
