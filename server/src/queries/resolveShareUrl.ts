@@ -44,27 +44,29 @@ export default extendType({
           parserResult.feeds,
         );
 
-        let episode: Episode | undefined;
-        if (podcast) {
-          episode = await fetchEpisode(
-            podcast.id,
-            parserResult.enclosureUrl,
-            parserResult.episodeTitle,
-            url,
-          );
+        if (!podcast) {
+          return {};
         }
+        const episode = await fetchEpisode(
+          podcast.id,
+          parserResult.enclosureUrl,
+          parserResult.episodeTitle,
+          url,
+        );
 
         // log resolve
         const payload = {
           url,
-          episode: {
-            connect: {
-              id: episode?.id,
-            },
-          },
+          episode: episode
+            ? {
+                connect: {
+                  id: episode.id,
+                },
+              }
+            : undefined,
           podcast: {
             connect: {
-              id: podcast?.id,
+              id: podcast.id,
             },
           },
         };
