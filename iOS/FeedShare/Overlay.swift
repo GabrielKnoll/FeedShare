@@ -12,6 +12,11 @@ public struct Overlay<Content: View>: View {
     
     @EnvironmentObject var viewerModel: ViewerModel
     @Binding var visible: Bool {
+        willSet {
+            if !newValue {
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            }
+        }
         didSet {
             self.offset = 0
         }

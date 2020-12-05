@@ -11,13 +11,14 @@ import SwiftUI
 struct FeedShareApp: App {
     @ObservedObject var viewerModel = ViewerModel.shared
     @State private var settingsVisible = false
+    @State private var composerVisible = false
     
     var body: some Scene {
         WindowGroup {
             ZStack {
                 if viewerModel.initialized {
                     if viewerModel.setupFinshed, viewerModel.viewer != nil {
-                        FeedStream()
+                        FeedStream(visible: $composerVisible)
                         VStack {
                             Spacer()
                             HStack {
@@ -39,6 +40,7 @@ struct FeedShareApp: App {
                             .foregroundColor(Color.black)
                         }
                         Settings(visible: $settingsVisible)
+                        Composer(visible: $composerVisible)
                     } else {
                         Onboarding()
                     }

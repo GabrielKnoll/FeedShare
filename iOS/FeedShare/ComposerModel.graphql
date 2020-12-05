@@ -1,0 +1,27 @@
+query Resolve($url: String!) {
+  resolveShareUrl(url: $url) {
+    episode {
+      ...EpisodeAttachmentFragment
+    }
+    podcast {
+      id
+      ...ComposerPodcastFragment
+      latestEpisodes {
+        ...EpisodeAttachmentFragment
+      }
+    }
+  }
+}
+
+query FindPodcast($query: String!) {
+  findPodcast(query: $query) {
+    ...ComposerPodcastFragment
+  }
+}
+
+fragment ComposerPodcastFragment on Podcast {
+  id
+  title
+  publisher
+  artwork(size: 70, scale: 2)
+}
