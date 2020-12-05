@@ -4,6 +4,7 @@ import {asNexusMethod, fieldAuthorizePlugin, makeSchema} from '@nexus/schema';
 import resolveShareUrl from './queries/resolveShareUrl';
 import viewer from './queries/viewer';
 import shares from './queries/shares';
+import findPodcast from './queries/findPodcast';
 import podcastClient from './queries/podcastClient';
 import createViewer from './mutations/createViewer';
 import createShare from './mutations/createShare';
@@ -49,6 +50,7 @@ export default makeSchema({
     shares,
     viewer,
     podcastClient,
+    findPodcast,
 
     // mutations
     createViewer,

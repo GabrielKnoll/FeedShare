@@ -1,4 +1,9 @@
-import {Episode, EpisodeCreateInput, Podcast} from '@prisma/client';
+import {
+  Episode,
+  EpisodeCreateInput,
+  PodcastCreateInput,
+  Podcast,
+} from '@prisma/client';
 import PodcastIndexClient from 'podcastdx-client';
 import {ApiResponse} from 'podcastdx-client/dist/types';
 import env from './env';
@@ -40,7 +45,9 @@ async function podcastFromFeeds(feeds: string[]) {
     .catch((result: ApiResponse.Podcast) => result);
 
   if (apiResponse) {
-    return await podcastFromApiResponse(apiResponse);
+    return await prismaClient.podcast.create({
+      data: podcastFromApiResponse(apiResponse.feed),
+    });
   }
 }
 
@@ -56,24 +63,26 @@ async function podcastFromItunesId(itunesId: number) {
 
   const apiResponse = await podcastIndexClient.podcastByItunesId(itunesId);
   if (apiResponse?.status === ApiResponse.Status.Success) {
-    return await podcastFromApiResponse(apiResponse);
+    return await prismaClient.podcast.create({
+      data: podcastFromApiResponse(apiResponse.feed),
+    });
   }
 }
 
-async function podcastFromApiResponse(apiResponse: ApiResponse.Podcast) {
-  return await prismaClient.podcast.create({
-    data: {
-      id: apiResponse.feed.id,
-      feed: apiResponse.feed.url,
-      title: apiResponse.feed.title,
-      itunesId: apiResponse.feed.itunesId,
-      description: apiResponse.description,
-      publisher: apiResponse.feed.author,
-      artwork: apiResponse.feed.image,
-      url: apiResponse.feed.link,
-      apiResponse: apiResponse as any,
-    },
-  });
+function podcastFromApiResponse(
+  apiResponse: ApiResponse.PodcastFeed,
+): PodcastCreateInput {
+  return {
+    id: apiResponse.id,
+    feed: apiResponse.url,
+    title: apiResponse.title,
+    itunesId: apiResponse.itunesId,
+    description: apiResponse.description,
+    publisher: apiResponse.author,
+    artwork: apiResponse.image,
+    url: apiResponse.link,
+    apiResponse: apiResponse as any,
+  };
 }
 
 export async function fetchPodcast(
@@ -177,6 +186,27 @@ export async function latestEpisodes(
           update: episodeFromApiResponse(apiResponse),
           where: {
             id: apiResponse.id,
+          },
+        }),
+      ),
+    );
+  }
+  return null;
+}
+
+export async function findPodcast(
+  query: string,
+  limit: number = 10,
+): Promise<Podcast[] | null> {
+  const res = await podcastIndexClient.search(query);
+  if (res.status === ApiResponse.Status.Success) {
+    return await Promise.all(
+      res.feeds.slice(0, limit).map((feed) =>
+        prismaClient.podcast.upsert({
+          create: podcastFromApiResponse(feed),
+          update: podcastFromApiResponse(feed),
+          where: {
+            id: feed.id,
           },
         }),
       ),
