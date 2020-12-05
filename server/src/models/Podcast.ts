@@ -5,12 +5,14 @@ import {latestEpisodes} from '../utils/podcastIndex';
 import imageField from '../utils/imageField';
 import UnreachableCaseError from '../utils/UnreachableCaseError';
 import PodcastClientId from './PodcastClientId';
+import Node from './Node';
 
 export default objectType({
   name: 'Podcast',
   definition(t) {
+    t.implements(Node);
     imageField(t, 'artwork');
-    t.model.id();
+
     t.model.title();
     t.model.description();
     t.model.feed();

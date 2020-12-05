@@ -29,8 +29,13 @@ The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](
 scalar JSONObject
 
 type Mutation {
-  createShare(episodeId: Int!, message: String): Share
+  createShare(episodeId: ID!, message: String): Share
   createViewer(twitterId: String!, twitterToken: String!, twitterTokenSecret: String!): Viewer
+}
+
+interface Node {
+  """Unique identifier for the resource"""
+  id: ID!
 }
 
 type PageInfo {
@@ -40,11 +45,13 @@ type PageInfo {
   startCursor: String
 }
 
-type Podcast {
+type Podcast implements Node {
   artwork(scale: Int!, size: Int!): String
   description: String
   feed: String!
-  id: Int!
+
+  """Unique identifier for the resource"""
+  id: ID!
   latestEpisodes(length: Int = 10): [Episode]
   publisher: String!
   subscribeLink(client: PodcastClientId): String
@@ -67,6 +74,7 @@ enum PodcastClientId {
 
 type Query {
   findPodcast(query: String!): [Podcast]
+  node(id: ID!): Node
   podcastClient: [PodcastClient]
   resolveShareUrl(url: String!): ResolvedShareUrl
   shares(after: String, before: String, feedType: FeedType, last: Int!): ShareConnection!
@@ -78,11 +86,13 @@ type ResolvedShareUrl {
   podcast: Podcast
 }
 
-type Share {
+type Share implements Node {
   author: User!
   createdAt: DateTime!
   episode: Episode!
-  id: String!
+
+  """Unique identifier for the resource"""
+  id: ID!
   message: String
 }
 

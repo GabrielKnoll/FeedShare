@@ -1,4 +1,4 @@
-import {extendType, stringArg, intArg} from '@nexus/schema';
+import {extendType, stringArg, idArg} from '@nexus/schema';
 import requireAuthorization from '../utils/requireAuthorization';
 
 export default extendType({
@@ -10,7 +10,7 @@ export default extendType({
         message: stringArg({
           required: false,
         }),
-        episodeId: intArg({
+        episodeId: idArg({
           required: true,
         }),
       },
@@ -20,7 +20,7 @@ export default extendType({
           data: {
             episode: {
               connect: {
-                id: episodeId,
+                id: parseInt(episodeId, 10),
               },
             },
             message: message,

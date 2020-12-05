@@ -2,11 +2,13 @@ import {objectType} from '@nexus/schema';
 import {ShareWhereInput} from '@prisma/client';
 import {FeedTypeEnum} from '../models/FeedType';
 import {Context} from '../utils/context';
+import Node from './Node';
 
 export default objectType({
   name: 'Share',
   definition(t) {
-    t.model.id();
+    t.implements(Node);
+
     t.model.author();
     t.model.message();
     t.model.createdAt();

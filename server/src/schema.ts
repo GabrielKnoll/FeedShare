@@ -5,9 +5,11 @@ import resolveShareUrl from './queries/resolveShareUrl';
 import viewer from './queries/viewer';
 import shares from './queries/shares';
 import findPodcast from './queries/findPodcast';
+import node from './queries/node';
 import podcastClient from './queries/podcastClient';
 import createViewer from './mutations/createViewer';
 import createShare from './mutations/createShare';
+import Node from './models/Node';
 import User from './models/User';
 import Viewer from './models/Viewer';
 import Podcast from './models/Podcast';
@@ -35,7 +37,8 @@ export default makeSchema({
     asNexusMethod(JSONObjectResolver, 'json'),
     asNexusMethod(DateTimeResolver, 'date'),
 
-    // modesl
+    // models
+    Node,
     Viewer,
     User,
     Podcast,
@@ -51,6 +54,7 @@ export default makeSchema({
     viewer,
     podcastClient,
     findPodcast,
+    node,
 
     // mutations
     createViewer,
