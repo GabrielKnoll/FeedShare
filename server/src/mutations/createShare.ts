@@ -1,4 +1,4 @@
-import {extendType, stringArg, idArg} from '@nexus/schema';
+import {extendType, stringArg, idArg, nonNull} from '@nexus/schema';
 import requireAuthorization from '../utils/requireAuthorization';
 
 export default extendType({
@@ -7,12 +7,8 @@ export default extendType({
     t.field('createShare', {
       type: 'Share',
       args: {
-        message: stringArg({
-          required: false,
-        }),
-        episodeId: idArg({
-          required: true,
-        }),
+        message: stringArg(),
+        episodeId: nonNull(idArg()),
       },
       ...requireAuthorization,
       resolve: async (_, {message, episodeId}, {prismaClient, userId}) =>
@@ -20,7 +16,7 @@ export default extendType({
           data: {
             episode: {
               connect: {
-                id: parseInt(episodeId, 10),
+                id: episodeId,
               },
             },
             message: message,

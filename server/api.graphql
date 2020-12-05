@@ -7,12 +7,14 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 """
 scalar DateTime
 
-type Episode {
+type Episode implements Node {
   artwork(scale: Int!, size: Int!): String
   datePublished: DateTime!
   description: String
   durationSeconds: Int
-  id: Int!
+
+  """Unique identifier for the resource"""
+  id: ID!
   podcast: Podcast!
   title: String!
 }
@@ -58,10 +60,12 @@ type Podcast implements Node {
   title: String!
 }
 
-type PodcastClient {
+type PodcastClient implements Node {
   displayName: String!
   icon: String!
-  id: PodcastClientId!
+
+  """Unique identifier for the resource"""
+  id: ID!
 }
 
 enum PodcastClientId {
@@ -106,11 +110,12 @@ type ShareEdge {
   node: Share
 }
 
-type User {
+type User implements Node {
   displayName: String
   handle: String!
-  id: String!
-  isViewer: Boolean
+
+  """Unique identifier for the resource"""
+  id: ID!
   profilePicture(scale: Int!, size: Int!): String
 }
 

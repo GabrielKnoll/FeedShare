@@ -1,9 +1,11 @@
 import {objectType} from '@nexus/schema';
+import Node from './Node';
 
 export default objectType({
   name: 'PodcastClient',
   definition(t) {
-    t.model.id();
+    t.implements(Node);
+
     t.model.displayName();
     t.model.icon();
   },

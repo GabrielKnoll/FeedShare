@@ -1,12 +1,23 @@
 import {interfaceType} from '@nexus/schema';
+import {
+  NexusGenInterfaces,
+  NexusGenFieldTypes,
+  NexusGenAbstractTypeMembers,
+} from 'nexus-typegen';
 
 export default interfaceType({
   name: 'Node',
-  resolveType: () => 'Podcast' as const,
+  resolveType: (node) =>
+    ((node as any) as {__typename: NexusGenAbstractTypeMembers['Node']})
+      .__typename,
   definition(t) {
-    t.id('id', {
+    t.nonNull.id('id', {
       description: 'Unique identifier for the resource',
-      nullable: false,
+      resolve: (node, _args, _ctx, {parentType}) => {
+        return `${parentType.name}:${
+          (node as NexusGenInterfaces['Node'] & NexusGenFieldTypes['Node']).id
+        }`;
+      },
     });
   },
 });

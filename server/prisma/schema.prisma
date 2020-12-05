@@ -33,7 +33,7 @@ model Share {
   id        String   @id @default(uuid())
   authorId  String
   author    User     @relation(fields: [authorId], references: [id])
-  episodeId Int
+  episodeId String
   episode   Episode  @relation(fields: [episodeId], references: [id])
   message   String?
   createdAt DateTime @default(now())
@@ -42,11 +42,11 @@ model Share {
 }
 
 model Episode {
-  id              Int          @id
+  id              String       @id
   title           String
   share           Share[]
   podcast         Podcast      @relation(fields: [podcastId], references: [id])
-  podcastId       Int
+  podcastId       String
   description     String?
   durationSeconds Int?
   enclosureUrl    String
@@ -60,7 +60,7 @@ model Episode {
 }
 
 model Podcast {
-  id          Int          @id
+  id          String       @id
   title       String
   Episode     Episode[]
   itunesId    Int          @unique
@@ -78,8 +78,8 @@ model UrlResolve {
   createdAt DateTime @default(now())
   podcast   Podcast? @relation(fields: [podcastId], references: [id])
   episode   Episode? @relation(fields: [episodeId], references: [id])
-  episodeId Int?
-  podcastId Int?
+  episodeId String?
+  podcastId String?
 }
 
 enum PodcastClientId {

@@ -1,4 +1,4 @@
-import {extendType, stringArg, objectType} from '@nexus/schema';
+import {extendType, stringArg, objectType, nonNull} from '@nexus/schema';
 import requireAuthorization from '../utils/requireAuthorization';
 import {Episode} from '@prisma/client';
 import URL from 'url';
@@ -20,18 +20,14 @@ export default extendType({
         definition(t) {
           t.field('episode', {
             type: 'Episode',
-            nullable: true,
           });
           t.field('podcast', {
             type: 'Podcast',
-            nullable: true,
           });
         },
       }),
       args: {
-        url: stringArg({
-          required: true,
-        }),
+        url: nonNull(stringArg()),
       },
       ...requireAuthorization,
       resolve: async (_root, {url}, {prismaClient}) => {
@@ -48,7 +44,7 @@ export default extendType({
           return {};
         }
         const episode = await fetchEpisode(
-          podcast.id,
+          parseInt(podcast.id, 10),
           parserResult.enclosureUrl,
           parserResult.episodeTitle,
           url,

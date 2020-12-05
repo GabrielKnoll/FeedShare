@@ -9,7 +9,7 @@ export default extendType({
       type: 'Viewer',
       ...requireAuthorization,
       resolve: async (_root, _args, ctx) => {
-        const user = await ctx.prismaClient.user.findOne({
+        const user = await ctx.prismaClient.user.findUnique({
           where: {
             id: ctx.userId,
           },

@@ -6,17 +6,14 @@ import {Context} from '../utils/context';
 export default objectType({
   name: 'Viewer',
   definition(t) {
-    t.field('personalFeed', {
+    t.nonNull.field('personalFeed', {
       type: 'String',
-      nullable: false,
     });
-    t.field('user', {
+    t.nonNull.field('user', {
       type: 'User',
-      nullable: false,
     });
-    t.field('token', {
+    t.nonNull.field('token', {
       type: 'String',
-      nullable: false,
     });
   },
 });

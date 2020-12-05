@@ -1,4 +1,4 @@
-import {FieldAuthorizeResolver} from '@nexus/schema';
+import {FieldAuthorizeResolver} from '@nexus/schema/dist/plugins/fieldAuthorizePlugin';
 
 type AuthProp = {
   authorize: FieldAuthorizeResolver<any, any>;

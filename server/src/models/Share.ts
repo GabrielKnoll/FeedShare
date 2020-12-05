@@ -1,5 +1,5 @@
 import {objectType} from '@nexus/schema';
-import {ShareWhereInput} from '@prisma/client';
+import {Prisma} from '@prisma/client';
 import {FeedTypeEnum} from '../models/FeedType';
 import {Context} from '../utils/context';
 import Node from './Node';
@@ -19,13 +19,13 @@ export default objectType({
 export async function shareWhere(
   {userId, prismaClient}: Context,
   feedType: FeedTypeEnum | null | undefined,
-): Promise<ShareWhereInput | undefined> {
+): Promise<Prisma.ShareWhereInput | undefined> {
   if (feedType === 'Personal') {
     return {
       authorId: userId,
     };
   } else if (feedType === 'Friends') {
-    const twitterAccount = await prismaClient.twitterAccount.findOne({
+    const twitterAccount = await prismaClient.twitterAccount.findUnique({
       where: {userId},
     });
 

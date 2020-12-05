@@ -10,17 +10,15 @@ import Node from './Node';
 export default objectType({
   name: 'Podcast',
   definition(t) {
-    t.implements(Node);
     imageField(t, 'artwork');
+    t.implements(Node);
 
     t.model.title();
     t.model.description();
     t.model.feed();
     t.model.publisher();
-    t.field('latestEpisodes', {
+    t.list.field('latestEpisodes', {
       type: 'Episode',
-      list: true,
-      nullable: true,
       args: {
         length: intArg({
           default: 10,
@@ -32,7 +30,6 @@ export default objectType({
 
     t.field('subscribeLink', {
       type: 'String',
-      nullable: true,
       args: {
         client: PodcastClientId,
       },

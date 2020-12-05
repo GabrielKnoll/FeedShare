@@ -1,9 +1,4 @@
-import {
-  Episode,
-  EpisodeCreateInput,
-  PodcastCreateInput,
-  Podcast,
-} from '@prisma/client';
+import {Episode, Prisma, Podcast} from '@prisma/client';
 import PodcastIndexClient from 'podcastdx-client';
 import {ApiResponse} from 'podcastdx-client/dist/types';
 import env from './env';
@@ -52,7 +47,7 @@ async function podcastFromFeeds(feeds: string[]) {
 }
 
 async function podcastFromItunesId(itunesId: number) {
-  const cached = await prismaClient.podcast.findOne({
+  const cached = await prismaClient.podcast.findUnique({
     where: {
       itunesId,
     },
@@ -71,9 +66,9 @@ async function podcastFromItunesId(itunesId: number) {
 
 function podcastFromApiResponse(
   apiResponse: ApiResponse.PodcastFeed,
-): PodcastCreateInput {
+): Prisma.PodcastCreateInput {
   return {
-    id: apiResponse.id,
+    id: String(apiResponse.id),
     feed: apiResponse.url,
     title: apiResponse.title,
     itunesId: apiResponse.itunesId,
@@ -139,7 +134,7 @@ export async function fetchEpisode(
         create: episodeFromApiResponse(apiResponse),
         update: episodeFromApiResponse(apiResponse),
         where: {
-          id: apiResponse.id,
+          id: String(apiResponse.id),
         },
       });
     }
@@ -148,9 +143,9 @@ export async function fetchEpisode(
 
 function episodeFromApiResponse(
   apiResponse: ApiResponse.EpisodeInfo,
-): EpisodeCreateInput {
+): Prisma.EpisodeCreateInput {
   return {
-    id: apiResponse.id,
+    id: String(apiResponse.id),
     enclosureUrl: apiResponse.enclosureUrl,
     enclosureType: apiResponse.enclosureType,
     enclosureLength: apiResponse.enclosureLength,
@@ -164,7 +159,7 @@ function episodeFromApiResponse(
     apiResponse: apiResponse as any,
     podcast: {
       connect: {
-        id: apiResponse.feedId,
+        id: String(apiResponse.feedId),
       },
     },
   };
@@ -174,9 +169,12 @@ export async function latestEpisodes(
   podcast: Podcast,
   limit: number,
 ): Promise<Episode[] | null> {
-  const res = await podcastIndexClient.episodesByFeedId(podcast.id, {
-    max: limit,
-  });
+  const res = await podcastIndexClient.episodesByFeedId(
+    parseInt(podcast.id, 10),
+    {
+      max: limit,
+    },
+  );
 
   if (res.status === ApiResponse.Status.Success) {
     return await Promise.all(
@@ -185,7 +183,7 @@ export async function latestEpisodes(
           create: episodeFromApiResponse(apiResponse),
           update: episodeFromApiResponse(apiResponse),
           where: {
-            id: apiResponse.id,
+            id: String(apiResponse.id),
           },
         }),
       ),
@@ -206,7 +204,7 @@ export async function findPodcast(
           create: podcastFromApiResponse(feed),
           update: podcastFromApiResponse(feed),
           where: {
-            id: feed.id,
+            id: String(feed.id),
           },
         }),
       ),

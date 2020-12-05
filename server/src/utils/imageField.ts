@@ -2,7 +2,7 @@ import env from './env';
 import {createHash} from 'crypto';
 import qs from 'query-string';
 import {intArg} from '@nexus/schema';
-import {ObjectDefinitionBlock} from '@nexus/schema/dist/core';
+import {nonNull, ObjectDefinitionBlock} from '@nexus/schema/dist/core';
 import {NexusGenObjectNames, NexusGenFieldTypes} from 'nexus-typegen';
 
 export default function fieldConfig<TypeName extends NexusGenObjectNames>(
@@ -13,8 +13,8 @@ export default function fieldConfig<TypeName extends NexusGenObjectNames>(
   t.field(fieldName, {
     type: 'String',
     args: {
-      size: intArg({required: true}),
-      scale: intArg({required: true}),
+      size: nonNull(intArg()),
+      scale: nonNull(intArg()),
     },
     resolve: (
       root: NexusGenFieldTypes[TypeName],

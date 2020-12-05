@@ -1,4 +1,4 @@
-import {extendType, stringArg} from '@nexus/schema';
+import {extendType, nonNull, stringArg} from '@nexus/schema';
 import {getViewer} from '../models/Viewer';
 import {twitterFollowing, twitterProfile} from '../utils/twitterApi';
 import {generateToken} from '../utils/context';
@@ -10,15 +10,9 @@ export default extendType({
     t.field('createViewer', {
       type: 'Viewer',
       args: {
-        twitterId: stringArg({
-          required: true,
-        }),
-        twitterToken: stringArg({
-          required: true,
-        }),
-        twitterTokenSecret: stringArg({
-          required: true,
-        }),
+        twitterId: nonNull(stringArg()),
+        twitterToken: nonNull(stringArg()),
+        twitterTokenSecret: nonNull(stringArg()),
       },
       resolve: async (
         _,
@@ -38,7 +32,7 @@ export default extendType({
         ] = await Promise.all([
           twitterProfile(twitterId, twitterToken, twitterTokenSecret),
           twitterFollowing(twitterToken, twitterTokenSecret),
-          ctx.prismaClient.twitterAccount.findOne({
+          ctx.prismaClient.twitterAccount.findUnique({
             where: {
               id: twitterId,
             },
