@@ -13,11 +13,13 @@ public struct ComposerPodcast: View {
     
     public var body: some View {
         HStack {
-            Artwork(url: podcast.artwork, size: 70)
+            Artwork(url: podcast.artwork, size: 65.0)
             VStack(alignment: .leading) {
                 Text(podcast.title).fontWeight(.bold)
                 Text(podcast.publisher)
-            }.frame(width: .infinity)
+            }
+            .foregroundColor(.primary)
+            Spacer()
         }
     }
 }

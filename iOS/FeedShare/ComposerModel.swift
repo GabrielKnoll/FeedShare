@@ -54,4 +54,12 @@ public class ComposerModel: ObservableObject {
             }
         }
     }
-}
+    
+    func reset() {
+        searchResults = nil
+        latestEpisodes.removeAll()
+        episode = nil
+        podcast = nil
+        isSearching = false
+        isResolving = false
+    }}

@@ -4,61 +4,6 @@
 import Apollo
 import Foundation
 
-public enum PodcastClientId: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
-  public typealias RawValue = String
-  case applePodcasts
-  case castro
-  case googlePodcasts
-  case overcast
-  case pocketCasts
-  /// Auto generated constant for unknown enum values
-  case __unknown(RawValue)
-
-  public init?(rawValue: RawValue) {
-    switch rawValue {
-      case "ApplePodcasts": self = .applePodcasts
-      case "Castro": self = .castro
-      case "GooglePodcasts": self = .googlePodcasts
-      case "Overcast": self = .overcast
-      case "PocketCasts": self = .pocketCasts
-      default: self = .__unknown(rawValue)
-    }
-  }
-
-  public var rawValue: RawValue {
-    switch self {
-      case .applePodcasts: return "ApplePodcasts"
-      case .castro: return "Castro"
-      case .googlePodcasts: return "GooglePodcasts"
-      case .overcast: return "Overcast"
-      case .pocketCasts: return "PocketCasts"
-      case .__unknown(let value): return value
-    }
-  }
-
-  public static func == (lhs: PodcastClientId, rhs: PodcastClientId) -> Bool {
-    switch (lhs, rhs) {
-      case (.applePodcasts, .applePodcasts): return true
-      case (.castro, .castro): return true
-      case (.googlePodcasts, .googlePodcasts): return true
-      case (.overcast, .overcast): return true
-      case (.pocketCasts, .pocketCasts): return true
-      case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
-      default: return false
-    }
-  }
-
-  public static var allCases: [PodcastClientId] {
-    return [
-      .applePodcasts,
-      .castro,
-      .googlePodcasts,
-      .overcast,
-      .pocketCasts,
-    ]
-  }
-}
-
 public final class ResolveQuery: GraphQLQuery {
   /// The raw GraphQL definition of this operation.
   public let operationDefinition: String =
@@ -231,7 +176,7 @@ public final class ResolveQuery: GraphQLQuery {
         public static var selections: [GraphQLSelection] {
           return [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLField("id", type: .nonNull(.scalar(Int.self))),
+            GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
             GraphQLFragmentSpread(ComposerPodcastFragment.self),
             GraphQLField("latestEpisodes", type: .list(.object(LatestEpisode.selections))),
           ]
@@ -252,9 +197,10 @@ public final class ResolveQuery: GraphQLQuery {
           }
         }
 
-        public var id: Int {
+        /// Unique identifier for the resource
+        public var id: GraphQLID {
           get {
-            return resultMap["id"]! as! Int
+            return resultMap["id"]! as! GraphQLID
           }
           set {
             resultMap.updateValue(newValue, forKey: "id")
@@ -422,7 +368,7 @@ public final class FindPodcastQuery: GraphQLQuery {
         self.resultMap = unsafeResultMap
       }
 
-      public init(id: Int, title: String, publisher: String, artwork: String? = nil) {
+      public init(id: GraphQLID, title: String, publisher: String, artwork: String? = nil) {
         self.init(unsafeResultMap: ["__typename": "Podcast", "id": id, "title": title, "publisher": publisher, "artwork": artwork])
       }
 
@@ -618,7 +564,7 @@ public final class FeedStreamModelQuery: GraphQLQuery {
           public static var selections: [GraphQLSelection] {
             return [
               GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-              GraphQLField("id", type: .nonNull(.scalar(String.self))),
+              GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
               GraphQLFragmentSpread(ShareFragment.self),
             ]
           }
@@ -638,9 +584,10 @@ public final class FeedStreamModelQuery: GraphQLQuery {
             }
           }
 
-          public var id: String {
+          /// Unique identifier for the resource
+          public var id: GraphQLID {
             get {
-              return resultMap["id"]! as! String
+              return resultMap["id"]! as! GraphQLID
             }
             set {
               resultMap.updateValue(newValue, forKey: "id")
@@ -741,7 +688,7 @@ public final class PodcastClientsQuery: GraphQLQuery {
         self.resultMap = unsafeResultMap
       }
 
-      public init(id: PodcastClientId, icon: String, displayName: String) {
+      public init(id: GraphQLID, icon: String, displayName: String) {
         self.init(unsafeResultMap: ["__typename": "PodcastClient", "id": id, "icon": icon, "displayName": displayName])
       }
 
@@ -1014,7 +961,7 @@ public struct ComposerPodcastFragment: GraphQLFragment {
   public static var selections: [GraphQLSelection] {
     return [
       GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-      GraphQLField("id", type: .nonNull(.scalar(Int.self))),
+      GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
       GraphQLField("title", type: .nonNull(.scalar(String.self))),
       GraphQLField("publisher", type: .nonNull(.scalar(String.self))),
       GraphQLField("artwork", arguments: ["size": 70, "scale": 2], type: .scalar(String.self)),
@@ -1027,7 +974,7 @@ public struct ComposerPodcastFragment: GraphQLFragment {
     self.resultMap = unsafeResultMap
   }
 
-  public init(id: Int, title: String, publisher: String, artwork: String? = nil) {
+  public init(id: GraphQLID, title: String, publisher: String, artwork: String? = nil) {
     self.init(unsafeResultMap: ["__typename": "Podcast", "id": id, "title": title, "publisher": publisher, "artwork": artwork])
   }
 
@@ -1040,9 +987,10 @@ public struct ComposerPodcastFragment: GraphQLFragment {
     }
   }
 
-  public var id: Int {
+  /// Unique identifier for the resource
+  public var id: GraphQLID {
     get {
-      return resultMap["id"]! as! Int
+      return resultMap["id"]! as! GraphQLID
     }
     set {
       resultMap.updateValue(newValue, forKey: "id")
@@ -1103,7 +1051,7 @@ public struct EpisodeAttachmentFragment: GraphQLFragment {
   public static var selections: [GraphQLSelection] {
     return [
       GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-      GraphQLField("id", type: .nonNull(.scalar(Int.self))),
+      GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
       GraphQLField("title", type: .nonNull(.scalar(String.self))),
       GraphQLField("artwork", arguments: ["size": 65, "scale": 2], type: .scalar(String.self)),
       GraphQLField("durationSeconds", type: .scalar(Int.self)),
@@ -1118,7 +1066,7 @@ public struct EpisodeAttachmentFragment: GraphQLFragment {
     self.resultMap = unsafeResultMap
   }
 
-  public init(id: Int, title: String, artwork: String? = nil, durationSeconds: Int? = nil, description: String? = nil, podcast: Podcast) {
+  public init(id: GraphQLID, title: String, artwork: String? = nil, durationSeconds: Int? = nil, description: String? = nil, podcast: Podcast) {
     self.init(unsafeResultMap: ["__typename": "Episode", "id": id, "title": title, "artwork": artwork, "durationSeconds": durationSeconds, "description": description, "podcast": podcast.resultMap])
   }
 
@@ -1131,9 +1079,10 @@ public struct EpisodeAttachmentFragment: GraphQLFragment {
     }
   }
 
-  public var id: Int {
+  /// Unique identifier for the resource
+  public var id: GraphQLID {
     get {
-      return resultMap["id"]! as! Int
+      return resultMap["id"]! as! GraphQLID
     }
     set {
       resultMap.updateValue(newValue, forKey: "id")
@@ -1272,7 +1221,7 @@ public struct Client: GraphQLFragment {
   public static var selections: [GraphQLSelection] {
     return [
       GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-      GraphQLField("id", type: .nonNull(.scalar(PodcastClientId.self))),
+      GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
       GraphQLField("icon", type: .nonNull(.scalar(String.self))),
       GraphQLField("displayName", type: .nonNull(.scalar(String.self))),
     ]
@@ -1284,7 +1233,7 @@ public struct Client: GraphQLFragment {
     self.resultMap = unsafeResultMap
   }
 
-  public init(id: PodcastClientId, icon: String, displayName: String) {
+  public init(id: GraphQLID, icon: String, displayName: String) {
     self.init(unsafeResultMap: ["__typename": "PodcastClient", "id": id, "icon": icon, "displayName": displayName])
   }
 
@@ -1297,9 +1246,10 @@ public struct Client: GraphQLFragment {
     }
   }
 
-  public var id: PodcastClientId {
+  /// Unique identifier for the resource
+  public var id: GraphQLID {
     get {
-      return resultMap["id"]! as! PodcastClientId
+      return resultMap["id"]! as! GraphQLID
     }
     set {
       resultMap.updateValue(newValue, forKey: "id")
@@ -1606,7 +1556,7 @@ public struct ViewerFragment: GraphQLFragment {
     public static var selections: [GraphQLSelection] {
       return [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-        GraphQLField("id", type: .nonNull(.scalar(String.self))),
+        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
         GraphQLField("handle", type: .nonNull(.scalar(String.self))),
         GraphQLField("displayName", type: .scalar(String.self)),
         GraphQLField("profilePicture", arguments: ["size": 100, "scale": 2], type: .scalar(String.self)),
@@ -1619,7 +1569,7 @@ public struct ViewerFragment: GraphQLFragment {
       self.resultMap = unsafeResultMap
     }
 
-    public init(id: String, handle: String, displayName: String? = nil, profilePicture: String? = nil) {
+    public init(id: GraphQLID, handle: String, displayName: String? = nil, profilePicture: String? = nil) {
       self.init(unsafeResultMap: ["__typename": "User", "id": id, "handle": handle, "displayName": displayName, "profilePicture": profilePicture])
     }
 
@@ -1632,9 +1582,10 @@ public struct ViewerFragment: GraphQLFragment {
       }
     }
 
-    public var id: String {
+    /// Unique identifier for the resource
+    public var id: GraphQLID {
       get {
-        return resultMap["id"]! as! String
+        return resultMap["id"]! as! GraphQLID
       }
       set {
         resultMap.updateValue(newValue, forKey: "id")

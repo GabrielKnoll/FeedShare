@@ -8,7 +8,7 @@
 import SwiftUI
 import URLImage
 
-public struct ComposerEpisodeSelector: View {
+public struct ComposerEpisode: View {
     @ObservedObject var composerModel: ComposerModel
     
     public var body: some View {

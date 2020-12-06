@@ -22,13 +22,6 @@ public struct Overlay<Content: View>: View {
         }
     }
     @State private var offset = CGFloat(0)
-    //    @State private var settingsVisible = false {
-    //        didSet {
-    //            withAnimation {
-    //                self.offset = settingsVisible ? offsetHeight : 0
-    //            }
-    //        }
-    //    }
     
     init(visible: Binding<Bool>, @ViewBuilder content: @escaping () -> Content) {
         self.content = content

@@ -36,11 +36,12 @@
 		67D3FF42257AD66C00A86151 /* Composer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3FF41257AD66B00A86151 /* Composer.swift */; };
 		67D3FF46257AD85700A86151 /* ComposerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3FF45257AD85700A86151 /* ComposerModel.swift */; };
 		67D3FF4F257AE29800A86151 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3FF4E257AE29800A86151 /* ActivityIndicator.swift */; };
-		67D3FF53257AE58D00A86151 /* ComposerEpisodeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3FF52257AE58D00A86151 /* ComposerEpisodeSelector.swift */; };
+		67D3FF53257AE58D00A86151 /* ComposerEpisode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3FF52257AE58D00A86151 /* ComposerEpisode.swift */; };
 		67D3FF59257AF37800A86151 /* EpisodeAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3FF58257AF37800A86151 /* EpisodeAttachment.swift */; };
 		67D3FF5F257B17E900A86151 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3FF5E257B17E900A86151 /* SearchBar.swift */; };
 		67D3FF63257B192E00A86151 /* ComposerSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3FF62257B192E00A86151 /* ComposerSearch.swift */; };
 		67D3FF67257B1BD600A86151 /* ComposerPodcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3FF66257B1BD600A86151 /* ComposerPodcast.swift */; };
+		67D3FF73257C54E600A86151 /* NavigationStack in Frameworks */ = {isa = PBXBuildFile; productRef = 67D3FF72257C54E600A86151 /* NavigationStack */; };
 		67EED64C2578703500A9DCEC /* ProfilePicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67EED64B2578703500A9DCEC /* ProfilePicture.swift */; };
 		67EED64F2578714F00A9DCEC /* Artwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67EED64E2578714F00A9DCEC /* Artwork.swift */; };
 		F56832D8253E2D8100730B7A /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56832D7253E2D8100730B7A /* PostView.swift */; };
@@ -112,7 +113,7 @@
 		67D3FF45257AD85700A86151 /* ComposerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerModel.swift; sourceTree = "<group>"; };
 		67D3FF49257AD8DA00A86151 /* ComposerModel.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ComposerModel.graphql; sourceTree = "<group>"; };
 		67D3FF4E257AE29800A86151 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
-		67D3FF52257AE58D00A86151 /* ComposerEpisodeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerEpisodeSelector.swift; sourceTree = "<group>"; };
+		67D3FF52257AE58D00A86151 /* ComposerEpisode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerEpisode.swift; sourceTree = "<group>"; };
 		67D3FF58257AF37800A86151 /* EpisodeAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeAttachment.swift; sourceTree = "<group>"; };
 		67D3FF5E257B17E900A86151 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		67D3FF62257B192E00A86151 /* ComposerSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerSearch.swift; sourceTree = "<group>"; };
@@ -159,6 +160,7 @@
 			files = (
 				6734F2A825609DC400BB95E5 /* URLImage in Frameworks */,
 				67B94281257467E500412CDC /* Rswift in Frameworks */,
+				67D3FF73257C54E600A86151 /* NavigationStack in Frameworks */,
 				6734F2AC25609DC400BB95E5 /* ApolloSQLite in Frameworks */,
 				6734F2AA25609DC400BB95E5 /* Apollo in Frameworks */,
 			);
@@ -218,10 +220,10 @@
 				67D3FF5E257B17E900A86151 /* SearchBar.swift */,
 				67D3FF41257AD66B00A86151 /* Composer.swift */,
 				67D3FF62257B192E00A86151 /* ComposerSearch.swift */,
+				67D3FF52257AE58D00A86151 /* ComposerEpisode.swift */,
 				67D3FF66257B1BD600A86151 /* ComposerPodcast.swift */,
 				67D3FF45257AD85700A86151 /* ComposerModel.swift */,
 				67D3FF49257AD8DA00A86151 /* ComposerModel.graphql */,
-				67D3FF52257AE58D00A86151 /* ComposerEpisodeSelector.swift */,
 				67EED64B2578703500A9DCEC /* ProfilePicture.swift */,
 				67EED64E2578714F00A9DCEC /* Artwork.swift */,
 				67B94275257451EC00412CDC /* PodcastClientRow.swift */,
@@ -324,6 +326,7 @@
 				6734F2A925609DC400BB95E5 /* Apollo */,
 				6734F2AB25609DC400BB95E5 /* ApolloSQLite */,
 				67B94280257467E500412CDC /* Rswift */,
+				67D3FF72257C54E600A86151 /* NavigationStack */,
 			);
 			productName = FeedShare;
 			productReference = F5E7F8E82516527A0036448D /* FeedShare.app */;
@@ -361,6 +364,7 @@
 				67CCCB852520FE7A00BA99F4 /* XCRemoteSwiftPackageReference "url-image" */,
 				F598287E25278C4300A8C2CB /* XCRemoteSwiftPackageReference "apollo-ios" */,
 				67B9427B25745F9E00412CDC /* XCRemoteSwiftPackageReference "R.swift" */,
+				67D3FF71257C54E600A86151 /* XCRemoteSwiftPackageReference "swiftui-navigation-stack" */,
 			);
 			productRefGroup = F5E7F8E92516527A0036448D /* Products */;
 			projectDirPath = "";
@@ -511,7 +515,7 @@
 				670F00F6256C4F3F00A05BB6 /* Overlay.swift in Sources */,
 				670F00E82569C27400A05BB6 /* OnboardingNotifications.swift in Sources */,
 				67D3FF59257AF37800A86151 /* EpisodeAttachment.swift in Sources */,
-				67D3FF53257AE58D00A86151 /* ComposerEpisodeSelector.swift in Sources */,
+				67D3FF53257AE58D00A86151 /* ComposerEpisode.swift in Sources */,
 				67970D5125608FB500BD891D /* RefreshableScrollView.swift in Sources */,
 				67B942742574080000412CDC /* Settings.swift in Sources */,
 				67D3FF67257B1BD600A86151 /* ComposerPodcast.swift in Sources */,
@@ -816,6 +820,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		67D3FF71257C54E600A86151 /* XCRemoteSwiftPackageReference "swiftui-navigation-stack" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/matteopuc/swiftui-navigation-stack.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
 		F598287E25278C4300A8C2CB /* XCRemoteSwiftPackageReference "apollo-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apollographql/apollo-ios.git";
@@ -861,6 +873,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 67B9427B25745F9E00412CDC /* XCRemoteSwiftPackageReference "R.swift" */;
 			productName = Rswift;
+		};
+		67D3FF72257C54E600A86151 /* NavigationStack */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 67D3FF71257C54E600A86151 /* XCRemoteSwiftPackageReference "swiftui-navigation-stack" */;
+			productName = NavigationStack;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
