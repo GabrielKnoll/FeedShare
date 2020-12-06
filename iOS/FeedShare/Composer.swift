@@ -14,11 +14,11 @@ public struct Composer: View {
     @StateObject var composerModel = ComposerModel()
     
     public var body: some View {
-        //Overlay(visible: $visible) {
+        Overlay(visible: $visible) {
+            
             NavigationStackView {
                 ComposerSearch(composerModel: composerModel)
-            }.id("asd").onDisappear(perform: composerModel.reset)
-            
+            }
             //                NavigationLink(
             //                    "Search",
             //                    destination: ComposerSearch(composerModel: composerModel),
@@ -65,6 +65,6 @@ public struct Composer: View {
             //                        }
             //                    }
             
-        //}
+        }
     }
 }

@@ -12,18 +12,16 @@ import URLImage
 public struct ComposerSearch: View {
     @State var unresolvedUrlAlert = false
     @State var pastedString: String?
-    @State private var searchText = "" {
-        didSet {
-            if searchText.isEmpty {
-                composerModel.searchResults = nil
-            }
-        }
-    }
+    @State private var searchText = ""
     @ObservedObject var composerModel: ComposerModel
-    @EnvironmentObject var navigationStack: NavigationStack
+    @EnvironmentObject private var navigationStack: NavigationStack
     
     public var body: some View {
         VStack {
+            PushView(destination: Loading()) {
+                Text("PUSH")
+            }
+            
             SearchBar(text: $searchText, action: composerModel.findPodcast)
                 .padding(.horizontal, -8)
                 .padding(.vertical, -10)
@@ -38,8 +36,9 @@ public struct ComposerSearch: View {
                     ScrollView {
                         ForEach(results, id: \.id) { podcast in
                             Button(action: {
-                                composerModel.podcast = podcast
+                                
                                 self.navigationStack.push(ComposerEpisode(composerModel: composerModel))
+                                composerModel.podcast = podcast
                             }) {
                                 ComposerPodcast(podcast: podcast)
                             }

@@ -13,13 +13,17 @@ public struct ComposerEpisode: View {
     
     public var body: some View {
         VStack {
-            HStack {
-                Artwork(url: composerModel.podcast?.artwork, size: 70)
-                VStack(alignment: .leading) {
-                    Text(composerModel.podcast?.title ?? "").fontWeight(.bold)
-                    Text(composerModel.podcast?.publisher ?? "")
-                }.frame(width: .infinity)
+            if (composerModel.podcast != nil) {
+                HStack {
+                    Artwork(url: composerModel.podcast?.artwork, size: 70)
+                    VStack(alignment: .leading) {
+                        Text(composerModel.podcast?.title ?? "").fontWeight(.bold)
+                        Text(composerModel.podcast?.publisher ?? "")
+                    }
+                    Spacer()
+                }
             }
+            
             Text("Which Episode do you want to share?").fontWeight(.bold)
             List(composerModel.latestEpisodes, id: \.id) { episode in
                 VStack(alignment: .leading) {

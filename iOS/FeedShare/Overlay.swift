@@ -29,7 +29,7 @@ public struct Overlay<Content: View>: View {
     }
     
     public var body: some View {
-        GeometryReader { geometry in
+        //GeometryReader { geometry in
             ZStack(alignment: .bottom) {
                 if $visible.wrappedValue {
                     Color.black
@@ -64,14 +64,14 @@ public struct Overlay<Content: View>: View {
                     if $visible.wrappedValue {
                         content()
                             .edgesIgnoringSafeArea(.bottom)
-                            .padding(.bottom, geometry.safeAreaInsets.bottom)
+//                            .padding(.bottom, geometry.safeAreaInsets.bottom)
                             .background(Color.white)
                             .cornerRadius(25)
                             .shadow(color: Color(UIColor(red: 0, green: 0, blue: 0, alpha: 0.05)),
                                     radius: 5.0,
                                     x: 0.0,
                                     y: 0.0)
-                            .offset(x: 0, y: offset + geometry.safeAreaInsets.bottom)
+//                            .offset(x: 0, y: offset + geometry.safeAreaInsets.bottom)
                             .gesture(DragGesture()
                                         .onChanged { gesture in
                                             if $visible.wrappedValue {
@@ -93,5 +93,5 @@ public struct Overlay<Content: View>: View {
                 }.animation(.interpolatingSpring(mass: 0.4, stiffness: 250, damping: 13))
             }
         }
-    }
+    //}
 }
