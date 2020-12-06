@@ -16,32 +16,37 @@ public struct Settings: View {
     
     public var body: some View {
         Overlay(visible: $visible) {
-            VStack {
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        withAnimation {
-                            self.visible.toggle()
+            Navigation {
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            withAnimation {
+                                self.visible.toggle()
+                            }
+                        }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(.secondary)
+                                .font(.title)
                         }
-                    }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.secondary)
-                            .font(.title)
                     }
-                }
-                
-                ProfilePicture(url: viewerModel.viewer?.user.profilePicture, size: 66.0)
-                Text(viewerModel.viewer?.user.displayName ?? "").font(.headline)
-                Text("@\(viewerModel.viewer?.user.handle ?? "")").font(.subheadline)
-                
-                VStack(alignment: .leading) {
-                    if let client = viewerModel.viewerClient {
-                        Text("Your Podcast client").bold()
-                        PodcastClientRow(client: client)
+                    
+                    VStack(alignment: .center) {
+                        ProfilePicture(url: viewerModel.viewer?.user.profilePicture, size: 66.0)
+                        Text(viewerModel.viewer?.user.displayName ?? "").font(.headline)
+                        Text("@\(viewerModel.viewer?.user.handle ?? "")").font(.subheadline)
                     }
+                    
+                    Spacer().frame(maxHeight: 10)
+                    
+                    SettingsClient()
+                    
+                    Spacer().frame(maxHeight: 10)
                     
                     Text("Notifications").bold()
                     Toggle("Get notified when your friends recommend an episode", isOn: $notifications)
+                    
+                    Spacer().frame(maxHeight: 10)
                     
                     Button(action: {
                         self.logoutAlert = true
@@ -53,6 +58,7 @@ public struct Settings: View {
                             title: Text("Log Out"),
                             message: Text("Are you sure you want to log out?"),
                             primaryButton: .destructive(Text("Log Out"), action: {
+                                self.visible.toggle()
                                 self.viewerModel.logout()
                             }),
                             secondaryButton: .cancel(Text("Cancel"), action: {

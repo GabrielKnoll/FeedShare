@@ -1,5 +1,0 @@
-query PodcastClients {
-  podcastClient {
-    ...Client
-  }
-}

@@ -10,13 +10,16 @@
 		670F00E62569C14000A05BB6 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00E52569C14000A05BB6 /* Onboarding.swift */; };
 		670F00E82569C27400A05BB6 /* OnboardingNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00E72569C27400A05BB6 /* OnboardingNotifications.swift */; };
 		670F00EA2569CE4800A05BB6 /* OnboardingPodcastClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00E92569CE4800A05BB6 /* OnboardingPodcastClient.swift */; };
-		670F00ED2569F47C00A05BB6 /* OnboardingPodcastClientModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00EC2569F47C00A05BB6 /* OnboardingPodcastClientModel.swift */; };
 		670F00EF256AD1B300A05BB6 /* OnboardingFeedlink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00EE256AD1B300A05BB6 /* OnboardingFeedlink.swift */; };
 		670F00F4256C3CFB00A05BB6 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00F3256C3CFB00A05BB6 /* Loading.swift */; };
 		670F00F6256C4F3F00A05BB6 /* Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00F5256C4F3F00A05BB6 /* Overlay.swift */; };
 		6734F2A825609DC400BB95E5 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 6734F2A725609DC400BB95E5 /* URLImage */; };
 		6734F2AA25609DC400BB95E5 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 6734F2A925609DC400BB95E5 /* Apollo */; };
 		6734F2AC25609DC400BB95E5 /* ApolloSQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 6734F2AB25609DC400BB95E5 /* ApolloSQLite */; };
+		67420119257D2B87007CB04F /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67420118257D2B87007CB04F /* Navigation.swift */; };
+		67420121257D3500007CB04F /* ComposerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67420120257D3500007CB04F /* ComposerMessage.swift */; };
+		6742012E257D4328007CB04F /* PodcastClients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6742012D257D4328007CB04F /* PodcastClients.swift */; };
+		67420133257D44CF007CB04F /* SettingsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67420132257D44CF007CB04F /* SettingsClient.swift */; };
 		67578480257476D500BC8548 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6757847F257476D500BC8548 /* R.generated.swift */; };
 		67970D4925608FAF00BD891D /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51CA091252785B80091710E /* Network.swift */; };
 		67970D4B25608FAF00BD891D /* UserManagementInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67970D302557602800BD891D /* UserManagementInterceptor.swift */; };
@@ -25,7 +28,6 @@
 		67970D4F25608FB500BD891D /* OnboardingLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB1287254487E0001CC7ED /* OnboardingLogin.swift */; };
 		67970D5025608FB500BD891D /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB129D25448D5E001CC7ED /* SafariView.swift */; };
 		67970D5125608FB500BD891D /* RefreshableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59828AB25278FA400A8C2CB /* RefreshableScrollView.swift */; };
-		67970D5225608FB500BD891D /* AttachmentFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59828A825278FA400A8C2CB /* AttachmentFrame.swift */; };
 		67970D5425608FBC00BD891D /* ViewerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67870FAF2550CE66005F89DD /* ViewerModel.swift */; };
 		67970D5525608FBC00BD891D /* TwitterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB12812544879B001CC7ED /* TwitterService.swift */; };
 		67970D5625608FBC00BD891D /* FeedStreamModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F539F19F2528A63B0080412A /* FeedStreamModel.swift */; };
@@ -93,11 +95,13 @@
 		670F00E52569C14000A05BB6 /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
 		670F00E72569C27400A05BB6 /* OnboardingNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNotifications.swift; sourceTree = "<group>"; };
 		670F00E92569CE4800A05BB6 /* OnboardingPodcastClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPodcastClient.swift; sourceTree = "<group>"; };
-		670F00EB2569EE7F00A05BB6 /* OnboardingPodcastClient.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = OnboardingPodcastClient.graphql; sourceTree = "<group>"; };
-		670F00EC2569F47C00A05BB6 /* OnboardingPodcastClientModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPodcastClientModel.swift; sourceTree = "<group>"; };
 		670F00EE256AD1B300A05BB6 /* OnboardingFeedlink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeedlink.swift; sourceTree = "<group>"; };
 		670F00F3256C3CFB00A05BB6 /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
 		670F00F5256C4F3F00A05BB6 /* Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
+		67420118257D2B87007CB04F /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
+		67420120257D3500007CB04F /* ComposerMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerMessage.swift; sourceTree = "<group>"; };
+		6742012D257D4328007CB04F /* PodcastClients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastClients.swift; sourceTree = "<group>"; };
+		67420132257D44CF007CB04F /* SettingsClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsClient.swift; sourceTree = "<group>"; };
 		6757847F257476D500BC8548 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		67870FAF2550CE66005F89DD /* ViewerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewerModel.swift; sourceTree = "<group>"; };
 		67970D302557602800BD891D /* UserManagementInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagementInterceptor.swift; sourceTree = "<group>"; };
@@ -132,7 +136,6 @@
 		F5961CF32517937D00F93697 /* FeedShareApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedShareApp.swift; sourceTree = "<group>"; };
 		F59828A625278FA400A8C2CB /* EpisodeAttachment.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EpisodeAttachment.graphql; sourceTree = "<group>"; };
 		F59828A725278FA400A8C2CB /* ShareRow.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ShareRow.graphql; sourceTree = "<group>"; };
-		F59828A825278FA400A8C2CB /* AttachmentFrame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentFrame.swift; sourceTree = "<group>"; };
 		F59828A925278FA400A8C2CB /* ShareRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareRow.swift; sourceTree = "<group>"; };
 		F59828AA25278FA400A8C2CB /* FeedStreamModel.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FeedStreamModel.graphql; sourceTree = "<group>"; };
 		F59828AB25278FA400A8C2CB /* RefreshableScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshableScrollView.swift; sourceTree = "<group>"; };
@@ -169,6 +172,56 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		67420125257D3ACC007CB04F /* Composer */ = {
+			isa = PBXGroup;
+			children = (
+				67D3FF41257AD66B00A86151 /* Composer.swift */,
+				67D3FF62257B192E00A86151 /* ComposerSearch.swift */,
+				67D3FF52257AE58D00A86151 /* ComposerEpisode.swift */,
+				67420120257D3500007CB04F /* ComposerMessage.swift */,
+				67D3FF66257B1BD600A86151 /* ComposerPodcast.swift */,
+				67D3FF45257AD85700A86151 /* ComposerModel.swift */,
+				67D3FF49257AD8DA00A86151 /* ComposerModel.graphql */,
+			);
+			path = Composer;
+			sourceTree = "<group>";
+		};
+		67420127257D3AE3007CB04F /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				670F00E52569C14000A05BB6 /* Onboarding.swift */,
+				67AB1287254487E0001CC7ED /* OnboardingLogin.swift */,
+				670F00E72569C27400A05BB6 /* OnboardingNotifications.swift */,
+				670F00E92569CE4800A05BB6 /* OnboardingPodcastClient.swift */,
+				670F00EE256AD1B300A05BB6 /* OnboardingFeedlink.swift */,
+				67AB129D25448D5E001CC7ED /* SafariView.swift */,
+				67AB12812544879B001CC7ED /* TwitterService.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		67420129257D3AF9007CB04F /* FeedStream */ = {
+			isa = PBXGroup;
+			children = (
+				F59828AB25278FA400A8C2CB /* RefreshableScrollView.swift */,
+				F59828AC25278FA400A8C2CB /* FeedStream.swift */,
+				F539F19F2528A63B0080412A /* FeedStreamModel.swift */,
+				F59828AA25278FA400A8C2CB /* FeedStreamModel.graphql */,
+				F59828A925278FA400A8C2CB /* ShareRow.swift */,
+				F59828A725278FA400A8C2CB /* ShareRow.graphql */,
+			);
+			path = FeedStream;
+			sourceTree = "<group>";
+		};
+		67420136257D46A6007CB04F /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				67B942732574080000412CDC /* Settings.swift */,
+				67420132257D44CF007CB04F /* SettingsClient.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		F5887B69251F4C3C00010D30 /* FeedShareExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -215,41 +268,24 @@
 				F5961CF32517937D00F93697 /* FeedShareApp.swift */,
 				670F00F3256C3CFB00A05BB6 /* Loading.swift */,
 				670F00F5256C4F3F00A05BB6 /* Overlay.swift */,
-				67B942732574080000412CDC /* Settings.swift */,
+				67420118257D2B87007CB04F /* Navigation.swift */,
 				67D3FF4E257AE29800A86151 /* ActivityIndicator.swift */,
 				67D3FF5E257B17E900A86151 /* SearchBar.swift */,
-				67D3FF41257AD66B00A86151 /* Composer.swift */,
-				67D3FF62257B192E00A86151 /* ComposerSearch.swift */,
-				67D3FF52257AE58D00A86151 /* ComposerEpisode.swift */,
-				67D3FF66257B1BD600A86151 /* ComposerPodcast.swift */,
-				67D3FF45257AD85700A86151 /* ComposerModel.swift */,
-				67D3FF49257AD8DA00A86151 /* ComposerModel.graphql */,
 				67EED64B2578703500A9DCEC /* ProfilePicture.swift */,
 				67EED64E2578714F00A9DCEC /* Artwork.swift */,
+				6742012D257D4328007CB04F /* PodcastClients.swift */,
 				67B94275257451EC00412CDC /* PodcastClientRow.swift */,
 				67B942772574525E00412CDC /* PodcastClientRow.graphql */,
 				F51CA091252785B80091710E /* Network.swift */,
 				67970D302557602800BD891D /* UserManagementInterceptor.swift */,
-				F59828AC25278FA400A8C2CB /* FeedStream.swift */,
-				F539F19F2528A63B0080412A /* FeedStreamModel.swift */,
-				F59828AA25278FA400A8C2CB /* FeedStreamModel.graphql */,
-				670F00E52569C14000A05BB6 /* Onboarding.swift */,
-				67AB1287254487E0001CC7ED /* OnboardingLogin.swift */,
-				670F00E72569C27400A05BB6 /* OnboardingNotifications.swift */,
-				670F00E92569CE4800A05BB6 /* OnboardingPodcastClient.swift */,
-				670F00EB2569EE7F00A05BB6 /* OnboardingPodcastClient.graphql */,
-				670F00EC2569F47C00A05BB6 /* OnboardingPodcastClientModel.swift */,
-				670F00EE256AD1B300A05BB6 /* OnboardingFeedlink.swift */,
-				F59828A825278FA400A8C2CB /* AttachmentFrame.swift */,
 				67D3FF58257AF37800A86151 /* EpisodeAttachment.swift */,
 				F59828A625278FA400A8C2CB /* EpisodeAttachment.graphql */,
-				F59828AB25278FA400A8C2CB /* RefreshableScrollView.swift */,
-				F59828A925278FA400A8C2CB /* ShareRow.swift */,
-				F59828A725278FA400A8C2CB /* ShareRow.graphql */,
-				67AB129D25448D5E001CC7ED /* SafariView.swift */,
 				67870FAF2550CE66005F89DD /* ViewerModel.swift */,
 				67970D462558ADF400BD891D /* ViewerModel.graphql */,
-				67AB12812544879B001CC7ED /* TwitterService.swift */,
+				67420127257D3AE3007CB04F /* Onboarding */,
+				67420129257D3AF9007CB04F /* FeedStream */,
+				67420136257D46A6007CB04F /* Settings */,
+				67420125257D3ACC007CB04F /* Composer */,
 				F5E7F8EF2516527B0036448D /* Assets.xcassets */,
 				F5E7F90B251653830036448D /* Supporting Files */,
 				F5E7F8F12516527B0036448D /* Preview Content */,
@@ -400,7 +436,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		67970D5A2560936300BD891D /* Apollo GraphQL codegen */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 12;
 			files = (
 			);
 			inputFileListPaths = (
@@ -412,7 +448,7 @@
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Go to the build root and search up the chain to find the Derived Data Path where the source packages are checked out.\nDERIVED_DATA_CANDIDATE=\"${BUILD_ROOT}\"\nwhile ! [ -d \"${DERIVED_DATA_CANDIDATE}/SourcePackages\" ]; do\n  if [ \"${DERIVED_DATA_CANDIDATE}\" = / ]; then\n    echo >&2 \"error: Unable to locate SourcePackages directory from BUILD_ROOT: '${BUILD_ROOT}'\"\n    exit 1\n  fi\n\n  DERIVED_DATA_CANDIDATE=\"$(dirname \"${DERIVED_DATA_CANDIDATE}\")\"\ndone\n\n# Grab a reference to the directory where scripts are checked out\nSCRIPT_PATH=\"${DERIVED_DATA_CANDIDATE}/SourcePackages/checkouts/apollo-ios/scripts\"\n\nif [ -z \"${SCRIPT_PATH}\" ]; then\n    echo >&2 \"error: Couldn't find the CLI script in your checked out SPM packages; make sure to add the framework to your project.\"\n    exit 1\nfi\n\ncd \"${SRCROOT}/${TARGET_NAME}/\"\n\"${SCRIPT_PATH}\"/run-bundled-codegen.sh codegen:generate --target=swift --includes=./**/*.graphql --localSchemaFile=\"../../server/api.json\" \"Supporting Files/API.swift\"\n";
 		};
@@ -491,9 +527,9 @@
 			files = (
 				67970D5525608FBC00BD891D /* TwitterService.swift in Sources */,
 				F5961CF42517937D00F93697 /* FeedShareApp.swift in Sources */,
+				67420133257D44CF007CB04F /* SettingsClient.swift in Sources */,
 				67970D4925608FAF00BD891D /* Network.swift in Sources */,
 				67EED64F2578714F00A9DCEC /* Artwork.swift in Sources */,
-				67970D5225608FB500BD891D /* AttachmentFrame.swift in Sources */,
 				67EED64C2578703500A9DCEC /* ProfilePicture.swift in Sources */,
 				67D3FF46257AD85700A86151 /* ComposerModel.swift in Sources */,
 				67970D5025608FB500BD891D /* SafariView.swift in Sources */,
@@ -511,13 +547,15 @@
 				670F00E62569C14000A05BB6 /* Onboarding.swift in Sources */,
 				67970D4D25608FB500BD891D /* FeedStream.swift in Sources */,
 				670F00EA2569CE4800A05BB6 /* OnboardingPodcastClient.swift in Sources */,
-				670F00ED2569F47C00A05BB6 /* OnboardingPodcastClientModel.swift in Sources */,
 				670F00F6256C4F3F00A05BB6 /* Overlay.swift in Sources */,
 				670F00E82569C27400A05BB6 /* OnboardingNotifications.swift in Sources */,
 				67D3FF59257AF37800A86151 /* EpisodeAttachment.swift in Sources */,
+				6742012E257D4328007CB04F /* PodcastClients.swift in Sources */,
 				67D3FF53257AE58D00A86151 /* ComposerEpisode.swift in Sources */,
 				67970D5125608FB500BD891D /* RefreshableScrollView.swift in Sources */,
+				67420121257D3500007CB04F /* ComposerMessage.swift in Sources */,
 				67B942742574080000412CDC /* Settings.swift in Sources */,
+				67420119257D2B87007CB04F /* Navigation.swift in Sources */,
 				67D3FF67257B1BD600A86151 /* ComposerPodcast.swift in Sources */,
 				67D3FF5F257B17E900A86151 /* SearchBar.swift in Sources */,
 				67B9427A25745F2900412CDC /* API.swift in Sources */,

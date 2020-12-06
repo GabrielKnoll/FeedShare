@@ -4,6 +4,7 @@ fragment EpisodeAttachmentFragment on Episode {
   artwork(size: 65, scale: 2)
   durationSeconds
   description
+  datePublished
   podcast {
     title
     description

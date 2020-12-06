@@ -18,16 +18,10 @@ public struct ComposerSearch: View {
     
     public var body: some View {
         VStack {
-            PushView(destination: Loading()) {
-                Text("PUSH")
-            }
-            
             SearchBar(text: $searchText, action: composerModel.findPodcast)
                 .padding(.horizontal, -8)
                 .padding(.vertical, -10)
-            if composerModel.isResolving {
-                ActivityIndicator(style: .large)
-            } else if composerModel.isSearching {
+            if composerModel.isLoading {
                 ActivityIndicator(style: .large)
             } else if let results = composerModel.searchResults {
                 if results.isEmpty {
@@ -36,9 +30,8 @@ public struct ComposerSearch: View {
                     ScrollView {
                         ForEach(results, id: \.id) { podcast in
                             Button(action: {
-                                
-                                self.navigationStack.push(ComposerEpisode(composerModel: composerModel))
                                 composerModel.podcast = podcast
+                                self.navigationStack.push(ComposerEpisode(composerModel: composerModel))
                             }) {
                                 ComposerPodcast(podcast: podcast)
                             }
@@ -51,7 +44,15 @@ public struct ComposerSearch: View {
                 Button(action: {
                     self.pastedString = UIPasteboard.general.string
                     if let url = self.pastedString, url.lowercased().hasPrefix("http") {
-                        composerModel.resolveUrl(url: url)
+                        composerModel.resolveUrl(url: url) {
+                            if composerModel.episode != nil {
+                                self.navigationStack.push(ComposerMessage(composerModel: composerModel))
+                            } else if composerModel.podcast != nil {
+                                self.navigationStack.push(ComposerEpisode(composerModel: composerModel))
+                            } else {
+                                self.unresolvedUrlAlert = true
+                            }
+                        }
                     } else {
                         self.unresolvedUrlAlert = true
                     }
@@ -61,7 +62,7 @@ public struct ComposerSearch: View {
             }
             Spacer()
         }
-        .padding(20)
+        .padding(.vertical, /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
         .alert(isPresented: $unresolvedUrlAlert) {
             Alert(
                 title: Text("Could not find"),

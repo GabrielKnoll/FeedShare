@@ -10,13 +10,10 @@ import URLImage
 
 public struct PodcastClientRow: View {
     let client: Client
-    
-    init(client: Client) {
-        self.client = client
-    }
+    let action: () -> Void
     
     public var body: some View {
-        HStack {
+        Button(action: self.action) {
             HStack {
                 Artwork(url: client.icon, size: 44.0)
                 Text(client.displayName)

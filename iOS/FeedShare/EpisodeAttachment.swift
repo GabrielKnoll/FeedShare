@@ -24,7 +24,7 @@ public struct EpisodeAttachment: View {
     }()
     
     public var body: some View {
-        AttachmentFrame {
+        HStack(alignment: .center, spacing: 10) {
             Artwork(url: data.podcast.artwork, size: 65.0)
             VStack(alignment: .leading, spacing: 3) {
                 Text(data.title)
@@ -43,7 +43,13 @@ public struct EpisodeAttachment: View {
                     .font(.caption)
                 }
             }
+            Spacer()
         }
+        .frame(maxWidth: .infinity, minHeight: 65.0, alignment: .center)
+        .padding(8)
+        .overlay(RoundedRectangle(cornerRadius: 15)
+                    .stroke(Color.secondary.opacity(0.2), lineWidth: 1))
+        .cornerRadius(15)
     }
 }
 

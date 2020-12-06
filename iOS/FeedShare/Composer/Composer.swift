@@ -15,10 +15,10 @@ public struct Composer: View {
     
     public var body: some View {
         Overlay(visible: $visible) {
-            
-            NavigationStackView {
+            Navigation {
                 ComposerSearch(composerModel: composerModel)
-            }
+            }.padding(25)
+            
             //                NavigationLink(
             //                    "Search",
             //                    destination: ComposerSearch(composerModel: composerModel),
@@ -44,27 +44,18 @@ public struct Composer: View {
             //                        }
             //                    }
             //
-            //                    AttachmentFrame {
-            //                        if let episode = composerModel.episode {
-            //                            EpisodeAttachment(data: episode)
-            //                        } else if composerModel.isLoading {
-            //                            ActivityIndicator(style: .medium)
-            //                        } else if let podcast = composerModel.podcast {
-            //                            Text(podcast.title)
-            //                        } else {
-            //                            Button(action: {
-            //                                self.pastedString = UIPasteboard.general.string
-            //                                if let url = self.pastedString, url.lowercased().hasPrefix("http") {
-            //                                    composerModel.resolveUrl(url: url)
-            //                                } else {
-            //                                    self.unresolvedUrlAlert = true
-            //                                }
-            //                            }) {
-            //                                Text("Paste from Clipboard")
-            //                            }
-            //                        }
-            //                    }
+
             
         }
+    }
+}
+
+struct NavigationLazyView<Content: View>: View {
+    let build: () -> Content
+    init(_ build: @autoclosure @escaping () -> Content) {
+        self.build = build
+    }
+    var body: Content {
+        build()
     }
 }

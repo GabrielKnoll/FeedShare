@@ -20,3 +20,9 @@ mutation CreateViewer($twitterId: String!, $twitterToken: String!, $twitterToken
     ...ViewerFragment
   }
 }
+
+query PodcastClients {
+  podcastClient {
+    ...Client
+  }
+}

@@ -2,7 +2,6 @@ import SwiftUI
 import URLImage
 
 public struct OnboardingFeedlink: View {
-    @StateObject var model = OnboardingPodcastClientModel()
     @EnvironmentObject var viewerModel: ViewerModel
     @State private var finishDisabled = true
 

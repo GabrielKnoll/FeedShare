@@ -19,6 +19,22 @@ query FindPodcast($query: String!) {
   }
 }
 
+query LatestEpisodes($podcast: ID!) {
+  node(id: $podcast) {
+    ... on Podcast {
+      latestEpisodes {
+        ...EpisodeAttachmentFragment
+      }
+    }
+  }
+}
+
+mutation CreateShare($message: String!, $episodeId: ID!) {
+  createShare(message: $message, episodeId: $episodeId) {
+    ...ShareFragment
+  }
+}
+
 fragment ComposerPodcastFragment on Podcast {
   id
   title
