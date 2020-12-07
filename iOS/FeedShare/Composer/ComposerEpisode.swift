@@ -17,14 +17,13 @@ public struct ComposerEpisode: View {
         let formatter = DateFormatter()
         let relativeFormatter = RelativeDateTimeFormatter()
         
-        
         formatter.dateStyle = .long
         return formatter
     }()
     
     public var body: some View {
         VStack {
-            if (composerModel.podcast != nil) {
+            if composerModel.podcast != nil {
                 HStack {
                     Artwork(url: composerModel.podcast?.artwork, size: 70)
                     VStack(alignment: .leading) {

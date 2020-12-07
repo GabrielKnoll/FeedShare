@@ -16,7 +16,6 @@
 		6734F2A825609DC400BB95E5 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 6734F2A725609DC400BB95E5 /* URLImage */; };
 		6734F2AA25609DC400BB95E5 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 6734F2A925609DC400BB95E5 /* Apollo */; };
 		6734F2AC25609DC400BB95E5 /* ApolloSQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 6734F2AB25609DC400BB95E5 /* ApolloSQLite */; };
-		67420119257D2B87007CB04F /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67420118257D2B87007CB04F /* Navigation.swift */; };
 		67420121257D3500007CB04F /* ComposerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67420120257D3500007CB04F /* ComposerMessage.swift */; };
 		6742012E257D4328007CB04F /* PodcastClients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6742012D257D4328007CB04F /* PodcastClients.swift */; };
 		67420133257D44CF007CB04F /* SettingsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67420132257D44CF007CB04F /* SettingsClient.swift */; };
@@ -43,7 +42,7 @@
 		67D3FF5F257B17E900A86151 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3FF5E257B17E900A86151 /* SearchBar.swift */; };
 		67D3FF63257B192E00A86151 /* ComposerSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3FF62257B192E00A86151 /* ComposerSearch.swift */; };
 		67D3FF67257B1BD600A86151 /* ComposerPodcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3FF66257B1BD600A86151 /* ComposerPodcast.swift */; };
-		67D3FF73257C54E600A86151 /* NavigationStack in Frameworks */ = {isa = PBXBuildFile; productRef = 67D3FF72257C54E600A86151 /* NavigationStack */; };
+		67D3FFA3257DA2CD00A86151 /* NavigationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3FFA2257DA2CD00A86151 /* NavigationStack.swift */; };
 		67EED64C2578703500A9DCEC /* ProfilePicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67EED64B2578703500A9DCEC /* ProfilePicture.swift */; };
 		67EED64F2578714F00A9DCEC /* Artwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67EED64E2578714F00A9DCEC /* Artwork.swift */; };
 		F56832D8253E2D8100730B7A /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56832D7253E2D8100730B7A /* PostView.swift */; };
@@ -98,7 +97,6 @@
 		670F00EE256AD1B300A05BB6 /* OnboardingFeedlink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeedlink.swift; sourceTree = "<group>"; };
 		670F00F3256C3CFB00A05BB6 /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
 		670F00F5256C4F3F00A05BB6 /* Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
-		67420118257D2B87007CB04F /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		67420120257D3500007CB04F /* ComposerMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerMessage.swift; sourceTree = "<group>"; };
 		6742012D257D4328007CB04F /* PodcastClients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastClients.swift; sourceTree = "<group>"; };
 		67420132257D44CF007CB04F /* SettingsClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsClient.swift; sourceTree = "<group>"; };
@@ -122,6 +120,7 @@
 		67D3FF5E257B17E900A86151 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		67D3FF62257B192E00A86151 /* ComposerSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerSearch.swift; sourceTree = "<group>"; };
 		67D3FF66257B1BD600A86151 /* ComposerPodcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerPodcast.swift; sourceTree = "<group>"; };
+		67D3FFA2257DA2CD00A86151 /* NavigationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStack.swift; sourceTree = "<group>"; };
 		67EED64B2578703500A9DCEC /* ProfilePicture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePicture.swift; sourceTree = "<group>"; };
 		67EED64E2578714F00A9DCEC /* Artwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artwork.swift; sourceTree = "<group>"; };
 		F51CA091252785B80091710E /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
@@ -163,7 +162,6 @@
 			files = (
 				6734F2A825609DC400BB95E5 /* URLImage in Frameworks */,
 				67B94281257467E500412CDC /* Rswift in Frameworks */,
-				67D3FF73257C54E600A86151 /* NavigationStack in Frameworks */,
 				6734F2AC25609DC400BB95E5 /* ApolloSQLite in Frameworks */,
 				6734F2AA25609DC400BB95E5 /* Apollo in Frameworks */,
 			);
@@ -268,7 +266,6 @@
 				F5961CF32517937D00F93697 /* FeedShareApp.swift */,
 				670F00F3256C3CFB00A05BB6 /* Loading.swift */,
 				670F00F5256C4F3F00A05BB6 /* Overlay.swift */,
-				67420118257D2B87007CB04F /* Navigation.swift */,
 				67D3FF4E257AE29800A86151 /* ActivityIndicator.swift */,
 				67D3FF5E257B17E900A86151 /* SearchBar.swift */,
 				67EED64B2578703500A9DCEC /* ProfilePicture.swift */,
@@ -304,6 +301,7 @@
 		F5E7F90B251653830036448D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				67D3FFA2257DA2CD00A86151 /* NavigationStack.swift */,
 				67B9427925745F2900412CDC /* API.swift */,
 				6757847F257476D500BC8548 /* R.generated.swift */,
 				F5E7F8F42516527B0036448D /* Info.plist */,
@@ -362,7 +360,6 @@
 				6734F2A925609DC400BB95E5 /* Apollo */,
 				6734F2AB25609DC400BB95E5 /* ApolloSQLite */,
 				67B94280257467E500412CDC /* Rswift */,
-				67D3FF72257C54E600A86151 /* NavigationStack */,
 			);
 			productName = FeedShare;
 			productReference = F5E7F8E82516527A0036448D /* FeedShare.app */;
@@ -400,7 +397,6 @@
 				67CCCB852520FE7A00BA99F4 /* XCRemoteSwiftPackageReference "url-image" */,
 				F598287E25278C4300A8C2CB /* XCRemoteSwiftPackageReference "apollo-ios" */,
 				67B9427B25745F9E00412CDC /* XCRemoteSwiftPackageReference "R.swift" */,
-				67D3FF71257C54E600A86151 /* XCRemoteSwiftPackageReference "swiftui-navigation-stack" */,
 			);
 			productRefGroup = F5E7F8E92516527A0036448D /* Products */;
 			projectDirPath = "";
@@ -436,7 +432,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		67970D5A2560936300BD891D /* Apollo GraphQL codegen */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 8;
 			files = (
 			);
 			inputFileListPaths = (
@@ -448,7 +444,7 @@
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "# Go to the build root and search up the chain to find the Derived Data Path where the source packages are checked out.\nDERIVED_DATA_CANDIDATE=\"${BUILD_ROOT}\"\nwhile ! [ -d \"${DERIVED_DATA_CANDIDATE}/SourcePackages\" ]; do\n  if [ \"${DERIVED_DATA_CANDIDATE}\" = / ]; then\n    echo >&2 \"error: Unable to locate SourcePackages directory from BUILD_ROOT: '${BUILD_ROOT}'\"\n    exit 1\n  fi\n\n  DERIVED_DATA_CANDIDATE=\"$(dirname \"${DERIVED_DATA_CANDIDATE}\")\"\ndone\n\n# Grab a reference to the directory where scripts are checked out\nSCRIPT_PATH=\"${DERIVED_DATA_CANDIDATE}/SourcePackages/checkouts/apollo-ios/scripts\"\n\nif [ -z \"${SCRIPT_PATH}\" ]; then\n    echo >&2 \"error: Couldn't find the CLI script in your checked out SPM packages; make sure to add the framework to your project.\"\n    exit 1\nfi\n\ncd \"${SRCROOT}/${TARGET_NAME}/\"\n\"${SCRIPT_PATH}\"/run-bundled-codegen.sh codegen:generate --target=swift --includes=./**/*.graphql --localSchemaFile=\"../../server/api.json\" \"Supporting Files/API.swift\"\n";
 		};
@@ -555,10 +551,10 @@
 				67970D5125608FB500BD891D /* RefreshableScrollView.swift in Sources */,
 				67420121257D3500007CB04F /* ComposerMessage.swift in Sources */,
 				67B942742574080000412CDC /* Settings.swift in Sources */,
-				67420119257D2B87007CB04F /* Navigation.swift in Sources */,
 				67D3FF67257B1BD600A86151 /* ComposerPodcast.swift in Sources */,
 				67D3FF5F257B17E900A86151 /* SearchBar.swift in Sources */,
 				67B9427A25745F2900412CDC /* API.swift in Sources */,
+				67D3FFA3257DA2CD00A86151 /* NavigationStack.swift in Sources */,
 				670F00F4256C3CFB00A05BB6 /* Loading.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -858,14 +854,6 @@
 				minimumVersion = 2.0.0;
 			};
 		};
-		67D3FF71257C54E600A86151 /* XCRemoteSwiftPackageReference "swiftui-navigation-stack" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/matteopuc/swiftui-navigation-stack.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.0;
-			};
-		};
 		F598287E25278C4300A8C2CB /* XCRemoteSwiftPackageReference "apollo-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apollographql/apollo-ios.git";
@@ -911,11 +899,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 67B9427B25745F9E00412CDC /* XCRemoteSwiftPackageReference "R.swift" */;
 			productName = Rswift;
-		};
-		67D3FF72257C54E600A86151 /* NavigationStack */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 67D3FF71257C54E600A86151 /* XCRemoteSwiftPackageReference "swiftui-navigation-stack" */;
-			productName = NavigationStack;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

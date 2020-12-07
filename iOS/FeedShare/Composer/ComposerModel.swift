@@ -85,8 +85,7 @@ public class ComposerModel: ObservableObject {
                 self.isLoading = false
                 switch result {
                 case let .success(graphQLResult):
-                    print(graphQLResult.data?.createShare?.fragments.shareFragment)
-                    // graphQLResult.data?.createShare?.fragments.shareFragment
+                    print(graphQLResult.data?.createShare?.fragments.shareFragment ?? "")
                 case .failure:
                     print("error")
                 }

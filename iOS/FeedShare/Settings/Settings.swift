@@ -16,7 +16,7 @@ public struct Settings: View {
     
     public var body: some View {
         Overlay(visible: $visible) {
-            Navigation {
+            NavigationStackView(easing: .easeOut) {
                 VStack(alignment: .leading, spacing: 10) {
                     HStack {
                         Spacer()
@@ -66,8 +66,8 @@ public struct Settings: View {
                             })
                         )
                     }
-                }
-            }.padding(15)
+                }.padding(15)
+            }
         }
     }
 }

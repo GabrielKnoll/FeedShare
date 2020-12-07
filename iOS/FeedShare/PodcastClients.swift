@@ -20,6 +20,6 @@ public struct PodcastClients: View {
                     onSelect()
                 }
             }
-        }//.onAppear(perform: viewerModel.fetchPodcastClients)
+        }.onAppear(perform: viewerModel.fetchPodcastClients)
     }
 }
