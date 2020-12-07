@@ -16,11 +16,7 @@ export default extendType({
       },
       ...requireAuthorization,
       resolve: async (_parent, {id}, {prismaClient}) => {
-        // @ts-ignore
-        const [__typename, ...guid]: [
-          NexusGenAbstractTypeMembers['Node'],
-          ...string[]
-        ] = id.split(':');
+        const {__typename, key} = parseId(id);
 
         let delegate;
         switch (__typename) {
@@ -49,7 +45,7 @@ export default extendType({
           'node'
         > | null = await (delegate as Prisma.PodcastDelegate).findUnique({
           where: {
-            id: guid.join(':'),
+            id: key,
           },
         });
 
@@ -62,3 +58,17 @@ export default extendType({
     });
   },
 });
+
+export function parseId(
+  id: string,
+): {
+  __typename: NexusGenAbstractTypeMembers['Node'];
+  key: string;
+} {
+  const [__typename, ...guid] = id.split(':');
+
+  return {
+    __typename: __typename as NexusGenAbstractTypeMembers['Node'],
+    key: guid.join(':'),
+  };
+}

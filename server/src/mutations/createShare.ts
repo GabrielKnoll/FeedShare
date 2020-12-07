@@ -1,4 +1,5 @@
 import {extendType, stringArg, idArg, nonNull} from '@nexus/schema';
+import {parseId} from '../queries/node';
 import requireAuthorization from '../utils/requireAuthorization';
 
 export default extendType({
@@ -16,7 +17,7 @@ export default extendType({
           data: {
             episode: {
               connect: {
-                id: episodeId,
+                id: parseId(episodeId).key,
               },
             },
             message: message,
