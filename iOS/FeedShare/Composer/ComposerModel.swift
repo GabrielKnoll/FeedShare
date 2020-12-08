@@ -82,6 +82,7 @@ public class ComposerModel: ObservableObject {
         self.isLoading = true
         if let id = episode?.id {
             Network.shared.apollo.perform(mutation: CreateShareMutation(message: message, episodeId: id)) { result in
+                print(result)
                 self.isLoading = false
                 switch result {
                 case let .success(graphQLResult):

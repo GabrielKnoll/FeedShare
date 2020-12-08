@@ -5,95 +5,131 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
+import Combine
 import SwiftUI
 
-public struct Overlay<Content: View>: View {
-    let content: () -> Content
+enum OverlayView {
+    case none
+    case settings
+    case composer
+    case episode
+}
+
+class OverlayModel: ObservableObject {
+    let objectWillChange = PassthroughSubject<OverlayModel, Never>()
     
-    @EnvironmentObject var viewerModel: ViewerModel
-    @Binding var visible: Bool {
+    @Published public var active: OverlayView = .none {
         willSet {
-            if !newValue {
-                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            withAnimation {
+                objectWillChange.send(self)
             }
         }
-        didSet {
-            self.offset = 0
-        }
     }
+}
+
+public struct Overlay<Content: View>: View {
+    let content: (_ dismiss: @escaping () -> Void) -> Content
+    private let position: OverlayPosition
+    private let dismissable: Bool
+    private let id: OverlayView
+    
+    @EnvironmentObject var overlayModel: OverlayModel
     @State private var offset = CGFloat(0)
     
-    init(visible: Binding<Bool>, @ViewBuilder content: @escaping () -> Content) {
+    enum OverlayPosition {
+        case top
+        case bottom
+    }
+    
+    init(
+        id: OverlayView,
+        position: OverlayPosition = .bottom,
+        dismissable: Bool = true,
+        @ViewBuilder content: @escaping (_ dismiss: @escaping () -> Void) -> Content
+    ) {
         self.content = content
-        self._visible = visible
+        self.position = position
+        self.dismissable = dismissable
+        self.id = id
+    }
+    
+    private func ended(gesture: _ChangedGesture<DragGesture>.Value) {
+        withAnimation {
+            if (gesture.translation.height > 20 && position == .bottom) ||
+                gesture.translation.height < -20 && position != .bottom {
+                dismiss()
+            } else {
+                self.offset = 0
+            }
+        }
+    }
+    
+    private func dismiss() {
+        overlayModel.active = .none
+        offset = 0
     }
     
     public var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .bottom) {
-                if $visible.wrappedValue {
+                let visible = self.id == overlayModel.active
+                if visible {
                     Color.black
                         .opacity(0.3)
-                        .onTapGesture {
-                            withAnimation {
-                                visible.toggle()
-                            }
-                        }
-                        .gesture(DragGesture()
-                                    .onChanged { gesture in
-                                        if gesture.translation.height > 0 {
-                                            self.offset = gesture.translation.height
-                                        }
-                                    }
-                                    .onEnded { gesture in
-                                        withAnimation {
-                                            if gesture.translation.height > 20 {
-                                                visible.toggle()
-                                            } else {
-                                                self.offset = 0
+                        .if(dismissable) {
+                            $0.gesture(DragGesture()
+                                        .onChanged { gesture in
+                                            if gesture.translation.height > 0 {
+                                                self.offset = gesture.translation.height
                                             }
                                         }
-                                    }
-                        )
+                                        .onEnded(ended)
+                            ).onTapGesture {
+                                dismiss()
+                            }
+                        }
                         .transition(.opacity)
                         .edgesIgnoringSafeArea(.all)
                 }
                 
-                VStack {
-                    Spacer()
-                    if $visible.wrappedValue {
-                        content()
-                            .edgesIgnoringSafeArea(.bottom)
-                            .padding(.bottom, geometry.safeAreaInsets.bottom)
+                HStack(alignment: .bottom) {
+                    if visible {
+                        content(dismiss)
+                            //.padding(.bottom, geometry.safeAreaInsets.bottom)
                             .background(Color.white)
                             .cornerRadius(38.5)
                             .shadow(color: Color(UIColor(red: 0, green: 0, blue: 0, alpha: 0.05)),
                                     radius: 5.0,
                                     x: 0.0,
                                     y: 0.0)
-                            .offset(x: 0, y: offset + geometry.safeAreaInsets.bottom)
-                            .gesture(DragGesture()
-                                        .onChanged { gesture in
-                                            if $visible.wrappedValue {
-                                                self.offset = gesture.translation.height
-                                            }
-                                        }
-                                        .onEnded { gesture in
-                                            withAnimation {
-                                                if gesture.translation.height > 20 {
-                                                    visible.toggle()
-                                                } else {
-                                                    self.offset = 0
+                            .offset(x: 0, y: offset)
+                            .if(dismissable) {
+                                $0.gesture(DragGesture()
+                                            .onChanged { gesture in
+                                                if visible {
+                                                    self.offset = gesture.translation.height
                                                 }
                                             }
-                                        }
-                            )
-                            .transition(.move(edge: .bottom))
+                                            .onEnded(ended)
+                                )
+                            }
+                            .transition(.move(edge: position == .bottom ? .bottom : .top))
                     }
                 }
                 .padding(10)
-                .animation(.interpolatingSpring(mass: 0.4, stiffness: 250, damping: 13))
-            }
+                //.animation(.interpolatingSpring(mass: 0.4, stiffness: 250, damping: 13))
+            }.ignoresSafeArea(.container, edges: .bottom)
+        }
+    }
+}
+
+extension View {
+    @ViewBuilder
+    func `if`<Content: View>(_ condition: Bool, content: (Self) -> Content) -> some View {
+        if condition {
+            content(self)
+        } else {
+            self
         }
     }
 }

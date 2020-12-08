@@ -24,6 +24,7 @@ public struct ComposerMessage: View {
                     Text("Publish")
                 }
             }
+            Spacer()
             if let episode = composerModel.episode {
                 EpisodeAttachment(data: episode)
             }

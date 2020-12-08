@@ -10,15 +10,16 @@ import SwiftUI
 @main
 struct FeedShareApp: App {
     @ObservedObject var viewerModel = ViewerModel.shared
-    @State private var settingsVisible = false
-    @State private var composerVisible = false
+    @ObservedObject private var overlayModel = OverlayModel()
     
     var body: some Scene {
         WindowGroup {
             ZStack {
                 if viewerModel.initialized {
                     if viewerModel.setupFinshed, viewerModel.viewer != nil {
-                        FeedStream(visible: $composerVisible)
+                        FeedStream(showComposer: {
+                            overlayModel.active = .composer
+                        })
                         VStack {
                             Spacer()
                             HStack {
@@ -28,9 +29,7 @@ struct FeedShareApp: App {
                                 }.padding(10)
                                 Spacer()
                                 Button(action: {
-                                    withAnimation {
-                                        settingsVisible.toggle()
-                                    }
+                                    overlayModel.active = .settings
                                 }) {
                                     Image(systemName: "person.fill")
                                 }.padding(10)
@@ -38,9 +37,10 @@ struct FeedShareApp: App {
                             }
                             .font(.headline)
                             .foregroundColor(Color.black)
-                        }
-                        Settings(visible: $settingsVisible)
-                        Composer(visible: $composerVisible)
+                            
+                        }.ignoresSafeArea(.keyboard, edges: .bottom)
+                        Settings()
+                        Composer()
                     } else {
                         Onboarding()
                     }
@@ -49,6 +49,7 @@ struct FeedShareApp: App {
                 }
             }
             .environmentObject(viewerModel)
+            .environmentObject(overlayModel)
         }
     }
 }

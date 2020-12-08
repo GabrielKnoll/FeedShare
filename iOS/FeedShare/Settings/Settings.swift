@@ -12,19 +12,15 @@ public struct Settings: View {
     @EnvironmentObject var viewerModel: ViewerModel
     @State private var notifications = false
     @State private var logoutAlert = false
-    @Binding var visible: Bool
+    //@Binding var visible: Bool
     
     public var body: some View {
-        Overlay(visible: $visible) {
+        Overlay(id: .settings) { hide in
             NavigationStackView(easing: .easeOut) {
                 VStack(alignment: .leading, spacing: 10) {
                     HStack {
                         Spacer()
-                        Button(action: {
-                            withAnimation {
-                                self.visible.toggle()
-                            }
-                        }) {
+                        Button(action: hide) {
                             Image(systemName: "xmark.circle.fill")
                                 .foregroundColor(.secondary)
                                 .font(.title)
@@ -58,7 +54,7 @@ public struct Settings: View {
                             title: Text("Log Out"),
                             message: Text("Are you sure you want to log out?"),
                             primaryButton: .destructive(Text("Log Out"), action: {
-                                self.visible.toggle()
+                                //self.visible.toggle()
                                 self.viewerModel.logout()
                             }),
                             secondaryButton: .cancel(Text("Cancel"), action: {

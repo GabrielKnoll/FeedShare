@@ -6,14 +6,13 @@
 //
 
 import SwiftUI
-import URLImage
 
 public struct Composer: View {
-    @Binding var visible: Bool
     @StateObject var composerModel = ComposerModel()
+    //@Binding var visible: Bool
     
     public var body: some View {
-        Overlay(visible: $visible) {
+        Overlay(id: .composer, position: .top, dismissable: false) {_ in 
             VStack {
                 NavigationStackView {
                     ComposerSearch(composerModel: composerModel)

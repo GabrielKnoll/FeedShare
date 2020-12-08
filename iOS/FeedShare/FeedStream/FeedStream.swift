@@ -10,21 +10,15 @@ import SwiftUI
 public struct FeedStream: View {
     @StateObject var feedStreamModel = FeedStreamModel()
     @State private var feedType = 0
-    @Binding var visible: Bool
-    
-    init (visible: Binding<Bool>) {
-        self._visible = visible
-    }
-    
+    let showComposer: () -> Void
+ 
     public var body: some View {
         VStack {
             VStack {
                 HStack {
                     Text("LOGO").font(.headline)
                     Spacer()
-                    Button(action: {
-                        self.visible.toggle()
-                    }) {
+                    Button(action: showComposer) {
                         Text("Create")
                     }
                 }.padding(15)
