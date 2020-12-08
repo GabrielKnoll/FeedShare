@@ -5,7 +5,6 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
-import NavigationStack
 import SwiftUI
 import URLImage
 
