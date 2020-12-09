@@ -6,7 +6,7 @@ public struct OnboardingPodcastClient: View {
     public var body: some View {
         VStack {
             Text("Which Podcast client are you using?")
-            PodcastClients(onSelect: onNext)
+			PodcastClients(onSelect: onNext)
         }
     }
 }

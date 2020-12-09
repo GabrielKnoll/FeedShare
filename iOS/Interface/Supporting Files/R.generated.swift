@@ -88,23 +88,12 @@ struct R: Rswift.Validatable {
     try intern.validate()
   }
 
-  /// This `R.color` struct is generated, and contains static references to 3 colors.
+  /// This `R.color` struct is generated, and contains static references to 2 colors.
   struct color {
-    /// Color `AccentColor`.
-    static let accentColor = Rswift.ColorResource(bundle: R.hostingBundle, name: "AccentColor")
     /// Color `Background`.
     static let background = Rswift.ColorResource(bundle: R.hostingBundle, name: "Background")
     /// Color `DropShadow`.
     static let dropShadow = Rswift.ColorResource(bundle: R.hostingBundle, name: "DropShadow")
-
-    #if os(iOS) || os(tvOS)
-    /// `UIColor(named: "AccentColor", bundle: ..., traitCollection: ...)`
-    @available(tvOS 11.0, *)
-    @available(iOS 11.0, *)
-    static func accentColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
-      return UIKit.UIColor(resource: R.color.accentColor, compatibleWith: traitCollection)
-    }
-    #endif
 
     #if os(iOS) || os(tvOS)
     /// `UIColor(named: "Background", bundle: ..., traitCollection: ...)`
@@ -123,18 +112,6 @@ struct R: Rswift.Validatable {
       return UIKit.UIColor(resource: R.color.dropShadow, compatibleWith: traitCollection)
     }
     #endif
-
-    fileprivate init() {}
-  }
-
-  /// This `R.info` struct is generated, and contains static references to 1 properties.
-  struct info {
-    struct uiApplicationSceneManifest {
-      static let _key = "UIApplicationSceneManifest"
-      static let uiApplicationSupportsMultipleScenes = true
-
-      fileprivate init() {}
-    }
 
     fileprivate init() {}
   }

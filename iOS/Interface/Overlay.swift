@@ -41,7 +41,7 @@ public struct OverlayHost<Content: View>: View {
     @StateObject var overlayModel = OverlayModel()
     let content: () -> Content
     
-    init(@ViewBuilder _ content: @escaping () -> Content) {
+    public init(@ViewBuilder _ content: @escaping () -> Content) {
         self.content = content
     }
     
@@ -77,7 +77,7 @@ public struct Overlay: View {
     }
     
     public var body: some View {
-        GeometryReader { geometry in
+        GeometryReader { _ in
             ZStack(alignment: .bottom) {
                 let visible: Bool = self.overlayModel.presentedView != nil
                 
@@ -94,7 +94,7 @@ public struct Overlay: View {
                                         .onEnded(ended)
                             ).onTapGesture {
                                 dismiss()
-                            }
+							}
                         }
                         .transition(.opacity)
                         .edgesIgnoringSafeArea(.all)

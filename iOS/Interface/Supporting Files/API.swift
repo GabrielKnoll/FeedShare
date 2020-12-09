@@ -1538,6 +1538,77 @@ public struct EpisodeAttachmentFragment: GraphQLFragment {
   }
 }
 
+public struct Client: GraphQLFragment {
+  /// The raw GraphQL definition of this fragment.
+  public static let fragmentDefinition: String =
+    """
+    fragment Client on PodcastClient {
+      __typename
+      id
+      icon
+      displayName
+    }
+    """
+
+  public static let possibleTypes: [String] = ["PodcastClient"]
+
+  public static var selections: [GraphQLSelection] {
+    return [
+      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+      GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+      GraphQLField("icon", type: .nonNull(.scalar(String.self))),
+      GraphQLField("displayName", type: .nonNull(.scalar(String.self))),
+    ]
+  }
+
+  public private(set) var resultMap: ResultMap
+
+  public init(unsafeResultMap: ResultMap) {
+    self.resultMap = unsafeResultMap
+  }
+
+  public init(id: GraphQLID, icon: String, displayName: String) {
+    self.init(unsafeResultMap: ["__typename": "PodcastClient", "id": id, "icon": icon, "displayName": displayName])
+  }
+
+  public var __typename: String {
+    get {
+      return resultMap["__typename"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "__typename")
+    }
+  }
+
+  /// Unique identifier for the resource
+  public var id: GraphQLID {
+    get {
+      return resultMap["id"]! as! GraphQLID
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "id")
+    }
+  }
+
+  public var icon: String {
+    get {
+      return resultMap["icon"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "icon")
+    }
+  }
+
+  public var displayName: String {
+    get {
+      return resultMap["displayName"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "displayName")
+    }
+  }
+}
+
 public struct ShareFragment: GraphQLFragment {
   /// The raw GraphQL definition of this fragment.
   public static let fragmentDefinition: String =
@@ -1734,77 +1805,6 @@ public struct ShareFragment: GraphQLFragment {
           resultMap += newValue.resultMap
         }
       }
-    }
-  }
-}
-
-public struct Client: GraphQLFragment {
-  /// The raw GraphQL definition of this fragment.
-  public static let fragmentDefinition: String =
-    """
-    fragment Client on PodcastClient {
-      __typename
-      id
-      icon
-      displayName
-    }
-    """
-
-  public static let possibleTypes: [String] = ["PodcastClient"]
-
-  public static var selections: [GraphQLSelection] {
-    return [
-      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-      GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
-      GraphQLField("icon", type: .nonNull(.scalar(String.self))),
-      GraphQLField("displayName", type: .nonNull(.scalar(String.self))),
-    ]
-  }
-
-  public private(set) var resultMap: ResultMap
-
-  public init(unsafeResultMap: ResultMap) {
-    self.resultMap = unsafeResultMap
-  }
-
-  public init(id: GraphQLID, icon: String, displayName: String) {
-    self.init(unsafeResultMap: ["__typename": "PodcastClient", "id": id, "icon": icon, "displayName": displayName])
-  }
-
-  public var __typename: String {
-    get {
-      return resultMap["__typename"]! as! String
-    }
-    set {
-      resultMap.updateValue(newValue, forKey: "__typename")
-    }
-  }
-
-  /// Unique identifier for the resource
-  public var id: GraphQLID {
-    get {
-      return resultMap["id"]! as! GraphQLID
-    }
-    set {
-      resultMap.updateValue(newValue, forKey: "id")
-    }
-  }
-
-  public var icon: String {
-    get {
-      return resultMap["icon"]! as! String
-    }
-    set {
-      resultMap.updateValue(newValue, forKey: "icon")
-    }
-  }
-
-  public var displayName: String {
-    get {
-      return resultMap["displayName"]! as! String
-    }
-    set {
-      resultMap.updateValue(newValue, forKey: "displayName")
     }
   }
 }

@@ -11,7 +11,9 @@ public struct FeedStream: View {
     @StateObject var feedStreamModel = FeedStreamModel()
     @State private var feedType = 0
     @EnvironmentObject var overlayModel: OverlayModel
- 
+
+	public init() {}
+
     public var body: some View {
         VStack {
             VStack {
@@ -52,7 +54,7 @@ public struct FeedStream: View {
                 .padding(.bottom, 25)
             }
         }
-        .background(Color(R.color.background() ?? .gray))
+		.background(Color(R.color.background() ?? .gray))
         .edgesIgnoringSafeArea(.bottom)
     }
 }

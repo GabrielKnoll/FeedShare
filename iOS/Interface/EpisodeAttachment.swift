@@ -10,6 +10,7 @@ import URLImage
 
 public struct EpisodeAttachment: View {
     @EnvironmentObject var overlayModel: OverlayModel
+
     public init(data: EpisodeAttachmentFragment) {
         self.data = data
     }
@@ -55,7 +56,7 @@ public struct EpisodeAttachment: View {
         .overlay(RoundedRectangle(cornerRadius: 15)
                     .stroke(Color.secondary.opacity(0.2), lineWidth: 1))
         .cornerRadius(15)
-    }
+		}
     }
 }
 

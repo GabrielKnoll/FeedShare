@@ -10,11 +10,11 @@ import Foundation
 import Network
 
 public class ViewerModel: ObservableObject {
-    static let shared = ViewerModel()
+    public static let shared = ViewerModel()
     
     @Published public var podcastClients = [Client]()
     
-    @Published var viewerClient: Client? = {
+    @Published public var viewerClient: Client? = {
         if let resultMap = UserDefaults.standard.dictionary(forKey: "ViewerClient") {
             return Client(unsafeResultMap: resultMap)
         }
@@ -25,9 +25,9 @@ public class ViewerModel: ObservableObject {
         }
     }
     
-    @Published var viewer: ViewerFragment?
-    @Published var initialized: Bool = false
-    @Published var setupFinshed: Bool = UserDefaults.standard.bool(forKey: "setupFinished") {
+    @Published public var viewer: ViewerFragment?
+    @Published public var initialized: Bool = false
+    @Published public var setupFinshed: Bool = UserDefaults.standard.bool(forKey: "setupFinished") {
         didSet {
             UserDefaults.standard.setValue(setupFinshed, forKey: "setupFinished")
         }

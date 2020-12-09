@@ -3,6 +3,8 @@ import SwiftUI
 public struct Onboarding: View {
     @State private var currentPage = 0
 
+	public init() {}
+
     func next() {
         if currentPage < 3 {
             withAnimation {

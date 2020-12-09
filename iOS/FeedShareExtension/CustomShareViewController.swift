@@ -13,7 +13,7 @@ class CustomShareViewController: UIViewController {
         super.viewDidLoad()
         // view.backgroundColor = R.color.background()
         addNavItems()
-        addHostingController()
+//        addHostingController()
         // view.backgroundColor = R.color.background()
     }
 
@@ -27,20 +27,20 @@ class CustomShareViewController: UIViewController {
         navigationItem.setRightBarButton(sendBarButton, animated: false)
     }
 
-    private func addHostingController() {
-        let controller = UIHostingController(rootView: PostView())
-        addChild(controller)
-        view.addSubview(controller.view)
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            controller.view.topAnchor.constraint(equalTo: view.topAnchor, constant: (navigationController?.navigationBar.frame.height ?? 0) + 20),
-            controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
-            controller.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
-            controller.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-        ])
-        controller.view.backgroundColor = .clear
-        controller.didMove(toParent: self)
-    }
+//    private func addHostingController() {
+//        let controller = UIHostingController(rootView: View())
+//        addChild(controller)
+//        view.addSubview(controller.view)
+//        controller.view.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            controller.view.topAnchor.constraint(equalTo: view.topAnchor, constant: (navigationController?.navigationBar.frame.height ?? 0) + 20),
+//            controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
+//            controller.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+//            controller.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+//        ])
+//        controller.view.backgroundColor = .clear
+//        controller.didMove(toParent: self)
+//    }
 
     @objc private func cancelAction() {
         extensionContext?.cancelRequest(withError: NSError(domain: "com.feedshare.Feedshare", code: 0, userInfo: nil))
