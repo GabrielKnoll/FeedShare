@@ -8,7 +8,7 @@ import Rswift
 import UIKit
 
 /// This `R` struct is generated and contains references to static resources.
-struct R: Rswift.Validatable {
+public struct R: Rswift.Validatable {
   fileprivate static let applicationLocale = hostingBundle.preferredLocalizations.first.flatMap { Locale(identifier: $0) } ?? Locale.current
   fileprivate static let hostingBundle = Bundle(for: R.Class.self)
 
@@ -84,22 +84,22 @@ struct R: Rswift.Validatable {
     return dict?[key] as? String
   }
 
-  static func validate() throws {
+  public static func validate() throws {
     try intern.validate()
   }
 
   /// This `R.color` struct is generated, and contains static references to 2 colors.
-  struct color {
+  public struct color {
     /// Color `Background`.
-    static let background = Rswift.ColorResource(bundle: R.hostingBundle, name: "Background")
+    public static let background = Rswift.ColorResource(bundle: R.hostingBundle, name: "Background")
     /// Color `DropShadow`.
-    static let dropShadow = Rswift.ColorResource(bundle: R.hostingBundle, name: "DropShadow")
+    public static let dropShadow = Rswift.ColorResource(bundle: R.hostingBundle, name: "DropShadow")
 
     #if os(iOS) || os(tvOS)
     /// `UIColor(named: "Background", bundle: ..., traitCollection: ...)`
     @available(tvOS 11.0, *)
     @available(iOS 11.0, *)
-    static func background(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+    public static func background(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
       return UIKit.UIColor(resource: R.color.background, compatibleWith: traitCollection)
     }
     #endif
@@ -108,7 +108,7 @@ struct R: Rswift.Validatable {
     /// `UIColor(named: "DropShadow", bundle: ..., traitCollection: ...)`
     @available(tvOS 11.0, *)
     @available(iOS 11.0, *)
-    static func dropShadow(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+    public static func dropShadow(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
       return UIKit.UIColor(resource: R.color.dropShadow, compatibleWith: traitCollection)
     }
     #endif
@@ -117,18 +117,18 @@ struct R: Rswift.Validatable {
   }
 
   /// This `R.string` struct is generated, and contains static references to 1 localization tables.
-  struct string {
+  public struct string {
     /// This `R.string.localizable` struct is generated, and contains static references to 1 localization keys.
-    struct localizable {
+    public struct localizable {
       /// en translation: I've just listend to this episode of Luftpost Podcast. The guest really gave some exiting insights into travelling in Senegal!
       ///
       /// Locales: en, de
-      static let testShareMessage = Rswift.StringResource(key: "test.share.message", tableName: "Localizable", bundle: R.hostingBundle, locales: ["en", "de"], comment: nil)
+      public static let testShareMessage = Rswift.StringResource(key: "test.share.message", tableName: "Localizable", bundle: R.hostingBundle, locales: ["en", "de"], comment: nil)
 
       /// en translation: I've just listend to this episode of Luftpost Podcast. The guest really gave some exiting insights into travelling in Senegal!
       ///
       /// Locales: en, de
-      static func testShareMessage(preferredLanguages: [String]? = nil) -> String {
+      public static func testShareMessage(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("test.share.message", bundle: hostingBundle, comment: "")
         }
@@ -159,6 +159,6 @@ struct R: Rswift.Validatable {
   fileprivate init() {}
 }
 
-struct _R {
+public struct _R {
   fileprivate init() {}
 }

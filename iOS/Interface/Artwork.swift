@@ -12,7 +12,7 @@ public struct Artwork: View {
     private let url: URL?
     private let size: CGFloat
     
-    init(url: String?, size: Double) {
+    public init(url: String?, size: Double) {
         if let u = url, let uu = URL(string: u) {
             self.url = uu
         } else {

@@ -7,24 +7,35 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		67D3837C25817B4C0008A496 /* TwitterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB12812544879B001CC7ED /* TwitterService.swift */; };
+		67D3837D25817B4C0008A496 /* OnboardingPodcastClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00E92569CE4800A05BB6 /* OnboardingPodcastClient.swift */; };
+		67D3837E25817B4C0008A496 /* OnboardingFeedlink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00EE256AD1B300A05BB6 /* OnboardingFeedlink.swift */; };
+		67D3837F25817B4C0008A496 /* OnboardingLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB1287254487E0001CC7ED /* OnboardingLogin.swift */; };
+		67D3838025817B4C0008A496 /* OnboardingNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00E72569C27400A05BB6 /* OnboardingNotifications.swift */; };
+		67D3838125817B4C0008A496 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00E52569C14000A05BB6 /* Onboarding.swift */; };
+		67D3838225817B4C0008A496 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB129D25448D5E001CC7ED /* SafariView.swift */; };
+		67D3838425817D1B0008A496 /* PodcastClients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6742012D257D4328007CB04F /* PodcastClients.swift */; };
+		67D3838525817D1B0008A496 /* PodcastClientRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B94275257451EC00412CDC /* PodcastClientRow.swift */; };
+		67D3838A25817D9C0008A496 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B942732574080000412CDC /* Settings.swift */; };
+		67D3838B25817D9C0008A496 /* SettingsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67420132257D44CF007CB04F /* SettingsClient.swift */; };
+		67D3838E25817DDA0008A496 /* FeedStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59828AC25278FA400A8C2CB /* FeedStream.swift */; };
+		67D3838F25817DDA0008A496 /* RefreshableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59828AB25278FA400A8C2CB /* RefreshableScrollView.swift */; };
+		67D3839125817E0F0008A496 /* FeedStreamModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F539F19F2528A63B0080412A /* FeedStreamModel.swift */; };
+		67D3839325817E440008A496 /* Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00F5256C4F3F00A05BB6 /* Overlay.swift */; };
+		67D3839525817E520008A496 /* EpisodeOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6772B2BE257F053E006FBE9D /* EpisodeOverlay.swift */; };
+		67D383992581827A0008A496 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00F3256C3CFB00A05BB6 /* Loading.swift */; };
 		F533027125815DE5005C5250 /* Interface.h in Headers */ = {isa = PBXBuildFile; fileRef = F533026F25815DE5005C5250 /* Interface.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F533027425815DE5005C5250 /* Interface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F533026D25815DE5005C5250 /* Interface.framework */; };
 		F533027625815DE5005C5250 /* Interface.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F533026D25815DE5005C5250 /* Interface.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F533027C25815E01005C5250 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51CA091252785B80091710E /* Network.swift */; };
 		F533027E25815E01005C5250 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3FF5E257B17E900A86151 /* SearchBar.swift */; };
-		F533027F25815E01005C5250 /* PodcastClientRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B94275257451EC00412CDC /* PodcastClientRow.swift */; };
 		F533028025815E01005C5250 /* UserManagementInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67970D302557602800BD891D /* UserManagementInterceptor.swift */; };
-		F533028125815E01005C5250 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00F3256C3CFB00A05BB6 /* Loading.swift */; };
 		F533028225815E01005C5250 /* ProfilePicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67EED64B2578703500A9DCEC /* ProfilePicture.swift */; };
-		F533028325815E01005C5250 /* Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00F5256C4F3F00A05BB6 /* Overlay.swift */; };
 		F533028425815E01005C5250 /* Artwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67EED64E2578714F00A9DCEC /* Artwork.swift */; };
-		F533028625815E01005C5250 /* EpisodeOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6772B2BE257F053E006FBE9D /* EpisodeOverlay.swift */; };
-		F533028725815E01005C5250 /* PodcastClients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6742012D257D4328007CB04F /* PodcastClients.swift */; };
 		F533028825815E01005C5250 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3FF4E257AE29800A86151 /* ActivityIndicator.swift */; };
 		F533028D25815E21005C5250 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = F533028C25815E21005C5250 /* Apollo */; };
 		F533029025815E41005C5250 /* ApolloSQLite in Frameworks */ = {isa = PBXBuildFile; productRef = F533028F25815E41005C5250 /* ApolloSQLite */; };
 		F533029E2581604C005C5250 /* EpisodeAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3FF58257AF37800A86151 /* EpisodeAttachment.swift */; };
-		F53302A025816055005C5250 /* FeedStreamModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F539F19F2528A63B0080412A /* FeedStreamModel.swift */; };
 		F53302A225816058005C5250 /* ShareRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59828A925278FA400A8C2CB /* ShareRow.swift */; };
 		F53302A42581605E005C5250 /* ViewerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67870FAF2550CE66005F89DD /* ViewerModel.swift */; };
 		F53302A92581611C005C5250 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B9427925745F2900412CDC /* API.swift */; };
@@ -37,8 +48,6 @@
 		F53302BC25816135005C5250 /* ComposerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67420120257D3500007CB04F /* ComposerMessage.swift */; };
 		F53302BF25816139005C5250 /* ComposerPodcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3FF66257B1BD600A86151 /* ComposerPodcast.swift */; };
 		F53302C12581613C005C5250 /* ComposerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3FF45257AD85700A86151 /* ComposerModel.swift */; };
-		F53302C42581614C005C5250 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B942732574080000412CDC /* Settings.swift */; };
-		F53302C72581614F005C5250 /* SettingsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67420132257D44CF007CB04F /* SettingsClient.swift */; };
 		F53302D125816196005C5250 /* RswiftDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = F53302D025816196005C5250 /* RswiftDynamic */; };
 		F53302D225816196005C5250 /* RswiftDynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F53302D025816196005C5250 /* RswiftDynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F53302D42581619E005C5250 /* RswiftDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = F53302D32581619E005C5250 /* RswiftDynamic */; };
@@ -49,15 +58,6 @@
 		F53302EA258162F8005C5250 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = F53302E9258162F8005C5250 /* URLImage */; };
 		F53302EB25816309005C5250 /* URLImageWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F53302DC258162F0005C5250 /* URLImageWrapper.framework */; };
 		F53302EC25816309005C5250 /* URLImageWrapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F53302DC258162F0005C5250 /* URLImageWrapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F53302F22581640B005C5250 /* OnboardingPodcastClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00E92569CE4800A05BB6 /* OnboardingPodcastClient.swift */; };
-		F53302F425816410005C5250 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00E52569C14000A05BB6 /* Onboarding.swift */; };
-		F53302F725816413005C5250 /* OnboardingLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB1287254487E0001CC7ED /* OnboardingLogin.swift */; };
-		F53302FB25816417005C5250 /* OnboardingNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00E72569C27400A05BB6 /* OnboardingNotifications.swift */; };
-		F53302FF2581641E005C5250 /* OnboardingFeedlink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00EE256AD1B300A05BB6 /* OnboardingFeedlink.swift */; };
-		F533030325816421005C5250 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB129D25448D5E001CC7ED /* SafariView.swift */; };
-		F533030625816424005C5250 /* TwitterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB12812544879B001CC7ED /* TwitterService.swift */; };
-		F533030925816428005C5250 /* RefreshableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59828AB25278FA400A8C2CB /* RefreshableScrollView.swift */; };
-		F533030B2581642B005C5250 /* FeedStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59828AC25278FA400A8C2CB /* FeedStream.swift */; };
 		F533030F258164A3005C5250 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F533030E258164A3005C5250 /* Assets.xcassets */; };
 		F5822FB2253A11F900AAA348 /* CustomShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5822FB0253A11F900AAA348 /* CustomShareViewController.swift */; };
 		F5822FB3253A11F900AAA348 /* CustomShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5822FB1253A11F900AAA348 /* CustomShareViewController.xib */; };
@@ -285,6 +285,7 @@
 			children = (
 				F59828AB25278FA400A8C2CB /* RefreshableScrollView.swift */,
 				F59828AC25278FA400A8C2CB /* FeedStream.swift */,
+				F539F19F2528A63B0080412A /* FeedStreamModel.swift */,
 			);
 			path = FeedStream;
 			sourceTree = "<group>";
@@ -301,24 +302,15 @@
 		F533026E25815DE5005C5250 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
-				670F00F3256C3CFB00A05BB6 /* Loading.swift */,
-				F539F19F2528A63B0080412A /* FeedStreamModel.swift */,
 				67870FAF2550CE66005F89DD /* ViewerModel.swift */,
 				F59828A925278FA400A8C2CB /* ShareRow.swift */,
 				67D3FF58257AF37800A86151 /* EpisodeAttachment.swift */,
-				670F00F5256C4F3F00A05BB6 /* Overlay.swift */,
 				67D3FF4E257AE29800A86151 /* ActivityIndicator.swift */,
 				67D3FF5E257B17E900A86151 /* SearchBar.swift */,
 				67EED64B2578703500A9DCEC /* ProfilePicture.swift */,
 				67EED64E2578714F00A9DCEC /* Artwork.swift */,
-				6742012D257D4328007CB04F /* PodcastClients.swift */,
-				67B94275257451EC00412CDC /* PodcastClientRow.swift */,
 				F51CA091252785B80091710E /* Network.swift */,
 				67970D302557602800BD891D /* UserManagementInterceptor.swift */,
-				6772B2BE257F053E006FBE9D /* EpisodeOverlay.swift */,
-				67420127257D3AE3007CB04F /* Onboarding */,
-				67420129257D3AF9007CB04F /* FeedStream */,
-				67420136257D46A6007CB04F /* Settings */,
 				67420125257D3ACC007CB04F /* Composer */,
 				F533029A2581602B005C5250 /* GraphQL */,
 				F533029225815E75005C5250 /* Supporting Files */,
@@ -407,6 +399,14 @@
 			isa = PBXGroup;
 			children = (
 				F5961CF32517937D00F93697 /* FeedShareApp.swift */,
+				670F00F3256C3CFB00A05BB6 /* Loading.swift */,
+				6742012D257D4328007CB04F /* PodcastClients.swift */,
+				67B94275257451EC00412CDC /* PodcastClientRow.swift */,
+				670F00F5256C4F3F00A05BB6 /* Overlay.swift */,
+				6772B2BE257F053E006FBE9D /* EpisodeOverlay.swift */,
+				67420127257D3AE3007CB04F /* Onboarding */,
+				67420136257D46A6007CB04F /* Settings */,
+				67420129257D3AF9007CB04F /* FeedStream */,
 				F5E7F8EF2516527B0036448D /* Assets.xcassets */,
 				F5E7F90B251653830036448D /* Supporting Files */,
 				F5E7F8F12516527B0036448D /* Preview Content */,
@@ -689,7 +689,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd BuildTools\nSDKROOT=macosx\nswift run -c release rswift generate \"$SRCROOT/Interface/Supporting Files/R.generated.swift\"\n";
+			shellScript = "cd BuildTools\nSDKROOT=macosx\nswift run -c release rswift generate \"$SRCROOT/Interface/Supporting Files/R.generated.swift\" --accessLevel public\n";
 		};
 		F5E7F90C251654460036448D /* Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -718,37 +718,20 @@
 			files = (
 				F53302A225816058005C5250 /* ShareRow.swift in Sources */,
 				F533029E2581604C005C5250 /* EpisodeAttachment.swift in Sources */,
-				F533028625815E01005C5250 /* EpisodeOverlay.swift in Sources */,
-				F533028725815E01005C5250 /* PodcastClients.swift in Sources */,
-				F53302FF2581641E005C5250 /* OnboardingFeedlink.swift in Sources */,
-				F53302A025816055005C5250 /* FeedStreamModel.swift in Sources */,
 				F53302BC25816135005C5250 /* ComposerMessage.swift in Sources */,
 				F53302BF25816139005C5250 /* ComposerPodcast.swift in Sources */,
-				F53302C72581614F005C5250 /* SettingsClient.swift in Sources */,
-				F53302F725816413005C5250 /* OnboardingLogin.swift in Sources */,
 				F53302C12581613C005C5250 /* ComposerModel.swift in Sources */,
-				F533030625816424005C5250 /* TwitterService.swift in Sources */,
 				F53302B62581612F005C5250 /* ComposerSearch.swift in Sources */,
-				F53302F425816410005C5250 /* Onboarding.swift in Sources */,
-				F53302C42581614C005C5250 /* Settings.swift in Sources */,
 				F53302BA25816132005C5250 /* ComposerEpisode.swift in Sources */,
 				F533028825815E01005C5250 /* ActivityIndicator.swift in Sources */,
 				F53302AA2581611F005C5250 /* NavigationStack.swift in Sources */,
 				F53302A42581605E005C5250 /* ViewerModel.swift in Sources */,
-				F533030925816428005C5250 /* RefreshableScrollView.swift in Sources */,
-				F533030B2581642B005C5250 /* FeedStream.swift in Sources */,
 				F53302B32581612C005C5250 /* Composer.swift in Sources */,
 				F533028025815E01005C5250 /* UserManagementInterceptor.swift in Sources */,
-				F533028325815E01005C5250 /* Overlay.swift in Sources */,
 				F533027C25815E01005C5250 /* Network.swift in Sources */,
 				F53302B125816128005C5250 /* R.generated.swift in Sources */,
-				F533027F25815E01005C5250 /* PodcastClientRow.swift in Sources */,
-				F533028125815E01005C5250 /* Loading.swift in Sources */,
-				F53302F22581640B005C5250 /* OnboardingPodcastClient.swift in Sources */,
 				F533027E25815E01005C5250 /* SearchBar.swift in Sources */,
 				F533028425815E01005C5250 /* Artwork.swift in Sources */,
-				F533030325816421005C5250 /* SafariView.swift in Sources */,
-				F53302FB25816417005C5250 /* OnboardingNotifications.swift in Sources */,
 				F53302A92581611C005C5250 /* API.swift in Sources */,
 				F533028225815E01005C5250 /* ProfilePicture.swift in Sources */,
 			);
@@ -774,7 +757,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				67D3838425817D1B0008A496 /* PodcastClients.swift in Sources */,
+				67D3837E25817B4C0008A496 /* OnboardingFeedlink.swift in Sources */,
 				F5961CF42517937D00F93697 /* FeedShareApp.swift in Sources */,
+				67D3837F25817B4C0008A496 /* OnboardingLogin.swift in Sources */,
+				67D3838125817B4C0008A496 /* Onboarding.swift in Sources */,
+				67D3838F25817DDA0008A496 /* RefreshableScrollView.swift in Sources */,
+				67D3838225817B4C0008A496 /* SafariView.swift in Sources */,
+				67D3838025817B4C0008A496 /* OnboardingNotifications.swift in Sources */,
+				67D3837D25817B4C0008A496 /* OnboardingPodcastClient.swift in Sources */,
+				67D3838E25817DDA0008A496 /* FeedStream.swift in Sources */,
+				67D383992581827A0008A496 /* Loading.swift in Sources */,
+				67D3839325817E440008A496 /* Overlay.swift in Sources */,
+				67D3838525817D1B0008A496 /* PodcastClientRow.swift in Sources */,
+				67D3839525817E520008A496 /* EpisodeOverlay.swift in Sources */,
+				67D3838A25817D9C0008A496 /* Settings.swift in Sources */,
+				67D3837C25817B4C0008A496 /* TwitterService.swift in Sources */,
+				67D3839125817E0F0008A496 /* FeedStreamModel.swift in Sources */,
+				67D3838B25817D9C0008A496 /* SettingsClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

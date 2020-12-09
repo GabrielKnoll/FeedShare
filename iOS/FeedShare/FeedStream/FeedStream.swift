@@ -5,6 +5,7 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
+import Interface
 import SwiftUI
 
 public struct FeedStream: View {

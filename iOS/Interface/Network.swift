@@ -36,8 +36,8 @@ struct NetworkInterceptorProvider: InterceptorProvider {
     }
 }
 
-final class Network {
-    static let shared = Network()
+public final class Network {
+    public static let shared = Network()
 
     private lazy var store: ApolloStore = {
         // swiftlint:disable force_unwrapping
@@ -54,7 +54,7 @@ final class Network {
         return ApolloStore(cache: sqliteCache)
     }()
 
-    private(set) lazy var apollo: ApolloClient = {
+    public lazy var apollo: ApolloClient = {
         let transport = RequestChainNetworkTransport(
             interceptorProvider: NetworkInterceptorProvider(store: store, client: URLSessionClient()),
             // swiftlint:disable force_unwrapping

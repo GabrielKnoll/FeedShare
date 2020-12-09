@@ -7,6 +7,7 @@
 
 import Combine
 import Foundation
+import Interface
 
 public class FeedStreamModel: ObservableObject {
     @Published public var shares = [FeedStreamModelQuery.Data.Share.Edge]()

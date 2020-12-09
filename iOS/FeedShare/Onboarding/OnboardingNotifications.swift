@@ -1,3 +1,4 @@
+import Interface
 import SwiftUI
 
 public struct OnboardingNotifications: View {

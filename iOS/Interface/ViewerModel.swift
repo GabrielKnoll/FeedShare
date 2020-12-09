@@ -38,7 +38,7 @@ public class ViewerModel: ObservableObject {
         fetchPodcastClients()
     }
     
-    func fetchPodcastClients() {
+    public func fetchPodcastClients() {
         Network.shared.apollo.fetch(query: PodcastClientsQuery(),
                                     cachePolicy: .returnCacheDataAndFetch) { result in
             switch result {
@@ -71,7 +71,7 @@ public class ViewerModel: ObservableObject {
         }
     }
     
-    func twitterSignIn(
+    public func twitterSignIn(
         twitterId: String,
         twitterToken: String,
         twitterTokenSecret: String
@@ -100,7 +100,7 @@ public class ViewerModel: ObservableObject {
         }
     }
     
-    func logout() {
+    public func logout() {
         viewer = nil
         Network.shared.apollo.clearCache()
         viewerClient = nil

@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Interface
 import SwiftUI
 
 class OverlayModel: ObservableObject {

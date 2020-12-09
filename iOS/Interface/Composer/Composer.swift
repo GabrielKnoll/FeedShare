@@ -10,6 +10,8 @@ import SwiftUI
 public struct Composer: View {
     @StateObject var composerModel = ComposerModel()
     
+    public init() {}
+    
     public var body: some View {
         VStack {
             NavigationStackView {
