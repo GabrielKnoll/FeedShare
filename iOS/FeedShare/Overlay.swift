@@ -38,7 +38,7 @@ enum OverlayPosition {
 }
 
 public struct OverlayHost<Content: View>: View {
-    @ObservedObject var overlayModel = OverlayModel()
+    @StateObject var overlayModel = OverlayModel()
     let content: () -> Content
     
     init(@ViewBuilder _ content: @escaping () -> Content) {
