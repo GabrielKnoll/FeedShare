@@ -286,6 +286,7 @@
 				F59828AB25278FA400A8C2CB /* RefreshableScrollView.swift */,
 				F59828AC25278FA400A8C2CB /* FeedStream.swift */,
 				F539F19F2528A63B0080412A /* FeedStreamModel.swift */,
+				F59828AA25278FA400A8C2CB /* FeedStreamModel.graphql */,
 			);
 			path = FeedStream;
 			sourceTree = "<group>";
@@ -303,8 +304,11 @@
 			isa = PBXGroup;
 			children = (
 				67870FAF2550CE66005F89DD /* ViewerModel.swift */,
+				67970D462558ADF400BD891D /* ViewerModel.graphql */,
 				F59828A925278FA400A8C2CB /* ShareRow.swift */,
+				F59828A725278FA400A8C2CB /* ShareRow.graphql */,
 				67D3FF58257AF37800A86151 /* EpisodeAttachment.swift */,
+				F59828A625278FA400A8C2CB /* EpisodeAttachment.graphql */,
 				67D3FF4E257AE29800A86151 /* ActivityIndicator.swift */,
 				67D3FF5E257B17E900A86151 /* SearchBar.swift */,
 				67EED64B2578703500A9DCEC /* ProfilePicture.swift */,
@@ -312,7 +316,6 @@
 				F51CA091252785B80091710E /* Network.swift */,
 				67970D302557602800BD891D /* UserManagementInterceptor.swift */,
 				67420125257D3ACC007CB04F /* Composer */,
-				F533029A2581602B005C5250 /* GraphQL */,
 				F533029225815E75005C5250 /* Supporting Files */,
 				F533030E258164A3005C5250 /* Assets.xcassets */,
 			);
@@ -337,18 +340,6 @@
 				67B9427925745F2900412CDC /* API.swift */,
 			);
 			path = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		F533029A2581602B005C5250 /* GraphQL */ = {
-			isa = PBXGroup;
-			children = (
-				67B942772574525E00412CDC /* PodcastClientRow.graphql */,
-				F59828AA25278FA400A8C2CB /* FeedStreamModel.graphql */,
-				F59828A725278FA400A8C2CB /* ShareRow.graphql */,
-				F59828A625278FA400A8C2CB /* EpisodeAttachment.graphql */,
-				67970D462558ADF400BD891D /* ViewerModel.graphql */,
-			);
-			path = GraphQL;
 			sourceTree = "<group>";
 		};
 		F53302DD258162F1005C5250 /* URLImageWrapper */ = {
@@ -402,6 +393,7 @@
 				670F00F3256C3CFB00A05BB6 /* Loading.swift */,
 				6742012D257D4328007CB04F /* PodcastClients.swift */,
 				67B94275257451EC00412CDC /* PodcastClientRow.swift */,
+				67B942772574525E00412CDC /* PodcastClientRow.graphql */,
 				670F00F5256C4F3F00A05BB6 /* Overlay.swift */,
 				6772B2BE257F053E006FBE9D /* EpisodeOverlay.swift */,
 				67420127257D3AE3007CB04F /* Onboarding */,
