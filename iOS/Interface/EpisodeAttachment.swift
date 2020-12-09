@@ -9,8 +9,7 @@ import SwiftUI
 import URLImage
 
 public struct EpisodeAttachment: View {
-    //@EnvironmentObject var overlayModel: OverlayModel
-
+    
     public init(data: EpisodeAttachmentFragment) {
         self.data = data
     }
@@ -26,9 +25,6 @@ public struct EpisodeAttachment: View {
     }()
     
     public var body: some View {
-        Button(action: {
-            //overlayModel.present(EpisodeOverlay(attachment: data))
-        }) {
         HStack(alignment: .center, spacing: 10) {
             Artwork(url: data.podcast.artwork, size: 65.0)
             VStack(alignment: .leading, spacing: 3) {
@@ -56,7 +52,6 @@ public struct EpisodeAttachment: View {
         .overlay(RoundedRectangle(cornerRadius: 15)
                     .stroke(Color.secondary.opacity(0.2), lineWidth: 1))
         .cornerRadius(15)
-		}
     }
 }
 

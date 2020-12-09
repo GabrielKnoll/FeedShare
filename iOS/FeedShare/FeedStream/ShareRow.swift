@@ -5,20 +5,22 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
+import Interface
 import SwiftUI
 import URLImage
 
 public struct ShareRow: View {
     let data: ShareFragment
     let isEditable: Bool
+    
+    @EnvironmentObject var overlayModel: OverlayModel
+    @State private var showPopover: Bool = false
+    @State private var editorText: String = "What did you like about this episode?"
 
     public init(data: ShareFragment, isEditable: Bool) {
         self.data = data
         self.isEditable = isEditable
     }
-
-    @State private var showPopover: Bool = false
-    @State private var editorText: String = "What did you like about this episode?"
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 15) {
@@ -51,7 +53,11 @@ public struct ShareRow: View {
             } else if let message = data.message {
                 Text(message)
             }
-            EpisodeAttachment(data: data.episode.fragments.episodeAttachmentFragment)
+            Button(action: {
+                overlayModel.present(EpisodeOverlay(attachment: data.episode.fragments.episodeAttachmentFragment))
+            }) {
+                EpisodeAttachment(data: data.episode.fragments.episodeAttachmentFragment)
+            }
         }
         .padding(15)
         .background(RoundedRectangle(cornerRadius: 22.0)

@@ -24,6 +24,7 @@
 		67D3839325817E440008A496 /* Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00F5256C4F3F00A05BB6 /* Overlay.swift */; };
 		67D3839525817E520008A496 /* EpisodeOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6772B2BE257F053E006FBE9D /* EpisodeOverlay.swift */; };
 		67D383992581827A0008A496 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00F3256C3CFB00A05BB6 /* Loading.swift */; };
+		67D383A7258189F40008A496 /* ShareRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59828A925278FA400A8C2CB /* ShareRow.swift */; };
 		F533027125815DE5005C5250 /* Interface.h in Headers */ = {isa = PBXBuildFile; fileRef = F533026F25815DE5005C5250 /* Interface.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F533027425815DE5005C5250 /* Interface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F533026D25815DE5005C5250 /* Interface.framework */; };
 		F533027625815DE5005C5250 /* Interface.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F533026D25815DE5005C5250 /* Interface.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -36,7 +37,6 @@
 		F533028D25815E21005C5250 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = F533028C25815E21005C5250 /* Apollo */; };
 		F533029025815E41005C5250 /* ApolloSQLite in Frameworks */ = {isa = PBXBuildFile; productRef = F533028F25815E41005C5250 /* ApolloSQLite */; };
 		F533029E2581604C005C5250 /* EpisodeAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3FF58257AF37800A86151 /* EpisodeAttachment.swift */; };
-		F53302A225816058005C5250 /* ShareRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59828A925278FA400A8C2CB /* ShareRow.swift */; };
 		F53302A42581605E005C5250 /* ViewerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67870FAF2550CE66005F89DD /* ViewerModel.swift */; };
 		F53302A92581611C005C5250 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B9427925745F2900412CDC /* API.swift */; };
 		F53302AA2581611F005C5250 /* NavigationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3FFA2257DA2CD00A86151 /* NavigationStack.swift */; };
@@ -287,6 +287,8 @@
 				F59828AC25278FA400A8C2CB /* FeedStream.swift */,
 				F539F19F2528A63B0080412A /* FeedStreamModel.swift */,
 				F59828AA25278FA400A8C2CB /* FeedStreamModel.graphql */,
+				F59828A925278FA400A8C2CB /* ShareRow.swift */,
+				F59828A725278FA400A8C2CB /* ShareRow.graphql */,
 			);
 			path = FeedStream;
 			sourceTree = "<group>";
@@ -305,8 +307,6 @@
 			children = (
 				67870FAF2550CE66005F89DD /* ViewerModel.swift */,
 				67970D462558ADF400BD891D /* ViewerModel.graphql */,
-				F59828A925278FA400A8C2CB /* ShareRow.swift */,
-				F59828A725278FA400A8C2CB /* ShareRow.graphql */,
 				67D3FF58257AF37800A86151 /* EpisodeAttachment.swift */,
 				F59828A625278FA400A8C2CB /* EpisodeAttachment.graphql */,
 				67D3FF4E257AE29800A86151 /* ActivityIndicator.swift */,
@@ -708,7 +708,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F53302A225816058005C5250 /* ShareRow.swift in Sources */,
 				F533029E2581604C005C5250 /* EpisodeAttachment.swift in Sources */,
 				F53302BC25816135005C5250 /* ComposerMessage.swift in Sources */,
 				F53302BF25816139005C5250 /* ComposerPodcast.swift in Sources */,
@@ -756,6 +755,7 @@
 				67D3838125817B4C0008A496 /* Onboarding.swift in Sources */,
 				67D3838F25817DDA0008A496 /* RefreshableScrollView.swift in Sources */,
 				67D3838225817B4C0008A496 /* SafariView.swift in Sources */,
+				67D383A7258189F40008A496 /* ShareRow.swift in Sources */,
 				67D3838025817B4C0008A496 /* OnboardingNotifications.swift in Sources */,
 				67D3837D25817B4C0008A496 /* OnboardingPodcastClient.swift in Sources */,
 				67D3838E25817DDA0008A496 /* FeedStream.swift in Sources */,
