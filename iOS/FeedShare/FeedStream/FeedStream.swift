@@ -10,7 +10,7 @@ import SwiftUI
 public struct FeedStream: View {
     @StateObject var feedStreamModel = FeedStreamModel()
     @State private var feedType = 0
-    let showComposer: () -> Void
+    @EnvironmentObject var overlayModel: OverlayModel
  
     public var body: some View {
         VStack {
@@ -18,8 +18,16 @@ public struct FeedStream: View {
                 HStack {
                     Text("LOGO").font(.headline)
                     Spacer()
-                    Button(action: showComposer) {
-                        Text("Create")
+                    Button(action: {
+                        overlayModel.present(Settings())
+                    }) {
+                        Image(systemName: "person.fill")
+                    }
+                    
+                    Button(action: {
+                        overlayModel.present(Composer(), position: .top, dismissable: false)
+                    }) {
+                        Image(systemName: "square.and.pencil")
                     }
                 }.padding(15)
                 Picker(selection: $feedType, label: Text("What is your favorite color?")) {
