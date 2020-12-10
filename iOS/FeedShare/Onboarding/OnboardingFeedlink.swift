@@ -10,12 +10,7 @@ public struct OnboardingFeedlink: View {
         let client = viewerModel.viewerClient?.displayName ?? "your Podcast app"
         VStack {
             Text("To get Podcast recommendations from your friends right into \(client), subscribe to your personal feed:")
-            Button(action: {
-                UIPasteboard.general.string = viewerModel.viewer?.personalFeed
-                finishDisabled = false
-            }) {
-                Text(viewerModel.viewer?.personalFeed ?? "")
-            }
+            FeedLink(text: viewerModel.viewer?.personalFeed ?? "")
             Button(action: {
                 finishDisabled = false
             }) {

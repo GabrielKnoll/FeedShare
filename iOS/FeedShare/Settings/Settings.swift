@@ -11,6 +11,7 @@ import URLImage
 
 public struct Settings: View {
     @EnvironmentObject var viewerModel: ViewerModel
+    @EnvironmentObject private var navigationStack: NavigationStack
     @State private var notifications = false
     @State private var logoutAlert = false
     
@@ -21,7 +22,11 @@ public struct Settings: View {
                     ProfilePicture(url: viewerModel.viewer?.user.profilePicture, size: 66.0)
                     Text(viewerModel.viewer?.user.displayName ?? "").font(.headline)
                     Text("@\(viewerModel.viewer?.user.handle ?? "")").font(.subheadline)
-                }
+                }.frame(minWidth: 0, maxWidth: .infinity)
+                
+                Spacer().frame(maxHeight: 10)
+                
+                FeedLink(text: viewerModel.viewer?.personalFeed ?? "")
                 
                 Spacer().frame(maxHeight: 10)
                 

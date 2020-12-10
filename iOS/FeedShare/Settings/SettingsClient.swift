@@ -17,9 +17,7 @@ public struct SettingsClient: View {
             if let client = viewerModel.viewerClient {
                 Text("Your Podcast client").bold()
                 PodcastClientRow(client: client) {
-                    navigationStack.push(PodcastClients(onSelect: {
-                        navigationStack.pop()
-                    }))
+                    navigationStack.push(SettingsClientList())
                 }
             }
         }

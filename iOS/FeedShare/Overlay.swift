@@ -59,22 +59,21 @@ public struct Overlay: View {
     @State private var offset = CGFloat(0)
     
     private func ended(gesture: _ChangedGesture<DragGesture>.Value) {
-        withAnimation {
             if (gesture.translation.height > 20 && self.overlayModel.position == .bottom) ||
                 gesture.translation.height < -20 && self.overlayModel.position != .bottom {
                 dismiss()
             } else {
-                self.offset = 0
+                withAnimation {
+                    self.offset = 0
+                }
             }
-        }
     }
     
     private func dismiss() {
+        offset = 0
         withAnimation {
             self.overlayModel.presentedView = nil
         }
-        
-        offset = 0
     }
     
     public var body: some View {
@@ -103,16 +102,13 @@ public struct Overlay: View {
                 
                 HStack(alignment: .bottom) {
                     if visible {
-                        VStack {
-                            HStack {
-                                Spacer()
-                                Button(action: dismiss) {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .foregroundColor(.secondary)
-                                        .font(.title3)
-                                }
-                            }.padding(15)
+                        ZStack(alignment: .topTrailing) {
                             self.overlayModel.presentedView
+                            Button(action: dismiss) {
+                                Image(systemName: "xmark.circle.fill")
+                                    .foregroundColor(.secondary)
+                                    .font(.title2)
+                            }.padding(19)
                         }//.padding(.bottom, geometry.safeAreaInsets.bottom)
                         .background(Color.white)
                         .cornerRadius(38.5)
@@ -125,7 +121,14 @@ public struct Overlay: View {
                             $0.gesture(DragGesture()
                                         .onChanged { gesture in
                                             if visible {
-                                                self.offset = gesture.translation.height
+                                                if gesture.translation.height < 0 {
+                                                    let max = CGFloat(30)
+                                                    let val = -gesture.translation.height
+                                                    let o = log(max / 2 + val) - log(max / 2)
+                                                    self.offset = o * -max
+                                                } else {
+                                                    self.offset = gesture.translation.height
+                                                }
                                             }
                                         }
                                         .onEnded(ended)
@@ -135,7 +138,7 @@ public struct Overlay: View {
                     }
                 }
                 .padding(10)
-                //.animation(.interpolatingSpring(mass: 0.4, stiffness: 250, damping: 13))
+                .animation(.spring(response: 0.25, dampingFraction: 0.6))
             }.ignoresSafeArea(.container, edges: .bottom)
         }
     }

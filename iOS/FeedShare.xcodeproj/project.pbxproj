@@ -17,7 +17,6 @@
 		67D3838425817D1B0008A496 /* PodcastClients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6742012D257D4328007CB04F /* PodcastClients.swift */; };
 		67D3838525817D1B0008A496 /* PodcastClientRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B94275257451EC00412CDC /* PodcastClientRow.swift */; };
 		67D3838A25817D9C0008A496 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B942732574080000412CDC /* Settings.swift */; };
-		67D3838B25817D9C0008A496 /* SettingsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67420132257D44CF007CB04F /* SettingsClient.swift */; };
 		67D3838E25817DDA0008A496 /* FeedStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59828AC25278FA400A8C2CB /* FeedStream.swift */; };
 		67D3838F25817DDA0008A496 /* RefreshableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59828AB25278FA400A8C2CB /* RefreshableScrollView.swift */; };
 		67D3839125817E0F0008A496 /* FeedStreamModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F539F19F2528A63B0080412A /* FeedStreamModel.swift */; };
@@ -25,6 +24,9 @@
 		67D3839525817E520008A496 /* EpisodeOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6772B2BE257F053E006FBE9D /* EpisodeOverlay.swift */; };
 		67D383992581827A0008A496 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00F3256C3CFB00A05BB6 /* Loading.swift */; };
 		67D383A7258189F40008A496 /* ShareRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59828A925278FA400A8C2CB /* ShareRow.swift */; };
+		67D383AD25818B940008A496 /* FeedLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D383AC25818B930008A496 /* FeedLink.swift */; };
+		67D383B42581A8CD0008A496 /* SettingsClientList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D383B32581A8CD0008A496 /* SettingsClientList.swift */; };
+		67D383BA2581A9960008A496 /* SettingsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D383B92581A9960008A496 /* SettingsClient.swift */; };
 		F533027125815DE5005C5250 /* Interface.h in Headers */ = {isa = PBXBuildFile; fileRef = F533026F25815DE5005C5250 /* Interface.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F533027425815DE5005C5250 /* Interface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F533026D25815DE5005C5250 /* Interface.framework */; };
 		F533027625815DE5005C5250 /* Interface.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F533026D25815DE5005C5250 /* Interface.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -157,7 +159,6 @@
 		670F00F5256C4F3F00A05BB6 /* Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
 		67420120257D3500007CB04F /* ComposerMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerMessage.swift; sourceTree = "<group>"; };
 		6742012D257D4328007CB04F /* PodcastClients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastClients.swift; sourceTree = "<group>"; };
-		67420132257D44CF007CB04F /* SettingsClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsClient.swift; sourceTree = "<group>"; };
 		6757847F257476D500BC8548 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		6772B2BE257F053E006FBE9D /* EpisodeOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeOverlay.swift; sourceTree = "<group>"; };
 		67870FAF2550CE66005F89DD /* ViewerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewerModel.swift; sourceTree = "<group>"; };
@@ -170,6 +171,9 @@
 		67B94275257451EC00412CDC /* PodcastClientRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastClientRow.swift; sourceTree = "<group>"; };
 		67B942772574525E00412CDC /* PodcastClientRow.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PodcastClientRow.graphql; sourceTree = "<group>"; };
 		67B9427925745F2900412CDC /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		67D383AC25818B930008A496 /* FeedLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLink.swift; sourceTree = "<group>"; };
+		67D383B32581A8CD0008A496 /* SettingsClientList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsClientList.swift; sourceTree = "<group>"; };
+		67D383B92581A9960008A496 /* SettingsClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsClient.swift; sourceTree = "<group>"; };
 		67D3FF41257AD66B00A86151 /* Composer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Composer.swift; sourceTree = "<group>"; };
 		67D3FF45257AD85700A86151 /* ComposerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerModel.swift; sourceTree = "<group>"; };
 		67D3FF49257AD8DA00A86151 /* ComposerModel.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ComposerModel.graphql; sourceTree = "<group>"; };
@@ -297,7 +301,8 @@
 			isa = PBXGroup;
 			children = (
 				67B942732574080000412CDC /* Settings.swift */,
-				67420132257D44CF007CB04F /* SettingsClient.swift */,
+				67D383B92581A9960008A496 /* SettingsClient.swift */,
+				67D383B32581A8CD0008A496 /* SettingsClientList.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -396,6 +401,7 @@
 				67B942772574525E00412CDC /* PodcastClientRow.graphql */,
 				670F00F5256C4F3F00A05BB6 /* Overlay.swift */,
 				6772B2BE257F053E006FBE9D /* EpisodeOverlay.swift */,
+				67D383AC25818B930008A496 /* FeedLink.swift */,
 				67420127257D3AE3007CB04F /* Onboarding */,
 				67420136257D46A6007CB04F /* Settings */,
 				67420129257D3AF9007CB04F /* FeedStream */,
@@ -647,7 +653,7 @@
 		};
 		F533029825815F92005C5250 /* Appolo CodeGen */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputFileListPaths = (
@@ -659,13 +665,13 @@
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "# Go to the build root and search up the chain to find the Derived Data Path where the source packages are checked out.\nDERIVED_DATA_CANDIDATE=\"${BUILD_ROOT}\"\nwhile ! [ -d \"${DERIVED_DATA_CANDIDATE}/SourcePackages\" ]; do\n  if [ \"${DERIVED_DATA_CANDIDATE}\" = / ]; then\n    echo >&2 \"error: Unable to locate SourcePackages directory from BUILD_ROOT: '${BUILD_ROOT}'\"\n    exit 1\n  fi\n\n  DERIVED_DATA_CANDIDATE=\"$(dirname \"${DERIVED_DATA_CANDIDATE}\")\"\ndone\n\n# Grab a reference to the directory where scripts are checked out\nSCRIPT_PATH=\"${DERIVED_DATA_CANDIDATE}/SourcePackages/checkouts/apollo-ios/scripts\"\n\nif [ -z \"${SCRIPT_PATH}\" ]; then\n    echo >&2 \"error: Couldn't find the CLI script in your checked out SPM packages; make sure to add the framework to your project.\"\n    exit 1\nfi\n\ncd \"${SRCROOT}/\"\n\"${SCRIPT_PATH}\"/run-bundled-codegen.sh codegen:generate --target=swift --includes=./**/*.graphql --localSchemaFile=\"../server/api.json\" \"Interface/Supporting Files/API.swift\"\n";
 		};
 		F53302D6258161C8005C5250 /* Rswift */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputFileListPaths = (
@@ -679,7 +685,7 @@
 			outputPaths = (
 				"$SRCROOT/Interface/Supporting Files/R.generated.swift",
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "cd BuildTools\nSDKROOT=macosx\nswift run -c release rswift generate \"$SRCROOT/Interface/Supporting Files/R.generated.swift\" --accessLevel public\n";
 		};
@@ -756,8 +762,11 @@
 				67D3838F25817DDA0008A496 /* RefreshableScrollView.swift in Sources */,
 				67D3838225817B4C0008A496 /* SafariView.swift in Sources */,
 				67D383A7258189F40008A496 /* ShareRow.swift in Sources */,
+				67D383BA2581A9960008A496 /* SettingsClient.swift in Sources */,
+				67D383B42581A8CD0008A496 /* SettingsClientList.swift in Sources */,
 				67D3838025817B4C0008A496 /* OnboardingNotifications.swift in Sources */,
 				67D3837D25817B4C0008A496 /* OnboardingPodcastClient.swift in Sources */,
+				67D383AD25818B940008A496 /* FeedLink.swift in Sources */,
 				67D3838E25817DDA0008A496 /* FeedStream.swift in Sources */,
 				67D383992581827A0008A496 /* Loading.swift in Sources */,
 				67D3839325817E440008A496 /* Overlay.swift in Sources */,
@@ -766,7 +775,6 @@
 				67D3838A25817D9C0008A496 /* Settings.swift in Sources */,
 				67D3837C25817B4C0008A496 /* TwitterService.swift in Sources */,
 				67D3839125817E0F0008A496 /* FeedStreamModel.swift in Sources */,
-				67D3838B25817D9C0008A496 /* SettingsClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
