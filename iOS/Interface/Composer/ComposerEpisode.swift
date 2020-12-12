@@ -44,7 +44,9 @@ public struct ComposerEpisode: View {
                             HStack {
                                 VStack(alignment: .leading) {
                                     Text(episode.title).fontWeight(.bold).lineLimit(1)
-                                    Text(episode.datePublished)
+                                    if let date = episode.datePublished.parseDateFormatRelative() {
+                                        Text(date)
+                                    }
                                     if let desc = episode.description {
                                         Text(desc)
                                             .foregroundColor(.secondary)

@@ -27,6 +27,7 @@
 		67D383AD25818B940008A496 /* FeedLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D383AC25818B930008A496 /* FeedLink.swift */; };
 		67D383B42581A8CD0008A496 /* SettingsClientList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D383B32581A8CD0008A496 /* SettingsClientList.swift */; };
 		67D383BA2581A9960008A496 /* SettingsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D383B92581A9960008A496 /* SettingsClient.swift */; };
+		67D383BF25842D9A0008A496 /* String+RelativeDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D383BE25842D9A0008A496 /* String+RelativeDates.swift */; };
 		F533027125815DE5005C5250 /* Interface.h in Headers */ = {isa = PBXBuildFile; fileRef = F533026F25815DE5005C5250 /* Interface.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F533027425815DE5005C5250 /* Interface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F533026D25815DE5005C5250 /* Interface.framework */; };
 		F533027625815DE5005C5250 /* Interface.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F533026D25815DE5005C5250 /* Interface.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -174,6 +175,7 @@
 		67D383AC25818B930008A496 /* FeedLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLink.swift; sourceTree = "<group>"; };
 		67D383B32581A8CD0008A496 /* SettingsClientList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsClientList.swift; sourceTree = "<group>"; };
 		67D383B92581A9960008A496 /* SettingsClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsClient.swift; sourceTree = "<group>"; };
+		67D383BE25842D9A0008A496 /* String+RelativeDates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+RelativeDates.swift"; sourceTree = "<group>"; };
 		67D3FF41257AD66B00A86151 /* Composer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Composer.swift; sourceTree = "<group>"; };
 		67D3FF45257AD85700A86151 /* ComposerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerModel.swift; sourceTree = "<group>"; };
 		67D3FF49257AD8DA00A86151 /* ComposerModel.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ComposerModel.graphql; sourceTree = "<group>"; };
@@ -316,6 +318,7 @@
 				F59828A625278FA400A8C2CB /* EpisodeAttachment.graphql */,
 				67D3FF4E257AE29800A86151 /* ActivityIndicator.swift */,
 				67D3FF5E257B17E900A86151 /* SearchBar.swift */,
+				67D383BE25842D9A0008A496 /* String+RelativeDates.swift */,
 				67EED64B2578703500A9DCEC /* ProfilePicture.swift */,
 				67EED64E2578714F00A9DCEC /* Artwork.swift */,
 				F51CA091252785B80091710E /* Network.swift */,
@@ -719,6 +722,7 @@
 				F53302BF25816139005C5250 /* ComposerPodcast.swift in Sources */,
 				F53302C12581613C005C5250 /* ComposerModel.swift in Sources */,
 				F53302B62581612F005C5250 /* ComposerSearch.swift in Sources */,
+				67D383BF25842D9A0008A496 /* String+RelativeDates.swift in Sources */,
 				F53302BA25816132005C5250 /* ComposerEpisode.swift in Sources */,
 				F533028825815E01005C5250 /* ActivityIndicator.swift in Sources */,
 				F53302AA2581611F005C5250 /* NavigationStack.swift in Sources */,

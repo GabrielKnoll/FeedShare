@@ -32,10 +32,12 @@ public struct ShareRow: View {
                             .font(.headline)
                             .lineLimit(1)
                     }
-                    Text("@\(data.author.handle)")
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
-                        .lineLimit(1)
+                    if let date = data.createdAt.parseDateTimeFormatRelative() {
+                        Text(date)
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                            .lineLimit(1)
+                    }
                 }
                 Spacer()
                 Button(action: { showPopover = true }) {
