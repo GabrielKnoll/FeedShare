@@ -15,6 +15,9 @@ export default objectType({
     t.nonNull.field('token', {
       type: 'String',
     });
+    t.nonNull.field('messageLimit', {
+      type: 'Int',
+    });
   },
 });
 
@@ -26,5 +29,6 @@ export function getViewer(
     user,
     personalFeed: `https://feed.buechele.cc/feed/${user.feedToken}`,
     token: context.token!,
+    messageLimit: 400,
   };
 }

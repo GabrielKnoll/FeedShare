@@ -120,6 +120,7 @@ type User implements Node {
 }
 
 type Viewer {
+  messageLimit: Int!
   personalFeed: String!
   token: String!
   user: User!
