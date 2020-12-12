@@ -13,10 +13,8 @@ public struct Composer: View {
     public init() {}
     
     public var body: some View {
-        VStack {
-            NavigationStackView {
-                ComposerSearch(composerModel: composerModel)
-            }
-        }.padding(20)
+        NavigationStackView {
+            ComposerSearch(composerModel: composerModel)
+        }
     }
 }

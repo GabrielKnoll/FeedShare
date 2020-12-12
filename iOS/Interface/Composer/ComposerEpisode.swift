@@ -30,7 +30,7 @@ public struct ComposerEpisode: View {
                         Text(composerModel.podcast?.publisher ?? "")
                     }
                     Spacer()
-                }
+                }.padding(20)
             }
             
             Text("Which Episode do you want to share?").fontWeight(.bold)
@@ -59,11 +59,10 @@ public struct ComposerEpisode: View {
                         }.padding(.vertical, /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
                         .foregroundColor(.primary)
                     }
-                }
+                }.padding(20)
             } else {
                 ActivityIndicator(style: .large)
             }
-            
         }
     }
 }

@@ -7,11 +7,21 @@
 
 import Combine
 import Foundation
+import Apollo
 
 public class ComposerModel: ObservableObject {
+    private var searchRequest: Apollo.Cancellable?
+    private var searchDebounce: AnyCancellable?
     @Published public var searchResults: [ComposerPodcastFragment]?
     @Published public var latestEpisodes: [EpisodeAttachmentFragment]?
     @Published public var episode: EpisodeAttachmentFragment?
+    @Published public var searchText = "" {
+        didSet {
+            if searchText.isEmpty {
+                searchResults = nil
+            }
+        }
+    }
     @Published public var podcast: ComposerPodcastFragment? {
         didSet {
             if latestEpisodes == nil {
@@ -20,6 +30,16 @@ public class ComposerModel: ObservableObject {
         }
     }
     @Published public var isLoading: Bool = false
+    
+    init() {
+        searchDebounce = AnyCancellable(
+            $searchText.removeDuplicates()
+                .debounce(for: 0.8, scheduler: DispatchQueue.main)
+                .sink { searchText in
+                    self.findPodcast(searchText)
+                })
+    }
+    
     
     func resolveUrl(url: String, resultHandler: @escaping () -> Void) {
         self.isLoading = true
@@ -62,9 +82,14 @@ public class ComposerModel: ObservableObject {
         }
     }
     
-    func findPodcast(searchText: String) {
+    func findPodcast(_ searchText: String) {
+        // cancel running request
+        searchRequest?.cancel()
+        if searchText.isEmpty {
+            return
+        }
         self.isLoading = true
-        Network.shared.apollo.fetch(query: FindPodcastQuery(query: searchText),
+        searchRequest = Network.shared.apollo.fetch(query: FindPodcastQuery(query: searchText),
                                     cachePolicy: .returnCacheDataAndFetch) { result in
             self.isLoading = false
             switch result {

@@ -17,6 +17,7 @@ public struct EpisodeOverlay: View {
             Text(attachment.title).font(.title)
             Text(attachment.podcast.title)
             Text(attachment.podcast.publisher)
-        }
+        }.frame(minWidth: 0, maxWidth: .infinity)
+        .padding(20)
     }
 }

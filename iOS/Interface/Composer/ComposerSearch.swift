@@ -11,15 +11,14 @@ import URLImage
 public struct ComposerSearch: View {
     @State var unresolvedUrlAlert = false
     @State var pastedString: String?
-    @State private var searchText = ""
     @ObservedObject var composerModel: ComposerModel
     @EnvironmentObject private var navigationStack: NavigationStack
     
     public var body: some View {
         VStack {
-            SearchBar(text: $searchText, action: composerModel.findPodcast)
-                .padding(.horizontal, -8)
-                .padding(.vertical, -10)
+            SearchBar(text: $composerModel.searchText, action: composerModel.findPodcast)
+                //.padding(.horizontal, -8)
+                //.padding(.vertical, -10)
             if composerModel.isLoading {
                 ActivityIndicator(style: .large)
             } else if let results = composerModel.searchResults {
@@ -29,10 +28,11 @@ public struct ComposerSearch: View {
                     ScrollView {
                         ForEach(results, id: \.id) { podcast in
                             Button(action: {
+                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                 composerModel.podcast = podcast
                                 self.navigationStack.push(ComposerEpisode(composerModel: composerModel))
                             }) {
-                                ComposerPodcast(podcast: podcast)
+                                ComposerPodcast(podcast: podcast).padding(20)
                             }
                         }
                     }
