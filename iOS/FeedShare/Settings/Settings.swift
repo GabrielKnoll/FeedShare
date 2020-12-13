@@ -26,7 +26,7 @@ public struct Settings: View {
                 
                 Spacer().frame(maxHeight: 10)
                 
-                FeedLink(text: viewerModel.viewer?.personalFeed ?? "")
+                FeedLink()
                 
                 Spacer().frame(maxHeight: 10)
                 

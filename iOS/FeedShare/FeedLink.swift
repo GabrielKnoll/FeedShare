@@ -5,6 +5,7 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
+import Interface
 import SwiftUI
 import UIKit.UIGestureRecognizerSubclass
 
@@ -24,6 +25,9 @@ class SingleTouchDownGestureRecognizer: UIGestureRecognizer {
 
 class CopyableUIView: UIView {
     var copyText = ""
+    var clientName: String?
+    var openInClient: (() -> Void)?
+    var completionHandler: (() -> Void)?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,13 +41,28 @@ class CopyableUIView: UIView {
     
     func sharedInit() {
         self.isUserInteractionEnabled = true
-        
         self.addGestureRecognizer(SingleTouchDownGestureRecognizer(target: self, action: #selector(self.showMenu)))
+    }
+    
+    @objc func openInApp() {
+        if let open = self.openInClient {
+            open()
+        }
+        
+        if let ch = self.completionHandler {
+            ch()
+        }
     }
     
     @objc func showMenu(sender: AnyObject?) {
         self.becomeFirstResponder()
         let menu = UIMenuController.shared
+        
+        if let name = clientName {
+            let printToConsole = UIMenuItem(title: "Subscribe in \(name)", action: #selector(openInApp))
+            menu.menuItems = [printToConsole]
+        }
+        
         if !menu.isMenuVisible {
             menu.showMenu(from: self, rect: self.frame)
         }
@@ -53,6 +72,9 @@ class CopyableUIView: UIView {
         UIPasteboard.general.string = copyText
         let menu = UIMenuController.shared
         menu.showMenu(from: self, rect: self.frame)
+        if let ch = self.completionHandler {
+            ch()
+        }
     }
     
     override var canBecomeFirstResponder: Bool {
@@ -60,22 +82,38 @@ class CopyableUIView: UIView {
     }
     
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-        return action == #selector(UIResponderStandardEditActions.copy)
+        return action == #selector(UIResponderStandardEditActions.copy) ||
+            action == #selector(openInApp)
     }
 }
 
 struct Copyable<Content: View>: UIViewRepresentable {
     let content: UIView
     let copyText: String
+    let clientName: String?
+    let openInClient: () -> Void
+    let completionHandler: (() -> Void)?
     
-    @inlinable init(copyText: String, @ViewBuilder content: () -> Content) {
+    @inlinable init(
+        copyText: String,
+        clientName: String? = nil,
+        openInClient: @escaping () -> Void,
+        completionHandler: (() -> Void)? = nil,
+        @ViewBuilder content: () -> Content
+    ) {
         self.copyText = copyText
         self.content = UIHostingController(rootView: content()).view
+        self.clientName = clientName
+        self.openInClient = openInClient
+        self.completionHandler = completionHandler
     }
     
     func makeUIView(context: Context) -> CopyableUIView {
         let view = CopyableUIView(frame: .zero)
+        view.openInClient = openInClient
+        view.clientName = clientName
         view.copyText = copyText
+        view.completionHandler = completionHandler
         content.frame = view.bounds
         content.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         content.backgroundColor = .clear // unfortunate
@@ -102,11 +140,27 @@ struct Copyable<Content: View>: UIViewRepresentable {
 }
 
 public struct FeedLink: View {
-    let text: String
+    @EnvironmentObject var viewerModel: ViewerModel
+    let completionHandler: (() -> Void)?
+    
+    init(_ completionHandler: (() -> Void)? = nil) {
+        self.completionHandler = completionHandler
+    }
     
     public var body: some View {
+        let text = viewerModel.viewer?.personalFeed ?? ""
         VStack(alignment: .leading) {
-            Copyable(copyText: text) {
+            Copyable(
+                copyText: text,
+                clientName: viewerModel.viewerClient?.displayName,
+                openInClient: {
+                    SubscribeButton.openURL(
+                        viewerModel.viewerClient!,
+                        feed: viewerModel.viewer?.personalFeed
+                    )
+                },
+                completionHandler: completionHandler
+            ) {
                 Text(text)
                     .lineLimit(1)
                     .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)

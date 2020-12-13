@@ -30,18 +30,7 @@ public struct ComposerMessage: View {
                 }.disabled(message.isEmpty)
             }
             
-            let binding = Binding(
-                get: { self.message },
-                set: { value in
-                    if value.count <= characterLimit {
-                        self.message = value
-                    }
-                }
-            )
-            TextEditor(text: binding)
-                .foregroundColor(.black)
-                .border(Color.secondary.opacity(0.2))
-                .cornerRadius(15)
+            ComposerTextField(text: $message, limit: characterLimit)
             
             Text("\(message.count)/\(characterLimit)")
                 .font(.footnote)

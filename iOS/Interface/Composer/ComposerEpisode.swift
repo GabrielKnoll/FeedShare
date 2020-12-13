@@ -35,31 +35,36 @@ public struct ComposerEpisode: View {
             
             Text("Which Episode do you want to share?").fontWeight(.bold)
             if let episodes = composerModel.latestEpisodes {
-                ScrollView {
-                    ForEach(episodes, id: \.id) { episode in
-                        Button(action: {
-                            composerModel.episode = episode
-                            self.navigationStack.push(ComposerMessage(composerModel: composerModel))
-                        }) {
-                            HStack {
-                                VStack(alignment: .leading) {
-                                    Text(episode.title).fontWeight(.bold).lineLimit(1)
-                                    if let date = episode.datePublished.parseDateFormatRelative() {
-                                        Text(date)
+                if episodes.count == 0 {
+                    Text("This Podcast does not have any episodes   ")
+                } else {
+                    ScrollView {
+                        ForEach(episodes, id: \.id) { episode in
+                            Button(action: {
+                                composerModel.episode = episode
+                                self.navigationStack.push(ComposerMessage(composerModel: composerModel))
+                            }) {
+                                HStack {
+                                    VStack(alignment: .leading) {
+                                        Text(episode.title).fontWeight(.bold).lineLimit(1)
+                                        if let date = episode.datePublished.parseDateFormatRelative() {
+                                            Text(date)
+                                        }
+                                        if let desc = episode.description {
+                                            Text(desc)
+                                                .foregroundColor(.secondary)
+                                                .font(.caption)
+                                                .lineLimit(3)
+                                        }
                                     }
-                                    if let desc = episode.description {
-                                        Text(desc)
-                                            .foregroundColor(.secondary)
-                                            .font(.caption)
-                                            .lineLimit(3)
-                                    }
+                                    Spacer()
                                 }
-                                Spacer()
-                            }
-                        }.padding(.vertical, /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
-                        .foregroundColor(.primary)
-                    }
-                }.padding(20)
+                            }.padding(.vertical, /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                            .foregroundColor(.primary)
+                        }
+                    }.padding(20)
+                }
+                
             } else {
                 ActivityIndicator(style: .large)
             }
