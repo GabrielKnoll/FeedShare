@@ -13,14 +13,13 @@ public struct ComposerMessage: View {
     @EnvironmentObject private var navigationStack: NavigationStack
     @EnvironmentObject private var viewerModel: ViewerModel
     @State private var message = ""
-    private let characterLimit: Int
     
     init(composerModel: ComposerModel) {
-        self.characterLimit = /*viewerModel.viewer?.messageLimit ??*/ 399
         self.composerModel = composerModel
     }
     
     public var body: some View {
+        let characterLimit = viewerModel.viewer?.messageLimit ?? 399
         VStack {
             HStack {
                 Spacer()
@@ -33,9 +32,11 @@ public struct ComposerMessage: View {
             
             let binding = Binding(
                 get: { self.message },
-                set: { if $0.count <= characterLimit {
-                    self.message = $0
-                } }
+                set: { value in
+                    if value.count <= characterLimit {
+                        self.message = value
+                    }
+                }
             )
             TextEditor(text: binding)
                 .foregroundColor(.black)

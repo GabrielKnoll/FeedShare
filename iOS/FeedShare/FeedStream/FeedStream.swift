@@ -28,7 +28,7 @@ public struct FeedStream: View {
                     }
                     
                     Button(action: {
-                        overlayModel.present(Composer(), position: .top, dismissable: false)
+                        overlayModel.present(Composer(), alignment: .top, dismissable: false)
                     }) {
                         Image(systemName: "square.and.pencil")
                     }
