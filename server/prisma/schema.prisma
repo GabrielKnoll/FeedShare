@@ -82,17 +82,10 @@ model UrlResolve {
   podcastId String?
 }
 
-enum PodcastClientId {
-  Castro
-  ApplePodcasts
-  Overcast
-  PocketCasts
-  GooglePodcasts
-}
-
 model PodcastClient {
-  id           PodcastClientId @id
-  displayName  String
-  icon         String
-  subscribeUrl String
+  id                        String  @id
+  displayName               String
+  icon                      String
+  subscribeUrl              String
+  subscribeUrlNeedsProtocol Boolean
 }

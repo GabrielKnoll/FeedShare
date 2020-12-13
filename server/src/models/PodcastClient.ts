@@ -8,5 +8,7 @@ export default objectType({
 
     t.model.displayName();
     t.model.icon();
+    t.model.subscribeUrl();
+    t.model.subscribeUrlNeedsProtocol();
   },
 });
