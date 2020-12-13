@@ -1,6 +1,7 @@
 fragment ViewerFragment on Viewer {
   token
   personalFeed
+  messageLimit
   user {
     id
     handle

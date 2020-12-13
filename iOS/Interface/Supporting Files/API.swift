@@ -4,6 +4,237 @@
 import Apollo
 import Foundation
 
+public final class EpisodeOverlayQuery: GraphQLQuery {
+  /// The raw GraphQL definition of this operation.
+  public let operationDefinition: String =
+    """
+    query EpisodeOverlay($id: ID!) {
+      node(id: $id) {
+        __typename
+        ... on Episode {
+          description
+          artwork(size: 100, scale: 2)
+          podcast {
+            __typename
+            feed
+            artwork(size: 100, scale: 2)
+          }
+        }
+      }
+    }
+    """
+
+  public let operationName: String = "EpisodeOverlay"
+
+  public var id: GraphQLID
+
+  public init(id: GraphQLID) {
+    self.id = id
+  }
+
+  public var variables: GraphQLMap? {
+    return ["id": id]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes: [String] = ["Query"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("node", arguments: ["id": GraphQLVariable("id")], type: .object(Node.selections)),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(node: Node? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Query", "node": node.flatMap { (value: Node) -> ResultMap in value.resultMap }])
+    }
+
+    public var node: Node? {
+      get {
+        return (resultMap["node"] as? ResultMap).flatMap { Node(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "node")
+      }
+    }
+
+    public struct Node: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Episode", "Podcast", "PodcastClient", "Share", "User"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLTypeCase(
+            variants: ["Episode": AsEpisode.selections],
+            default: [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            ]
+          )
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public static func makePodcast() -> Node {
+        return Node(unsafeResultMap: ["__typename": "Podcast"])
+      }
+
+      public static func makePodcastClient() -> Node {
+        return Node(unsafeResultMap: ["__typename": "PodcastClient"])
+      }
+
+      public static func makeShare() -> Node {
+        return Node(unsafeResultMap: ["__typename": "Share"])
+      }
+
+      public static func makeUser() -> Node {
+        return Node(unsafeResultMap: ["__typename": "User"])
+      }
+
+      public static func makeEpisode(description: String? = nil, artwork: String? = nil, podcast: AsEpisode.Podcast) -> Node {
+        return Node(unsafeResultMap: ["__typename": "Episode", "description": description, "artwork": artwork, "podcast": podcast.resultMap])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var asEpisode: AsEpisode? {
+        get {
+          if !AsEpisode.possibleTypes.contains(__typename) { return nil }
+          return AsEpisode(unsafeResultMap: resultMap)
+        }
+        set {
+          guard let newValue = newValue else { return }
+          resultMap = newValue.resultMap
+        }
+      }
+
+      public struct AsEpisode: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["Episode"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("description", type: .scalar(String.self)),
+            GraphQLField("artwork", arguments: ["size": 100, "scale": 2], type: .scalar(String.self)),
+            GraphQLField("podcast", type: .nonNull(.object(Podcast.selections))),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(description: String? = nil, artwork: String? = nil, podcast: Podcast) {
+          self.init(unsafeResultMap: ["__typename": "Episode", "description": description, "artwork": artwork, "podcast": podcast.resultMap])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var description: String? {
+          get {
+            return resultMap["description"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "description")
+          }
+        }
+
+        public var artwork: String? {
+          get {
+            return resultMap["artwork"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "artwork")
+          }
+        }
+
+        public var podcast: Podcast {
+          get {
+            return Podcast(unsafeResultMap: resultMap["podcast"]! as! ResultMap)
+          }
+          set {
+            resultMap.updateValue(newValue.resultMap, forKey: "podcast")
+          }
+        }
+
+        public struct Podcast: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["Podcast"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("feed", type: .nonNull(.scalar(String.self))),
+              GraphQLField("artwork", arguments: ["size": 100, "scale": 2], type: .scalar(String.self)),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(feed: String, artwork: String? = nil) {
+            self.init(unsafeResultMap: ["__typename": "Podcast", "feed": feed, "artwork": artwork])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          public var feed: String {
+            get {
+              return resultMap["feed"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "feed")
+            }
+          }
+
+          public var artwork: String? {
+            get {
+              return resultMap["artwork"] as? String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "artwork")
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 public final class FeedStreamModelQuery: GraphQLQuery {
   /// The raw GraphQL definition of this operation.
   public let operationDefinition: String =
@@ -1224,8 +1455,8 @@ public final class PodcastClientsQuery: GraphQLQuery {
         self.resultMap = unsafeResultMap
       }
 
-      public init(id: GraphQLID, icon: String, displayName: String) {
-        self.init(unsafeResultMap: ["__typename": "PodcastClient", "id": id, "icon": icon, "displayName": displayName])
+      public init(id: GraphQLID, icon: String, displayName: String, subscribeUrl: String, subscribeUrlNeedsProtocol: Bool) {
+        self.init(unsafeResultMap: ["__typename": "PodcastClient", "id": id, "icon": icon, "displayName": displayName, "subscribeUrl": subscribeUrl, "subscribeUrlNeedsProtocol": subscribeUrlNeedsProtocol])
       }
 
       public var __typename: String {
@@ -1475,6 +1706,8 @@ public struct Client: GraphQLFragment {
       id
       icon
       displayName
+      subscribeUrl
+      subscribeUrlNeedsProtocol
     }
     """
 
@@ -1486,6 +1719,8 @@ public struct Client: GraphQLFragment {
       GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
       GraphQLField("icon", type: .nonNull(.scalar(String.self))),
       GraphQLField("displayName", type: .nonNull(.scalar(String.self))),
+      GraphQLField("subscribeUrl", type: .nonNull(.scalar(String.self))),
+      GraphQLField("subscribeUrlNeedsProtocol", type: .nonNull(.scalar(Bool.self))),
     ]
   }
 
@@ -1495,8 +1730,8 @@ public struct Client: GraphQLFragment {
     self.resultMap = unsafeResultMap
   }
 
-  public init(id: GraphQLID, icon: String, displayName: String) {
-    self.init(unsafeResultMap: ["__typename": "PodcastClient", "id": id, "icon": icon, "displayName": displayName])
+  public init(id: GraphQLID, icon: String, displayName: String, subscribeUrl: String, subscribeUrlNeedsProtocol: Bool) {
+    self.init(unsafeResultMap: ["__typename": "PodcastClient", "id": id, "icon": icon, "displayName": displayName, "subscribeUrl": subscribeUrl, "subscribeUrlNeedsProtocol": subscribeUrlNeedsProtocol])
   }
 
   public var __typename: String {
@@ -1533,6 +1768,24 @@ public struct Client: GraphQLFragment {
     }
     set {
       resultMap.updateValue(newValue, forKey: "displayName")
+    }
+  }
+
+  public var subscribeUrl: String {
+    get {
+      return resultMap["subscribeUrl"]! as! String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "subscribeUrl")
+    }
+  }
+
+  public var subscribeUrlNeedsProtocol: Bool {
+    get {
+      return resultMap["subscribeUrlNeedsProtocol"]! as! Bool
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "subscribeUrlNeedsProtocol")
     }
   }
 }
@@ -1817,6 +2070,7 @@ public struct ViewerFragment: GraphQLFragment {
       __typename
       token
       personalFeed
+      messageLimit
       user {
         __typename
         id
@@ -1834,6 +2088,7 @@ public struct ViewerFragment: GraphQLFragment {
       GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
       GraphQLField("token", type: .nonNull(.scalar(String.self))),
       GraphQLField("personalFeed", type: .nonNull(.scalar(String.self))),
+      GraphQLField("messageLimit", type: .nonNull(.scalar(Int.self))),
       GraphQLField("user", type: .nonNull(.object(User.selections))),
     ]
   }
@@ -1844,8 +2099,8 @@ public struct ViewerFragment: GraphQLFragment {
     self.resultMap = unsafeResultMap
   }
 
-  public init(token: String, personalFeed: String, user: User) {
-    self.init(unsafeResultMap: ["__typename": "Viewer", "token": token, "personalFeed": personalFeed, "user": user.resultMap])
+  public init(token: String, personalFeed: String, messageLimit: Int, user: User) {
+    self.init(unsafeResultMap: ["__typename": "Viewer", "token": token, "personalFeed": personalFeed, "messageLimit": messageLimit, "user": user.resultMap])
   }
 
   public var __typename: String {
@@ -1872,6 +2127,15 @@ public struct ViewerFragment: GraphQLFragment {
     }
     set {
       resultMap.updateValue(newValue, forKey: "personalFeed")
+    }
+  }
+
+  public var messageLimit: Int {
+    get {
+      return resultMap["messageLimit"]! as! Int
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "messageLimit")
     }
   }
 

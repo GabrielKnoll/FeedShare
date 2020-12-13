@@ -11,11 +11,7 @@ public struct OnboardingFeedlink: View {
         VStack {
             Text("To get Podcast recommendations from your friends right into \(client), subscribe to your personal feed:")
             FeedLink(text: viewerModel.viewer?.personalFeed ?? "")
-            Button(action: {
-                finishDisabled = false
-            }) {
-                Text("Subscribe in \(client)")
-            }
+            SubscribeButton(feed: viewerModel.viewer?.personalFeed)
             Button(action: {
                 self.viewerModel.setupFinshed = true
             }) {

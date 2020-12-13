@@ -17,7 +17,7 @@ struct FeedShareApp: App {
             ZStack {
                 if viewerModel.initialized {
                     if viewerModel.setupFinshed, viewerModel.viewer != nil {
-                        OverlayHost { 
+                        OverlayHost {
                             FeedStream()
                         }
                     } else {

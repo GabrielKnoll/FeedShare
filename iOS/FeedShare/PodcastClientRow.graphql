@@ -2,4 +2,6 @@ fragment Client on PodcastClient {
     id
     icon
     displayName
+    subscribeUrl
+    subscribeUrlNeedsProtocol
 }

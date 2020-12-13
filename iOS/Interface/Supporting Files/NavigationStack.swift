@@ -182,7 +182,7 @@ public struct NavigationStackView<Root>: View where Root: View {
                 }
             }
         }.onAppear(perform: {
-            //self.navViewModel.easing = self.easing
+            self.navViewModel.easing = self.easing
         })
     }
 }

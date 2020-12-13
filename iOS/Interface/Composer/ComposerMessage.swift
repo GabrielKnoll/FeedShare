@@ -11,8 +11,14 @@ import URLImage
 public struct ComposerMessage: View {
     @ObservedObject var composerModel: ComposerModel
     @EnvironmentObject private var navigationStack: NavigationStack
+    @EnvironmentObject private var viewerModel: ViewerModel
     @State private var message = ""
-    private let characterLimit = 400
+    private let characterLimit: Int
+    
+    init(composerModel: ComposerModel) {
+        self.characterLimit = /*viewerModel.viewer?.messageLimit ??*/ 399
+        self.composerModel = composerModel
+    }
     
     public var body: some View {
         VStack {

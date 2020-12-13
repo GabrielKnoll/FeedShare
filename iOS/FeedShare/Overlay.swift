@@ -16,7 +16,7 @@ class OverlayModel: ObservableObject {
     @Published var dismissable: Bool = true
     @Published public var presentedView: AnyView? {
         willSet {
-            withAnimation {
+            withAnimation(.custom()) {
                 objectWillChange.send(self)
             }
         }
@@ -59,88 +59,86 @@ public struct Overlay: View {
     @State private var offset = CGFloat(0)
     
     private func ended(gesture: _ChangedGesture<DragGesture>.Value) {
-            if (gesture.translation.height > 20 && self.overlayModel.position == .bottom) ||
-                gesture.translation.height < -20 && self.overlayModel.position != .bottom {
-                dismiss()
-            } else {
-                withAnimation {
-                    self.offset = 0
-                }
+        if (gesture.translation.height > 20 && self.overlayModel.position == .bottom) ||
+            gesture.translation.height < -20 && self.overlayModel.position != .bottom {
+            dismiss()
+        } else {
+            withAnimation(.custom()) {
+                self.offset = 0
             }
+        }
     }
     
     private func dismiss() {
         offset = 0
-        withAnimation {
+        withAnimation(.custom()) {
             self.overlayModel.presentedView = nil
         }
     }
     
     public var body: some View {
-        GeometryReader { _ in
-            ZStack(alignment: .bottom) {
-                let visible: Bool = self.overlayModel.presentedView != nil
-                
-                if visible {
-                    Color.black
-                        .opacity(0.3)
-                        .if(self.overlayModel.dismissable) {
-                            $0.gesture(DragGesture()
-                                        .onChanged { gesture in
-                                            if gesture.translation.height > 0 {
+        ZStack(alignment: .bottom) {
+            let visible: Bool = self.overlayModel.presentedView != nil
+            
+            if visible {
+                Color.black
+                    .opacity(0.3)
+                    .if(self.overlayModel.dismissable) {
+                        $0.gesture(DragGesture()
+                                    .onChanged { gesture in
+                                        if gesture.translation.height > 0 {
+                                            self.offset = gesture.translation.height
+                                        }
+                                    }
+                                    .onEnded(ended)
+                        ).onTapGesture {
+                            dismiss()
+                        }
+                    }
+                    .transition(.opacity)
+                    .edgesIgnoringSafeArea(.all)
+            }
+            
+            if visible {
+                ZStack {
+                    ZStack(alignment: .topTrailing) {
+                        self.overlayModel.presentedView
+                        Button(action: dismiss) {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(.secondary)
+                                .font(.title2)
+                        }
+                        .padding(19)
+                    }
+                    .background(Color.white)
+                    .cornerRadius(38.5)
+                    .shadow(color: Color(UIColor(red: 0, green: 0, blue: 0, alpha: 0.05)),
+                            radius: 5.0,
+                            x: 0.0,
+                            y: 0.0)
+                    .offset(x: 0, y: offset)
+                    .if(self.overlayModel.dismissable) {
+                        $0.gesture(DragGesture()
+                                    .onChanged { gesture in
+                                        if visible {
+                                            if gesture.translation.height < 0 {
+                                                let max = CGFloat(30)
+                                                let val = -gesture.translation.height
+                                                let o = log(max / 2 + val) - log(max / 2)
+                                                self.offset = o * -max
+                                            } else {
                                                 self.offset = gesture.translation.height
                                             }
                                         }
-                                        .onEnded(ended)
-                            ).onTapGesture {
-                                dismiss()
-							}
-                        }
-                        .transition(.opacity)
-                        .edgesIgnoringSafeArea(.all)
-                }
-                
-                HStack(alignment: .bottom) {
-                    if visible {
-                        ZStack(alignment: .topTrailing) {
-                            self.overlayModel.presentedView
-                            Button(action: dismiss) {
-                                Image(systemName: "xmark.circle.fill")
-                                    .foregroundColor(.secondary)
-                                    .font(.title2)
-                            }.padding(19)
-                        }//.padding(.bottom, geometry.safeAreaInsets.bottom)
-                        .background(Color.white)
-                        .cornerRadius(38.5)
-                        .shadow(color: Color(UIColor(red: 0, green: 0, blue: 0, alpha: 0.05)),
-                                radius: 5.0,
-                                x: 0.0,
-                                y: 0.0)
-                        .offset(x: 0, y: offset)
-                        .if(self.overlayModel.dismissable) {
-                            $0.gesture(DragGesture()
-                                        .onChanged { gesture in
-                                            if visible {
-                                                if gesture.translation.height < 0 {
-                                                    let max = CGFloat(30)
-                                                    let val = -gesture.translation.height
-                                                    let o = log(max / 2 + val) - log(max / 2)
-                                                    self.offset = o * -max
-                                                } else {
-                                                    self.offset = gesture.translation.height
-                                                }
-                                            }
-                                        }
-                                        .onEnded(ended)
-                            )
-                        }
-                        .transition(.move(edge: self.overlayModel.position == .bottom ? .bottom : .top))
+                                    }
+                                    .onEnded(ended)
+                        )
                     }
                 }
                 .padding(10)
-                .animation(.spring(response: 0.25, dampingFraction: 0.6))
-            }.ignoresSafeArea(.container, edges: .bottom)
-        }
+                .transition(.move(edge: self.overlayModel.position == .bottom ? .bottom : .top))
+            }
+        }.ignoresSafeArea(.container, edges: .bottom)
     }
 }
 
@@ -152,5 +150,11 @@ extension View {
         } else {
             self
         }
+    }
+}
+
+extension Animation {
+    static func custom() -> Animation {
+        Animation.spring(response: 0.25, dampingFraction: 0.6)
     }
 }

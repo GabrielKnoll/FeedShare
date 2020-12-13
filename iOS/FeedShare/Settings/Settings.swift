@@ -16,7 +16,7 @@ public struct Settings: View {
     @State private var logoutAlert = false
     
     public var body: some View {
-        NavigationStackView(easing: .easeOut) {
+        NavigationStackView {
             VStack(alignment: .leading, spacing: 10) {
                 VStack(alignment: .center) {
                     ProfilePicture(url: viewerModel.viewer?.user.profilePicture, size: 66.0)
