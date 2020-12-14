@@ -39,5 +39,17 @@ public struct ComposerMessage: View {
                 EpisodeAttachment(data: episode)
             }
         }.padding(20)
+        .onReceive(composerModel.$share) { share in
+            if let s = share {
+                NotificationCenter.default.post(name: .reloadFeed, object: s)
+                if let d = composerModel.dismiss {
+                    d()
+                }
+            }
+        }
     }
+}
+
+public extension Notification.Name {
+    static let reloadFeed = Notification.Name(rawValue: "FeedStream.Reload")
 }

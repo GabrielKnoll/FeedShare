@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SearchBar: UIViewRepresentable {
     @Binding var text: String
+    let disabled: Bool?
     var action: (_ searchText: String) -> Void
     
     class Coordinator: NSObject, UISearchBarDelegate {
@@ -38,10 +39,12 @@ struct SearchBar: UIViewRepresentable {
         searchBar.delegate = context.coordinator
         searchBar.searchBarStyle = .minimal
         searchBar.becomeFirstResponder()
+        searchBar.isUserInteractionEnabled = !(disabled ?? false)
         return searchBar
     }
     
     func updateUIView(_ uiView: UISearchBar, context: UIViewRepresentableContext<SearchBar>) {
         uiView.text = text
+        uiView.isUserInteractionEnabled = !(disabled ?? false)
     }
 }

@@ -9,12 +9,17 @@ import SwiftUI
 
 public struct Composer: View {
     @StateObject var composerModel = ComposerModel()
+    let dismiss: () -> Void
     
-    public init() {}
+    public init(dismiss: @escaping () -> Void) {
+        self.dismiss = dismiss
+    }
     
     public var body: some View {
         NavigationStackView {
             ComposerSearch(composerModel: composerModel)
-        }
+        }.onAppear(perform: {
+            composerModel.dismiss = self.dismiss
+        })
     }
 }

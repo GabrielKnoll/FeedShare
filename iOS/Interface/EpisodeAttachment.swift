@@ -26,7 +26,7 @@ public struct EpisodeAttachment: View {
     
     public var body: some View {
         HStack(alignment: .center, spacing: 10) {
-            Artwork(url: data.podcast.artwork, size: 65.0)
+            Artwork(url: data.artwork ?? data.podcast.artwork, size: 65.0)
             VStack(alignment: .leading, spacing: 3) {
                 Text(data.title)
                     .font(.headline)

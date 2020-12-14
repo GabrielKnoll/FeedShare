@@ -15,14 +15,17 @@ public extension String {
     func parseDateTimeFormatRelative() -> String? {
         let dateFormatter = ISO8601DateFormatter()
         dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let now = Date()
         if let date = dateFormatter.date(from: self) {
-            if date.distance(to: Date()).isLessThanOrEqualTo(4 * 24 * 60 * 60)  {
+            if date.distance(to: now).isLessThanOrEqualTo(60) {
+                return "just now"
+            } else if date.distance(to: now).isLessThanOrEqualTo(4 * 24 * 60 * 60)  {
                 let formatter = RelativeDateTimeFormatter()
                 formatter.unitsStyle = .full
-                return formatter.localizedString(for: date, relativeTo: Date())
+                return formatter.localizedString(for: date, relativeTo: now)
             } else {
                 let formatter = DateFormatter()
-                if date.isInSameYear(as: Date()) {
+                if date.isInSameYear(as: now) {
                     formatter.setLocalizedDateFormatFromTemplate("dMMMM 'at' jjmm")
                 } else {
                     formatter.dateStyle = .medium

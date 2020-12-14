@@ -36,7 +36,7 @@ public struct ComposerEpisode: View {
             Text("Which Episode do you want to share?").fontWeight(.bold)
             if let episodes = composerModel.latestEpisodes {
                 if episodes.isEmpty {
-                    Text("This Podcast does not have any episodes   ")
+                    Text("This Podcast does not have any episodes")
                 } else {
                     ScrollView {
                         ForEach(episodes, id: \.id) { episode in

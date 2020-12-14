@@ -28,7 +28,12 @@ public struct FeedStream: View {
                     }
                     
                     Button(action: {
-                        overlayModel.present(Composer(), alignment: .top, dismissable: false)
+                        overlayModel.present(
+                            Composer(
+                                dismiss: overlayModel.dismiss),
+                                alignment: .top,
+                                dismissable: false
+                            )
                     }) {
                         Image(systemName: "square.and.pencil")
                     }
@@ -48,6 +53,7 @@ public struct FeedStream: View {
                                 .padding(.top, 5)
                                 .padding(.trailing, 15)
                                 .padding(.leading, 15)
+                                .transition(AnyTransition.scale)
                         }
                     }
                 }

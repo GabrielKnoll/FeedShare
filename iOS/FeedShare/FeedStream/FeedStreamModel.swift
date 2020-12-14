@@ -5,6 +5,7 @@
 //  Created by Gabriel Knoll on 03.10.20.
 //
 
+import Apollo
 import Combine
 import Foundation
 import Interface
@@ -18,11 +19,14 @@ public class FeedStreamModel: ObservableObject {
             }
         }
     }
-
+    private var loadRequest: Apollo.Cancellable?
     private var initialized = false
 
     public init() {
         initializeFromCache()
+        NotificationCenter.default.addObserver(forName: .reloadFeed, object: nil, queue: .main) { share in
+            self.loadData(after: self.shares.last?.cursor)
+        }
     }
 
     private func initializeFromCache() {
@@ -42,7 +46,10 @@ public class FeedStreamModel: ObservableObject {
 
     private func loadData(after: String? = nil) {
         if !loading { loading = true }
-        Network.shared.apollo.fetch(query: FeedStreamModelQuery(after: after),
+        if let lr = self.loadRequest {
+            lr.cancel()
+        }
+        loadRequest = Network.shared.apollo.fetch(query: FeedStreamModelQuery(after: after),
                                     cachePolicy: .fetchIgnoringCacheCompletely) { result in
 
             self.loading = false

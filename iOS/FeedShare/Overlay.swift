@@ -31,6 +31,10 @@ class OverlayModel: ObservableObject {
         self.alignment = alignment
         self.dismissable = dismissable
     }
+    
+    func dismiss() {
+        self.presentedView = nil
+    }
 }
 
 enum OverlayAlignment {
@@ -61,7 +65,7 @@ public struct OverlayHost<Content: View>: View {
     
     private func dismiss() {
         withAnimation(.custom()) {
-            self.overlayModel.presentedView = nil
+            self.overlayModel.dismiss()
         }
     }
     
