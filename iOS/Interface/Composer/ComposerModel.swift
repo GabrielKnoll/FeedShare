@@ -40,7 +40,6 @@ public class ComposerModel: ObservableObject {
                 })
     }
     
-    
     func resolveUrl(url: String, resultHandler: @escaping () -> Void) {
         self.isLoading = true
         Network.shared.apollo.fetch(query: ResolveQuery(url: url),

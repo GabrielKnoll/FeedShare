@@ -9,12 +9,23 @@ import SwiftUI
 import URLImage
 
 public struct ComposerSearch: View {
-    @State var unresolvedUrlAlert = false
+    enum ResolveError {
+        case none
+        case notFound
+        case noURL
+    }
+    
+    @State var unresolvedUrlAlert: ResolveError = .none
     @State var pastedString: String?
     @ObservedObject var composerModel: ComposerModel
     @EnvironmentObject private var navigationStack: NavigationStack
     
     public var body: some View {
+        let showError = Binding(
+            get: { return unresolvedUrlAlert != .none },
+            set: { _, _ in unresolvedUrlAlert = .none }
+        )
+        
         VStack {
             SearchBar(text: $composerModel.searchText, action: composerModel.findPodcast)
                 //.padding(.horizontal, -8)
@@ -45,15 +56,16 @@ public struct ComposerSearch: View {
                     if let url = self.pastedString, url.lowercased().hasPrefix("http") {
                         composerModel.resolveUrl(url: url) {
                             if composerModel.episode != nil {
+                                print("episode")
                                 self.navigationStack.push(ComposerMessage(composerModel: composerModel))
                             } else if composerModel.podcast != nil {
                                 self.navigationStack.push(ComposerEpisode(composerModel: composerModel))
                             } else {
-                                self.unresolvedUrlAlert = true
+                                self.unresolvedUrlAlert = .notFound
                             }
                         }
                     } else {
-                        self.unresolvedUrlAlert = true
+                        self.unresolvedUrlAlert = .noURL
                     }
                 }) {
                     Text("Paste from Clipboard")
@@ -62,11 +74,23 @@ public struct ComposerSearch: View {
             Spacer()
         }
         .padding(.vertical, /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
-        .alert(isPresented: $unresolvedUrlAlert) {
+        .alert(isPresented: showError) {
             Alert(
-                title: Text("Could not find"),
-                message: Text("Could not find a podcast"),
-                dismissButton: .default(Text("Got it!"))
+                title: {
+                    switch unresolvedUrlAlert {
+                    case .notFound: return Text("No Podcast Found")
+                    case .noURL: return Text("No URL Found")
+                    default: return Text("Error")
+                    }
+                }(),
+                message: {
+                    switch unresolvedUrlAlert {
+                    case .notFound: return Text("We couldn't find a podcast at: \(pastedString ?? ""). Try finding the podcast you want to share using the search.")
+                    case .noURL: return Text("You can paste a podcast's URL to share it.")
+                    default: return Text("This didn't work. Please try again.")
+                    }
+                }(),
+                dismissButton: .default(Text("OK"))
             )
         }
     }
