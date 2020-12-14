@@ -83,7 +83,7 @@ class CopyableUIView: UIView {
     
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         return action == #selector(UIResponderStandardEditActions.copy) ||
-            action == #selector(openInApp)
+            (clientName != nil && action == #selector(openInApp))
     }
 }
 

@@ -30,7 +30,7 @@ public struct SubscribeButton: View {
         }
         
         if let url = URL(string: urlToOpen ?? "") {
-            UIApplication.shared.open(url, completionHandler: {success in
+            UIApplication.shared.open(url, completionHandler: { success in
                 let alertController = UIAlertController(
                     title: "Unable to Subscribe",
                     message: "\(client.displayName) could not be launched to subscribe to this podcast. Please make sure the app is installed.",

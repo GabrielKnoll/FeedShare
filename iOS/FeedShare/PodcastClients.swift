@@ -16,10 +16,14 @@ public struct PodcastClients: View {
     public var body: some View {
         VStack {
             ForEach(viewerModel.podcastClients, id: \.id) { client in
-                PodcastClientRow(client: client) {
+                PodcastClientRow(icon: client.icon, name: client.displayName) {
                     viewerModel.viewerClient = client
                     onSelect()
                 }
+            }
+            PodcastClientRow(icon: nil, name: "Other") {
+                viewerModel.viewerClient = nil
+                onSelect()
             }
         }.onAppear(perform: viewerModel.fetchPodcastClients)
     }

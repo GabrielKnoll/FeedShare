@@ -10,14 +10,17 @@ import SwiftUI
 import URLImage
 
 public struct PodcastClientRow: View {
-    let client: Client
+    let icon: String?
+    let name: String
     let action: () -> Void
     
     public var body: some View {
         Button(action: self.action) {
             HStack {
-                Artwork(url: client.icon, size: 44.0)
-                Text(client.displayName)
+                if let i = icon {
+                    Artwork(url: i, size: 44.0)
+                }
+                Text(name)
                 Spacer()
                 Image(systemName: "chevron.right")
             }

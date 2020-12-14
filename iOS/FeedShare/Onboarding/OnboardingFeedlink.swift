@@ -13,14 +13,14 @@ public struct OnboardingFeedlink: View {
             FeedLink {
                 subscribed = true
             }
-            SubscribeButton(feed: viewerModel.viewer?.personalFeed) {_ in 
+            SubscribeButton(feed: viewerModel.viewer?.personalFeed) { _ in
                 subscribed = true
             }
             Button(action: {
                 self.viewerModel.setupFinshed = true
             }) {
                 Text("Finish Setup")
-            }.disabled(!subscribed)
+            }.disabled(!subscribed && (viewerModel.viewerClient != nil))
         }
     }
 }

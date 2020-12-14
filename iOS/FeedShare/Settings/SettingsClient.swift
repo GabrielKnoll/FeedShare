@@ -14,11 +14,12 @@ public struct SettingsClient: View {
     
     public var body: some View {
         VStack(alignment: .leading) {
-            if let client = viewerModel.viewerClient {
-                Text("Your Podcast client").bold()
-                PodcastClientRow(client: client) {
-                    navigationStack.push(SettingsClientList())
-                }
+            Text("Your Podcast client").bold()
+            PodcastClientRow(
+                icon: viewerModel.viewerClient?.icon,
+                name: viewerModel.viewerClient?.displayName ?? "Other"
+            ) {
+                navigationStack.push(SettingsClientList())
             }
         }
     }
