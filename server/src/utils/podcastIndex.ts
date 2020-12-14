@@ -4,6 +4,8 @@ import {ApiResponse} from 'podcastdx-client/dist/types';
 import env from './env';
 import prismaClient from './prismaClient';
 import normalizeUrl from 'normalize-url';
+import {htmlToText} from 'html-to-text';
+import {decodeXML} from 'entities';
 
 const podcastIndexClient = new PodcastIndexClient({
   key: env.PODCAST_INDEX_KEY,
@@ -148,13 +150,19 @@ function episodeFromApiResponse(
     id: String(apiResponse.id),
     enclosureUrl: apiResponse.enclosureUrl,
     enclosureType: apiResponse.enclosureType,
-    enclosureLength: apiResponse.enclosureLength,
-    description: apiResponse.description,
+    enclosureLength: apiResponse.enclosureLength || undefined,
+    description: htmlToText(apiResponse.description, {
+      tags: {
+        a: {options: {ignoreHref: true}},
+        ul: {options: {itemPrefix: '• '}},
+      },
+    }).trim(),
     datePublished: new Date(apiResponse.datePublished * 1000),
     artwork: apiResponse.image,
-    title: apiResponse.title,
-    // @ts-ignore
-    durationSeconds: apiResponse.duration || undefined,
+    title: decodeXML(apiResponse.title),
+    durationSeconds:
+      // @ts-ignore: Some episodes have hh:mm:ss format
+      apiResponse.duration > 99 ? apiResponse.duration : undefined,
     url: apiResponse.link,
     apiResponse: apiResponse as any,
     podcast: {

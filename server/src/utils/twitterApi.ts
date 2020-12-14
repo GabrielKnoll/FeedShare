@@ -74,7 +74,7 @@ export async function twitterProfile(
   });
   // rewrite URL to full size image
   res.data.profile_image_url = res.data.profile_image_url.replace(
-    /'_normal\.jpg$/,
+    /_normal\.jpg$/,
     '.jpg',
   );
   return res;

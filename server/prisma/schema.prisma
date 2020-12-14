@@ -52,7 +52,7 @@ model Episode {
   enclosureUrl    String
   enclosureType   String
   datePublished   DateTime
-  enclosureLength Int
+  enclosureLength Int?
   artwork         String?
   url             String?
   apiResponse     Json
