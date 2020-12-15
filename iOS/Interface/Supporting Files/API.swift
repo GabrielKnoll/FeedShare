@@ -749,7 +749,7 @@ public final class FindPodcastQuery: GraphQLQuery {
   public let operationDefinition: String =
     """
     query FindPodcast($query: String!) {
-      findPodcast(query: $query) {
+      typeaheadPodcast(query: $query) {
         __typename
         ...ComposerPodcastFragment
       }
@@ -775,7 +775,7 @@ public final class FindPodcastQuery: GraphQLQuery {
 
     public static var selections: [GraphQLSelection] {
       return [
-        GraphQLField("findPodcast", arguments: ["query": GraphQLVariable("query")], type: .list(.object(FindPodcast.selections))),
+        GraphQLField("typeaheadPodcast", arguments: ["query": GraphQLVariable("query")], type: .list(.object(TypeaheadPodcast.selections))),
       ]
     }
 
@@ -785,20 +785,20 @@ public final class FindPodcastQuery: GraphQLQuery {
       self.resultMap = unsafeResultMap
     }
 
-    public init(findPodcast: [FindPodcast?]? = nil) {
-      self.init(unsafeResultMap: ["__typename": "Query", "findPodcast": findPodcast.flatMap { (value: [FindPodcast?]) -> [ResultMap?] in value.map { (value: FindPodcast?) -> ResultMap? in value.flatMap { (value: FindPodcast) -> ResultMap in value.resultMap } } }])
+    public init(typeaheadPodcast: [TypeaheadPodcast?]? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Query", "typeaheadPodcast": typeaheadPodcast.flatMap { (value: [TypeaheadPodcast?]) -> [ResultMap?] in value.map { (value: TypeaheadPodcast?) -> ResultMap? in value.flatMap { (value: TypeaheadPodcast) -> ResultMap in value.resultMap } } }])
     }
 
-    public var findPodcast: [FindPodcast?]? {
+    public var typeaheadPodcast: [TypeaheadPodcast?]? {
       get {
-        return (resultMap["findPodcast"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [FindPodcast?] in value.map { (value: ResultMap?) -> FindPodcast? in value.flatMap { (value: ResultMap) -> FindPodcast in FindPodcast(unsafeResultMap: value) } } }
+        return (resultMap["typeaheadPodcast"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [TypeaheadPodcast?] in value.map { (value: ResultMap?) -> TypeaheadPodcast? in value.flatMap { (value: ResultMap) -> TypeaheadPodcast in TypeaheadPodcast(unsafeResultMap: value) } } }
       }
       set {
-        resultMap.updateValue(newValue.flatMap { (value: [FindPodcast?]) -> [ResultMap?] in value.map { (value: FindPodcast?) -> ResultMap? in value.flatMap { (value: FindPodcast) -> ResultMap in value.resultMap } } }, forKey: "findPodcast")
+        resultMap.updateValue(newValue.flatMap { (value: [TypeaheadPodcast?]) -> [ResultMap?] in value.map { (value: TypeaheadPodcast?) -> ResultMap? in value.flatMap { (value: TypeaheadPodcast) -> ResultMap in value.resultMap } } }, forKey: "typeaheadPodcast")
       }
     }
 
-    public struct FindPodcast: GraphQLSelectionSet {
+    public struct TypeaheadPodcast: GraphQLSelectionSet {
       public static let possibleTypes: [String] = ["Podcast"]
 
       public static var selections: [GraphQLSelection] {

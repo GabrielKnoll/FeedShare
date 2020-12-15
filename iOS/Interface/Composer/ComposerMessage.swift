@@ -27,7 +27,7 @@ public struct ComposerMessage: View {
                     composerModel.createShare(message: message)
                 }) {
                     Text("Publish")
-                }.disabled(message.isEmpty)
+                }.disabled(message.isEmpty || composerModel.isLoading == .blocking)
             }
             
             ComposerTextField(text: $message, limit: characterLimit)

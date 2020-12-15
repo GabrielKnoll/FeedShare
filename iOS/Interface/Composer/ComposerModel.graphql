@@ -14,7 +14,7 @@ query Resolve($url: String!) {
 }
 
 query FindPodcast($query: String!) {
-  findPodcast(query: $query) {
+  typeaheadPodcast(query: $query) {
     ...ComposerPodcastFragment
   }
 }

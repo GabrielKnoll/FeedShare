@@ -34,6 +34,7 @@ public struct EpisodeAttachment: View {
                     .foregroundColor(.primary)
                 Text(data.podcast.title)
                     .font(.subheadline)
+                    .lineLimit(1)
                     .foregroundColor(.secondary)
                 
                 if let duration = data.durationSeconds {

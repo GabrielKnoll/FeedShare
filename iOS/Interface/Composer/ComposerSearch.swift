@@ -14,6 +14,7 @@ public struct ComposerSearch: View {
         case notFound
         case noURL
     }
+    
     @State var unresolvedUrlAlert: ResolveError = .none
     @State var pastedString: String?
     @ObservedObject var composerModel: ComposerModel
@@ -35,24 +36,30 @@ public struct ComposerSearch: View {
             }
             //.padding(.horizontal, -8)
             //.padding(.vertical, -10)
-            if composerModel.isLoading != .none {
-                ActivityIndicator(style: .large)
-            } else if let results = composerModel.searchResults {
-                if results.isEmpty {
-                    Text("No Results")
-                } else {
-                    ScrollView {
-                        ForEach(results, id: \.id) { podcast in
-                            Button(action: {
-                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                                composerModel.podcast = podcast
-                                self.navigationStack.push(ComposerEpisode(composerModel: composerModel))
-                            }) {
-                                ComposerPodcast(podcast: podcast).padding(20)
-                            }
+            if composerModel.isLoading == .blocking {
+                HStack(alignment: .center) {
+                    ActivityIndicator(style: .large)
+                }.frame(minHeight: 0, maxHeight: .infinity)
+                Text("blocking")
+            } else if composerModel.isLoading == .nonblocking && composerModel.searchResults == nil {
+                HStack(alignment: .center) {
+                    ActivityIndicator(style: .large)
+                }.frame(minHeight: 0, maxHeight: .infinity)
+                Text("nonblocking")
+            } else if let results = composerModel.searchResults, !results.isEmpty {
+                ScrollView {
+                    ForEach(results, id: \.id) { podcast in
+                        Button(action: {
+                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                            composerModel.podcast = podcast
+                            self.navigationStack.push(ComposerEpisode(composerModel: composerModel))
+                        }) {
+                            ComposerPodcast(podcast: podcast).padding(.horizontal, 20)
                         }
                     }
                 }
+            } else if !composerModel.searchText.isEmpty && composerModel.searchResults?.isEmpty == true {
+                Text("No Results")
             } else {
                 Text("Search for a Podcast you like to share or paste a link")
                     .multilineTextAlignment(.center)

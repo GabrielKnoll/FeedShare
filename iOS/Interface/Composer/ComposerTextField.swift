@@ -25,7 +25,7 @@ struct ComposerTextField: UIViewRepresentable {
         uiView.text = text
     }
     
-    class Coordinator : NSObject, UITextViewDelegate {
+    class Coordinator: NSObject, UITextViewDelegate {
         let text: Binding<String>
         let limit: Int
 
@@ -36,7 +36,7 @@ struct ComposerTextField: UIViewRepresentable {
         
         func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
             let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
-            return newText.count<=self.limit
+            return newText.count <= self.limit
         }
         
         func textViewDidChange(_ textView: UITextView) {

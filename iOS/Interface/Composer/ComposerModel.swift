@@ -33,13 +33,13 @@ public class ComposerModel: ObservableObject {
             }
         }
     }
+    @Published public var isLoading: LoadingState = .none
     
     public enum LoadingState {
         case none
         case nonblocking
         case blocking
     }
-    @Published public var isLoading: LoadingState = .none
     
     init() {
         searchDebounce = AnyCancellable(
@@ -107,7 +107,7 @@ public class ComposerModel: ObservableObject {
             self.isLoading = .none
             switch result {
             case let .success(graphQLResult):
-                self.searchResults = graphQLResult.data?.findPodcast?.compactMap {
+                self.searchResults = graphQLResult.data?.typeaheadPodcast?.compactMap {
                     $0?.fragments.composerPodcastFragment
                 } ?? []
             case .failure:
