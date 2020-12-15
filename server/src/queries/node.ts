@@ -82,3 +82,10 @@ export function parseId(
     key: guid.join(':'),
   };
 }
+
+export function generateId(
+  type: NexusGenAbstractTypeMembers['Node'],
+  key: string,
+) {
+  return `${type}:${key}`;
+}

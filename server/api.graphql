@@ -75,7 +75,7 @@ type Query {
   podcastClient: [PodcastClient]
   resolveShareUrl(url: String!): ResolvedShareUrl
   shares(after: String, before: String, feedType: FeedType, last: Int!): ShareConnection!
-  typeaheadPodcast(query: String!): [SearchResult]
+  typeaheadPodcast(query: String!): [Podcast]
   viewer: Viewer
 }
 

@@ -4,6 +4,7 @@ import {
   NexusGenFieldTypes,
   NexusGenAbstractTypeMembers,
 } from 'nexus-typegen';
+import {generateId} from '../queries/node';
 
 export default interfaceType({
   name: 'Node',
@@ -13,11 +14,11 @@ export default interfaceType({
   definition(t) {
     t.nonNull.id('id', {
       description: 'Unique identifier for the resource',
-      resolve: (node, _args, _ctx, {parentType}) => {
-        return `${parentType.name}:${
-          (node as NexusGenInterfaces['Node'] & NexusGenFieldTypes['Node']).id
-        }`;
-      },
+      resolve: (node, _args, _ctx, {parentType}) =>
+        generateId(
+          parentType.name as NexusGenAbstractTypeMembers['Node'],
+          (node as NexusGenInterfaces['Node'] & NexusGenFieldTypes['Node']).id,
+        ),
     });
   },
 });
