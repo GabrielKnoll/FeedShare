@@ -6,6 +6,7 @@ import prismaClient from './prismaClient';
 import normalizeUrl from 'normalize-url';
 import {htmlToText} from 'html-to-text';
 import {decodeXML} from 'entities';
+import {NexusGenFieldTypes} from 'nexus-typegen';
 
 const podcastIndexClient = new PodcastIndexClient({
   key: env.PODCAST_INDEX_KEY,
@@ -219,4 +220,27 @@ export async function findPodcast(
     );
   }
   return null;
+}
+
+export async function typeaheadPodcast(
+  query: string,
+): Promise<NexusGenFieldTypes['SearchResult'][]> {
+  const {
+    hints,
+  }: {
+    status: ApiResponse.Status;
+    hints: Array<{
+      feedId: string;
+      hint: string;
+    }>;
+    count: number;
+    query: string;
+    description: string;
+  } = await podcastIndexClient['fetch']('/search/hints', {
+    q: query,
+  });
+  return hints.map(({feedId, hint}) => ({
+    title: hint,
+    id: `Podcast:${feedId}`,
+  }));
 }

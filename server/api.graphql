@@ -75,12 +75,18 @@ type Query {
   podcastClient: [PodcastClient]
   resolveShareUrl(url: String!): ResolvedShareUrl
   shares(after: String, before: String, feedType: FeedType, last: Int!): ShareConnection!
+  typeaheadPodcast(query: String!): [SearchResult]
   viewer: Viewer
 }
 
 type ResolvedShareUrl {
   episode: Episode
   podcast: Podcast
+}
+
+type SearchResult {
+  id: ID
+  title: String!
 }
 
 type Share implements Node {
