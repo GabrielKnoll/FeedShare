@@ -241,6 +241,6 @@ export async function typeaheadPodcast(
   });
   return hints.map(({feedId, hint}) => ({
     title: hint,
-    id: `Podcast:${feedId}`,
+    feedId: `Podcast:${feedId}`,
   }));
 }

@@ -85,7 +85,7 @@ type ResolvedShareUrl {
 }
 
 type SearchResult {
-  id: ID
+  feedId: ID
   title: String!
 }
 
