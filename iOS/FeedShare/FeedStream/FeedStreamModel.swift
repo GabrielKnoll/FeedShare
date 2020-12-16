@@ -49,10 +49,14 @@ public class FeedStreamModel: ObservableObject {
         if let lr = self.loadRequest {
             lr.cancel()
         }
+        let startTime = DispatchTime.now()
         loadRequest = Network.shared.apollo.fetch(query: FeedStreamModelQuery(after: after),
                                     cachePolicy: .fetchIgnoringCacheCompletely) { result in
 
-            self.loading = false
+            DispatchQueue.main.asyncAfter(deadline: startTime + 1.5) {
+                self.loading = false
+            }
+            
             switch result {
             case let .success(graphQLResult):
                 let contents = (graphQLResult.data?.shares.edges as? [FeedStreamModelQuery.Data.Share.Edge]) ?? []

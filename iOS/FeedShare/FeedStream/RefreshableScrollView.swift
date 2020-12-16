@@ -2,14 +2,27 @@
 // Full article: https://swiftui-lab.com/scrollview-pull-to-refresh/
 import SwiftUI
 
+enum PTRState {
+    case nothing
+    case triggered
+    case waitingForRelease
+}
+
 struct RefreshableScrollView<Content: View>: View {
+    @Binding var refreshing: Bool
     @State private var previousScrollOffset: CGFloat = 0
     @State private var scrollOffset: CGFloat = 0
-    @State private var frozen: Bool = false
+    @State private var frozen: Bool = false {
+        didSet {
+            showHideLoadingView()
+        }
+    }
     @State private var rotation: Angle = .degrees(0)
+    @State private var state: PTRState = .nothing
+    @State private var spacerVisible: Bool = false
 
     var threshold: CGFloat = 80
-    @Binding var refreshing: Bool
+    
     let content: Content
 
     init(height: CGFloat = 80, refreshing: Binding<Bool>, @ViewBuilder content: () -> Content) {
@@ -17,22 +30,37 @@ struct RefreshableScrollView<Content: View>: View {
         _refreshing = refreshing
         self.content = content()
     }
+    
+    func showHideLoadingView() {
+        if refreshing, frozen {
+            spacerVisible = true
+        } else {
+            withAnimation {
+                spacerVisible = false
+            }
+        }
+    }
 
     var body: some View {
         VStack {
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 ZStack(alignment: .top) {
                     MovingView()
-
-                    VStack { self.content }.alignmentGuide(.top, computeValue: { _ in (self.refreshing && self.frozen) ? -self.threshold : 0.0 })
-
+                    VStack {
+                        if spacerVisible {
+                            Color.clear.frame(height: threshold)
+                        }
+                        self.content
+                    }
                     SymbolView(height: self.threshold, loading: self.refreshing, frozen: self.frozen, rotation: self.rotation)
                 }
             }
             .background(FixedView())
             .onPreferenceChange(RefreshableKeyTypes.PrefKey.self) { values in
                 self.refreshLogic(values: values)
-            }
+            }.onChange(of: refreshing, perform: { _ in
+                showHideLoadingView()
+            })
         }
     }
 
@@ -47,8 +75,16 @@ struct RefreshableScrollView<Content: View>: View {
             self.rotation = self.symbolRotation(self.scrollOffset)
 
             // Crossing the threshold on the way down, we start the refresh process
-            if !self.refreshing, self.scrollOffset > self.threshold, self.previousScrollOffset <= self.threshold {
+            if !self.refreshing, self.scrollOffset > self.threshold, self.previousScrollOffset <= self.threshold, self.state == .nothing {
+                self.state = .triggered
+            } else if self.state == .triggered, self.scrollOffset < self.previousScrollOffset {
+                self.state = .waitingForRelease
                 self.refreshing = true
+            }
+            
+            if self.scrollOffset == 0 {
+                // reset state
+                self.state = .nothing
             }
 
             if self.refreshing {

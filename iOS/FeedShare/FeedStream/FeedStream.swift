@@ -9,12 +9,14 @@ import Interface
 import SwiftUI
 
 public struct FeedStream: View {
+    @State private var isLoading = false
     @StateObject var feedStreamModel = FeedStreamModel()
     @State private var feedType = 0
+    
     @EnvironmentObject var overlayModel: OverlayModel
-
-	public init() {}
-
+    
+    public init() {}
+    
     public var body: some View {
         VStack {
             VStack {
@@ -31,9 +33,9 @@ public struct FeedStream: View {
                         overlayModel.present(
                             Composer(
                                 dismiss: overlayModel.dismiss),
-                                alignment: .top,
-                                dismissable: false
-                            )
+                            alignment: .top,
+                            dismissable: false
+                        )
                     }) {
                         Image(systemName: "square.and.pencil")
                     }
@@ -49,11 +51,10 @@ public struct FeedStream: View {
                 LazyVStack {
                     ForEach(feedStreamModel.shares.reversed(), id: \.node?.id) { edge in
                         if let fragment = edge.node?.fragments.shareFragment {
-                            ShareRow(data: fragment, isEditable: false)
+                            ShareRow(data: fragment)
                                 .padding(.top, 5)
                                 .padding(.trailing, 15)
                                 .padding(.leading, 15)
-                                .transition(AnyTransition.scale)
                         }
                     }
                 }
@@ -61,16 +62,7 @@ public struct FeedStream: View {
                 .padding(.bottom, 25)
             }
         }
-		.background(Color(R.color.background() ?? .gray))
+        .background(Color(R.color.background() ?? .gray))
         .edgesIgnoringSafeArea(.bottom)
     }
 }
-
-/*
- struct FeedStream_Previews: PreviewProvider {
- static var previews: some View {
- //FeedStream(feedStreamModel: FeedStreamModel())
- Text("test")
- }
- }
- */

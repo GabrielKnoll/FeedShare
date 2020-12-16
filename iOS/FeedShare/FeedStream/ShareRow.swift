@@ -11,16 +11,10 @@ import URLImage
 
 public struct ShareRow: View {
     let data: ShareFragment
-    let isEditable: Bool
     
     @EnvironmentObject var overlayModel: OverlayModel
     @State private var showPopover: Bool = false
     @State private var editorText: String = "What did you like about this episode?"
-
-    public init(data: ShareFragment, isEditable: Bool) {
-        self.data = data
-        self.isEditable = isEditable
-    }
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 15) {
@@ -50,9 +44,7 @@ public struct ShareRow: View {
                     arrowEdge: .bottom
                 ) { Text("Popover") }
             }
-            if isEditable {
-                CustomTextEditor()
-            } else if let message = data.message {
+            if let message = data.message {
                 Text(message)
             }
             Button(action: {
@@ -61,6 +53,8 @@ public struct ShareRow: View {
                 EpisodeAttachment(data: data.episode.fragments.episodeAttachmentFragment)
             }
         }
+        
+        
         .padding(15)
         .background(RoundedRectangle(cornerRadius: 22.0)
             .fill(Color(.white))
@@ -68,35 +62,6 @@ public struct ShareRow: View {
                     radius: 5.0,
                     x: 0.0,
                     y: 2.0))
-    }
-}
-
-struct CustomTextEditor: UIViewRepresentable {
-    func makeUIView(context: Context) -> UITextView {
-        let textView = UITextView()
-        textView.delegate = context.coordinator
-        textView.text = "What did you like about this episode?"
-        textView.font = UIFont.systemFont(ofSize: 16)
-        textView.textColor = UIColor.lightGray
-        return textView
-    }
-
-    func makeCoordinator() -> UITextViewDelegate {
-        EditorCoordinator()
-    }
-
-    func updateUIView(_: UITextView, context _: Context) {}
-}
-
-class EditorCoordinator: NSObject, UITextViewDelegate {
-    private var didBeginEditing = false
-
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if !didBeginEditing {
-            textView.text = " "
-            textView.textColor = .black
-            didBeginEditing = true
-        }
     }
 }
 
