@@ -235,11 +235,11 @@ public final class EpisodeOverlayQuery: GraphQLQuery {
   }
 }
 
-public final class FeedStreamModelQuery: GraphQLQuery {
+public final class FeedQuery: GraphQLQuery {
   /// The raw GraphQL definition of this operation.
   public let operationDefinition: String =
     """
-    query FeedStreamModel($after: String) {
+    query Feed($after: String) {
       shares(last: 20, after: $after) {
         __typename
         edges {
@@ -255,7 +255,7 @@ public final class FeedStreamModelQuery: GraphQLQuery {
     }
     """
 
-  public let operationName: String = "FeedStreamModel"
+  public let operationName: String = "Feed"
 
   public var queryDocument: String { return operationDefinition.appending("\n" + ShareFragment.fragmentDefinition).appending("\n" + EpisodeAttachmentFragment.fragmentDefinition) }
 

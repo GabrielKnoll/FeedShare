@@ -5,7 +5,7 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
-import Interface
+import Shared
 import SwiftUI
 
 public struct EpisodeOverlay: View {
@@ -20,7 +20,7 @@ public struct EpisodeOverlay: View {
     
     public var body: some View {
         VStack {
-            Artwork(url: self.data.artwork, size: 100)
+            Artwork(url: self.data.artwork ?? self.attachment.artwork, size: 100)
             Text(attachment.title).font(.title)
             Text(attachment.podcast.title)
             Text(attachment.podcast.publisher)

@@ -34,7 +34,7 @@ opt_in_rules: # some rules are only opt-in
   - yoda_condition
 
 excluded: # paths to ignore during linting. Takes precedence over `included`.
-  - Interface/Supporting Files/
+  - Shared/Supporting Files/
   - BuildTools
   - Supporting Files
 

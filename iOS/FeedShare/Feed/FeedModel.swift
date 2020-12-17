@@ -8,10 +8,10 @@
 import Apollo
 import Combine
 import Foundation
-import Interface
+import Shared
 
 public class FeedStreamModel: ObservableObject {
-    @Published public var shares = [FeedStreamModelQuery.Data.Share.Edge]()
+    @Published public var shares = [FeedQuery.Data.Share.Edge]()
     @Published public var loading = false {
         didSet {
             if !oldValue, loading, initialized {
@@ -30,11 +30,11 @@ public class FeedStreamModel: ObservableObject {
     }
 
     private func initializeFromCache() {
-        Network.shared.apollo.fetch(query: FeedStreamModelQuery(),
+        Network.shared.apollo.fetch(query: FeedQuery(),
                                     cachePolicy: .returnCacheDataDontFetch) { result in
             switch result {
             case let .success(graphQLResult):
-                let data = (graphQLResult.data?.shares.edges as? [FeedStreamModelQuery.Data.Share.Edge]) ?? []
+                let data = (graphQLResult.data?.shares.edges as? [FeedQuery.Data.Share.Edge]) ?? []
                 self.shares.append(contentsOf: data)
                 // check for new results
                 self.loadData(after: data.last?.cursor)
@@ -50,7 +50,7 @@ public class FeedStreamModel: ObservableObject {
             lr.cancel()
         }
         let startTime = DispatchTime.now()
-        loadRequest = Network.shared.apollo.fetch(query: FeedStreamModelQuery(after: after),
+        loadRequest = Network.shared.apollo.fetch(query: FeedQuery(after: after),
                                     cachePolicy: .fetchIgnoringCacheCompletely) { result in
 
             DispatchQueue.main.asyncAfter(deadline: startTime + 1.5) {
@@ -59,18 +59,18 @@ public class FeedStreamModel: ObservableObject {
             
             switch result {
             case let .success(graphQLResult):
-                let contents = (graphQLResult.data?.shares.edges as? [FeedStreamModelQuery.Data.Share.Edge]) ?? []
+                let contents = (graphQLResult.data?.shares.edges as? [FeedQuery.Data.Share.Edge]) ?? []
                 // manually uodate to cache
                 Network.shared.apollo.store.withinReadWriteTransaction { transaction in
                     do {
                         // append to cache
-                        try transaction.update(query: FeedStreamModelQuery()) { (cache: inout FeedStreamModelQuery.Data) in
+                        try transaction.update(query: FeedQuery()) { (cache: inout FeedQuery.Data) in
                             cache.shares.edges?.append(contentsOf: contents)
                         }
                     } catch {
                         if let data = graphQLResult.data {
                             // create cache
-                            try transaction.write(data: data, forQuery: FeedStreamModelQuery())
+                            try transaction.write(data: data, forQuery: FeedQuery())
                         }
                     }
                 }

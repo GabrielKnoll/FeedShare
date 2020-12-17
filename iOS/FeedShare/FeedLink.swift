@@ -5,7 +5,7 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
-import Interface
+import Shared
 import SwiftUI
 import UIKit.UIGestureRecognizerSubclass
 

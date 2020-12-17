@@ -5,15 +5,14 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
-import Interface
+import Shared
 import SwiftUI
 
-public struct FeedStream: View {
-    @State private var isLoading = false
+public struct Feed: View {
+    @EnvironmentObject var overlayModel: OverlayModel
     @StateObject var feedStreamModel = FeedStreamModel()
     @State private var feedType = 0
-    
-    @EnvironmentObject var overlayModel: OverlayModel
+    @State private var settingsPresented = false
     
     public init() {}
     
@@ -24,18 +23,13 @@ public struct FeedStream: View {
                     Text("LOGO").font(.headline)
                     Spacer()
                     Button(action: {
-                        overlayModel.present(Settings())
+                        overlayModel.present(view: Settings())
                     }) {
                         Image(systemName: "person.fill")
                     }
                     
                     Button(action: {
-                        overlayModel.present(
-                            Composer(
-                                dismiss: overlayModel.dismiss),
-                            alignment: .top,
-                            dismissable: false
-                        )
+                        overlayModel.present(view: Composer(dismiss: {}))
                     }) {
                         Image(systemName: "square.and.pencil")
                     }
@@ -51,7 +45,7 @@ public struct FeedStream: View {
                 LazyVStack {
                     ForEach(feedStreamModel.shares.reversed(), id: \.node?.id) { edge in
                         if let fragment = edge.node?.fragments.shareFragment {
-                            ShareRow(data: fragment)
+                            FeedItem(data: fragment)
                                 .padding(.top, 5)
                                 .padding(.trailing, 15)
                                 .padding(.leading, 15)
@@ -61,8 +55,9 @@ public struct FeedStream: View {
                 .padding(.top, 10)
                 .padding(.bottom, 25)
             }
-        }
+        } 
         .background(Color(R.color.background() ?? .gray))
         .edgesIgnoringSafeArea(.bottom)
+        
     }
 }

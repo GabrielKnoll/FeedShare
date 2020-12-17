@@ -5,16 +5,15 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
-import Interface
+import Shared
 import SwiftUI
 import URLImage
 
-public struct ShareRow: View {
+public struct FeedItem: View {
     let data: ShareFragment
     
     @EnvironmentObject var overlayModel: OverlayModel
-    @State private var showPopover: Bool = false
-    @State private var editorText: String = "What did you like about this episode?"
+    @State private var episodePresented = false
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 15) {
@@ -34,27 +33,21 @@ public struct ShareRow: View {
                     }
                 }
                 Spacer()
-                Button(action: { showPopover = true }) {
+                Button(action: { }) {
                     Image(systemName: "ellipsis")
                 }
                 .foregroundColor(.primary)
                 .font(.headline)
-                .popover(
-                    isPresented: self.$showPopover,
-                    arrowEdge: .bottom
-                ) { Text("Popover") }
             }
             if let message = data.message {
                 Text(message)
             }
             Button(action: {
-                overlayModel.present(EpisodeOverlay(attachment: data.episode.fragments.episodeAttachmentFragment))
+                overlayModel.present(view: EpisodeOverlay(attachment: data.episode.fragments.episodeAttachmentFragment))
             }) {
                 EpisodeAttachment(data: data.episode.fragments.episodeAttachmentFragment)
             }
         }
-        
-        
         .padding(15)
         .background(RoundedRectangle(cornerRadius: 22.0)
             .fill(Color(.white))

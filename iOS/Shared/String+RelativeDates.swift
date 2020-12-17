@@ -1,3 +1,5 @@
+import Foundation
+
 public extension String {
     func parseDateFormatRelative() -> String? {
         let dateFormatter = ISO8601DateFormatter()

@@ -5,21 +5,23 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
-import Interface
+import Shared
 import SwiftUI
 
 @main
 struct FeedShareApp: App {
     @ObservedObject var viewerModel = ViewerModel.shared
+    @ObservedObject var overlayModel = OverlayModel()
     
     var body: some Scene {
         WindowGroup {
             ZStack {
                 if viewerModel.initialized {
                     if viewerModel.setupFinshed, viewerModel.viewer != nil {
-                        OverlayHost {
-                            FeedStream()
-                        }
+                        Feed()
+                            .slideOverCard(isPresented: $overlayModel.visible) {
+                                overlayModel.presentedView
+                            }
                     } else {
                         Onboarding()
                     }
@@ -27,6 +29,7 @@ struct FeedShareApp: App {
                     Loading()
                 }
             }
+            .environmentObject(overlayModel)
             .environmentObject(viewerModel)
         }
     }

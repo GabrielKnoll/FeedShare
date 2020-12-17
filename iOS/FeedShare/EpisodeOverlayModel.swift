@@ -7,8 +7,8 @@
 
 import Combine
 import Foundation
-import Interface
 import Network
+import Shared
 
 public class EpisodeOverlayModel: ObservableObject {
     @Published public var description: String?

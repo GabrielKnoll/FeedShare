@@ -1,4 +1,4 @@
-import Interface
+import Shared
 import SwiftUI
 import URLImage
 

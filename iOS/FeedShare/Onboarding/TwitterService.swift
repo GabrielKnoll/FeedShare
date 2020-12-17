@@ -1,6 +1,6 @@
 import Combine
 import CommonCrypto
-import Interface
+import Shared
 import SwiftUI
 
 let TWITTER_CONSUMER_KEY = "kNJJx5p6sScuPD3z7ZUg13WW2"

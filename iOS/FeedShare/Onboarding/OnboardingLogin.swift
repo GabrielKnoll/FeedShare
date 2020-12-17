@@ -1,4 +1,4 @@
-import Interface
+import Shared
 import SwiftUI
 
 public struct OnboardingLogin: View {
