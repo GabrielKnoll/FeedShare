@@ -2077,6 +2077,12 @@ public struct ViewerFragment: GraphQLFragment {
         handle
         displayName
         profilePicture(size: 100, scale: 2)
+        following {
+          __typename
+          id
+          displayName
+          profilePicture(size: 36, scale: 2)
+        }
       }
     }
     """
@@ -2158,6 +2164,7 @@ public struct ViewerFragment: GraphQLFragment {
         GraphQLField("handle", type: .nonNull(.scalar(String.self))),
         GraphQLField("displayName", type: .scalar(String.self)),
         GraphQLField("profilePicture", arguments: ["size": 100, "scale": 2], type: .scalar(String.self)),
+        GraphQLField("following", type: .list(.object(Following.selections))),
       ]
     }
 
@@ -2167,8 +2174,8 @@ public struct ViewerFragment: GraphQLFragment {
       self.resultMap = unsafeResultMap
     }
 
-    public init(id: GraphQLID, handle: String, displayName: String? = nil, profilePicture: String? = nil) {
-      self.init(unsafeResultMap: ["__typename": "User", "id": id, "handle": handle, "displayName": displayName, "profilePicture": profilePicture])
+    public init(id: GraphQLID, handle: String, displayName: String? = nil, profilePicture: String? = nil, following: [Following?]? = nil) {
+      self.init(unsafeResultMap: ["__typename": "User", "id": id, "handle": handle, "displayName": displayName, "profilePicture": profilePicture, "following": following.flatMap { (value: [Following?]) -> [ResultMap?] in value.map { (value: Following?) -> ResultMap? in value.flatMap { (value: Following) -> ResultMap in value.resultMap } } }])
     }
 
     public var __typename: String {
@@ -2214,6 +2221,75 @@ public struct ViewerFragment: GraphQLFragment {
       }
       set {
         resultMap.updateValue(newValue, forKey: "profilePicture")
+      }
+    }
+
+    public var following: [Following?]? {
+      get {
+        return (resultMap["following"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Following?] in value.map { (value: ResultMap?) -> Following? in value.flatMap { (value: ResultMap) -> Following in Following(unsafeResultMap: value) } } }
+      }
+      set {
+        resultMap.updateValue(newValue.flatMap { (value: [Following?]) -> [ResultMap?] in value.map { (value: Following?) -> ResultMap? in value.flatMap { (value: Following) -> ResultMap in value.resultMap } } }, forKey: "following")
+      }
+    }
+
+    public struct Following: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["User"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("displayName", type: .scalar(String.self)),
+          GraphQLField("profilePicture", arguments: ["size": 36, "scale": 2], type: .scalar(String.self)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, displayName: String? = nil, profilePicture: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "User", "id": id, "displayName": displayName, "profilePicture": profilePicture])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// Unique identifier for the resource
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      public var displayName: String? {
+        get {
+          return resultMap["displayName"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "displayName")
+        }
+      }
+
+      public var profilePicture: String? {
+        get {
+          return resultMap["profilePicture"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "profilePicture")
+        }
       }
     }
   }

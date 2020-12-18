@@ -7,6 +7,7 @@ public struct OnboardingNotifications: View {
 
     public var body: some View {
         VStack {
+            Friends()
             Text("Get notified when one of your friends shares a recommendation.")
             Button(action: {}) {
                 Text("Turn on Notifications")

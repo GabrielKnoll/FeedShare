@@ -22,6 +22,7 @@ public struct FeedEmpty: View {
             Text("It's quiet here...").fontWeight(.bold)
             Text("Be the first of your friends to share an episode or explore the Global feed.")
                 .multilineTextAlignment(.center)
+            Friends()
             Button(action: inviteFriends) {
                 Text("Invite Friends")
             }

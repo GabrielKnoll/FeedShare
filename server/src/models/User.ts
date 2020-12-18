@@ -1,4 +1,5 @@
 import {intArg, objectType} from '@nexus/schema';
+import {User} from '@prisma/client';
 import imageField from '../utils/imageField';
 import Node from './Node';
 
@@ -14,10 +15,10 @@ export default objectType({
       args: {
         limit: intArg(),
       },
-      resolve: async (root, {limit}, {prismaClient, userId}) => {
+      resolve: async (root: Partial<User>, {limit}, {prismaClient}) => {
         const user = await prismaClient.user.findUnique({
           where: {
-            id: userId,
+            id: root.id,
           },
           include: {
             twitterAccount: {

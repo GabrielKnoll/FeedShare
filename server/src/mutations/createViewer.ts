@@ -1,7 +1,5 @@
 import {extendType, nonNull, stringArg} from '@nexus/schema';
-import {getViewer} from '../models/Viewer';
 import {twitterFollowing, twitterProfile} from '../utils/twitterApi';
-import {generateToken} from '../utils/context';
 import feedToken from '../utils/feedToken';
 
 export default extendType({
@@ -74,12 +72,7 @@ export default extendType({
               },
             });
 
-        return getViewer(user, {
-          ...ctx,
-          token: generateToken({
-            userId: user.id,
-          }),
-        });
+        return {user};
       },
     });
   },

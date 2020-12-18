@@ -1,5 +1,4 @@
 import {extendType} from '@nexus/schema';
-import {getViewer} from '../models/Viewer';
 import requireAuthorization from '../utils/requireAuthorization';
 
 export default extendType({
@@ -19,7 +18,7 @@ export default extendType({
           throw new Error('User does not exist');
         }
 
-        return getViewer(user, ctx);
+        return {user};
       },
     });
   },
