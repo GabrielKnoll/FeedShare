@@ -1,5 +1,6 @@
 import {objectType} from '@nexus/schema';
 import {User} from '@prisma/client';
+import {generateToken} from '../utils/context';
 
 export default objectType({
   name: 'Viewer',
@@ -14,7 +15,8 @@ export default objectType({
     });
     t.nonNull.field('token', {
       type: 'String',
-      resolve: (_, __, ctx) => ctx.token!,
+      resolve: ({user}: {user: Partial<User>}, _, ctx) =>
+        ctx.token ?? generateToken({userId: user.id!}),
     });
     t.nonNull.field('messageLimit', {
       type: 'Int',
