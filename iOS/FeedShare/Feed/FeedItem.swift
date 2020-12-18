@@ -25,12 +25,10 @@ public struct FeedItem: View {
                             .font(.headline)
                             .lineLimit(1)
                     }
-                    if let date = data.createdAt.parseDateTimeFormatRelative() {
-                        Text(date)
-                            .font(.footnote)
-                            .foregroundColor(.secondary)
-                            .lineLimit(1)
-                    }
+                    RelativeTime(data.createdAt)
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                        .lineLimit(1)
                 }
                 Spacer()
                 Button(action: { }) {

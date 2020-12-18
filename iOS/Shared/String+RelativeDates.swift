@@ -1,27 +1,26 @@
+import Combine
 import Foundation
+import SwiftUI
 
-public extension String {
-    func parseDateFormatRelative() -> String? {
-        let dateFormatter = ISO8601DateFormatter()
+public struct RelativeTime: View {
+    @State var displayDate: String?
+    
+    private let date: Date?
+    private let dateFormatter = ISO8601DateFormatter()
+    private let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
+    
+    public init(_ dateString: String) {
         dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        guard let date = dateFormatter.date(from: self) else {
-            return nil
-        }
-        let formatter = DateFormatter()
-        formatter.timeStyle = .none
-        formatter.dateStyle = .long
-        formatter.doesRelativeDateFormatting = true
-        return formatter.string(from: date)
+        self.date = dateFormatter.date(from: dateString)
     }
     
-    func parseDateTimeFormatRelative() -> String? {
-        let dateFormatter = ISO8601DateFormatter()
-        dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+    func getTime() -> String? {
         let now = Date()
-        if let date = dateFormatter.date(from: self) {
-            if date.distance(to: now).isLessThanOrEqualTo(60) {
+        if let date = self.date {
+            let distance = date.distance(to: now)
+            if distance.isLessThanOrEqualTo(60) {
                 return "just now"
-            } else if date.distance(to: now).isLessThanOrEqualTo(4 * 24 * 60 * 60)  {
+            } else if distance.isLessThanOrEqualTo(4 * 24 * 60 * 60)  {
                 let formatter = RelativeDateTimeFormatter()
                 formatter.unitsStyle = .full
                 return formatter.localizedString(for: date, relativeTo: now)
@@ -39,10 +38,34 @@ public extension String {
         }
         return nil
     }
+    
+    public var body: some View {
+        Text(displayDate ?? "")
+        .onReceive(timer) { _ in
+            self.displayDate = getTime()
+        }.onAppear {
+            self.displayDate = getTime()
+        }
+        
+    }
+}
+
+public extension String {
+    func parseDateFormatRelative() -> String? {
+        let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        guard let date = dateFormatter.date(from: self) else {
+            return nil
+        }
+        let formatter = DateFormatter()
+        formatter.timeStyle = .none
+        formatter.dateStyle = .long
+        formatter.doesRelativeDateFormatting = true
+        return formatter.string(from: date)
+    }
 }
 
 extension Date {
-    
     func isEqual(to date: Date, toGranularity component: Calendar.Component, in calendar: Calendar = .current) -> Bool {
         calendar.isDate(self, equalTo: date, toGranularity: component)
     }
