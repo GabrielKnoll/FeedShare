@@ -10,7 +10,7 @@ import SwiftUI
 
 public struct Feed: View {
     @EnvironmentObject var overlayModel: OverlayModel
-    @StateObject var feedStreamModel = FeedStreamModel()
+    @StateObject var feedModel = FeedModel()
     @State private var feedType = 0
     @State private var settingsPresented = false
     
@@ -41,19 +41,27 @@ public struct Feed: View {
                 }
                 .pickerStyle(SegmentedPickerStyle())
             }
-            RefreshableScrollView(refreshing: $feedStreamModel.loading) {
-                LazyVStack {
-                    ForEach(feedStreamModel.shares.reversed(), id: \.node?.id) { edge in
-                        if let fragment = edge.node?.fragments.shareFragment {
-                            FeedItem(data: fragment)
-                                .padding(.top, 5)
-                                .padding(.trailing, 15)
-                                .padding(.leading, 15)
+            if !feedModel.initialized {
+                Spacer()
+                ActivityIndicator(style: .large)
+                Spacer()
+            } else if feedModel.initialized, !feedModel.shares.isEmpty {
+                FeedEmpty()
+            } else {
+                RefreshableScrollView(refreshing: $feedModel.loading) {
+                    LazyVStack {
+                        ForEach(feedModel.shares.reversed(), id: \.node?.id) { edge in
+                            if let fragment = edge.node?.fragments.shareFragment {
+                                FeedItem(data: fragment)
+                                    .padding(.top, 5)
+                                    .padding(.trailing, 15)
+                                    .padding(.leading, 15)
+                            }
                         }
                     }
+                    .padding(.top, 10)
+                    .padding(.bottom, 25)
                 }
-                .padding(.top, 10)
-                .padding(.bottom, 25)
             }
         } 
         .background(Color(R.color.background() ?? .gray))

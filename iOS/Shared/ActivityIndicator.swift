@@ -8,16 +8,20 @@
 import SwiftUI
 import URLImage
 
-struct ActivityIndicator: UIViewRepresentable {
-    typealias UIViewType = UIActivityIndicatorView
+public struct ActivityIndicator: UIViewRepresentable {
+    public typealias UIViewType = UIActivityIndicatorView
     
     let style: UIActivityIndicatorView.Style
     
-    func makeUIView(context: UIViewRepresentableContext<ActivityIndicator>) -> ActivityIndicator.UIViewType {
+    public init(style: UIActivityIndicatorView.Style) {
+        self.style = style
+    }
+    
+    public func makeUIView(context: UIViewRepresentableContext<ActivityIndicator>) -> ActivityIndicator.UIViewType {
         return UIActivityIndicatorView(style: style)
     }
     
-    func updateUIView(_ uiView: ActivityIndicator.UIViewType, context: UIViewRepresentableContext<ActivityIndicator>) {
+    public func updateUIView(_ uiView: ActivityIndicator.UIViewType, context: UIViewRepresentableContext<ActivityIndicator>) {
         uiView.startAnimating()
     }
   

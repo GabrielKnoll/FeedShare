@@ -10,7 +10,7 @@ import Combine
 import Foundation
 import Shared
 
-public class FeedStreamModel: ObservableObject {
+public class FeedModel: ObservableObject {
     @Published public var shares = [FeedQuery.Data.Share.Edge]()
     @Published public var loading = false {
         didSet {
@@ -20,7 +20,7 @@ public class FeedStreamModel: ObservableObject {
         }
     }
     private var loadRequest: Apollo.Cancellable?
-    private var initialized = false
+    public var initialized = false
 
     public init() {
         initializeFromCache()
@@ -76,10 +76,11 @@ public class FeedStreamModel: ObservableObject {
                 }
 
                 self.shares.append(contentsOf: contents)
-                self.initialized = true
+                
             case let .failure(error):
                 print("loadData Failure! Error: \(error)")
             }
+            self.initialized = true
         }
     }
 }

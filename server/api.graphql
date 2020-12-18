@@ -111,6 +111,7 @@ type ShareEdge {
 
 type User implements Node {
   displayName: String
+  following(limit: Int): [User]
   handle: String!
 
   """Unique identifier for the resource"""
