@@ -1,3 +1,4 @@
+import Shared
 import SwiftUI
 
 public struct Onboarding: View {
@@ -15,7 +16,12 @@ public struct Onboarding: View {
 
     public var body: some View {
         VStack {
-            Text("truffle \(currentPage)").font(.system(size: 26, weight: .bold, design: .rounded))
+            Image(R.image.logo.name)
+                .resizable()
+                .scaledToFit()
+                .foregroundColor(Color.red)
+                .frame(maxWidth: 80)
+            
             TabView(selection: $currentPage) {
                 OnboardingLogin(onNext: next).tag(0)
                 OnboardingNotifications(onNext: next).tag(1)

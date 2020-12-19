@@ -10,6 +10,7 @@ import SwiftUI
 
 public struct Feed: View {
     @EnvironmentObject var overlayModel: OverlayModel
+    @EnvironmentObject var viewerModel: ViewerModel
     @StateObject var feedModel = FeedModel()
     @State private var feedType = 0
     @State private var settingsPresented = false
@@ -20,7 +21,10 @@ public struct Feed: View {
         VStack {
             VStack {
                 HStack {
-                    Text("LOGO").font(.headline)
+                    Image(R.image.logo.name)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: 70)
                     Spacer()
                     Button(action: {
                         overlayModel.present(view: Settings())
@@ -45,7 +49,7 @@ public struct Feed: View {
                 Spacer()
                 ActivityIndicator(style: .large)
                 Spacer()
-            } else if feedModel.initialized, !feedModel.shares.isEmpty {
+            } else if feedModel.initialized, feedModel.shares.isEmpty {
                 FeedEmpty()
             } else {
                 RefreshableScrollView(refreshing: $feedModel.loading) {
@@ -66,6 +70,9 @@ public struct Feed: View {
         } 
         .background(Color(R.color.background() ?? .gray))
         .edgesIgnoringSafeArea(.bottom)
+        .onReceive(viewerModel.feedNotSubscribed) { _ in
+            overlayModel.present(view: FeedSubscribe())
+        }
         
     }
 }

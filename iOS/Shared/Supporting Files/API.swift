@@ -2071,6 +2071,7 @@ public struct ViewerFragment: GraphQLFragment {
       token
       personalFeed
       messageLimit
+      personalFeedLastChecked
       user {
         __typename
         id
@@ -2095,6 +2096,7 @@ public struct ViewerFragment: GraphQLFragment {
       GraphQLField("token", type: .nonNull(.scalar(String.self))),
       GraphQLField("personalFeed", type: .nonNull(.scalar(String.self))),
       GraphQLField("messageLimit", type: .nonNull(.scalar(Int.self))),
+      GraphQLField("personalFeedLastChecked", type: .scalar(String.self)),
       GraphQLField("user", type: .nonNull(.object(User.selections))),
     ]
   }
@@ -2105,8 +2107,8 @@ public struct ViewerFragment: GraphQLFragment {
     self.resultMap = unsafeResultMap
   }
 
-  public init(token: String, personalFeed: String, messageLimit: Int, user: User) {
-    self.init(unsafeResultMap: ["__typename": "Viewer", "token": token, "personalFeed": personalFeed, "messageLimit": messageLimit, "user": user.resultMap])
+  public init(token: String, personalFeed: String, messageLimit: Int, personalFeedLastChecked: String? = nil, user: User) {
+    self.init(unsafeResultMap: ["__typename": "Viewer", "token": token, "personalFeed": personalFeed, "messageLimit": messageLimit, "personalFeedLastChecked": personalFeedLastChecked, "user": user.resultMap])
   }
 
   public var __typename: String {
@@ -2142,6 +2144,15 @@ public struct ViewerFragment: GraphQLFragment {
     }
     set {
       resultMap.updateValue(newValue, forKey: "messageLimit")
+    }
+  }
+
+  public var personalFeedLastChecked: String? {
+    get {
+      return resultMap["personalFeedLastChecked"] as? String
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "personalFeedLastChecked")
     }
   }
 

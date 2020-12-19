@@ -11,6 +11,9 @@ import Network
 
 public class ViewerModel: ObservableObject {
     public static let shared = ViewerModel()
+    private var wasLoggedInOnLaunch = false
+    
+    public let feedNotSubscribed = PassthroughSubject<ViewerModel, Never>()
     
     @Published public var podcastClients = [Client]()
     
@@ -60,8 +63,12 @@ public class ViewerModel: ObservableObject {
             case let .success(graphQLResult):
                 self.viewer = graphQLResult.data?.viewer?.fragments.viewerFragment
                 if !fetchNew, self.viewer?.token != nil {
+                    self.wasLoggedInOnLaunch = true
                     // fetch update
                     self.fetch(fetchNew: true)
+                }
+                if fetchNew, self.wasLoggedInOnLaunch, self.viewer?.personalFeedLastChecked == nil {
+                    self.feedNotSubscribed.send(self)
                 }
             case let .failure(error):
                 self.logout()

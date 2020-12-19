@@ -48,11 +48,7 @@ public struct FeedItem: View {
         }
         .padding(15)
         .background(RoundedRectangle(cornerRadius: 22.0)
-            .fill(Color(.white))
-            .shadow(color: Color(UIColor(red: 0, green: 0, blue: 0, alpha: 0.05)),
-                    radius: 5.0,
-                    x: 0.0,
-                    y: 2.0))
+            .fill(Color(.systemBackground)))
     }
 }
 
