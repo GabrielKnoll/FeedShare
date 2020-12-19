@@ -1,3 +1,4 @@
+import OneSignal
 import Shared
 import SwiftUI
 
@@ -9,7 +10,12 @@ public struct OnboardingNotifications: View {
         VStack {
             Friends()
             Text("Get notified when one of your friends shares a recommendation.")
-            Button(action: {}) {
+            Button(action: {
+                OneSignal.promptForPushNotifications(userResponse: { accepted in
+                    print("User accepted notifications: \(accepted)")
+                    onNext()
+                })
+            }) {
                 Text("Turn on Notifications")
             }
             Button(action: {

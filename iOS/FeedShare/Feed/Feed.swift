@@ -18,38 +18,41 @@ public struct Feed: View {
     public init() {}
     
     public var body: some View {
-        ZStack(alignment: .top) {
-            VStack {
-                if !feedModel.initialized {
-                    Spacer()
-                    ActivityIndicator(style: .large)
-                    Spacer()
-                } else if feedModel.initialized, feedModel.shares.isEmpty {
-                    FeedEmpty()
-                } else {
-                    RefreshableScrollView(refreshing: $feedModel.loading) {
-                        LazyVStack {
-                            ForEach(feedModel.shares.reversed(), id: \.node?.id) { edge in
-                                if let fragment = edge.node?.fragments.shareFragment {
-                                    FeedItem(data: fragment)
-                                        .padding(.top, 5)
-                                        .padding(.trailing, 15)
-                                        .padding(.leading, 15)
+        GeometryReader { geo in
+            ZStack(alignment: .top) {
+                VStack {
+                    if !feedModel.initialized {
+                        Spacer()
+                        ActivityIndicator(style: .large)
+                        Spacer()
+                    } else if feedModel.initialized, feedModel.shares.isEmpty {
+                        FeedEmpty()
+                    } else {
+                        RefreshableScrollView(
+                            refreshing: $feedModel.loading,
+                            paddingTop: geo.safeAreaInsets.top + 57
+                        ) {
+                            LazyVStack {
+                                ForEach(feedModel.shares.reversed(), id: \.node?.id) { edge in
+                                    if let fragment = edge.node?.fragments.shareFragment {
+                                        FeedItem(data: fragment)
+                                            .padding(.top, 5)
+                                            .padding(.trailing, 15)
+                                            .padding(.leading, 15)
+                                    }
                                 }
                             }
+                            .padding(.bottom, 25)
                         }
-                        .padding(.bottom, 25)
                     }
                 }
-            }
-            
-            GeometryReader { geo in
+                
                 VStack {
                     HStack {
                         Image(R.image.logo.name)
                             .resizable()
                             .scaledToFit()
-                            .frame(maxWidth: 70)
+                            .frame(height: 22)
                         Spacer()
                         Button(action: {
                             overlayModel.present(view: Settings())
@@ -82,12 +85,11 @@ public struct Feed: View {
                 .edgesIgnoringSafeArea(.top)
                 
             }
-        } 
-        .background(Color(R.color.background() ?? .gray))
-        .edgesIgnoringSafeArea(.bottom)
-        .onReceive(viewerModel.feedNotSubscribed) { _ in
-            overlayModel.present(view: FeedSubscribe())
+            .background(Color(R.color.background() ?? .gray))
+            .edgesIgnoringSafeArea(.bottom)
+            .onReceive(viewerModel.feedNotSubscribed) { _ in
+                overlayModel.present(view: FeedSubscribe())
+            }
         }
-        
     }
 }

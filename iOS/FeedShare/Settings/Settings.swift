@@ -5,6 +5,7 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
+import OneSignal
 import Shared
 import SwiftUI
 import URLImage
@@ -12,7 +13,7 @@ import URLImage
 public struct Settings: View {
     @EnvironmentObject var viewerModel: ViewerModel
     @EnvironmentObject private var navigationStack: NavigationStack
-    @State private var notifications = false
+    @State private var notifications = OneSignal.getDeviceState()?.isSubscribed ?? false
     @State private var logoutAlert = false
     
     public var body: some View {
@@ -36,6 +37,10 @@ public struct Settings: View {
                 
                 Text("Notifications").bold()
                 Toggle("Get notified when your friends recommend an episode", isOn: $notifications)
+                    .onChange(of: notifications) { value in
+                        print(value)
+                        OneSignal.disablePush(!value)
+                    }
                 
                 Spacer().frame(maxHeight: 10)
                 

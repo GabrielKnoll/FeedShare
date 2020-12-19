@@ -23,10 +23,12 @@ struct RefreshableScrollView<Content: View>: View {
 
     var threshold: CGFloat = 80
     
+    let paddingTop: CGFloat
     let content: Content
 
-    init(height: CGFloat = 80, refreshing: Binding<Bool>, @ViewBuilder content: () -> Content) {
+    init(height: CGFloat = 80, refreshing: Binding<Bool>, paddingTop: CGFloat = 0, @ViewBuilder content: () -> Content) {
         threshold = height
+        self.paddingTop = paddingTop
         _refreshing = refreshing
         self.content = content()
     }
@@ -34,7 +36,8 @@ struct RefreshableScrollView<Content: View>: View {
     func showHideLoadingView() {
         if refreshing, frozen {
             spacerVisible = true
-        } else {
+        } else if spacerVisible {
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             withAnimation {
                 spacerVisible = false
             }
@@ -53,7 +56,7 @@ struct RefreshableScrollView<Content: View>: View {
                         self.content
                     }
                     SymbolView(height: self.threshold, loading: self.refreshing, frozen: self.frozen, rotation: self.rotation)
-                }
+                }.padding(.top, paddingTop)
             }
             .background(FixedView())
             .onPreferenceChange(RefreshableKeyTypes.PrefKey.self) { values in
@@ -70,13 +73,14 @@ struct RefreshableScrollView<Content: View>: View {
             let movingBounds = values.first { $0.vType == .movingView }?.bounds ?? .zero
             let fixedBounds = values.first { $0.vType == .fixedView }?.bounds ?? .zero
 
-            self.scrollOffset = movingBounds.minY - fixedBounds.minY
-
+            self.scrollOffset = movingBounds.minY - fixedBounds.minY - paddingTop
+            
             self.rotation = self.symbolRotation(self.scrollOffset)
 
             // Crossing the threshold on the way down, we start the refresh process
             if !self.refreshing, self.scrollOffset > self.threshold, self.previousScrollOffset <= self.threshold, self.state == .nothing {
                 self.state = .triggered
+                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             } else if self.state == .triggered, self.scrollOffset < self.previousScrollOffset {
                 self.state = .waitingForRelease
                 self.refreshing = true

@@ -17,6 +17,7 @@ class OverlayModel: ObservableObject {
         willSet { objectWillChange.send(self) }
         didSet {
             if !visible {
+                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 presentedView = nil
             }
         }
@@ -24,6 +25,7 @@ class OverlayModel: ObservableObject {
     
     func present<Element: View>(view: Element) {
         self.presentedView = AnyView(view)
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         visible = true
     }
 }
