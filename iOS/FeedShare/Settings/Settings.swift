@@ -42,7 +42,7 @@ public struct Settings: View {
                 Button(action: {
                     self.logoutAlert = true
                 }) {
-                    Text("Sign Out").foregroundColor(.red)
+                    Text("Sign Out").fontWeight(.semibold).foregroundColor(.red)
                 }
                 .alert(isPresented: $logoutAlert) {
                     Alert(

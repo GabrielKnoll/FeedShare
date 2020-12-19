@@ -13,6 +13,7 @@
 		67CEA5A8258D017000516BA4 /* Friends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A3F6E0258CC8F900FAF3D0 /* Friends.swift */; };
 		67CEA5AE258D859400516BA4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F533030E258164A3005C5250 /* Assets.xcassets */; };
 		67CEA5B2258D8B8700516BA4 /* FeedSubscribe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CEA5B1258D8B8700516BA4 /* FeedSubscribe.swift */; };
+		67CEA5B8258D946A00516BA4 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67CEA5B7258D946A00516BA4 /* BlurView.swift */; };
 		67D3837C25817B4C0008A496 /* TwitterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB12812544879B001CC7ED /* TwitterService.swift */; };
 		67D3837D25817B4C0008A496 /* OnboardingPodcastClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00E92569CE4800A05BB6 /* OnboardingPodcastClient.swift */; };
 		67D3837E25817B4C0008A496 /* OnboardingFeedlink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670F00EE256AD1B300A05BB6 /* OnboardingFeedlink.swift */; };
@@ -184,6 +185,7 @@
 		67B942772574525E00412CDC /* PodcastClientRow.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PodcastClientRow.graphql; sourceTree = "<group>"; };
 		67B9427925745F2900412CDC /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		67CEA5B1258D8B8700516BA4 /* FeedSubscribe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSubscribe.swift; sourceTree = "<group>"; };
+		67CEA5B7258D946A00516BA4 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		67D383AC25818B930008A496 /* FeedLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLink.swift; sourceTree = "<group>"; };
 		67D383B32581A8CD0008A496 /* SettingsClientList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsClientList.swift; sourceTree = "<group>"; };
 		67D383B92581A9960008A496 /* SettingsClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsClient.swift; sourceTree = "<group>"; };
@@ -427,6 +429,7 @@
 				67D383AC25818B930008A496 /* FeedLink.swift */,
 				67FBAFB9258585B00099A716 /* SubscribeButton.swift */,
 				67A3F6E0258CC8F900FAF3D0 /* Friends.swift */,
+				67CEA5B7258D946A00516BA4 /* BlurView.swift */,
 				67420127257D3AE3007CB04F /* Onboarding */,
 				67420136257D46A6007CB04F /* Settings */,
 				67420129257D3AF9007CB04F /* Feed */,
@@ -795,6 +798,7 @@
 				67A3F6DC258C2E5300FAF3D0 /* FeedEmpty.swift in Sources */,
 				67D383B42581A8CD0008A496 /* SettingsClientList.swift in Sources */,
 				67D3838025817B4C0008A496 /* OnboardingNotifications.swift in Sources */,
+				67CEA5B8258D946A00516BA4 /* BlurView.swift in Sources */,
 				67D3837D25817B4C0008A496 /* OnboardingPodcastClient.swift in Sources */,
 				67D383AD25818B940008A496 /* FeedLink.swift in Sources */,
 				67D3838E25817DDA0008A496 /* Feed.swift in Sources */,
