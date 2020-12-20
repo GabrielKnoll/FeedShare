@@ -35,6 +35,8 @@ const e = {
     .required(!ci)
     .asString(),
   IMGIX_TOKEN: env.get('IMGIX_TOKEN').required(!ci).asString(),
+  ONESIGNAL_APP_ID: env.get('ONESIGNAL_APP_ID').required(!ci).asString(),
+  ONESIGNAL_API_KEY: env.get('ONESIGNAL_API_KEY').required(!ci).asString(),
 };
 
 const set = new Set(Object.keys(parsed));
