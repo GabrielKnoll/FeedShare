@@ -39,6 +39,33 @@ public struct Settings: View {
                 Toggle("Get notified when your friends recommend an episode", isOn: $notifications)
                     .onChange(of: notifications) { value in
                         print(value)
+                        if value {
+                            OneSignal.promptForPushNotifications(userResponse: { accepted in
+                                if !accepted {
+                                    self.notifications = false
+                                    let alertController = UIAlertController(
+                                        title: "Notifications are Disabled",
+                                        message: "FeedShare will not be able to send notifications, because it's diabled in Settings. Please enable notifications from the Settings app.",
+                                        preferredStyle: .alert
+                                    )
+                                    alertController.addAction(UIAlertAction(title: "Open Settings", style: .default, handler: { _ in
+                                        if let bundleIdentifier = Bundle.main.bundleIdentifier,
+                                           let appSettings = URL(string: UIApplication.openSettingsURLString + bundleIdentifier) {
+                                            if UIApplication.shared.canOpenURL(appSettings) {
+                                                UIApplication.shared.open(appSettings)
+                                            }
+                                        }
+                                    }))
+                                    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                                    
+                                    UIApplication.shared.windows.first?.rootViewController?.present(
+                                        alertController,
+                                        animated: true,
+                                        completion: nil
+                                    )
+                                }
+                            })
+                        }
                         OneSignal.disablePush(!value)
                     }
                 
