@@ -7,11 +7,13 @@ import shares from './queries/shares';
 import findPodcast from './queries/findPodcast';
 import typeaheadPodcast from './queries/typeaheadPodcast';
 import node from './queries/node';
+import pages from './queries/pages';
 import podcastClient from './queries/podcastClient';
 import createViewer from './mutations/createViewer';
 import createShare from './mutations/createShare';
 import Node from './models/Node';
 import User from './models/User';
+import Page from './models/Page';
 import Viewer from './models/Viewer';
 import Podcast from './models/Podcast';
 import SearchResult from './models/SearchResult';
@@ -50,6 +52,7 @@ export default makeSchema({
     PodcastClient,
     FeedType,
     SearchResult,
+    Page,
 
     // queries
     resolveShareUrl,
@@ -59,6 +62,7 @@ export default makeSchema({
     findPodcast,
     typeaheadPodcast,
     node,
+    pages,
 
     // mutations
     createViewer,

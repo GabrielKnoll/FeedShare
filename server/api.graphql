@@ -40,6 +40,12 @@ interface Node {
   id: ID!
 }
 
+type Page {
+  contentHTML: String
+  id: ID!
+  title: String!
+}
+
 type PageInfo {
   endCursor: String
   hasNextPage: Boolean
@@ -72,6 +78,7 @@ type PodcastClient implements Node {
 type Query {
   findPodcast(query: String!): [Podcast]
   node(id: ID!): Node
+  pages: [Page]
   podcastClient: [PodcastClient]
   resolveShareUrl(url: String!): ResolvedShareUrl
   shares(after: String, before: String, feedType: FeedType, last: Int!): ShareConnection!

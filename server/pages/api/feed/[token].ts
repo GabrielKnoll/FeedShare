@@ -1,17 +1,40 @@
 import {create} from 'xmlbuilder2';
-import {RequestHandler} from 'express';
-import prismaClient from '../../utils/prismaClient';
-import {shareWhere} from '../../graphql/models/Share';
+import prismaClient from '../../../utils/prismaClient';
+import {shareWhere} from '../../../graphql/models/Share';
+import {NextApiRequest, NextApiResponse} from 'next';
+import {gql} from 'graphql-request';
+import datoCMS from '../../../utils/datoCMS';
 
-const requestHandler: RequestHandler<{
-  feedToken: string;
-}> = async (req, res) => {
+gql`
+  query Feed {
+    feed {
+      title
+      description
+      copyright
+      author
+      subtitle
+      artwork {
+        id
+        url(imgixParams: {w: 600, fm: jpg})
+      }
+    }
+  }
+`;
+
+const requestHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const {token} = req.query;
+  if (typeof req.query.token !== 'string') {
+    throw new Error('Missing token.');
+  }
+
+  const {feed} = await datoCMS.Feed();
+
   const user = await prismaClient.user.update({
     data: {
       feedCheckedAt: new Date(),
     },
     where: {
-      feedToken: req.params.feedToken,
+      feedToken: String(token),
     },
     include: {
       twitterAccount: true,
@@ -43,23 +66,15 @@ const requestHandler: RequestHandler<{
   });
 
   const channel = rss.ele('channel');
-  channel.ele('title').txt('FeedShare');
-  channel.ele('link').txt('https://feed.buechele.cc/');
-  channel
-    .ele('itunes:subtitle')
-    .txt('Podcast episodes receommended by your friends');
+  channel.ele('title').txt(feed?.title ?? '');
+  channel.ele('link').txt(process.env.BASE_URL);
+  channel.ele('itunes:subtitle').txt(feed?.subtitle ?? '');
   channel.ele('itunes:block').txt('yes');
   channel.ele('language').txt('en-us');
-  channel.ele('itunes:author').txt('FeedShare');
-  channel
-    .ele('description')
-    .txt(
-      'Your personal feed of podcast episodes recommended by your friends on FeedShare.',
-    );
-  channel
-    .ele('copyright')
-    .txt('All rights belong to the respective owners of each episode.');
-  channel.ele('itunes:image', {href: '...'});
+  channel.ele('itunes:author').txt(feed?.author ?? '');
+  channel.ele('description').txt(feed?.description ?? '');
+  channel.ele('copyright').txt(feed?.copyright ?? '');
+  channel.ele('itunes:image', {href: feed?.artwork?.url ?? ''});
 
   for (const share of shares) {
     const item = channel.ele('item');
@@ -92,7 +107,8 @@ const requestHandler: RequestHandler<{
 
   // convert the XML tree to string
   const xml = root.end({prettyPrint: true});
-  res.type('xml').send(xml);
+  res.setHeader('Content-Type', 'application/rss+xml');
+  res.send(xml);
 };
 
 export default requestHandler;

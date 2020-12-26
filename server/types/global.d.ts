@@ -13,6 +13,8 @@ declare namespace NodeJS {
       readonly IMGIX_TOKEN: string;
       readonly ONESIGNAL_APP_ID: string;
       readonly ONESIGNAL_API_KEY: string;
+      readonly DATO_CMS_KEY: string;
+      readonly BASE_URL: string;
     };
   }
 }

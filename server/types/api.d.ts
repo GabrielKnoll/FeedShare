@@ -67,6 +67,11 @@ export interface NexusGenObjects {
     title: string; // String!
   }
   Mutation: {};
+  Page: { // root type
+    contentHTML?: string | null; // String
+    id: string; // ID!
+    title: string; // String!
+  }
   PageInfo: { // root type
     endCursor?: string | null; // String
     hasNextPage?: boolean | null; // Boolean
@@ -140,6 +145,11 @@ export interface NexusGenFieldTypes {
     createShare: NexusGenRootTypes['Share'] | null; // Share
     createViewer: NexusGenRootTypes['Viewer'] | null; // Viewer
   }
+  Page: { // field return type
+    contentHTML: string | null; // String
+    id: string; // ID!
+    title: string; // String!
+  }
   PageInfo: { // field return type
     endCursor: string | null; // String
     hasNextPage: boolean | null; // Boolean
@@ -165,6 +175,7 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     findPodcast: Array<NexusGenRootTypes['Podcast'] | null> | null; // [Podcast]
     node: NexusGenRootTypes['Node'] | null; // Node
+    pages: Array<NexusGenRootTypes['Page'] | null> | null; // [Page]
     podcastClient: Array<NexusGenRootTypes['PodcastClient'] | null> | null; // [PodcastClient]
     resolveShareUrl: NexusGenRootTypes['ResolvedShareUrl'] | null; // ResolvedShareUrl
     shares: NexusGenRootTypes['ShareConnection']; // ShareConnection!
@@ -227,6 +238,11 @@ export interface NexusGenFieldTypeNames {
     createShare: 'Share'
     createViewer: 'Viewer'
   }
+  Page: { // field return type name
+    contentHTML: 'String'
+    id: 'ID'
+    title: 'String'
+  }
   PageInfo: { // field return type name
     endCursor: 'String'
     hasNextPage: 'Boolean'
@@ -252,6 +268,7 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     findPodcast: 'Podcast'
     node: 'Node'
+    pages: 'Page'
     podcastClient: 'PodcastClient'
     resolveShareUrl: 'ResolvedShareUrl'
     shares: 'ShareConnection'
