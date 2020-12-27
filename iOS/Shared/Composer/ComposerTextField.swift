@@ -4,9 +4,10 @@ import UIKit
 struct ComposerTextField: UIViewRepresentable {
     @Binding var text: String
     let limit: Int
+    let disabled: Bool
     
     func makeCoordinator() -> Coordinator {
-        Coordinator($text, limit: limit)
+        Coordinator($text, limit: limit, disabled: disabled)
     }
     
     func makeUIView(context: Context) -> UITextView {
@@ -18,25 +19,29 @@ struct ComposerTextField: UIViewRepresentable {
         textView.isUserInteractionEnabled = true
         textView.backgroundColor = UIColor.clear
         textView.becomeFirstResponder()
+        
         return textView
     }
     
     func updateUIView(_ uiView: UITextView, context: Context) {
         uiView.text = text
+        context.coordinator.disabled = self.disabled
     }
     
     class Coordinator: NSObject, UITextViewDelegate {
         let text: Binding<String>
         let limit: Int
+        var disabled: Bool
 
-        init(_ text: Binding<String>, limit: Int) {
+        init(_ text: Binding<String>, limit: Int, disabled: Bool) {
             self.text = text
             self.limit = limit
+            self.disabled = disabled
         }
         
         func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
             let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
-            return newText.count <= self.limit
+            return !disabled && newText.count <= self.limit
         }
         
         func textViewDidChange(_ textView: UITextView) {

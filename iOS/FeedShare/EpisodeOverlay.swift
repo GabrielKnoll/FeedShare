@@ -29,7 +29,9 @@ public struct EpisodeOverlay: View {
             }
             
             SubscribeButton(feed: data.feed)
-        }.frame(minWidth: 0, maxWidth: .infinity)
+                .buttonStyle(FilledButton())
+        }
+        .frame(minWidth: 0, maxWidth: .infinity)
         .padding(20)
     }
 }

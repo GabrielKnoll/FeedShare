@@ -36,6 +36,9 @@ public class FeedModel: ObservableObject {
             case let .success(graphQLResult):
                 let data = (graphQLResult.data?.shares.edges as? [FeedQuery.Data.Share.Edge]) ?? []
                 self.shares.append(contentsOf: data)
+                if !self.shares.isEmpty {
+                    self.initialized = true
+                }
                 // check for new results
                 self.loadData(after: data.last?.cursor)
             case .failure:

@@ -12,7 +12,6 @@ public struct ComposerMessage: View {
     @ObservedObject var composerModel: ComposerModel
     @EnvironmentObject private var navigationStack: NavigationStack
     @EnvironmentObject private var viewerModel: ViewerModel
-    @State private var message = ""
     
     init(composerModel: ComposerModel) {
         self.composerModel = composerModel
@@ -20,33 +19,39 @@ public struct ComposerMessage: View {
     
     public var body: some View {
         let characterLimit = viewerModel.viewer?.messageLimit ?? 399
-        VStack {
-            HStack {
-                Spacer()
-                Button(action: {
-                    composerModel.createShare(message: message)
-                }) {
-                    Text("Publish")
-                }.disabled(message.isEmpty || composerModel.isLoading == .blocking)
-            }
-            
-            ComposerTextField(text: $message, limit: characterLimit)
-            
-            Text("\(message.count)/\(characterLimit)")
-                .font(.footnote)
-            
-            if let episode = composerModel.episode {
-                EpisodeAttachment(data: episode)
-            }
-        }.padding(20)
-        .onReceive(composerModel.$share) { share in
-            if let s = share {
-                NotificationCenter.default.post(name: .reloadFeed, object: s)
-                if let d = composerModel.dismiss {
-                    d()
+        
+        ZStack {
+            VStack {
+                ComposerTextField(
+                    text: $composerModel.message,
+                    limit: characterLimit,
+                    disabled: composerModel.isLoading == .createShare
+                )
+                
+                Text("\(composerModel.message.count)/\(characterLimit)")
+                    .font(.footnote)
+                
+                if let episode = composerModel.episode {
+                    EpisodeAttachment(data: episode)
+                }
+            }.padding(20)
+            .onReceive(composerModel.$share) { share in
+                if let s = share {
+                    NotificationCenter.default.post(name: .reloadFeed, object: s)
+                    if let d = composerModel.dismiss {
+                        d()
+                    }
                 }
             }
+            
+            if composerModel.isLoading == .createShare {
+                Rectangle()
+                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                    .background(Color.black)
+                    .opacity(0.1)
+            }
         }
+        
     }
 }
 

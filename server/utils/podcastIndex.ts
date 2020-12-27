@@ -155,6 +155,7 @@ function episodeFromApiResponse(
         a: {options: {ignoreHref: true}},
         ul: {options: {itemPrefix: '• '}},
       },
+      wordwrap: false,
     }).trim(),
     datePublished: new Date(apiResponse.datePublished * 1000),
     artwork: apiResponse.image,

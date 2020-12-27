@@ -15,7 +15,7 @@ public struct OnboardingFeedlink: View {
             }
             SubscribeButton(feed: viewerModel.viewer?.personalFeed) { _ in
                 subscribed = true
-            }
+            }.buttonStyle(FilledButton())
             Button(action: {
                 self.viewerModel.setupFinshed = true
             }) {

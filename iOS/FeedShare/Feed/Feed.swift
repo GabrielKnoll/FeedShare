@@ -13,7 +13,7 @@ public struct Feed: View {
     @EnvironmentObject var viewerModel: ViewerModel
     @StateObject var feedModel = FeedModel()
     @State private var feedType = 0
-    @State private var settingsPresented = false
+    @State private var composerVisible = false
     
     public init() {}
     
@@ -23,7 +23,7 @@ public struct Feed: View {
                 VStack {
                     if !feedModel.initialized {
                         Spacer()
-                        ActivityIndicator(style: .large)
+                        ActivityIndicator(style: .medium)
                         Spacer()
                     } else if feedModel.initialized, feedModel.shares.isEmpty {
                         FeedEmpty()
@@ -53,21 +53,23 @@ public struct Feed: View {
                             .resizable()
                             .scaledToFit()
                             .frame(height: 22)
+                            .padding(.leading, 7)
                         Spacer()
+                        
                         Button(action: {
-                            overlayModel.present(view: Settings())
+                            composerVisible = true
                         }) {
-                            Image(systemName: "person.fill")
+                            Image(R.image.composer.name)
                         }.foregroundColor(Color.primary)
                         
                         Button(action: {
-                            overlayModel.present(view: Composer(dismiss: {}))
+                            overlayModel.present(view: Settings())
                         }) {
-                            Image(systemName: "square.and.pencil")
-                        }.foregroundColor(Color.primary)
+                            ProfilePicture(url: viewerModel.viewer?.user.profilePicture, size: 28)
+                                .padding(7)
+                        }
                     }
-                    .padding(.vertical, 10)
-                    .padding(.horizontal, 15)
+                    .padding(.horizontal, 8)
                     Picker(selection: $feedType, label: Text("What is your favorite color?")) {
                         Text("Friends").tag(0)
                         Text("Personal").tag(1)
@@ -89,6 +91,10 @@ public struct Feed: View {
             .edgesIgnoringSafeArea(.bottom)
             .onReceive(viewerModel.feedNotSubscribed) { _ in
                 overlayModel.present(view: FeedSubscribe())
+            }
+            .sheet(isPresented: $composerVisible) {
+                Composer(dismiss: { composerVisible = false })
+                    .environmentObject(viewerModel)
             }
         }
     }

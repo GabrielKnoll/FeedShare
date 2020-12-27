@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		670B15EB2597DDA200EE223D /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670B15EA2597DDA200EE223D /* ButtonStyles.swift */; };
 		671F4C432586675A007AFDA4 /* ComposerTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671F4C422586675A007AFDA4 /* ComposerTextField.swift */; };
 		67A3F6CB258AC7B800FAF3D0 /* SlideOverCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A3F6CA258AC7B800FAF3D0 /* SlideOverCard.swift */; };
 		67A3F6DC258C2E5300FAF3D0 /* FeedEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A3F6DB258C2E5300FAF3D0 /* FeedEmpty.swift */; };
@@ -173,6 +174,7 @@
 
 /* Begin PBXFileReference section */
 		670B15A1258EC11200EE223D /* FeedShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FeedShare.entitlements; sourceTree = "<group>"; };
+		670B15EA2597DDA200EE223D /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		670F00E52569C14000A05BB6 /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
 		670F00E72569C27400A05BB6 /* OnboardingNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNotifications.swift; sourceTree = "<group>"; };
 		670F00E92569CE4800A05BB6 /* OnboardingPodcastClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPodcastClient.swift; sourceTree = "<group>"; };
@@ -469,6 +471,7 @@
 				67FBAFB9258585B00099A716 /* SubscribeButton.swift */,
 				67A3F6E0258CC8F900FAF3D0 /* Friends.swift */,
 				67CEA5B7258D946A00516BA4 /* BlurView.swift */,
+				670B15EA2597DDA200EE223D /* ButtonStyles.swift */,
 				67420127257D3AE3007CB04F /* Onboarding */,
 				67420136257D46A6007CB04F /* Settings */,
 				67420129257D3AF9007CB04F /* Feed */,
@@ -880,6 +883,7 @@
 				67D383B42581A8CD0008A496 /* SettingsClientList.swift in Sources */,
 				67D3838025817B4C0008A496 /* OnboardingNotifications.swift in Sources */,
 				67CEA5B8258D946A00516BA4 /* BlurView.swift in Sources */,
+				670B15EB2597DDA200EE223D /* ButtonStyles.swift in Sources */,
 				67D3837D25817B4C0008A496 /* OnboardingPodcastClient.swift in Sources */,
 				67D383AD25818B940008A496 /* FeedLink.swift in Sources */,
 				67D3838E25817DDA0008A496 /* Feed.swift in Sources */,

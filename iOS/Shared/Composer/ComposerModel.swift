@@ -10,8 +10,8 @@ import Combine
 import Foundation
 
 public class ComposerModel: ObservableObject {
-    private var searchRequest: Apollo.Cancellable?
     private var searchDebounce: AnyCancellable?
+    private var searchCounter = 0
     
     public var dismiss: (() -> Void)?
     @Published public var unresolvableURL: String?
@@ -19,6 +19,9 @@ public class ComposerModel: ObservableObject {
     @Published public var latestEpisodes: [EpisodeAttachmentFragment]?
     @Published public var episode: EpisodeAttachmentFragment?
     @Published public var share: ShareFragment?
+    @Published public var message = ""
+    @Published public var duplicateError = false
+    @Published public var genericError = false
     @Published public var searchText = "" {
         didSet {
             if searchText.isEmpty {
@@ -33,12 +36,19 @@ public class ComposerModel: ObservableObject {
             }
         }
     }
-    @Published public var isLoading: LoadingState = .none
+    @Published public var isLoading: LoadingState = .none {
+        didSet {
+            print(isLoading)
+        }
+    }
     
     public enum LoadingState {
         case none
-        case nonblocking
-        case blocking
+        case resolveUrl
+        case createShare
+        case latestEpisodes
+        case findPodcastBlocking
+        case findPodcastNonBlocking
     }
     
     init() {
@@ -51,7 +61,7 @@ public class ComposerModel: ObservableObject {
     }
     
     func resolveUrl(url: String) {
-        self.isLoading = .blocking
+        self.isLoading = .resolveUrl
         Network.shared.apollo.fetch(query: ResolveQuery(url: url),
                                     cachePolicy: .fetchIgnoringCacheCompletely) { result in
             self.isLoading = .none
@@ -79,7 +89,7 @@ public class ComposerModel: ObservableObject {
     
     func getLatestEpisodes() {
         if let id = podcast?.id {
-            self.isLoading = .blocking
+            self.isLoading = .latestEpisodes
             Network.shared.apollo.fetch(query: LatestEpisodesQuery(podcast: id),
                                         cachePolicy: .returnCacheDataAndFetch) { result in
                 self.isLoading = .none
@@ -95,21 +105,27 @@ public class ComposerModel: ObservableObject {
         }
     }
     
-    func findPodcast(_ searchText: String, isBlocking: Bool = true) {
+    func findPodcast(_ query: String, isBlocking: Bool = true) {
         // cancel running request
-        searchRequest?.cancel()
-        if searchText.isEmpty {
+        if searchText.count < 2 {
+            self.isLoading = .none
+            self.searchResults = nil
             return
         }
-        self.isLoading = isBlocking ? .blocking : .nonblocking
-        searchRequest = Network.shared.apollo.fetch(query: FindPodcastQuery(query: searchText),
+        let current = self.searchCounter + 1
+        self.isLoading = isBlocking ? .findPodcastBlocking : .findPodcastNonBlocking
+        Network.shared.apollo.fetch(query: FindPodcastQuery(query: query),
                                     cachePolicy: .returnCacheDataAndFetch) { result in
             self.isLoading = .none
             switch result {
             case let .success(graphQLResult):
-                self.searchResults = graphQLResult.data?.typeaheadPodcast?.compactMap {
-                    $0?.fragments.composerPodcastFragment
-                } ?? []
+                if self.searchText.hasPrefix(query), current > self.searchCounter {
+                    self.searchCounter = current
+                    self.searchResults = graphQLResult.data?.typeaheadPodcast?.compactMap {
+                        $0?.fragments.composerPodcastFragment
+                    } ?? []
+                }
+                
             case .failure:
                 self.searchResults = nil
             }
@@ -117,16 +133,22 @@ public class ComposerModel: ObservableObject {
     }
     
     func createShare(message: String!) {
-        self.isLoading = .blocking
+        self.isLoading = .createShare
         if let id = episode?.id {
             Network.shared.apollo.perform(mutation: CreateShareMutation(message: message, episodeId: id)) { result in
-                print(result)
                 self.isLoading = .none
                 switch result {
                 case let .success(graphQLResult):
-                    self.share = graphQLResult.data?.createShare?.fragments.shareFragment
+                    if graphQLResult.errors?.first?.message == "P2002" {
+                        self.duplicateError = true
+                    } else if let share = graphQLResult.data?.createShare?.fragments.shareFragment {
+                        self.share = share
+                    } else {
+                        self.genericError = true
+                    }
                 case .failure:
                     print(result)
+                    self.genericError = true
                 }
             }
         }

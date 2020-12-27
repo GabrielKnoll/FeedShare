@@ -88,12 +88,23 @@ public struct R: Rswift.Validatable {
     try intern.validate()
   }
 
-  /// This `R.color` struct is generated, and contains static references to 2 colors.
+  /// This `R.color` struct is generated, and contains static references to 3 colors.
   public struct color {
+    /// Color `Accent`.
+    public static let accent = Rswift.ColorResource(bundle: R.hostingBundle, name: "Accent")
     /// Color `Background`.
     public static let background = Rswift.ColorResource(bundle: R.hostingBundle, name: "Background")
     /// Color `DropShadow`.
     public static let dropShadow = Rswift.ColorResource(bundle: R.hostingBundle, name: "DropShadow")
+
+    #if os(iOS) || os(tvOS)
+    /// `UIColor(named: "Accent", bundle: ..., traitCollection: ...)`
+    @available(tvOS 11.0, *)
+    @available(iOS 11.0, *)
+    public static func accent(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.accent, compatibleWith: traitCollection)
+    }
+    #endif
 
     #if os(iOS) || os(tvOS)
     /// `UIColor(named: "Background", bundle: ..., traitCollection: ...)`
@@ -116,10 +127,19 @@ public struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 1 images.
+  /// This `R.image` struct is generated, and contains static references to 2 images.
   public struct image {
+    /// Image `Composer`.
+    public static let composer = Rswift.ImageResource(bundle: R.hostingBundle, name: "Composer")
     /// Image `Logo`.
     public static let logo = Rswift.ImageResource(bundle: R.hostingBundle, name: "Logo")
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Composer", bundle: ..., traitCollection: ...)`
+    public static func composer(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.composer, compatibleWith: traitCollection)
+    }
+    #endif
 
     #if os(iOS) || os(tvOS)
     /// `UIImage(named: "Logo", bundle: ..., traitCollection: ...)`

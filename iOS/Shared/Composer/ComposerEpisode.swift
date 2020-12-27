@@ -53,20 +53,22 @@ public struct ComposerEpisode: View {
                                         if let desc = episode.description {
                                             Text(desc)
                                                 .foregroundColor(.secondary)
-                                                .font(.caption)
                                                 .lineLimit(3)
                                         }
                                     }
                                     Spacer()
                                 }
-                            }.padding(.vertical, /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                            }
+                            .padding(.vertical, /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                            .padding(.horizontal, 20)
                             .foregroundColor(.primary)
                         }
-                    }.padding(20)
+                    }
                 }
-                
             } else {
+                Spacer()
                 ActivityIndicator(style: .large)
+                Spacer()
             }
         }
     }

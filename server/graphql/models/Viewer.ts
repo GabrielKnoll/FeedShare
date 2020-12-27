@@ -8,7 +8,7 @@ export default objectType({
     t.nonNull.field('personalFeed', {
       type: 'String',
       resolve: ({user}: {user: Partial<User>}) =>
-        `https://feed.buechele.cc/feed/${user.feedToken}`,
+        `${process.env.BASE_URL}/api/feed/${user.feedToken}`,
     });
     t.nonNull.field('user', {
       type: 'User',

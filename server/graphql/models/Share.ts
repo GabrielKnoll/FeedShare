@@ -30,6 +30,7 @@ export async function shareWhere(
     });
 
     return {
+      hideFromGlobalFeed: false,
       author: {
         twitterAccount: {
           id: {

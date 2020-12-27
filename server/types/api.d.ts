@@ -327,7 +327,9 @@ export interface NexusGenArgTypes {
   Mutation: {
     createShare: { // args
       episodeId: string; // ID!
+      hideFromGlobalFeed?: boolean | null; // Boolean
       message?: string | null; // String
+      shareOnTwitter?: boolean | null; // Boolean
     }
     createViewer: { // args
       twitterId: string; // String!

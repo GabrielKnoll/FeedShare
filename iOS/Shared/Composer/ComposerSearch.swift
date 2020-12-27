@@ -29,23 +29,18 @@ public struct ComposerSearch: View {
         VStack {
             SearchBar(
                 text: $composerModel.searchText,
-                disabled: composerModel.isLoading == .blocking
-            ) {query in
+                disabled: composerModel.isLoading == .findPodcastBlocking
+            ) { query in
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                 composerModel.findPodcast(query)
             }
             //.padding(.horizontal, -8)
             //.padding(.vertical, -10)
-            if composerModel.isLoading == .blocking {
+            if composerModel.isLoading == .findPodcastBlocking {
                 HStack(alignment: .center) {
                     ActivityIndicator(style: .large)
                 }.frame(minHeight: 0, maxHeight: .infinity)
                 Text("blocking")
-            } else if composerModel.isLoading == .nonblocking && composerModel.searchResults == nil {
-                HStack(alignment: .center) {
-                    ActivityIndicator(style: .large)
-                }.frame(minHeight: 0, maxHeight: .infinity)
-                Text("nonblocking")
             } else if let results = composerModel.searchResults, !results.isEmpty {
                 ScrollView {
                     ForEach(results, id: \.id) { podcast in
@@ -58,7 +53,13 @@ public struct ComposerSearch: View {
                         }
                     }
                 }
-            } else if !composerModel.searchText.isEmpty && composerModel.searchResults?.isEmpty == true {
+            } else if composerModel.isLoading != .none {
+                HStack(alignment: .center) {
+                    ActivityIndicator(style: .large)
+                }.frame(minHeight: 0, maxHeight: .infinity)
+                Text("nonblocking")
+
+            } else if composerModel.searchText.count > 1 && composerModel.searchResults?.isEmpty == true {
                 Text("No Results")
             } else {
                 Text("Search for a Podcast you like to share or paste a link")
@@ -75,7 +76,6 @@ public struct ComposerSearch: View {
             }
             Spacer()
         }
-        .padding(.vertical, /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
         .alert(isPresented: showError) {
             Alert(
                 title: {

@@ -1,4 +1,4 @@
-import {extendType, stringArg, idArg, nonNull} from '@nexus/schema';
+import {booleanArg, extendType, stringArg, idArg, nonNull} from 'nexus';
 import {UserInputError} from 'apollo-server-micro';
 import {parseId} from '../queries/node';
 import requireAuthorization from '../../utils/requireAuthorization';
@@ -11,9 +11,17 @@ export default extendType({
       args: {
         message: stringArg(),
         episodeId: nonNull(idArg()),
+        shareOnTwitter: booleanArg(),
+        hideFromGlobalFeed: booleanArg({
+          default: false,
+        }),
       },
       ...requireAuthorization,
-      resolve: async (_, {message, episodeId}, {prismaClient, userId}) => {
+      resolve: async (
+        _,
+        {message, episodeId, hideFromGlobalFeed},
+        {prismaClient, userId},
+      ) => {
         try {
           const result = await prismaClient.share.create({
             data: {
@@ -22,7 +30,8 @@ export default extendType({
                   id: parseId(episodeId).key,
                 },
               },
-              message: message,
+              message,
+              hideFromGlobalFeed: hideFromGlobalFeed ?? false,
               author: {
                 connect: {
                   id: userId,

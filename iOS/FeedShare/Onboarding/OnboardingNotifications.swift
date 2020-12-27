@@ -17,12 +17,12 @@ public struct OnboardingNotifications: View {
                 })
             }) {
                 Text("Turn on Notifications")
-            }
+            }.buttonStyle(FilledButton())
             Button(action: {
                 onNext()
             }) {
                 Text("Skip")
-            }
+            }.buttonStyle(SecondaryButton())
         }
     }
 }

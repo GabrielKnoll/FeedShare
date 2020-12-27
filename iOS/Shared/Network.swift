@@ -58,7 +58,7 @@ public final class Network {
         let transport = RequestChainNetworkTransport(
             interceptorProvider: NetworkInterceptorProvider(store: store, client: URLSessionClient()),
             // swiftlint:disable force_unwrapping
-            endpointURL: URL(string: "https://feed.buechele.cc/graphql")!
+            endpointURL: URL(string: "https://podcast-sharing.vercel.app/api/graphql")!
         )
 
         let client = ApolloClient(networkTransport: transport, store: self.store)

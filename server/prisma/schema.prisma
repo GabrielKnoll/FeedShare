@@ -30,13 +30,14 @@ model TwitterAccount {
 }
 
 model Share {
-  id        String   @id @default(uuid())
-  authorId  String
-  author    User     @relation(fields: [authorId], references: [id])
-  episodeId String
-  episode   Episode  @relation(fields: [episodeId], references: [id])
-  message   String?
-  createdAt DateTime @default(now())
+  id                 String   @id @default(uuid())
+  authorId           String
+  author             User     @relation(fields: [authorId], references: [id])
+  episodeId          String
+  episode            Episode  @relation(fields: [episodeId], references: [id])
+  message            String?
+  createdAt          DateTime @default(now())
+  hideFromGlobalFeed Boolean  @default(false)
 
   @@unique([episodeId, authorId])
 }
