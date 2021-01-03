@@ -20,9 +20,11 @@ public class FeedModel: ObservableObject {
         }
     }
     private var loadRequest: Apollo.Cancellable?
+    private let feedType: FeedType
     public var initialized = false
 
-    public init() {
+    public init(type: FeedType) {
+        feedType = type
         initializeFromCache()
         NotificationCenter.default.addObserver(forName: .reloadFeed, object: nil, queue: .main) { share in
             self.loadData(after: self.shares.last?.cursor)
@@ -30,7 +32,7 @@ public class FeedModel: ObservableObject {
     }
 
     private func initializeFromCache() {
-        Network.shared.apollo.fetch(query: FeedQuery(),
+        Network.shared.apollo.fetch(query: FeedQuery(feedType: feedType),
                                     cachePolicy: .returnCacheDataDontFetch) { result in
             switch result {
             case let .success(graphQLResult):
@@ -53,7 +55,7 @@ public class FeedModel: ObservableObject {
             lr.cancel()
         }
         let startTime = DispatchTime.now()
-        loadRequest = Network.shared.apollo.fetch(query: FeedQuery(after: after),
+        loadRequest = Network.shared.apollo.fetch(query: FeedQuery(after: after, feedType: feedType),
                                     cachePolicy: .fetchIgnoringCacheCompletely) { result in
 
             DispatchQueue.main.asyncAfter(deadline: startTime + 1.5) {
@@ -67,13 +69,16 @@ public class FeedModel: ObservableObject {
                 Network.shared.apollo.store.withinReadWriteTransaction { transaction in
                     do {
                         // append to cache
-                        try transaction.update(query: FeedQuery()) { (cache: inout FeedQuery.Data) in
+                        try transaction.update(query: FeedQuery(feedType: self.feedType)) { (cache: inout FeedQuery.Data) in
                             cache.shares.edges?.append(contentsOf: contents)
                         }
                     } catch {
                         if let data = graphQLResult.data {
                             // create cache
-                            try transaction.write(data: data, forQuery: FeedQuery())
+                            try transaction.write(
+                                data: data,
+                                forQuery: FeedQuery(feedType: self.feedType)
+                            )
                         }
                     }
                 }

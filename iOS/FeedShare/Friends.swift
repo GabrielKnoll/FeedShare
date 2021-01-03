@@ -18,11 +18,11 @@ public struct Friends: View {
     public init() {}
     
     public var body: some View {
-        if let following = viewerModel.viewer?.user.following as? [ViewerFragment.User.Following], !following.isEmpty {
+        if let following = viewerModel.viewer?.user.following?.edges as? [ViewerFragment.User.Following.Edge], !following.isEmpty {
             VStack {
                 HStack {
-                    ForEach(following.prefix(4), id: \.id) {person in
-                        ProfilePicture(url: person.profilePicture, size: size)
+                    ForEach(following.prefix(4), id: \.node?.id) {person in
+                        ProfilePicture(url: person.node?.profilePicture, size: size)
                             .padding(border)
                             .background(Color(UIColor.systemBackground))
                             .cornerRadius(21)
@@ -35,8 +35,8 @@ public struct Friends: View {
                         .padding(.horizontal, overlap)
                 }
                 let friends = following.count == 1
-                    ? following.first?.displayName ?? ""
-                    : "\(following[0].displayName ?? ""), \(following[1].displayName ?? "")"
+                    ? following.first?.node?.displayName ?? ""
+                    : "\(following[0].node?.displayName ?? ""), \(following[1].node?.displayName ?? "")"
                 Text("\(friends) and others are already using FeedShare.").multilineTextAlignment(.center)
             }
         }

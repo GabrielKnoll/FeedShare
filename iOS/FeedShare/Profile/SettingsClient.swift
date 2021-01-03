@@ -10,17 +10,22 @@ import SwiftUI
 
 public struct SettingsClient: View {
     @EnvironmentObject var viewerModel: ViewerModel
-    @EnvironmentObject private var navigationStack: NavigationStack
+    @State var isActive = false
     
     public var body: some View {
         VStack(alignment: .leading) {
             Text("Your Podcast client").bold()
+            NavigationLink(
+                destination: SettingsClientList(),
+                isActive: $isActive
+            ) { EmptyView() }.hidden()
             PodcastClientRow(
                 icon: viewerModel.viewerClient?.icon,
                 name: viewerModel.viewerClient?.displayName ?? "Other"
             ) {
-                navigationStack.push(SettingsClientList())
+                isActive = true
             }
         }
+        
     }
 }

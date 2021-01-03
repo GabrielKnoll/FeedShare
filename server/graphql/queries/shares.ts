@@ -1,45 +1,18 @@
-import {
-  objectType,
-  extendType,
-  stringArg,
-  nonNull,
-  intArg,
-} from '@nexus/schema';
-import FeedType from '../models/FeedType';
-import PageInfo from '../models/PageInfo';
+import {extendType} from '@nexus/schema';
 import requireAuthorization from '../../utils/requireAuthorization';
 import {shareWhere} from '../models/Share';
 
 export default extendType({
   type: 'Query',
   definition: (t) => {
-    t.nonNull.field('shares', {
-      type: objectType({
-        name: 'ShareConnection',
-        definition(t) {
-          t.field('pageInfo', {
-            type: PageInfo,
-          });
-          t.list.field('edges', {
-            type: objectType({
-              name: 'ShareEdge',
-              definition(t) {
-                t.string('cursor');
-                t.field('node', {type: 'Share'});
-              },
-            }),
-          });
-        },
-      }),
-      args: {
-        last: nonNull(intArg()),
-        after: stringArg(),
-        before: stringArg(),
-        feedType: FeedType,
+    t.nonNull.connectionField('shares', {
+      type: 'Share',
+      additionalArgs: {
+        feedType: 'FeedType',
       },
       ...requireAuthorization,
       resolve: async (_parent, args, ctx) => {
-        if (args?.last < 0) {
+        if (!args.last || args.last < 0) {
           throw new Error('last is less than 0');
         }
 

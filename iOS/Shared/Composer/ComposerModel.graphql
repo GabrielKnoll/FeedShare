@@ -29,8 +29,8 @@ query LatestEpisodes($podcast: ID!) {
   }
 }
 
-mutation CreateShare($message: String!, $episodeId: ID!) {
-  createShare(message: $message, episodeId: $episodeId) {
+mutation CreateShare($message: String!, $episodeId: ID!, $shareOnTwitter: Boolean, $hideFromGlobalFeed: Boolean) {
+  createShare(message: $message, episodeId: $episodeId, shareOnTwitter: $shareOnTwitter, hideFromGlobalFeed: $hideFromGlobalFeed) {
     ...ShareFragment
   }
 }

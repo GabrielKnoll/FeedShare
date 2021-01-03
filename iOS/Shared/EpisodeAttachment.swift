@@ -49,20 +49,5 @@ public struct EpisodeAttachment: View {
             Spacer()
         }
         .frame(maxWidth: .infinity, minHeight: 65.0, alignment: .center)
-        .padding(8)
-        .overlay(RoundedRectangle(cornerRadius: 15)
-                    .stroke(Color.secondary.opacity(0.2), lineWidth: 1))
-        .cornerRadius(15)
-    }
-}
-
-struct Attachment_Previews: PreviewProvider {
-    static var previews: some View {
-        VStack {
-            // swiftlint:disable force_unwrapping
-            //            AttachmentItem(data: results.first!.episode)
-            //            AttachmentItem(data: results[1].episode)
-            // swiftlint:enable force_unwrap
-        }
     }
 }

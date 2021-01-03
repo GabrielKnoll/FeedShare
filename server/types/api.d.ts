@@ -6,7 +6,7 @@
 
 import { Context as ctx } from "./../utils/context"
 import { FieldAuthorizeResolver } from "nexus/dist/plugins/fieldAuthorizePlugin"
-import { core } from "nexus"
+import { core, connectionPluginCore } from "nexus"
 declare global {
   interface NexusGenCustomInputMethods<TypeName extends string> {
     /**
@@ -29,6 +29,24 @@ declare global {
      * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
      */
     date<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "DateTime";
+    /**
+     * Adds a Relay-style connection to the type, with numerous options for configuration
+     *
+     * @see https://nexusjs.org/docs/plugins/connection
+     */
+    connectionField<FieldName extends string>(
+      fieldName: FieldName,
+      config: connectionPluginCore.ConnectionFieldConfig<TypeName, FieldName>
+    ): void
+    /**
+     * Adds a Relay-style connection to the type, with numerous options for configuration
+     *
+     * @see https://nexusjs.org/docs/plugins/connection
+     */
+    countableConnection<FieldName extends string>(
+      fieldName: FieldName,
+      config: connectionPluginCore.ConnectionFieldConfig<TypeName, FieldName> & { totalCount: core.FieldResolver<core.FieldTypeName<TypeName, FieldName>, "totalCount"> }
+    ): void
   }
 }
 declare global {
@@ -60,6 +78,14 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  CountableUserConnection: { // root type
+    edges?: Array<NexusGenRootTypes['CountableUserEdge'] | null> | null; // [CountableUserEdge]
+    pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
+  }
+  CountableUserEdge: { // root type
+    cursor: string; // String!
+    node?: NexusGenRootTypes['User'] | null; // User
+  }
   Episode: { // root type
     datePublished: NexusGenScalars['DateTime']; // DateTime!
     description?: string | null; // String
@@ -74,8 +100,8 @@ export interface NexusGenObjects {
   }
   PageInfo: { // root type
     endCursor?: string | null; // String
-    hasNextPage?: boolean | null; // Boolean
-    hasPreviousPage?: boolean | null; // Boolean
+    hasNextPage: boolean; // Boolean!
+    hasPreviousPage: boolean; // Boolean!
     startCursor?: string | null; // String
   }
   Podcast: { // root type
@@ -105,10 +131,10 @@ export interface NexusGenObjects {
   }
   ShareConnection: { // root type
     edges?: Array<NexusGenRootTypes['ShareEdge'] | null> | null; // [ShareEdge]
-    pageInfo?: NexusGenRootTypes['PageInfo'] | null; // PageInfo
+    pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
   }
   ShareEdge: { // root type
-    cursor?: string | null; // String
+    cursor: string; // String!
     node?: NexusGenRootTypes['Share'] | null; // Share
   }
   User: { // root type
@@ -132,6 +158,15 @@ export type NexusGenRootTypes = NexusGenInterfaces & NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
+  CountableUserConnection: { // field return type
+    edges: Array<NexusGenRootTypes['CountableUserEdge'] | null> | null; // [CountableUserEdge]
+    pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
+    totalCount: number | null; // Int
+  }
+  CountableUserEdge: { // field return type
+    cursor: string; // String!
+    node: NexusGenRootTypes['User'] | null; // User
+  }
   Episode: { // field return type
     artwork: string | null; // String
     datePublished: NexusGenScalars['DateTime']; // DateTime!
@@ -152,8 +187,8 @@ export interface NexusGenFieldTypes {
   }
   PageInfo: { // field return type
     endCursor: string | null; // String
-    hasNextPage: boolean | null; // Boolean
-    hasPreviousPage: boolean | null; // Boolean
+    hasNextPage: boolean; // Boolean!
+    hasPreviousPage: boolean; // Boolean!
     startCursor: string | null; // String
   }
   Podcast: { // field return type
@@ -199,15 +234,16 @@ export interface NexusGenFieldTypes {
   }
   ShareConnection: { // field return type
     edges: Array<NexusGenRootTypes['ShareEdge'] | null> | null; // [ShareEdge]
-    pageInfo: NexusGenRootTypes['PageInfo'] | null; // PageInfo
+    pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
   }
   ShareEdge: { // field return type
-    cursor: string | null; // String
+    cursor: string; // String!
     node: NexusGenRootTypes['Share'] | null; // Share
   }
   User: { // field return type
     displayName: string | null; // String
-    following: Array<NexusGenRootTypes['User'] | null> | null; // [User]
+    followers: NexusGenRootTypes['CountableUserConnection']; // CountableUserConnection!
+    following: NexusGenRootTypes['CountableUserConnection']; // CountableUserConnection!
     handle: string; // String!
     id: string; // ID!
     profilePicture: string | null; // String
@@ -225,6 +261,15 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  CountableUserConnection: { // field return type name
+    edges: 'CountableUserEdge'
+    pageInfo: 'PageInfo'
+    totalCount: 'Int'
+  }
+  CountableUserEdge: { // field return type name
+    cursor: 'String'
+    node: 'User'
+  }
   Episode: { // field return type name
     artwork: 'String'
     datePublished: 'DateTime'
@@ -300,7 +345,8 @@ export interface NexusGenFieldTypeNames {
   }
   User: { // field return type name
     displayName: 'String'
-    following: 'User'
+    followers: 'CountableUserConnection'
+    following: 'CountableUserConnection'
     handle: 'String'
     id: 'ID'
     profilePicture: 'String'
@@ -360,15 +406,25 @@ export interface NexusGenArgTypes {
       after?: string | null; // String
       before?: string | null; // String
       feedType?: NexusGenEnums['FeedType'] | null; // FeedType
-      last: number; // Int!
+      first?: number | null; // Int
+      last?: number | null; // Int
     }
     typeaheadPodcast: { // args
       query: string; // String!
     }
   }
   User: {
+    followers: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      first?: number | null; // Int
+      last?: number | null; // Int
+    }
     following: { // args
-      limit?: number | null; // Int
+      after?: string | null; // String
+      before?: string | null; // String
+      first?: number | null; // Int
+      last?: number | null; // Int
     }
     profilePicture: { // args
       scale: number; // Int!
@@ -453,6 +509,8 @@ declare global {
      * resolver from executing.
      */
     authorize?: FieldAuthorizeResolver<TypeName, FieldName>
+    
+    
   }
   interface NexusGenPluginInputFieldConfig<TypeName extends string, FieldName extends string> {
   }

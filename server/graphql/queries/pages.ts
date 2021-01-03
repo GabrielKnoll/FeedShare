@@ -23,7 +23,17 @@ export default extendType({
         return allInAppPages.map(({title, id, contentHTML}) => ({
           title: title ?? '',
           id,
-          contentHTML: contentHTML ?? '',
+          contentHTML: `
+            <html>
+              <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+                <style>body {font-family: -apple-system; font-size: 17px;}</style>
+              </head>
+              <body>
+                ${contentHTML}
+              </body>
+            </html>
+          `,
         }));
       },
     });

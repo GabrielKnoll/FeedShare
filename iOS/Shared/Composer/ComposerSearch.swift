@@ -29,25 +29,28 @@ public struct ComposerSearch: View {
         VStack {
             SearchBar(
                 text: $composerModel.searchText,
-                disabled: composerModel.isLoading == .findPodcastBlocking
+                disabled: composerModel.isLoading == .findPodcastBlocking || composerModel.isLoading == .resolveUrl,
+                placeholder: "Search Podcasts..."
             ) { query in
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                 composerModel.findPodcast(query)
             }
-            //.padding(.horizontal, -8)
-            //.padding(.vertical, -10)
             if composerModel.isLoading == .findPodcastBlocking {
-                HStack(alignment: .center) {
+                VStack(alignment: .center) {
                     ActivityIndicator(style: .large)
+                    Text("searching Podcast")
                 }.frame(minHeight: 0, maxHeight: .infinity)
-                Text("blocking")
+            } else if composerModel.isLoading == .resolveUrl {
+                VStack(alignment: .center) {
+                    ActivityIndicator(style: .large)
+                    Text("resolving URL")
+                }.frame(minHeight: 0, maxHeight: .infinity)
             } else if let results = composerModel.searchResults, !results.isEmpty {
                 ScrollView {
                     ForEach(results, id: \.id) { podcast in
                         Button(action: {
                             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                             composerModel.podcast = podcast
-                            self.navigationStack.push(ComposerEpisode(composerModel: composerModel))
                         }) {
                             ComposerPodcast(podcast: podcast).padding(.horizontal, 20)
                         }
@@ -58,7 +61,7 @@ public struct ComposerSearch: View {
                     ActivityIndicator(style: .large)
                 }.frame(minHeight: 0, maxHeight: .infinity)
                 Text("nonblocking")
-
+                
             } else if composerModel.searchText.count > 1 && composerModel.searchResults?.isEmpty == true {
                 Text("No Results")
             } else {
@@ -87,22 +90,15 @@ public struct ComposerSearch: View {
                 }(),
                 message: {
                     switch unresolvedUrlAlert {
-                    case .notFound: return Text("We couldn't find a podcast at: \(composerModel.unresolvableURL ?? ""). Try finding the podcast you want to share using the search.")
+                    case .notFound: return Text("We couldn't find a podcast at \(composerModel.unresolvableURL ?? ""). Try finding the podcast you want to share using search.")
                     case .noURL: return Text("You can paste a podcast's URL to share it.")
                     default: return Text("This didn't work. Please try again.")
                     }
                 }(),
                 dismissButton: .default(Text("OK"))
             )
-        }.onReceive(composerModel.$episode, perform: {episode in
-            if episode != nil {
-                self.navigationStack.push(ComposerMessage(composerModel: composerModel))
-            }
-        }).onReceive(composerModel.$podcast, perform: {podcast in
-            if podcast != nil {
-                self.navigationStack.push(ComposerEpisode(composerModel: composerModel))
-            }
-        }).onReceive(composerModel.$unresolvableURL, perform: {url in
+        }
+        .onReceive(composerModel.$unresolvableURL, perform: {url in
             if url != nil {
                 self.unresolvedUrlAlert = .notFound
             }

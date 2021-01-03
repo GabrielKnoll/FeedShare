@@ -19,7 +19,7 @@ struct ComposerTextField: UIViewRepresentable {
         textView.isUserInteractionEnabled = true
         textView.backgroundColor = UIColor.clear
         textView.becomeFirstResponder()
-        
+        print("asd")
         return textView
     }
     
@@ -45,6 +45,7 @@ struct ComposerTextField: UIViewRepresentable {
         }
         
         func textViewDidChange(_ textView: UITextView) {
+            print("bsd")
             self.text.wrappedValue = textView.text
         }
     }

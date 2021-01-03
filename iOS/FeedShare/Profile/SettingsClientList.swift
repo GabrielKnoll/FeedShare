@@ -9,14 +9,16 @@ import Shared
 import SwiftUI
 
 public struct SettingsClientList: View {
-    @EnvironmentObject private var navigationStack: NavigationStack
+    @Environment(\.presentationMode) var presentationMode
     
     public var body: some View {
         VStack(alignment: .leading) {
             Text("Your Podcast client").fontWeight(.bold)
             PodcastClients(onSelect: {
-                navigationStack.pop()
+                self.presentationMode.wrappedValue.dismiss()
             })
-        }.padding(20)
+        }
+        .navigationBarTitle("Podcast Client", displayMode: .large)
+        .padding(20)
     }
 }

@@ -19,7 +19,6 @@ public class ComposerModel: ObservableObject {
     @Published public var latestEpisodes: [EpisodeAttachmentFragment]?
     @Published public var episode: EpisodeAttachmentFragment?
     @Published public var share: ShareFragment?
-    @Published public var message = ""
     @Published public var duplicateError = false
     @Published public var genericError = false
     @Published public var searchText = "" {
@@ -36,11 +35,7 @@ public class ComposerModel: ObservableObject {
             }
         }
     }
-    @Published public var isLoading: LoadingState = .none {
-        didSet {
-            print(isLoading)
-        }
-    }
+    @Published public var isLoading: LoadingState = .none
     
     public enum LoadingState {
         case none
@@ -132,10 +127,10 @@ public class ComposerModel: ObservableObject {
         }
     }
     
-    func createShare(message: String!) {
+    func createShare(message: String!, shareOnTwitter: Bool, hideFromGlobalFeed: Bool) {
         self.isLoading = .createShare
         if let id = episode?.id {
-            Network.shared.apollo.perform(mutation: CreateShareMutation(message: message, episodeId: id)) { result in
+            Network.shared.apollo.perform(mutation: CreateShareMutation(message: message, episodeId: id, shareOnTwitter: shareOnTwitter, hideFromGlobalFeed: hideFromGlobalFeed)) { result in
                 self.isLoading = .none
                 switch result {
                 case let .success(graphQLResult):

@@ -12,6 +12,8 @@ public struct RelativeTime: View {
     public init(_ dateString: String) {
         dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
         self.date = dateFormatter.date(from: dateString)
+        
+        _displayDate = State(initialValue: getTime())
     }
     
     func getTime() -> String? {
@@ -27,12 +29,12 @@ public struct RelativeTime: View {
             } else {
                 let formatter = DateFormatter()
                 if date.isInSameYear(as: now) {
-                    formatter.setLocalizedDateFormatFromTemplate("dMMMM 'at' jjmm")
+                    formatter.setLocalizedDateFormatFromTemplate("dMMMM")
                 } else {
                     formatter.dateStyle = .medium
-                    formatter.timeStyle = .short
+                    formatter.timeStyle = .none
                 }
-                
+
                 return formatter.string(from: date)
             }
         }
@@ -43,10 +45,7 @@ public struct RelativeTime: View {
         Text(displayDate ?? "")
         .onReceive(timer) { _ in
             self.displayDate = getTime()
-        }.onAppear {
-            self.displayDate = getTime()
         }
-        
     }
 }
 

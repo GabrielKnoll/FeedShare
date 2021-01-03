@@ -85,6 +85,7 @@ public struct R: Rswift.Validatable {
   }
 
   public static func validate() throws {
+    try font.validate()
     try intern.validate()
   }
 
@@ -123,6 +124,53 @@ public struct R: Rswift.Validatable {
       return UIKit.UIColor(resource: R.color.dropShadow, compatibleWith: traitCollection)
     }
     #endif
+
+    fileprivate init() {}
+  }
+
+  /// This `R.file` struct is generated, and contains static references to 2 files.
+  public struct file {
+    /// Resource file `IBMPlexSans-Medium.ttf`.
+    public static let ibmPlexSansMediumTtf = Rswift.FileResource(bundle: R.hostingBundle, name: "IBMPlexSans-Medium", pathExtension: "ttf")
+    /// Resource file `IBMPlexSans-Regular.ttf`.
+    public static let ibmPlexSansRegularTtf = Rswift.FileResource(bundle: R.hostingBundle, name: "IBMPlexSans-Regular", pathExtension: "ttf")
+
+    /// `bundle.url(forResource: "IBMPlexSans-Medium", withExtension: "ttf")`
+    public static func ibmPlexSansMediumTtf(_: Void = ()) -> Foundation.URL? {
+      let fileResource = R.file.ibmPlexSansMediumTtf
+      return fileResource.bundle.url(forResource: fileResource)
+    }
+
+    /// `bundle.url(forResource: "IBMPlexSans-Regular", withExtension: "ttf")`
+    public static func ibmPlexSansRegularTtf(_: Void = ()) -> Foundation.URL? {
+      let fileResource = R.file.ibmPlexSansRegularTtf
+      return fileResource.bundle.url(forResource: fileResource)
+    }
+
+    fileprivate init() {}
+  }
+
+  /// This `R.font` struct is generated, and contains static references to 2 fonts.
+  public struct font: Rswift.Validatable {
+    /// Font `IBMPlexSans-Medium`.
+    public static let ibmPlexSansMedium = Rswift.FontResource(fontName: "IBMPlexSans-Medium")
+    /// Font `IBMPlexSans`.
+    public static let ibmPlexSans = Rswift.FontResource(fontName: "IBMPlexSans")
+
+    /// `UIFont(name: "IBMPlexSans", size: ...)`
+    public static func ibmPlexSans(size: CGFloat) -> UIKit.UIFont? {
+      return UIKit.UIFont(resource: ibmPlexSans, size: size)
+    }
+
+    /// `UIFont(name: "IBMPlexSans-Medium", size: ...)`
+    public static func ibmPlexSansMedium(size: CGFloat) -> UIKit.UIFont? {
+      return UIKit.UIFont(resource: ibmPlexSansMedium, size: size)
+    }
+
+    public static func validate() throws {
+      if R.font.ibmPlexSans(size: 42) == nil { throw Rswift.ValidationError(description:"[R.swift] Font 'IBMPlexSans' could not be loaded, is 'IBMPlexSans-Regular.ttf' added to the UIAppFonts array in this targets Info.plist?") }
+      if R.font.ibmPlexSansMedium(size: 42) == nil { throw Rswift.ValidationError(description:"[R.swift] Font 'IBMPlexSans-Medium' could not be loaded, is 'IBMPlexSans-Medium.ttf' added to the UIAppFonts array in this targets Info.plist?") }
+    }
 
     fileprivate init() {}
   }

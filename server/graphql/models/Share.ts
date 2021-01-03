@@ -3,6 +3,7 @@ import {Prisma} from '@prisma/client';
 import {FeedTypeEnum} from './FeedType';
 import {Context} from '../../utils/context';
 import Node from './Node';
+import {userFollowing} from './User';
 
 export default objectType({
   name: 'Share',
@@ -24,19 +25,27 @@ export async function shareWhere(
     return {
       authorId: userId,
     };
-  } else if (feedType === 'Friends') {
-    const twitterAccount = await prismaClient.twitterAccount.findUnique({
-      where: {userId},
-    });
-
+  } else if (feedType === 'Global') {
     return {
       hideFromGlobalFeed: false,
+    };
+  } else if (feedType === 'Friends') {
+    const following = await userFollowing(prismaClient, userId!);
+
+    return {
       author: {
-        twitterAccount: {
-          id: {
-            in: twitterAccount?.following,
+        OR: [
+          {
+            id: userId,
           },
-        },
+          {
+            twitterAccount: {
+              id: {
+                in: following,
+              },
+            },
+          },
+        ],
       },
     };
   }

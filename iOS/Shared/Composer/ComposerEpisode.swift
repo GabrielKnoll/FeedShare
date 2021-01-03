@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
+import SkeletonUI
 import URLImage
 
 public struct ComposerEpisode: View {
     @ObservedObject var composerModel: ComposerModel
-    @EnvironmentObject private var navigationStack: NavigationStack
+    @State var selectedEpisode = false
     
     static let taskDateFormat: DateFormatter = {
         let formatter = DateFormatter()
@@ -34,42 +35,74 @@ public struct ComposerEpisode: View {
             }
             
             Text("Which Episode do you want to share?").fontWeight(.bold)
-            if let episodes = composerModel.latestEpisodes {
-                if episodes.isEmpty {
-                    Text("This Podcast does not have any episodes")
-                } else {
-                    ScrollView {
-                        ForEach(episodes, id: \.id) { episode in
-                            Button(action: {
-                                composerModel.episode = episode
-                                self.navigationStack.push(ComposerMessage(composerModel: composerModel))
-                            }) {
-                                HStack {
-                                    VStack(alignment: .leading) {
-                                        Text(episode.title).fontWeight(.bold).lineLimit(1)
-                                        if let date = episode.datePublished.parseDateFormatRelative() {
-                                            Text(date)
-                                        }
-                                        if let desc = episode.description {
-                                            Text(desc)
-                                                .foregroundColor(.secondary)
-                                                .lineLimit(3)
-                                        }
-                                    }
-                                    Spacer()
-                                }
-                            }
-                            .padding(.vertical, /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
-                            .padding(.horizontal, 20)
-                            .foregroundColor(.primary)
+            
+            ScrollView {
+                NavigationLink(
+                    destination: ComposerMessage(composerModel: composerModel),
+                    isActive: $selectedEpisode
+                ) {
+                    EmptyView()
+                }
+                
+                if let episodes = composerModel.latestEpisodes {
+                    ForEach(episodes, id: \.id) { episode in
+                        Button(action: {
+                            composerModel.episode = episode
+                        }) {
+                            ComposerEpisodeItem(episode: episode)
                         }
                     }
+                } else {
+                    ForEach(0..<5) { _ in
+                        ComposerEpisodeItem(episode: nil)
+                    }
                 }
-            } else {
-                Spacer()
-                ActivityIndicator(style: .large)
-                Spacer()
             }
+            .onReceive(composerModel.$episode, perform: {episode in
+                if episode != nil {
+                    self.selectedEpisode = true
+                }
+            })
         }
+        .navigationTitle(selectedEpisode ? "Episodes" : composerModel.podcast?.title ?? "")
+        .onDisappear(perform: {
+            if composerModel.episode == nil {
+                composerModel.latestEpisodes = nil
+                composerModel.podcast = nil
+            }
+        })
+    }
+}
+//}
+
+public struct ComposerEpisodeItem: View {
+    let episode: EpisodeAttachmentFragment?
+    
+    public var body: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(episode?.title)
+                    .fontWeight(.bold)
+                    .lineLimit(1)
+                    .skeleton(with: episode == nil)
+                    .shape(type: .capsule)
+                    .frame(maxWidth: episode == nil ? 120.0 : .infinity, maxHeight: 14.0, alignment: .leading)
+                let date = episode?.datePublished.parseDateFormatRelative()
+                Text(date)
+                    .skeleton(with: date == nil)
+                    .shape(type: .capsule)
+                    .frame(maxHeight: 12.0)
+                Text(episode?.description)
+                    .foregroundColor(.secondary)
+                    .lineLimit(3)
+                    .skeleton(with: episode?.description == nil)
+                    .multiline(lines: 3, scales: [0: 0.7, 1: 0.9, 2: 0.8])
+                    .shape(type: .capsule)
+            }
+            Spacer()
+        }
+        .padding(.vertical, /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+        .padding(.horizontal, 20)
+        .foregroundColor(.primary)
     }
 }

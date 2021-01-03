@@ -4,6 +4,51 @@
 import Apollo
 import Foundation
 
+public enum FeedType: RawRepresentable, Equatable, Hashable, CaseIterable, Apollo.JSONDecodable, Apollo.JSONEncodable {
+  public typealias RawValue = String
+  case friends
+  case global
+  case personal
+  /// Auto generated constant for unknown enum values
+  case __unknown(RawValue)
+
+  public init?(rawValue: RawValue) {
+    switch rawValue {
+      case "Friends": self = .friends
+      case "Global": self = .global
+      case "Personal": self = .personal
+      default: self = .__unknown(rawValue)
+    }
+  }
+
+  public var rawValue: RawValue {
+    switch self {
+      case .friends: return "Friends"
+      case .global: return "Global"
+      case .personal: return "Personal"
+      case .__unknown(let value): return value
+    }
+  }
+
+  public static func == (lhs: FeedType, rhs: FeedType) -> Bool {
+    switch (lhs, rhs) {
+      case (.friends, .friends): return true
+      case (.global, .global): return true
+      case (.personal, .personal): return true
+      case (.__unknown(let lhsValue), .__unknown(let rhsValue)): return lhsValue == rhsValue
+      default: return false
+    }
+  }
+
+  public static var allCases: [FeedType] {
+    return [
+      .friends,
+      .global,
+      .personal,
+    ]
+  }
+}
+
 public final class EpisodeOverlayQuery: GraphQLQuery {
   /// The raw GraphQL definition of this operation.
   public let operationDefinition: String =
@@ -239,8 +284,8 @@ public final class FeedQuery: GraphQLQuery {
   /// The raw GraphQL definition of this operation.
   public let operationDefinition: String =
     """
-    query Feed($after: String) {
-      shares(last: 20, after: $after) {
+    query Feed($after: String, $feedType: FeedType) {
+      shares(last: 20, after: $after, feedType: $feedType) {
         __typename
         edges {
           __typename
@@ -260,13 +305,15 @@ public final class FeedQuery: GraphQLQuery {
   public var queryDocument: String { return operationDefinition.appending("\n" + ShareFragment.fragmentDefinition).appending("\n" + EpisodeAttachmentFragment.fragmentDefinition) }
 
   public var after: String?
+  public var feedType: FeedType?
 
-  public init(after: String? = nil) {
+  public init(after: String? = nil, feedType: FeedType? = nil) {
     self.after = after
+    self.feedType = feedType
   }
 
   public var variables: GraphQLMap? {
-    return ["after": after]
+    return ["after": after, "feedType": feedType]
   }
 
   public struct Data: GraphQLSelectionSet {
@@ -274,7 +321,7 @@ public final class FeedQuery: GraphQLQuery {
 
     public static var selections: [GraphQLSelection] {
       return [
-        GraphQLField("shares", arguments: ["last": 20, "after": GraphQLVariable("after")], type: .nonNull(.object(Share.selections))),
+        GraphQLField("shares", arguments: ["last": 20, "after": GraphQLVariable("after"), "feedType": GraphQLVariable("feedType")], type: .nonNull(.object(Share.selections))),
       ]
     }
 
@@ -326,6 +373,7 @@ public final class FeedQuery: GraphQLQuery {
         }
       }
 
+      /// https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types
       public var edges: [Edge?]? {
         get {
           return (resultMap["edges"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Edge?] in value.map { (value: ResultMap?) -> Edge? in value.flatMap { (value: ResultMap) -> Edge in Edge(unsafeResultMap: value) } } }
@@ -341,7 +389,7 @@ public final class FeedQuery: GraphQLQuery {
         public static var selections: [GraphQLSelection] {
           return [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLField("cursor", type: .scalar(String.self)),
+            GraphQLField("cursor", type: .nonNull(.scalar(String.self))),
             GraphQLField("node", type: .object(Node.selections)),
           ]
         }
@@ -352,7 +400,7 @@ public final class FeedQuery: GraphQLQuery {
           self.resultMap = unsafeResultMap
         }
 
-        public init(cursor: String? = nil, node: Node? = nil) {
+        public init(cursor: String, node: Node? = nil) {
           self.init(unsafeResultMap: ["__typename": "ShareEdge", "cursor": cursor, "node": node.flatMap { (value: Node) -> ResultMap in value.resultMap }])
         }
 
@@ -365,15 +413,17 @@ public final class FeedQuery: GraphQLQuery {
           }
         }
 
-        public var cursor: String? {
+        /// https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor
+        public var cursor: String {
           get {
-            return resultMap["cursor"] as? String
+            return resultMap["cursor"]! as! String
           }
           set {
             resultMap.updateValue(newValue, forKey: "cursor")
           }
         }
 
+        /// https://facebook.github.io/relay/graphql/connections.htm#sec-Node
         public var node: Node? {
           get {
             return (resultMap["node"] as? ResultMap).flatMap { Node(unsafeResultMap: $0) }
@@ -444,6 +494,114 @@ public final class FeedQuery: GraphQLQuery {
               }
             }
           }
+        }
+      }
+    }
+  }
+}
+
+public final class SettingsQuery: GraphQLQuery {
+  /// The raw GraphQL definition of this operation.
+  public let operationDefinition: String =
+    """
+    query Settings {
+      pages {
+        __typename
+        id
+        title
+        contentHTML
+      }
+    }
+    """
+
+  public let operationName: String = "Settings"
+
+  public init() {
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes: [String] = ["Query"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("pages", type: .list(.object(Page.selections))),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(pages: [Page?]? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Query", "pages": pages.flatMap { (value: [Page?]) -> [ResultMap?] in value.map { (value: Page?) -> ResultMap? in value.flatMap { (value: Page) -> ResultMap in value.resultMap } } }])
+    }
+
+    public var pages: [Page?]? {
+      get {
+        return (resultMap["pages"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Page?] in value.map { (value: ResultMap?) -> Page? in value.flatMap { (value: ResultMap) -> Page in Page(unsafeResultMap: value) } } }
+      }
+      set {
+        resultMap.updateValue(newValue.flatMap { (value: [Page?]) -> [ResultMap?] in value.map { (value: Page?) -> ResultMap? in value.flatMap { (value: Page) -> ResultMap in value.resultMap } } }, forKey: "pages")
+      }
+    }
+
+    public struct Page: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Page"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("title", type: .nonNull(.scalar(String.self))),
+          GraphQLField("contentHTML", type: .scalar(String.self)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, title: String, contentHtml: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Page", "id": id, "title": title, "contentHTML": contentHtml])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      public var title: String {
+        get {
+          return resultMap["title"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "title")
+        }
+      }
+
+      public var contentHtml: String? {
+        get {
+          return resultMap["contentHTML"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "contentHTML")
         }
       }
     }
@@ -1073,8 +1231,8 @@ public final class CreateShareMutation: GraphQLMutation {
   /// The raw GraphQL definition of this operation.
   public let operationDefinition: String =
     """
-    mutation CreateShare($message: String!, $episodeId: ID!) {
-      createShare(message: $message, episodeId: $episodeId) {
+    mutation CreateShare($message: String!, $episodeId: ID!, $shareOnTwitter: Boolean, $hideFromGlobalFeed: Boolean) {
+      createShare(message: $message, episodeId: $episodeId, shareOnTwitter: $shareOnTwitter, hideFromGlobalFeed: $hideFromGlobalFeed) {
         __typename
         ...ShareFragment
       }
@@ -1087,14 +1245,18 @@ public final class CreateShareMutation: GraphQLMutation {
 
   public var message: String
   public var episodeId: GraphQLID
+  public var shareOnTwitter: Bool?
+  public var hideFromGlobalFeed: Bool?
 
-  public init(message: String, episodeId: GraphQLID) {
+  public init(message: String, episodeId: GraphQLID, shareOnTwitter: Bool? = nil, hideFromGlobalFeed: Bool? = nil) {
     self.message = message
     self.episodeId = episodeId
+    self.shareOnTwitter = shareOnTwitter
+    self.hideFromGlobalFeed = hideFromGlobalFeed
   }
 
   public var variables: GraphQLMap? {
-    return ["message": message, "episodeId": episodeId]
+    return ["message": message, "episodeId": episodeId, "shareOnTwitter": shareOnTwitter, "hideFromGlobalFeed": hideFromGlobalFeed]
   }
 
   public struct Data: GraphQLSelectionSet {
@@ -1102,7 +1264,7 @@ public final class CreateShareMutation: GraphQLMutation {
 
     public static var selections: [GraphQLSelection] {
       return [
-        GraphQLField("createShare", arguments: ["message": GraphQLVariable("message"), "episodeId": GraphQLVariable("episodeId")], type: .object(CreateShare.selections)),
+        GraphQLField("createShare", arguments: ["message": GraphQLVariable("message"), "episodeId": GraphQLVariable("episodeId"), "shareOnTwitter": GraphQLVariable("shareOnTwitter"), "hideFromGlobalFeed": GraphQLVariable("hideFromGlobalFeed")], type: .object(CreateShare.selections)),
       ]
     }
 
@@ -2078,11 +2240,22 @@ public struct ViewerFragment: GraphQLFragment {
         handle
         displayName
         profilePicture(size: 100, scale: 2)
-        following {
+        following(first: 4) {
           __typename
-          id
-          displayName
-          profilePicture(size: 36, scale: 2)
+          totalCount
+          edges {
+            __typename
+            node {
+              __typename
+              id
+              displayName
+              profilePicture(size: 36, scale: 2)
+            }
+          }
+        }
+        followers(first: 4) {
+          __typename
+          totalCount
         }
       }
     }
@@ -2175,7 +2348,8 @@ public struct ViewerFragment: GraphQLFragment {
         GraphQLField("handle", type: .nonNull(.scalar(String.self))),
         GraphQLField("displayName", type: .scalar(String.self)),
         GraphQLField("profilePicture", arguments: ["size": 100, "scale": 2], type: .scalar(String.self)),
-        GraphQLField("following", type: .list(.object(Following.selections))),
+        GraphQLField("following", arguments: ["first": 4], type: .object(Following.selections)),
+        GraphQLField("followers", arguments: ["first": 4], type: .object(Follower.selections)),
       ]
     }
 
@@ -2185,8 +2359,8 @@ public struct ViewerFragment: GraphQLFragment {
       self.resultMap = unsafeResultMap
     }
 
-    public init(id: GraphQLID, handle: String, displayName: String? = nil, profilePicture: String? = nil, following: [Following?]? = nil) {
-      self.init(unsafeResultMap: ["__typename": "User", "id": id, "handle": handle, "displayName": displayName, "profilePicture": profilePicture, "following": following.flatMap { (value: [Following?]) -> [ResultMap?] in value.map { (value: Following?) -> ResultMap? in value.flatMap { (value: Following) -> ResultMap in value.resultMap } } }])
+    public init(id: GraphQLID, handle: String, displayName: String? = nil, profilePicture: String? = nil, following: Following? = nil, followers: Follower? = nil) {
+      self.init(unsafeResultMap: ["__typename": "User", "id": id, "handle": handle, "displayName": displayName, "profilePicture": profilePicture, "following": following.flatMap { (value: Following) -> ResultMap in value.resultMap }, "followers": followers.flatMap { (value: Follower) -> ResultMap in value.resultMap }])
     }
 
     public var __typename: String {
@@ -2235,24 +2409,32 @@ public struct ViewerFragment: GraphQLFragment {
       }
     }
 
-    public var following: [Following?]? {
+    public var following: Following? {
       get {
-        return (resultMap["following"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Following?] in value.map { (value: ResultMap?) -> Following? in value.flatMap { (value: ResultMap) -> Following in Following(unsafeResultMap: value) } } }
+        return (resultMap["following"] as? ResultMap).flatMap { Following(unsafeResultMap: $0) }
       }
       set {
-        resultMap.updateValue(newValue.flatMap { (value: [Following?]) -> [ResultMap?] in value.map { (value: Following?) -> ResultMap? in value.flatMap { (value: Following) -> ResultMap in value.resultMap } } }, forKey: "following")
+        resultMap.updateValue(newValue?.resultMap, forKey: "following")
+      }
+    }
+
+    public var followers: Follower? {
+      get {
+        return (resultMap["followers"] as? ResultMap).flatMap { Follower(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "followers")
       }
     }
 
     public struct Following: GraphQLSelectionSet {
-      public static let possibleTypes: [String] = ["User"]
+      public static let possibleTypes: [String] = ["UserFollowing_Connection"]
 
       public static var selections: [GraphQLSelection] {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
-          GraphQLField("displayName", type: .scalar(String.self)),
-          GraphQLField("profilePicture", arguments: ["size": 36, "scale": 2], type: .scalar(String.self)),
+          GraphQLField("totalCount", type: .scalar(Int.self)),
+          GraphQLField("edges", type: .list(.object(Edge.selections))),
         ]
       }
 
@@ -2262,8 +2444,8 @@ public struct ViewerFragment: GraphQLFragment {
         self.resultMap = unsafeResultMap
       }
 
-      public init(id: GraphQLID, displayName: String? = nil, profilePicture: String? = nil) {
-        self.init(unsafeResultMap: ["__typename": "User", "id": id, "displayName": displayName, "profilePicture": profilePicture])
+      public init(totalCount: Int? = nil, edges: [Edge?]? = nil) {
+        self.init(unsafeResultMap: ["__typename": "UserFollowing_Connection", "totalCount": totalCount, "edges": edges.flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in value.resultMap } } }])
       }
 
       public var __typename: String {
@@ -2275,31 +2457,161 @@ public struct ViewerFragment: GraphQLFragment {
         }
       }
 
-      /// Unique identifier for the resource
-      public var id: GraphQLID {
+      public var totalCount: Int? {
         get {
-          return resultMap["id"]! as! GraphQLID
+          return resultMap["totalCount"] as? Int
         }
         set {
-          resultMap.updateValue(newValue, forKey: "id")
+          resultMap.updateValue(newValue, forKey: "totalCount")
         }
       }
 
-      public var displayName: String? {
+      /// https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types
+      public var edges: [Edge?]? {
         get {
-          return resultMap["displayName"] as? String
+          return (resultMap["edges"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Edge?] in value.map { (value: ResultMap?) -> Edge? in value.flatMap { (value: ResultMap) -> Edge in Edge(unsafeResultMap: value) } } }
         }
         set {
-          resultMap.updateValue(newValue, forKey: "displayName")
+          resultMap.updateValue(newValue.flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in value.resultMap } } }, forKey: "edges")
         }
       }
 
-      public var profilePicture: String? {
+      public struct Edge: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["UserEdge"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("node", type: .object(Node.selections)),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(node: Node? = nil) {
+          self.init(unsafeResultMap: ["__typename": "UserEdge", "node": node.flatMap { (value: Node) -> ResultMap in value.resultMap }])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// https://facebook.github.io/relay/graphql/connections.htm#sec-Node
+        public var node: Node? {
+          get {
+            return (resultMap["node"] as? ResultMap).flatMap { Node(unsafeResultMap: $0) }
+          }
+          set {
+            resultMap.updateValue(newValue?.resultMap, forKey: "node")
+          }
+        }
+
+        public struct Node: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["User"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+              GraphQLField("displayName", type: .scalar(String.self)),
+              GraphQLField("profilePicture", arguments: ["size": 36, "scale": 2], type: .scalar(String.self)),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(id: GraphQLID, displayName: String? = nil, profilePicture: String? = nil) {
+            self.init(unsafeResultMap: ["__typename": "User", "id": id, "displayName": displayName, "profilePicture": profilePicture])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          /// Unique identifier for the resource
+          public var id: GraphQLID {
+            get {
+              return resultMap["id"]! as! GraphQLID
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "id")
+            }
+          }
+
+          public var displayName: String? {
+            get {
+              return resultMap["displayName"] as? String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "displayName")
+            }
+          }
+
+          public var profilePicture: String? {
+            get {
+              return resultMap["profilePicture"] as? String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "profilePicture")
+            }
+          }
+        }
+      }
+    }
+
+    public struct Follower: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["UserFollowers_Connection"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("totalCount", type: .scalar(Int.self)),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(totalCount: Int? = nil) {
+        self.init(unsafeResultMap: ["__typename": "UserFollowers_Connection", "totalCount": totalCount])
+      }
+
+      public var __typename: String {
         get {
-          return resultMap["profilePicture"] as? String
+          return resultMap["__typename"]! as! String
         }
         set {
-          resultMap.updateValue(newValue, forKey: "profilePicture")
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var totalCount: Int? {
+        get {
+          return resultMap["totalCount"] as? Int
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "totalCount")
         }
       }
     }

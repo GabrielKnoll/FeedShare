@@ -11,43 +11,54 @@ public struct Composer: View {
     @StateObject var composerModel = ComposerModel()
     let dismiss: () -> Void
     
+    @State var screen: Int?
+    
     public init(dismiss: @escaping () -> Void) {
         self.dismiss = dismiss
     }
     
     public var body: some View {
-        VStack(spacing: 0) {
-            HStack(alignment: .center) {
-                Button(action: {
-                    dismiss()
-                }) {
-                    Text("Cancel")
-                }.disabled(composerModel.isLoading == .createShare)
-                Spacer()
-                Text("Share Episode").fontWeight(.semibold)
-                Spacer()
+        NavigationView {
+            VStack {
                 
-                Button(action: {
-                    composerModel.createShare(message: composerModel.message)
-                }) {
-                    Text("Publish").fontWeight(.semibold)
+                ComposerSearch(composerModel: composerModel)
+                    .navigationBarTitle(screen == nil ? "Search Podcast" : "Search", displayMode: .inline)
+                    .navigationBarItems(leading:
+                                            Button("Cancel", action: self.dismiss)
+                                            .font(.system(size: 17, weight: .regular))
+                    )
+                
+                NavigationLink(
+                    destination: ComposerEpisode(composerModel: composerModel),
+                    tag: 1,
+                    selection: $screen
+                ) {
+                    EmptyView()
                 }
-                .opacity(composerModel.isLoading == .createShare ? 0 : 1)
-                .background(
-                    composerModel.isLoading == .createShare
-                        ? ActivityIndicator(style: .medium)
-                        : nil)
-                .disabled(composerModel.message.isEmpty || composerModel.isLoading == .createShare)
+                
+                NavigationLink(
+                    destination: ComposerMessage(composerModel: composerModel),
+                    tag: 2,
+                    selection: $screen
+                ) {
+                    EmptyView()
+                }
             }
-            .padding(.horizontal, 15)
-            .padding(.vertical, 16)
-            Divider()
         }
-        
-        NavigationStackView {
-            ComposerSearch(composerModel: composerModel)
-        }.onAppear(perform: {
+        .onAppear(perform: {
             composerModel.dismiss = self.dismiss
+        })
+        .onReceive(composerModel.$episode, perform: {episode in
+            if composerModel.podcast == nil, episode != nil {
+                print("2")
+                self.screen = 2
+            }
+        })
+        .onReceive(composerModel.$podcast, perform: {podcast in
+            if podcast != nil {
+                print("1")
+                self.screen = 1
+            }
         })
         .alert(isPresented: $composerModel.duplicateError, content: {
             Alert(

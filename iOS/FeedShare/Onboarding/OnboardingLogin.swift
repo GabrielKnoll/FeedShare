@@ -16,6 +16,7 @@ public struct OnboardingLogin: View {
             }) {
                 Text("Login with Twitter")
             }
+            .buttonStyle(FilledButton())
         }.onOpenURL { url in
             let callbackUrl = URL(string: "twittersdk://")
             let callbackScheme = callbackUrl?.scheme

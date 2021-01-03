@@ -1,6 +1,11 @@
 import {nexusPrisma} from 'nexus-plugin-prisma';
 import prismaClient from '../utils/prismaClient';
-import {asNexusMethod, fieldAuthorizePlugin, makeSchema} from 'nexus';
+import {
+  asNexusMethod,
+  fieldAuthorizePlugin,
+  makeSchema,
+  connectionPlugin,
+} from 'nexus';
 import resolveShareUrl from './queries/resolveShareUrl';
 import viewer from './queries/viewer';
 import shares from './queries/shares';
@@ -74,6 +79,14 @@ export default makeSchema({
     }),
     fieldAuthorizePlugin({
       formatError: () => new AuthenticationError('Not authorized'),
+    }),
+    connectionPlugin(),
+    connectionPlugin({
+      typePrefix: 'Countable',
+      nexusFieldName: 'countableConnection',
+      extendConnection: {
+        totalCount: {type: 'Int'},
+      },
     }),
   ],
   shouldGenerateArtifacts: process.env.NODE_ENV === 'development',

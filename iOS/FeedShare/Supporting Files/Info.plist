@@ -33,6 +33,12 @@
 	<true/>
 	<key>NSMainNibFile</key>
 	<string>Main</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>IBMPlexSans-Regular.ttf</string>
+		<string>IBMPlexSans-Medium.ttf</string>
+		<string>TiemposHeadline-Semibold.otf</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

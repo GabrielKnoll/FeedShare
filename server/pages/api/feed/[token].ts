@@ -82,7 +82,7 @@ const requestHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     item
       .ele('title')
       .txt(
-        `${share.author.handle}: ${share.episode.title} – ${share.episode.podcast.title}`,
+        `${share.author.displayName}: ${share.episode.title} – ${share.episode.podcast.title}`,
       );
     item.ele('enclosure', {
       url: share.episode.enclosureUrl,
@@ -90,7 +90,14 @@ const requestHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       type: share.episode.enclosureType,
     });
     item.ele('guid').txt(String(share.episode.id));
-    item.ele('description').txt([``, share.episode.description].join('\n\n'));
+    item
+      .ele('description')
+      .txt(
+        [
+          `${share.author.displayName} shared this episode via FeedShare:\n${share.message}`,
+          share.episode.description,
+        ].join('\n\n'),
+      );
 
     if (share.episode.durationSeconds) {
       item.ele('itunes:duration').txt(String(share.episode.durationSeconds));

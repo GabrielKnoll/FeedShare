@@ -11,6 +11,7 @@ import URLImage
 public struct Artwork: View {
     private let url: URL?
     private let size: CGFloat
+    @State private var loading = true
     
     public init(url: String?, size: Double) {
         if let u = url, let uu = URL(string: u) {
@@ -21,7 +22,9 @@ public struct Artwork: View {
         self.size = CGFloat(size)
     }
     
-    let placeholder = Image(systemName: "antenna.radiowaves.left.and.right")
+    let placeholder = Rectangle()
+        .skeleton(with: true)
+        .shape(type: .rectangle)
     
     public var body: some View {
         VStack {
@@ -35,7 +38,8 @@ public struct Artwork: View {
                         placeholder
                     },
                     content: { proxy in
-                        proxy.resizable()
+                        proxy
+                            .resizable()
                             .aspectRatio(contentMode: .fill)
                             .clipped()
                     })
@@ -44,7 +48,6 @@ public struct Artwork: View {
             }
         }
         .frame(width: size, height: size)
-        .background(Color.secondary)
         .cornerRadius(CGFloat(10))
     }
 }

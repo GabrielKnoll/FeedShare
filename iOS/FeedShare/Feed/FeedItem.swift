@@ -5,68 +5,47 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
+import PartialSheet
 import Shared
 import SwiftUI
 import URLImage
 
 public struct FeedItem: View {
     let data: ShareFragment
-    
-    @EnvironmentObject var overlayModel: OverlayModel
+    @EnvironmentObject var partialSheetManager: PartialSheetManager
     @State private var episodePresented = false
-
+    
     public var body: some View {
         VStack(alignment: .leading, spacing: 15) {
-            HStack(alignment: .center, spacing: 10) {
-                ProfilePicture(url: data.author.profilePicture, size: 36.0)
-                VStack(alignment: .leading) {
-                    if let displayName = data.author.displayName {
-                        Text(displayName)
-                            .font(.headline)
-                            .lineLimit(1)
-                    }
-                    RelativeTime(data.createdAt)
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
-                        .lineLimit(1)
-                }
-                Spacer()
-                Button(action: { }) {
-                    Image(systemName: "ellipsis")
-                }
-                .foregroundColor(.primary)
-                .font(.headline)
-            }
-            if let message = data.message {
-                Text(message)
-            }
             Button(action: {
-                overlayModel.present(view: EpisodeOverlay(attachment: data.episode.fragments.episodeAttachmentFragment))
+                self.partialSheetManager.showPartialSheet({
+                    // dismissed
+                }) {
+                    EpisodeOverlay(attachment: data.episode.fragments.episodeAttachmentFragment)
+                }
             }) {
                 EpisodeAttachment(data: data.episode.fragments.episodeAttachmentFragment)
             }
+            
+            if let message = data.message {
+                Text(message)
+            }
+            HStack(alignment: .center) {
+                ProfilePicture(url: data.author.profilePicture, size: 28.0)
+                    .padding(.trailing, 4)
+                if let displayName = data.author.displayName {
+                    Text(displayName)
+                        .fontWeight(.semibold)
+                        .lineLimit(1)
+                }
+                RelativeTime(data.createdAt)
+                    .foregroundColor(.secondary)
+                    .lineLimit(1)
+                Spacer()
+            }
+            
         }
         .padding(15)
-        .background(RoundedRectangle(cornerRadius: 22.0)
-            .fill(Color(.systemBackground)))
-    }
-}
-
-struct ShareRow_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            VStack {
-                // swiftlint:disable force_unwrapping
-                //				ShareRow(data: results.first!, isEditable: false)
-                //				ShareRow(data: results[1], isEditable: false)
-                // swiftlint:enable force_unwrapping
-            }
-            VStack {
-                // swiftlint:disable force_unwrapping
-                //				ShareRow(data: results.first!, isEditable: true)
-                //				ShareRow(data: results[1], isEditable: true)
-                // swiftlint:enable force_unwrapping
-            }
-        }
+        .background(Color(.systemBackground))
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import OneSignal
+import PartialSheet
 import Shared
 import SwiftUI
 
@@ -26,17 +27,21 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct FeedShareApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @ObservedObject var viewerModel = ViewerModel.shared
-    @ObservedObject var overlayModel = OverlayModel()
+    
+    let sheetManager: PartialSheetManager = PartialSheetManager()
     
     var body: some Scene {
         WindowGroup {
             ZStack {
                 if viewerModel.initialized {
                     if viewerModel.setupFinshed, viewerModel.viewer != nil {
-                        Feed()
-                            .slideOverCard(isPresented: $overlayModel.visible) {
-                                overlayModel.presentedView
-                            }
+                        NavigationView {
+                            Home()
+                                .navigationBarTitle("Home")
+                                .navigationBarHidden(true)
+                        }
+                        .addPartialSheet()
+                        
                     } else {
                         Onboarding()
                     }
@@ -44,8 +49,9 @@ struct FeedShareApp: App {
                     Loading()
                 }
             }
-            .environmentObject(overlayModel)
             .environmentObject(viewerModel)
+            .environmentObject(sheetManager)
+            
             .onReceive(viewerModel.$viewer, perform: { viewer in
                 if let id = viewer?.user.id.components(separatedBy: ":").last {
                     OneSignal.setExternalUserId(id)

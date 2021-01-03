@@ -8,10 +8,18 @@ fragment ViewerFragment on Viewer {
     handle
     displayName
     profilePicture(size: 100, scale: 2)
-    following {
-      id
-      displayName
-      profilePicture(size: 36, scale: 2)
+    following(first: 4) {
+      totalCount
+      edges {
+        node {
+          id
+          displayName
+          profilePicture(size: 36, scale: 2)
+        }
+      }
+    }
+    followers(first: 4) {
+      totalCount
     }
   }
 }

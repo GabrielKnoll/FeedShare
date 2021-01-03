@@ -2,6 +2,27 @@
 ### Do not make changes to this file directly
 
 
+type CountableUserConnection {
+  """
+  https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types
+  """
+  edges: [CountableUserEdge]
+
+  """
+  https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo
+  """
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type CountableUserEdge {
+  """https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor"""
+  cursor: String!
+
+  """https://facebook.github.io/relay/graphql/connections.htm#sec-Node"""
+  node: User
+}
+
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
@@ -46,10 +67,28 @@ type Page {
   title: String!
 }
 
+"""
+PageInfo cursor, as defined in https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo
+"""
 type PageInfo {
+  """
+  The cursor corresponding to the last nodes in edges. Null if the connection is empty.
+  """
   endCursor: String
-  hasNextPage: Boolean
-  hasPreviousPage: Boolean
+
+  """
+  Used to indicate whether more edges exist following the set defined by the clients arguments.
+  """
+  hasNextPage: Boolean!
+
+  """
+  Used to indicate whether more edges exist prior to the set defined by the clients arguments.
+  """
+  hasPreviousPage: Boolean!
+
+  """
+  The cursor corresponding to the first nodes in edges. Null if the connection is empty.
+  """
   startCursor: String
 }
 
@@ -81,7 +120,20 @@ type Query {
   pages: [Page]
   podcastClient: [PodcastClient]
   resolveShareUrl(url: String!): ResolvedShareUrl
-  shares(after: String, before: String, feedType: FeedType, last: Int!): ShareConnection!
+  shares(
+    """Returns the elements in the list that come after the specified cursor"""
+    after: String
+
+    """Returns the elements in the list that come before the specified cursor"""
+    before: String
+    feedType: FeedType
+
+    """Returns the first n elements from the list."""
+    first: Int
+
+    """Returns the last n elements from the list."""
+    last: Int
+  ): ShareConnection!
   typeaheadPodcast(query: String!): [Podcast]
   viewer: Viewer
 }
@@ -107,18 +159,53 @@ type Share implements Node {
 }
 
 type ShareConnection {
+  """
+  https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types
+  """
   edges: [ShareEdge]
-  pageInfo: PageInfo
+
+  """
+  https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo
+  """
+  pageInfo: PageInfo!
 }
 
 type ShareEdge {
-  cursor: String
+  """https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor"""
+  cursor: String!
+
+  """https://facebook.github.io/relay/graphql/connections.htm#sec-Node"""
   node: Share
 }
 
 type User implements Node {
   displayName: String
-  following(limit: Int): [User]
+  followers(
+    """Returns the elements in the list that come after the specified cursor"""
+    after: String
+
+    """Returns the elements in the list that come before the specified cursor"""
+    before: String
+
+    """Returns the first n elements from the list."""
+    first: Int
+
+    """Returns the last n elements from the list."""
+    last: Int
+  ): CountableUserConnection!
+  following(
+    """Returns the elements in the list that come after the specified cursor"""
+    after: String
+
+    """Returns the elements in the list that come before the specified cursor"""
+    before: String
+
+    """Returns the first n elements from the list."""
+    first: Int
+
+    """Returns the last n elements from the list."""
+    last: Int
+  ): CountableUserConnection!
   handle: String!
 
   """Unique identifier for the resource"""

@@ -1,5 +1,6 @@
 import {Prisma, Share} from '@prisma/client';
 import * as OneSignal from 'onesignal-node';
+import {userFollowers} from '../graphql/models/User';
 import prismaClient from './prismaClient';
 
 const client = new OneSignal.Client(
@@ -11,15 +12,7 @@ const middleware: Prisma.Middleware<Share> = async (params, next) => {
   const result = await next(params);
 
   if (params.model === 'Share' && params.action === 'create') {
-    const ids = await prismaClient.$queryRaw<
-      Array<{
-        id: string;
-      }>
-    >(`SELECT "User"."id"
-      FROM "TwitterAccount"
-      LEFT OUTER JOIN "User"
-        ON "TwitterAccount"."userId"="User"."id"
-      WHERE (SELECT id FROM "TwitterAccount" WHERE "userId"='${result.authorId}')=ANY("following");`);
+    const ids = await userFollowers(prismaClient, result.authorId);
 
     if (ids.length > 0) {
       const res = await prismaClient.share.findUnique({
@@ -37,7 +30,7 @@ const middleware: Prisma.Middleware<Share> = async (params, next) => {
       });
 
       await Promise.all(
-        ids.map(({id}) =>
+        ids.map((id) =>
           client.createNotification({
             included_segments: ['All'],
             headings: {
