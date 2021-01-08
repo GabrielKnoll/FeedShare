@@ -14,6 +14,7 @@ export default objectType({
     t.model.description();
     t.model.feed();
     t.model.publisher();
+    t.model.url();
     t.list.field('latestEpisodes', {
       type: 'Episode',
       args: {

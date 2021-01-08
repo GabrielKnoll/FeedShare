@@ -127,6 +127,7 @@ export interface NexusGenObjects {
   }
   Share: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
+    hideFromGlobalFeed: boolean; // Boolean!
     message?: string | null; // String
   }
   ShareConnection: { // root type
@@ -229,6 +230,7 @@ export interface NexusGenFieldTypes {
     author: NexusGenRootTypes['User']; // User!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     episode: NexusGenRootTypes['Episode']; // Episode!
+    hideFromGlobalFeed: boolean; // Boolean!
     id: string; // ID!
     message: string | null; // String
   }
@@ -332,6 +334,7 @@ export interface NexusGenFieldTypeNames {
     author: 'User'
     createdAt: 'DateTime'
     episode: 'Episode'
+    hideFromGlobalFeed: 'Boolean'
     id: 'ID'
     message: 'String'
   }

@@ -152,6 +152,7 @@ type Share implements Node {
   author: User!
   createdAt: DateTime!
   episode: Episode!
+  hideFromGlobalFeed: Boolean!
 
   """Unique identifier for the resource"""
   id: ID!

@@ -9,7 +9,7 @@ export default objectType({
   name: 'Share',
   definition(t) {
     t.implements(Node);
-
+    t.model.hideFromGlobalFeed();
     t.model.author();
     t.model.message();
     t.model.createdAt();

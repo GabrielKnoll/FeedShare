@@ -12,6 +12,7 @@ export default objectType({
     t.model.podcast();
     t.model.durationSeconds();
     t.model.datePublished();
+    t.model.url();
     imageField(t, 'artwork');
   },
 });
