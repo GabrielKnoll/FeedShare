@@ -1,11 +1,8 @@
-import URL from 'url';
 import {idFromAppleUrl} from './apple';
-import {ParserResult} from '../../graphql/queries/resolveShareUrl';
+import {Parser} from '../../graphql/queries/resolveShareUrl';
 import fetchPage from '../fetchPage';
 
-export default async function (
-  url: URL.UrlWithStringQuery,
-): Promise<ParserResult> {
+const parser: Parser = async function (url) {
   // https://overcast.fm/+HiEYDNrZs
   // https://overcast.fm/itunes1357986673
   // https://overcast.fm/itunes1357986673/tony-basilios-next-level-network-family-of-podcasts
@@ -31,13 +28,18 @@ export default async function (
   const itunesId = parseInt(iid, 10);
 
   // const rssFeed = $('img[src="/img/badge-rss.svg"]').parent().attr('href');
-  const enclosureUrl = $('#audiotimestamplink')
+  const episodeUrl = $('#audiotimestamplink')
     .parent()
     .children('a:contains("Website")')
     .attr('href');
 
+  const enclosureUrl = $('#audioplayer source').attr('src');
+
   return {
     itunesId,
+    episodeUrl,
     enclosureUrl,
   };
-}
+};
+
+export default parser;

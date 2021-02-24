@@ -9,15 +9,16 @@ datasource db {
 }
 
 model User {
-  id             String          @id @default(uuid())
-  handle         String
-  displayName    String?
-  profilePicture String?
-  createdAt      DateTime        @default(now())
-  Share          Share[]
-  feedCheckedAt  DateTime?
-  twitterAccount TwitterAccount?
-  feedToken      String          @unique
+  id                  String                @id @default(uuid())
+  handle              String
+  displayName         String?
+  profilePicture      String?
+  createdAt           DateTime              @default(now())
+  Share               Share[]
+  feedCheckedAt       DateTime?
+  twitterAccount      TwitterAccount?
+  feedToken           String                @unique
+  AddedToPersonalFeed AddedToPersonalFeed[]
 }
 
 model TwitterAccount {
@@ -30,16 +31,26 @@ model TwitterAccount {
 }
 
 model Share {
-  id                 String   @id @default(uuid())
-  authorId           String
-  author             User     @relation(fields: [authorId], references: [id])
-  episodeId          String
-  episode            Episode  @relation(fields: [episodeId], references: [id])
-  message            String?
-  createdAt          DateTime @default(now())
-  hideFromGlobalFeed Boolean  @default(false)
+  id                  String                @id @default(uuid())
+  authorId            String
+  author              User                  @relation(fields: [authorId], references: [id])
+  episodeId           String
+  episode             Episode               @relation(fields: [episodeId], references: [id])
+  message             String?
+  createdAt           DateTime              @default(now())
+  hideFromGlobalFeed  Boolean               @default(false)
+  AddedToPersonalFeed AddedToPersonalFeed[]
 
   @@unique([episodeId, authorId])
+}
+
+model AddedToPersonalFeed {
+  share   Share  @relation(fields: [shareId], references: id)
+  shareId String
+  user    User   @relation(fields: [userId], references: id)
+  userId  String
+
+  @@id([shareId, userId])
 }
 
 model Episode {

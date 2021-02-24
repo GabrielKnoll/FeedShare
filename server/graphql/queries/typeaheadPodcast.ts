@@ -1,4 +1,4 @@
-import {extendType, intArg, nonNull, stringArg} from '@nexus/schema';
+import {extendType, intArg, nonNull, stringArg} from 'nexus';
 import requireAuthorization from '../../utils/requireAuthorization';
 import {typeaheadPodcast} from '../../utils/podcastIndex';
 

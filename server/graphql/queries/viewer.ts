@@ -1,4 +1,4 @@
-import {extendType} from '@nexus/schema';
+import {extendType} from 'nexus';
 import requireAuthorization from '../../utils/requireAuthorization';
 
 export default extendType({

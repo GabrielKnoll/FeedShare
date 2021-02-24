@@ -1,10 +1,7 @@
-import URL from 'url';
-import {ParserResult} from '../../graphql/queries/resolveShareUrl';
+import {Parser} from '../../graphql/queries/resolveShareUrl';
 import fetchPage from '../fetchPage';
 
-export default async function (
-  url: URL.UrlWithStringQuery,
-): Promise<ParserResult> {
+const parser: Parser = async function (url) {
   // https://castro.fm/podcast/fc60896e-f790-4357-98a8-b8901270a0f8
   let [type, id] = (url.pathname ?? '').split('/').filter(Boolean);
 
@@ -37,4 +34,6 @@ export default async function (
     };
   }
   throw new Error('Castro: Unable to parse');
-}
+};
+
+export default parser;

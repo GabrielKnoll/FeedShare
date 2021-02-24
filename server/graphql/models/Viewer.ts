@@ -1,4 +1,4 @@
-import {objectType} from '@nexus/schema';
+import {objectType} from 'nexus';
 import {User} from '@prisma/client';
 import {generateToken} from '../../utils/context';
 

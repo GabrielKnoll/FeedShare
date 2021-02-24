@@ -1,11 +1,9 @@
 import queryString from 'query-string';
 import URL from 'url';
-import {ParserResult} from '../../graphql/queries/resolveShareUrl';
+import {Parser} from '../../graphql/queries/resolveShareUrl';
 import {ampEpisode} from '../appleApi';
 
-export default async function (
-  url: URL.UrlWithStringQuery,
-): Promise<ParserResult> {
+const parser: Parser = async function (url) {
   // https://podcasts.apple.com/de/podcast/pakistan/id409553739?i=1000477131403&l=en?l=en&i=1000477131403
   let [_country, _podcast, _episode, podcastID] = (url.pathname ?? '')
     .split('/')
@@ -29,7 +27,7 @@ export default async function (
     itunesId,
     enclosureUrl,
   };
-}
+};
 
 export function idFromAppleUrl(itunesUrl?: string): string | undefined {
   if (itunesUrl && URL.parse(itunesUrl).hostname === 'podcasts.apple.com') {
@@ -37,3 +35,5 @@ export function idFromAppleUrl(itunesUrl?: string): string | undefined {
     return match[1];
   }
 }
+
+export default parser;

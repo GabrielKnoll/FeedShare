@@ -1,0 +1,14 @@
+query Feed($after: String, $feedType: FeedType!) {
+  shares(last: 40, after: $after, feedType: $feedType){
+    pageInfo {
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        id
+        ...ShareFragment
+      }
+    }
+  }
+}

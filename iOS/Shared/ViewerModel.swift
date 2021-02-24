@@ -99,7 +99,6 @@ public class ViewerModel: ObservableObject {
                     )
                     try transaction.write(data: data, forQuery: ViewerModelQuery())
                 }
-                
             case let .failure(error):
                 self.viewer = nil
                 print("twitterSignIn Failure! Error: \(error)")

@@ -209,6 +209,14 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "url",
+            "description": null,
+            "args": [],
+            "type": {"kind": "SCALAR", "name": "String", "ofType": null},
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -235,12 +243,6 @@
         "interfaces": null,
         "enumValues": [
           {
-            "name": "Friends",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "Global",
             "description": null,
             "isDeprecated": false,
@@ -248,6 +250,12 @@
           },
           {
             "name": "Personal",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "User",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -271,6 +279,25 @@
         "description": null,
         "fields": [
           {
+            "name": "addToPersonalFeed",
+            "description": null,
+            "args": [
+              {
+                "name": "shareId",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {"kind": "SCALAR", "name": "ID", "ofType": null}
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {"kind": "OBJECT", "name": "Share", "ofType": null},
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createShare",
             "description": null,
             "args": [
@@ -293,7 +320,11 @@
               {
                 "name": "message",
                 "description": null,
-                "type": {"kind": "SCALAR", "name": "String", "ofType": null},
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {"kind": "SCALAR", "name": "String", "ofType": null}
+                },
                 "defaultValue": null
               },
               {
@@ -593,6 +624,14 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "url",
+            "description": null,
+            "args": [],
+            "type": {"kind": "SCALAR", "name": "String", "ofType": null},
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -788,7 +827,11 @@
               {
                 "name": "feedType",
                 "description": null,
-                "type": {"kind": "ENUM", "name": "FeedType", "ofType": null},
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {"kind": "ENUM", "name": "FeedType", "ofType": null}
+                },
                 "defaultValue": null
               },
               {
@@ -953,18 +996,6 @@
             "deprecationReason": null
           },
           {
-            "name": "hideFromGlobalFeed",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {"kind": "SCALAR", "name": "Boolean", "ofType": null}
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "id",
             "description": "Unique identifier for the resource",
             "args": [],
@@ -973,6 +1004,25 @@
               "name": null,
               "ofType": {"kind": "SCALAR", "name": "ID", "ofType": null}
             },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "isInFeed",
+            "description": null,
+            "args": [
+              {
+                "name": "feedType",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {"kind": "ENUM", "name": "FeedType", "ofType": null}
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {"kind": "SCALAR", "name": "Boolean", "ofType": null},
             "isDeprecated": false,
             "deprecationReason": null
           },

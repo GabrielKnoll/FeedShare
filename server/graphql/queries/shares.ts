@@ -1,5 +1,5 @@
-import {extendType} from '@nexus/schema';
-import requireAuthorization from '../../utils/requireAuthorization';
+import {AuthenticationError, UserInputError} from 'apollo-server-micro';
+import {extendType, nonNull} from 'nexus';
 import {shareWhere} from '../models/Share';
 
 export default extendType({
@@ -8,12 +8,14 @@ export default extendType({
     t.nonNull.connectionField('shares', {
       type: 'Share',
       additionalArgs: {
-        feedType: 'FeedType',
+        feedType: nonNull('FeedType'),
       },
-      ...requireAuthorization,
       resolve: async (_parent, args, ctx) => {
         if (!args.last || args.last < 0) {
-          throw new Error('last is less than 0');
+          throw new UserInputError('last is less than 0');
+        }
+        if (!ctx.userId && args.feedType !== 'Global') {
+          throw new AuthenticationError('Not authorized');
         }
 
         let skip, cursor;

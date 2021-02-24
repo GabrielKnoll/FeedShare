@@ -5,6 +5,7 @@ import prismaClient from './prismaClient';
 import normalizeUrl from 'normalize-url';
 import {htmlToText} from 'html-to-text';
 import {decodeXML} from 'entities';
+import {ParserResult} from '../graphql/queries/resolveShareUrl';
 
 const podcastIndexClient = new PodcastIndexClient({
   key: process.env.PODCAST_INDEX_KEY,
@@ -81,13 +82,13 @@ function podcastFromApiResponse(
   };
 }
 
-export async function fetchPodcast(
-  itunesId: number | undefined,
-  feeds: string[] | undefined,
-): Promise<Podcast | undefined> {
+export async function fetchPodcast({
+  itunesId,
+  feeds = [],
+}: ParserResult): Promise<Podcast | undefined> {
   return itunesId
     ? await podcastFromItunesId(itunesId)
-    : await podcastFromFeeds(feeds!);
+    : await podcastFromFeeds(feeds);
 }
 
 function urlMatch(url1?: string, url2?: string): boolean {
@@ -95,8 +96,8 @@ function urlMatch(url1?: string, url2?: string): boolean {
     return false;
   }
   try {
-    url1 = normalizeUrl(url1, {stripProtocol: true});
-    url2 = normalizeUrl(url2, {stripProtocol: true});
+    url1 = normalizeUrl(url1, {stripProtocol: true, stripHash: true});
+    url2 = normalizeUrl(url2, {stripProtocol: true, stripHash: true});
   } catch (e) {
     return false;
   }
@@ -112,9 +113,7 @@ function titleMatch(title1?: string, title2?: string): boolean {
 
 export async function fetchEpisode(
   podcastId: number,
-  enclosureUrl: string | undefined,
-  title: string | undefined,
-  link: string | undefined,
+  {enclosureUrl, episodeTitle, episodeUrl}: ParserResult,
 ): Promise<Episode | undefined> {
   const episodes = await podcastIndexClient.episodesByFeedId(podcastId);
   if (episodes.status === ApiResponse.Status.Success) {
@@ -122,8 +121,8 @@ export async function fetchEpisode(
       try {
         return (
           urlMatch(e.enclosureUrl, enclosureUrl) ||
-          titleMatch(e.title, title) ||
-          urlMatch(e.link, link)
+          titleMatch(e.title, episodeTitle) ||
+          urlMatch(e.link, episodeUrl)
         );
       } catch (e) {
         return false;

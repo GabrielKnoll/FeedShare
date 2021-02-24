@@ -27,36 +27,87 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct FeedShareApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @ObservedObject var viewerModel = ViewerModel.shared
+    @State var isDark: Bool {
+        didSet {
+            UIApplication.shared.windows.first?.rootViewController?.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
     
     let sheetManager: PartialSheetManager = PartialSheetManager()
     
+    init() {
+        _isDark = State(initialValue: ViewerModel.shared.viewer == nil)
+        UINavigationBar.appearance().largeTitleTextAttributes = [
+            .font: R.font.interBold(size: 35),
+            .foregroundColor: R.color.primaryColor()
+        ]
+        
+        UINavigationBar.appearance().tintColor = R.color.primaryColor()!
+        UINavigationBar.appearance().barTintColor = UIColor.systemBackground
+        UINavigationBar.appearance().shadowImage = nil
+        UINavigationBar.appearance().setBottomBorderColor(color: UIColor.red, height: 1)
+        // UINavigationBar.appearance().isTranslucent = false
+        
+        UINavigationBar.appearance().titleTextAttributes = [
+            .font: R.font.interSemiBold(size: 17),
+            .foregroundColor: R.color.primaryColor()
+        ]
+        
+        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = R.color.primaryColor()
+        
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ZStack {
-                if viewerModel.initialized {
+            if viewerModel.initialized {
+                let binding = Binding(
+                    get: { return !viewerModel.setupFinshed || viewerModel.viewer == nil },
+                    set: { _, _ in }
+                )
+                ZStack {
                     if viewerModel.setupFinshed, viewerModel.viewer != nil {
                         NavigationView {
                             Home()
                                 .navigationBarTitle("Home")
                                 .navigationBarHidden(true)
                         }
-                        .addPartialSheet()
+                        .addPartialSheet(style: PartialSheetStyle(
+                                            background: .solid(Color(UIColor.systemBackground)),
+                                            handlerBarColor: Color(R.color.secondaryColor.name),
+                                            enableCover: true,
+                                            coverColor: Color.black.opacity(0.4),
+                                            cornerRadius: 38.5,
+                                            minTopDistance: 50)
+                        )
                         
-                    } else {
-                        Onboarding()
                     }
-                } else {
-                    Loading()
                 }
+                .preferredColorScheme(isDark ? .dark : .light)
+                .fullScreenCover(isPresented: binding) {
+                    Onboarding($isDark)
+                        .environmentObject(viewerModel) // add environmentObject again, because it's a separate view stack
+                }
+                .environmentObject(viewerModel)
+                .environmentObject(sheetManager)
+                .onReceive(viewerModel.$viewer, perform: { viewer in
+                    isDark = viewer == nil
+                 
+                    if let id = viewer?.user.id.components(separatedBy: ":").last {
+                        OneSignal.setExternalUserId(id)
+                    }
+                })
+            } else {
+                Loading()
             }
-            .environmentObject(viewerModel)
-            .environmentObject(sheetManager)
-            
-            .onReceive(viewerModel.$viewer, perform: { viewer in
-                if let id = viewer?.user.id.components(separatedBy: ":").last {
-                    OneSignal.setExternalUserId(id)
-                }
-            })
         }
+    }
+}
+
+extension UINavigationBar {
+    func setBottomBorderColor(color: UIColor, height: CGFloat) {
+        let bottomBorderRect = CGRect(x: 0, y: frame.height, width: frame.width, height: height)
+        let bottomBorderView = UIView(frame: bottomBorderRect)
+        bottomBorderView.backgroundColor = color
+        addSubview(bottomBorderView)
     }
 }

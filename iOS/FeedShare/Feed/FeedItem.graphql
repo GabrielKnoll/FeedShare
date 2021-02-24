@@ -6,6 +6,7 @@ fragment ShareFragment on Share {
   }
   message
   createdAt
+  isInGlobalFeed: isInFeed(feedType: Global)
   episode {
     ...EpisodeAttachmentFragment
   }

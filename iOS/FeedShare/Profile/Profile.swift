@@ -5,8 +5,8 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
-import PartialSheet
 import OneSignal
+import PartialSheet
 import Shared
 import SwiftUI
 import URLImage
@@ -17,28 +17,36 @@ public struct Profile: View {
     @State private var settingsActive = false
     
     public var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            VStack(alignment: .center) {
-                ProfilePicture(url: viewerModel.viewer?.user.profilePicture, size: 66.0)
-                Text(viewerModel.viewer?.user.displayName ?? "")
-                    .font(.title2)
-                    .bold()
-                HStack {
-                    Text("0 Followers")
-                    Text("0 Following")
+        VStack(alignment: .leading, spacing: 0) {
+            HStack {
+                VStack(alignment: .leading) {
+                    Text(viewerModel.viewer?.user.displayName ?? "")
+                        .font(Typography.title2)
+                    Text("\(viewerModel.viewer?.user.followers.totalCount ?? 0) ").bold() +
+                        Text("Followers ") +
+                        Text("\(viewerModel.viewer?.user.following.totalCount ?? 0) ").bold() +
+                        Text("Following").font(Typography.bodyMedium)
                 }
-            }.frame(minWidth: 0, maxWidth: .infinity)
-            Feed(type: .personal)
+                .foregroundColor(Color(R.color.primaryColor.name))
+                Spacer()
+                ProfilePicture(url: viewerModel.viewer?.user.profilePicture, size: 80.0)
+            }
+            .padding(20)
+            .frame(minWidth: 0, maxWidth: .infinity)
+            
+            Feed(type: .user, paddingTop: 10)
             NavigationLink(destination: Settings(), isActive: self.$settingsActive) {
                 EmptyView()
             }
         }
-        .padding(.horizontal, 15)
-        .padding(.top, 20)
+        .edgesIgnoringSafeArea(.bottom)
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("Profile")
         .navigationBarItems(trailing: Button(action: { settingsActive = true }) {
             Image(systemName: "gearshape")
-        })
+        }
+        .contentShape(Rectangle())
+        .padding(10))
+        .background(Color(R.color.backgroundColor.name))
     }
 }

@@ -1,10 +1,7 @@
-import URL from 'url';
-import {ParserResult} from '../../graphql/queries/resolveShareUrl';
+import {Parser} from '../../graphql/queries/resolveShareUrl';
 import fetchPage from '../fetchPage';
 
-export default async function (
-  url: URL.UrlWithStringQuery,
-): Promise<ParserResult> {
+const parser: Parser = async function (url) {
   const $ = await fetchPage(url);
 
   let itunesId: string | undefined;
@@ -54,4 +51,6 @@ export default async function (
     enclosureUrl: audioSrc ?? sourceSrc ?? downloadLink,
     episodeTitle: ogTitle ?? pageTitle,
   };
-}
+};
+
+export default parser;

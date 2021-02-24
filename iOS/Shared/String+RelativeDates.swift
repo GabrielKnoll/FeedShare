@@ -6,13 +6,20 @@ public struct RelativeTime: View {
     @State var displayDate: String?
     
     private let date: Date?
-    private let dateFormatter = ISO8601DateFormatter()
+    private static let dateFormatter: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return formatter
+    }()
+    private static let relativeFormatter: RelativeDateTimeFormatter = {
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .full
+        return formatter
+    }()
     private let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
     
     public init(_ dateString: String) {
-        dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        self.date = dateFormatter.date(from: dateString)
-        
+        self.date = RelativeTime.dateFormatter.date(from: dateString)
         _displayDate = State(initialValue: getTime())
     }
     
@@ -23,19 +30,9 @@ public struct RelativeTime: View {
             if distance.isLessThanOrEqualTo(60) {
                 return "just now"
             } else if distance.isLessThanOrEqualTo(4 * 24 * 60 * 60)  {
-                let formatter = RelativeDateTimeFormatter()
-                formatter.unitsStyle = .full
-                return formatter.localizedString(for: date, relativeTo: now)
+                return RelativeTime.relativeFormatter.localizedString(for: date, relativeTo: now)
             } else {
-                let formatter = DateFormatter()
-                if date.isInSameYear(as: now) {
-                    formatter.setLocalizedDateFormatFromTemplate("dMMMM")
-                } else {
-                    formatter.dateStyle = .medium
-                    formatter.timeStyle = .none
-                }
-
-                return formatter.string(from: date)
+                return date.formattedDate()
             }
         }
         return nil
@@ -61,6 +58,40 @@ public extension String {
         formatter.dateStyle = .long
         formatter.doesRelativeDateFormatting = true
         return formatter.string(from: date)
+    }
+    
+    static let isoDateFormatter: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return formatter
+    }()
+    
+    func formattedIsoString() -> String? {
+        guard let date = String.isoDateFormatter.date(from: self) else { return nil }
+        return date.formattedDate()
+    }
+}
+
+public extension Date {
+    static let absoluteFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .none
+        formatter.dateStyle = .long
+        return formatter
+    }()
+    
+    static let absoluteFormatterSameYear: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.setLocalizedDateFormatFromTemplate("dMMMM")
+        return formatter
+    }()
+    
+    func formattedDate() -> String? {
+        if self.isInSameYear(as: Date()) {
+            return Date.absoluteFormatterSameYear.string(from: self)
+        } else {
+            return Date.absoluteFormatter.string(from: self)
+        }
     }
 }
 

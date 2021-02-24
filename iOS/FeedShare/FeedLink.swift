@@ -141,34 +141,73 @@ struct Copyable<Content: View>: UIViewRepresentable {
 
 public struct FeedLink: View {
     @EnvironmentObject var viewerModel: ViewerModel
-    let completionHandler: (() -> Void)?
-    
-    init(_ completionHandler: (() -> Void)? = nil) {
-        self.completionHandler = completionHandler
-    }
+    @State var isCopied: Bool = false
     
     public var body: some View {
         let text = viewerModel.viewer?.personalFeed ?? ""
-        VStack(alignment: .leading) {
-            Copyable(
-                copyText: text,
-                clientName: viewerModel.viewerClient?.displayName,
-                openInClient: {
-                    SubscribeButton.openURL(
-                        viewerModel.viewerClient!,
-                        feed: viewerModel.viewer?.personalFeed
-                    )
-                },
-                completionHandler: completionHandler
-            ) {
-                Text(text)
-                    .lineLimit(1)
-                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+        
+        Button(action: {
+            UIPasteboard.general.string = text
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            isCopied = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                isCopied = false
             }
-        }.padding(10)
-        .frame(maxHeight: 60.0)
-        .foregroundColor(.primary)
-        .background(Color.primary.opacity(0.1))
-        .cornerRadius(15)
+        }) {
+            ZStack {
+                if isCopied {
+                    HStack(alignment: .center) {
+                        Text("Copied to Clipboard")
+                            .lineLimit(1)
+                            .foregroundColor(Color(R.color.primaryColor.name))
+                            .font(Typography.caption)
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                        Spacer()
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundColor(Color(R.color.brandColor.name))
+                            .frame(maxHeight: 20)
+                    }
+                    .frame(height: 50)
+                    .transition(.move(edge: .bottom))
+                } else {
+                    HStack(alignment: .center) {
+                        Text(text)
+                            .lineLimit(1)
+                            .foregroundColor(Color(R.color.primaryColor.name))
+                            .font(Typography.bodyMedium)
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                        Spacer()
+                        Image(systemName: "doc.on.doc.fill")
+                            .foregroundColor(Color(R.color.primaryColor.name))
+                            .frame(maxHeight: 20)
+                    }
+                    .frame(height: 50)
+                    .transition(.move(edge: .bottom))
+                }
+            }
+            .frame(maxHeight: 50)
+            .padding(.horizontal, 12)
+            .animation(.easeOut(duration: 0.2))
+            
+        }
+        .buttonStyle(InputButton())
     }
+    
+    //            Copyable(
+    //                copyText: text,
+    //                clientName: viewerModel.viewerClient?.displayName,
+    //                openInClient: {
+    //                    SubscribeButton.openURL(
+    //                        viewerModel.viewerClient!,
+    //                        feed: viewerModel.viewer?.personalFeed
+    //                    )
+    //                },
+    //                completionHandler: completionHandler
+    //            ) {
+    //                Text(text)
+    //                    .lineLimit(1)
+    //                    .font(Typography.body)
+    //                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+    //            }
 }
+

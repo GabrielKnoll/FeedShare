@@ -9,45 +9,39 @@ import SwiftUI
 import URLImage
 
 public struct EpisodeAttachment: View {
+    let data: EpisodeAttachmentFragment
     
     public init(data: EpisodeAttachmentFragment) {
         self.data = data
     }
     
-    let data: EpisodeAttachmentFragment
-    
-    static let durationFormatter: DateComponentsFormatter = {
+    public static let durationFormatter: DateComponentsFormatter = {
         let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .positional
-        formatter.allowedUnits = [.hour, .minute, .second]
-        formatter.zeroFormattingBehavior = [.dropLeading, .pad]
+        formatter.unitsStyle = .brief
+        formatter.allowedUnits = [.hour, .minute]
+        formatter.zeroFormattingBehavior = [.dropLeading]
         return formatter
     }()
     
     public var body: some View {
-        HStack(alignment: .center, spacing: 10) {
-            Artwork(url: data.artwork ?? data.podcast.artwork, size: 65.0)
-            VStack(alignment: .leading, spacing: 3) {
+        HStack(alignment: .center, spacing: 12) {
+            Artwork(url: data.artwork ?? data.podcast.artwork, size: 75.0)
+            
+            VStack(alignment: .leading) {
                 Text(data.title)
-                    .font(.headline)
+                    .font(Typography.headline)
                     .lineLimit(1)
-                    .foregroundColor(.primary)
                 Text(data.podcast.title)
-                    .font(.subheadline)
+                    .font(Typography.bodyMedium)
                     .lineLimit(1)
-                    .foregroundColor(.secondary)
-                
-                if let duration = data.durationSeconds {
-                    HStack {
-                        Image(systemName: "clock")
-                        Text(EpisodeAttachment.durationFormatter.string(from: TimeInterval(duration)) ?? "")
-                    }
-                    .foregroundColor(.secondary)
-                    .font(.caption)
-                }
+                EpisodeDate(datePublished: data.datePublished, durationSeconds: data.durationSeconds)
+                    .foregroundColor(Color(R.color.secondaryColor.name))
+                    .font(Typography.meta)
+                    .lineLimit(1)
             }
-            Spacer()
+            .foregroundColor(Color(R.color.primaryColor.name))
+            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
         }
-        .frame(maxWidth: .infinity, minHeight: 65.0, alignment: .center)
+        .frame(maxWidth: .infinity, minHeight: 80.0, alignment: .center)
     }
 }

@@ -1,5 +1,6 @@
 // Authoer: The SwiftUI Lab
 // Full article: https://swiftui-lab.com/scrollview-pull-to-refresh/
+import Shared
 import SwiftUI
 
 enum PTRState {
@@ -138,6 +139,8 @@ struct RefreshableScrollView<Content: View>: View {
                 } else {
                     Image(systemName: "arrow.down") // If not loading, show the arrow
                         .resizable()
+                        .renderingMode(.template)
+                        .foregroundColor(Color(R.color.primaryColor.name))
                         .aspectRatio(contentMode: .fit)
                         .frame(width: height * 0.25, height: height * 0.25).fixedSize()
                         .padding(height * 0.375)

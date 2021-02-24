@@ -16,24 +16,53 @@ public struct Settings: View {
     @State private var logoutAlert = false
     @ObservedObject var settingsModel = SettingsModel()
     
+    private var sectionPadding: CGFloat = 18
+    private var titlePadding: CGFloat = 7
+    
     public var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 10) {
-                Text("Your Podcast client").bold()
-                FeedLink()
-                
-                Spacer().frame(maxHeight: 10)
+            VStack(alignment: .leading, spacing: 0) {
+                Text("Podcast App")
+                    .font(Typography.button)
+                    .padding(.top, sectionPadding)
+                    .padding(.bottom, titlePadding)
                 
                 SettingsClient()
                 
-                Spacer().frame(maxHeight: 10)
+                Text("Personal Feed")
+                    .font(Typography.button)
+                    .padding(.top, sectionPadding)
+                    .padding(.bottom, titlePadding)
                 
-                Text("Notifications").bold()
+                Text("Subscribe to your Personal Feed to listen to episodes recommended by people you follow right in your podcast app.")
+                    .foregroundColor(Color(R.color.secondaryColor.name))
+                    .font(Typography.body)
+                    .padding(.bottom, titlePadding)
+                
+                FeedLink()
+                
+                if let client = viewerModel.viewerClient {
+                    Button(action: {
+                        SubscribeButton.openURL(client, feed: viewerModel.viewer?.personalFeed)
+                    }) {
+                        Text("Subscribe in \(client.displayName)").foregroundColor(Color(R.color.primaryColor.name))
+                    }
+                    .buttonStyle(LinkButton())
+                    .padding(.vertical, -5)
+                }
+                
+                Text("Notifications")
+                    .font(Typography.button)
+                    .padding(.top, sectionPadding)
+                    .padding(.bottom, titlePadding)
                 
                 Toggle(isOn: $notifications) {
-                    Text("Get notified when your friends recommend an episode")
+                    Text("Get notified when a person you follow recommends a new episode")
                         .fixedSize(horizontal: false, vertical: true)
+                        .foregroundColor(Color(R.color.secondaryColor.name))
+                        .font(Typography.body)
                 }
+                .toggleStyle(SwitchToggleStyle(tint: Color(R.color.brandColor.name)))
                 .onChange(of: notifications) { value in
                     if value {
                         OneSignal.promptForPushNotifications(userResponse: { accepted in
@@ -65,20 +94,27 @@ public struct Settings: View {
                     OneSignal.disablePush(!value)
                 }
                 
-                Spacer().frame(maxHeight: 10)
-                
-                ForEach(settingsModel.pages, id: \.id) { page in
-                    NavigationLink(
-                        page.title,
-                        destination: WebView(text: page.contentHtml ?? "")
-                            .navigationBarTitle(page.title, displayMode: .large)
-                    )
+                VStack(alignment: .leading, spacing: 0) {
+                    ForEach(settingsModel.pages, id: \.id) { page in
+                        NavigationLink(
+                            destination: WebView(text: page.contentHtml ?? "")
+                                .navigationBarTitle(page.title, displayMode: .large)
+                        ) {
+                            Text(page.title)
+                                .font(Typography.button)
+                                .frame(minHeight: 44)
+                        }
+                    }
                 }
+                .padding(.top, sectionPadding)
                 
                 Button(action: {
                     self.logoutAlert = true
                 }) {
-                    Text("Sign Out").fontWeight(.semibold).foregroundColor(.red)
+                    Text("Sign Out")
+                        .font(Typography.button)
+                        .foregroundColor(Color(R.color.dangerColor.name))
+                        .frame(minHeight: 44)
                 }
                 .alert(isPresented: $logoutAlert) {
                     Alert(
@@ -92,9 +128,12 @@ public struct Settings: View {
                         })
                     )
                 }
+                
             }
-            .padding(15)
+            .padding(.horizontal, 20)
+            .foregroundColor(Color(R.color.primaryColor.name))
         }
         .navigationBarTitle("Settings", displayMode: .large)
+        
     }
 }

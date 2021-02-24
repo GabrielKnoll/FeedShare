@@ -12,16 +12,25 @@ fragment ViewerFragment on Viewer {
       totalCount
       edges {
         node {
-          id
-          displayName
-          profilePicture(size: 36, scale: 2)
+          ...FollowFragment
         }
       }
     }
     followers(first: 4) {
       totalCount
+      edges {
+        node {
+          ...FollowFragment
+        }
+      }
     }
   }
+}
+
+fragment FollowFragment on User {
+  id
+  displayName
+  profilePicture(size: 36, scale: 2)
 }
 
 query ViewerModel {

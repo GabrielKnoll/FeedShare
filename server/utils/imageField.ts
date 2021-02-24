@@ -1,8 +1,8 @@
 import {createHash} from 'crypto';
 import qs from 'query-string';
-import {intArg} from '@nexus/schema';
-import {nonNull, ObjectDefinitionBlock} from '@nexus/schema/dist/core';
+import {intArg, nonNull} from 'nexus';
 import {NexusGenObjectNames, NexusGenFieldTypes} from '../types/api';
+import {ObjectDefinitionBlock} from 'nexus/dist/core';
 
 export default function fieldConfig<TypeName extends NexusGenObjectNames>(
   t: ObjectDefinitionBlock<TypeName>,

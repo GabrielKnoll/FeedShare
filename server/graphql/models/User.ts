@@ -1,4 +1,4 @@
-import {objectType} from '@nexus/schema';
+import {objectType} from 'nexus';
 import {PrismaClient, User} from '@prisma/client';
 import imageField from '../../utils/imageField';
 import Node from './Node';

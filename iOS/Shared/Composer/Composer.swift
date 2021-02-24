@@ -22,7 +22,7 @@ public struct Composer: View {
             VStack {
                 
                 ComposerSearch(composerModel: composerModel)
-                    .navigationBarTitle(screen == nil ? "Search Podcast" : "Search", displayMode: .inline)
+                    .navigationBarTitle(screen == nil ? "Share Podcast" : "Search", displayMode: .inline)
                     .navigationBarItems(leading:
                                             Button("Cancel", action: self.dismiss)
                                             .font(.system(size: 17, weight: .regular))
@@ -50,13 +50,11 @@ public struct Composer: View {
         })
         .onReceive(composerModel.$episode, perform: {episode in
             if composerModel.podcast == nil, episode != nil {
-                print("2")
                 self.screen = 2
             }
         })
         .onReceive(composerModel.$podcast, perform: {podcast in
             if podcast != nil {
-                print("1")
                 self.screen = 1
             }
         })

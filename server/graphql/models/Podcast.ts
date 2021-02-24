@@ -1,4 +1,4 @@
-import {objectType, intArg} from '@nexus/schema';
+import {objectType, intArg} from 'nexus';
 import {Podcast} from '@prisma/client';
 import {latestEpisodes} from '../../utils/podcastIndex';
 import imageField from '../../utils/imageField';

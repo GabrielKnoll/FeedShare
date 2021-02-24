@@ -1,11 +1,8 @@
-import URL from 'url';
 import {idFromAppleUrl} from './apple';
-import {ParserResult} from '../../graphql/queries/resolveShareUrl';
+import {Parser} from '../../graphql/queries/resolveShareUrl';
 import fetchPage from '../fetchPage';
 
-export default async function (
-  url: URL.UrlWithStringQuery,
-): Promise<ParserResult> {
+const parser: Parser = async function (url) {
   //
   // https://pca.st/itunes/1172218725
   let [type, id] = (url.pathname ?? '').split('/').filter(Boolean);
@@ -35,4 +32,6 @@ export default async function (
     itunesId,
     episodeTitle,
   };
-}
+};
+
+export default parser;

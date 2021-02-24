@@ -1,4 +1,4 @@
-import {objectType} from '@nexus/schema';
+import {objectType} from 'nexus';
 import imageField from '../../utils/imageField';
 import Node from './Node';
 

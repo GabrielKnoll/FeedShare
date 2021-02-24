@@ -242,7 +242,7 @@ extension String {
     var urlEncoded: String {
         var charset: CharacterSet = .urlQueryAllowed
         charset.remove(charactersIn: "\n:#/?@!$&'()*+,;=")
-        return addingPercentEncoding(withAllowedCharacters: charset)!
+        return addingPercentEncoding(withAllowedCharacters: charset) ?? ""
     }
 
     var urlQueryStringParameters: [String: String] {

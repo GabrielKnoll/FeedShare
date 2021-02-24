@@ -29,15 +29,15 @@ query LatestEpisodes($podcast: ID!) {
   }
 }
 
-mutation CreateShare($message: String!, $episodeId: ID!, $shareOnTwitter: Boolean, $hideFromGlobalFeed: Boolean) {
-  createShare(message: $message, episodeId: $episodeId, shareOnTwitter: $shareOnTwitter, hideFromGlobalFeed: $hideFromGlobalFeed) {
-    ...ShareFragment
-  }
-}
-
 fragment ComposerPodcastFragment on Podcast {
   id
   title
   publisher
-  artwork(size: 70, scale: 2)
+  artwork(size: 100, scale: 2)
+}
+
+mutation CreateShare($message: String!, $episodeId: ID!, $shareOnTwitter: Boolean, $hideFromGlobalFeed: Boolean) {
+  createShare(message: $message, episodeId: $episodeId, shareOnTwitter: $shareOnTwitter, hideFromGlobalFeed: $hideFromGlobalFeed) {
+    ...ShareFragment
+  }
 }

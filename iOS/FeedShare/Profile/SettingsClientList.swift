@@ -13,7 +13,7 @@ public struct SettingsClientList: View {
     
     public var body: some View {
         VStack(alignment: .leading) {
-            Text("Your Podcast client").fontWeight(.bold)
+            Text("Your Podcast Client").fontWeight(.bold)
             PodcastClients(onSelect: {
                 self.presentationMode.wrappedValue.dismiss()
             })

@@ -35,9 +35,11 @@
 	<string>Main</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>IBMPlexSans-Regular.ttf</string>
-		<string>IBMPlexSans-Medium.ttf</string>
+		<string>Inter-Medium.otf</string>
+		<string>Inter-Regular.otf</string>
 		<string>TiemposHeadline-Semibold.otf</string>
+		<string>Inter-SemiBold.otf</string>
+		<string>Inter-Bold.otf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

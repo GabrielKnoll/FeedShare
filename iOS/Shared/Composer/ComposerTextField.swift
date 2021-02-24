@@ -13,13 +13,13 @@ struct ComposerTextField: UIViewRepresentable {
     func makeUIView(context: Context) -> UITextView {
         let textView = UITextView()
         textView.delegate = context.coordinator
-        textView.font = UIFont.systemFont(ofSize: 17)
+        textView.font = R.font.interMedium(size: 16)
+        textView.textColor = R.color.primaryColor()
         textView.isScrollEnabled = true
         textView.isEditable = true
         textView.isUserInteractionEnabled = true
         textView.backgroundColor = UIColor.clear
         textView.becomeFirstResponder()
-        print("asd")
         return textView
     }
     
@@ -45,7 +45,6 @@ struct ComposerTextField: UIViewRepresentable {
         }
         
         func textViewDidChange(_ textView: UITextView) {
-            print("bsd")
             self.text.wrappedValue = textView.text
         }
     }

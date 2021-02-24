@@ -1,4 +1,4 @@
-import {extendType, nonNull, stringArg} from '@nexus/schema';
+import {extendType, nonNull, stringArg} from 'nexus';
 import {twitterFollowing, twitterProfile} from '../../utils/twitterApi';
 import feedToken from '../../utils/feedToken';
 

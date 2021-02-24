@@ -51,7 +51,7 @@ const requestHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       author: true,
     },
     take: 100,
-    where: await shareWhere({userId: user.id, prismaClient}, 'Friends'),
+    where: await shareWhere({userId: user.id, prismaClient}, 'Personal'),
     orderBy: {
       createdAt: 'desc',
     },

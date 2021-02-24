@@ -1,4 +1,4 @@
-import {extendType, stringArg, objectType, nonNull} from '@nexus/schema';
+import {extendType, stringArg, objectType, nonNull} from 'nexus';
 import requireAuthorization from '../../utils/requireAuthorization';
 import {Episode} from '@prisma/client';
 import URL from 'url';
@@ -35,19 +35,14 @@ export default extendType({
         const parser = PARSER[parsedUrl.hostname ?? ''] ?? generic;
         const parserResult = await parser(parsedUrl);
 
-        const podcast = await fetchPodcast(
-          parserResult.itunesId,
-          parserResult.feeds,
-        );
+        const podcast = await fetchPodcast(parserResult);
 
         if (!podcast) {
           return {};
         }
         const episode = await fetchEpisode(
           parseInt(podcast.id, 10),
-          parserResult.enclosureUrl,
-          parserResult.episodeTitle,
-          url,
+          parserResult,
         );
 
         // log resolve
@@ -96,10 +91,9 @@ export type ParserResult = {
   enclosureUrl?: string;
 };
 
-const PARSER: Record<
-  string,
-  (url: URL.UrlWithStringQuery) => Promise<ParserResult>
-> = {
+export type Parser = (url: URL.UrlWithStringQuery) => Promise<ParserResult>;
+
+const PARSER: Record<string, Parser> = {
   'podcasts.apple.com': apple,
   'castro.fm': castro,
   'overcast.fm': overcast,

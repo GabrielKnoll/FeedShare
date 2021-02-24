@@ -1,35 +1,21 @@
 import apple from '../apple';
-import URL from 'url';
+import expectParserResult from '../_expectParserResult';
 
 describe('Apple', () => {
-  it('podcast', async () => {
-    const res = await apple(
-      URL.parse(
-        'https://podcasts.apple.com/de/podcast/luftpost-podcast/id409553739',
-      ),
-    );
-    expect(res).toEqual({
-      applePodcastId: '409553739',
-      type: 'Podcast',
-    });
-  });
-
-  it('episode', async () => {
-    const res = await apple(
-      URL.parse(
-        'https://podcasts.apple.com/de/podcast/senegal/id409553739?i=1000489471624',
-      ),
-    );
-    expect(res).toEqual({
-      applePodcastId: '409553739',
-      appleEpisodeId: '1000489471624',
-      type: 'Episode',
-    });
-  });
-
-  it('garbage', async () => {
-    expect(
-      apple(URL.parse('https://podcasts.apple.com/garbage')),
-    ).rejects.toThrowError();
-  });
+  expectParserResult(apple, [
+    [
+      'https://podcasts.apple.com/de/podcast/luftpost-podcast/id409553739',
+      {
+        itunesId: 409553739,
+      },
+    ],
+    [
+      'https://podcasts.apple.com/de/podcast/senegal/id409553739?i=1000489471624',
+      {
+        itunesId: 409553739,
+        enclosureUrl:
+          'https://luftpost-podcast.de/media/luftpost107-senegal.mp3',
+      },
+    ],
+  ]);
 });

@@ -1,4 +1,4 @@
-import {extendType} from '@nexus/schema';
+import {extendType} from 'nexus';
 import {gql} from 'graphql-request';
 import datoCMS from '../../utils/datoCMS';
 

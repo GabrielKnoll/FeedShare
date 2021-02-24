@@ -25,6 +25,7 @@ public struct Artwork: View {
     let placeholder = Rectangle()
         .skeleton(with: true)
         .shape(type: .rectangle)
+        
     
     public var body: some View {
         VStack {
@@ -40,7 +41,8 @@ public struct Artwork: View {
                     content: { proxy in
                         proxy
                             .resizable()
-                            .aspectRatio(contentMode: .fill)
+//                            .strokeBorder(Color.black.opacity(0.15), lineWidth: 1)
+//                            .aspectRatio(contentMode: .fill)
                             .clipped()
                     })
             } else {

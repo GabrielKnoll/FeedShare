@@ -89,51 +89,116 @@ public struct R: Rswift.Validatable {
     try intern.validate()
   }
 
-  /// This `R.color` struct is generated, and contains static references to 3 colors.
+  /// This `R.color` struct is generated, and contains static references to 8 colors.
   public struct color {
-    /// Color `Accent`.
-    public static let accent = Rswift.ColorResource(bundle: R.hostingBundle, name: "Accent")
-    /// Color `Background`.
-    public static let background = Rswift.ColorResource(bundle: R.hostingBundle, name: "Background")
-    /// Color `DropShadow`.
-    public static let dropShadow = Rswift.ColorResource(bundle: R.hostingBundle, name: "DropShadow")
+    /// Color `BackgroundColor`.
+    public static let backgroundColor = Rswift.ColorResource(bundle: R.hostingBundle, name: "BackgroundColor")
+    /// Color `BrandColor`.
+    public static let brandColor = Rswift.ColorResource(bundle: R.hostingBundle, name: "BrandColor")
+    /// Color `DangerColor`.
+    public static let dangerColor = Rswift.ColorResource(bundle: R.hostingBundle, name: "DangerColor")
+    /// Color `LightWashColor`.
+    public static let lightWashColor = Rswift.ColorResource(bundle: R.hostingBundle, name: "LightWashColor")
+    /// Color `PrimaryColor`.
+    public static let primaryColor = Rswift.ColorResource(bundle: R.hostingBundle, name: "PrimaryColor")
+    /// Color `SecondaryColor`.
+    public static let secondaryColor = Rswift.ColorResource(bundle: R.hostingBundle, name: "SecondaryColor")
+    /// Color `TertiaryColor`.
+    public static let tertiaryColor = Rswift.ColorResource(bundle: R.hostingBundle, name: "TertiaryColor")
+    /// Color `WashColor`.
+    public static let washColor = Rswift.ColorResource(bundle: R.hostingBundle, name: "WashColor")
 
     #if os(iOS) || os(tvOS)
-    /// `UIColor(named: "Accent", bundle: ..., traitCollection: ...)`
+    /// `UIColor(named: "BackgroundColor", bundle: ..., traitCollection: ...)`
     @available(tvOS 11.0, *)
     @available(iOS 11.0, *)
-    public static func accent(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
-      return UIKit.UIColor(resource: R.color.accent, compatibleWith: traitCollection)
+    public static func backgroundColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.backgroundColor, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIColor(named: "Background", bundle: ..., traitCollection: ...)`
+    /// `UIColor(named: "BrandColor", bundle: ..., traitCollection: ...)`
     @available(tvOS 11.0, *)
     @available(iOS 11.0, *)
-    public static func background(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
-      return UIKit.UIColor(resource: R.color.background, compatibleWith: traitCollection)
+    public static func brandColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.brandColor, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIColor(named: "DropShadow", bundle: ..., traitCollection: ...)`
+    /// `UIColor(named: "DangerColor", bundle: ..., traitCollection: ...)`
     @available(tvOS 11.0, *)
     @available(iOS 11.0, *)
-    public static func dropShadow(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
-      return UIKit.UIColor(resource: R.color.dropShadow, compatibleWith: traitCollection)
+    public static func dangerColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.dangerColor, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIColor(named: "LightWashColor", bundle: ..., traitCollection: ...)`
+    @available(tvOS 11.0, *)
+    @available(iOS 11.0, *)
+    public static func lightWashColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.lightWashColor, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIColor(named: "PrimaryColor", bundle: ..., traitCollection: ...)`
+    @available(tvOS 11.0, *)
+    @available(iOS 11.0, *)
+    public static func primaryColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.primaryColor, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIColor(named: "SecondaryColor", bundle: ..., traitCollection: ...)`
+    @available(tvOS 11.0, *)
+    @available(iOS 11.0, *)
+    public static func secondaryColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.secondaryColor, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIColor(named: "TertiaryColor", bundle: ..., traitCollection: ...)`
+    @available(tvOS 11.0, *)
+    @available(iOS 11.0, *)
+    public static func tertiaryColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.tertiaryColor, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIColor(named: "WashColor", bundle: ..., traitCollection: ...)`
+    @available(tvOS 11.0, *)
+    @available(iOS 11.0, *)
+    public static func washColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
+      return UIKit.UIColor(resource: R.color.washColor, compatibleWith: traitCollection)
     }
     #endif
 
     fileprivate init() {}
   }
 
-  /// This `R.file` struct is generated, and contains static references to 2 files.
+  /// This `R.file` struct is generated, and contains static references to 7 files.
   public struct file {
     /// Resource file `IBMPlexSans-Medium.ttf`.
     public static let ibmPlexSansMediumTtf = Rswift.FileResource(bundle: R.hostingBundle, name: "IBMPlexSans-Medium", pathExtension: "ttf")
     /// Resource file `IBMPlexSans-Regular.ttf`.
     public static let ibmPlexSansRegularTtf = Rswift.FileResource(bundle: R.hostingBundle, name: "IBMPlexSans-Regular", pathExtension: "ttf")
+    /// Resource file `Inter-Bold.otf`.
+    public static let interBoldOtf = Rswift.FileResource(bundle: R.hostingBundle, name: "Inter-Bold", pathExtension: "otf")
+    /// Resource file `Inter-Medium.otf`.
+    public static let interMediumOtf = Rswift.FileResource(bundle: R.hostingBundle, name: "Inter-Medium", pathExtension: "otf")
+    /// Resource file `Inter-Regular.otf`.
+    public static let interRegularOtf = Rswift.FileResource(bundle: R.hostingBundle, name: "Inter-Regular", pathExtension: "otf")
+    /// Resource file `Inter-SemiBold.otf`.
+    public static let interSemiBoldOtf = Rswift.FileResource(bundle: R.hostingBundle, name: "Inter-SemiBold", pathExtension: "otf")
+    /// Resource file `TiemposHeadline-Semibold.otf`.
+    public static let tiemposHeadlineSemiboldOtf = Rswift.FileResource(bundle: R.hostingBundle, name: "TiemposHeadline-Semibold", pathExtension: "otf")
 
     /// `bundle.url(forResource: "IBMPlexSans-Medium", withExtension: "ttf")`
     public static func ibmPlexSansMediumTtf(_: Void = ()) -> Foundation.URL? {
@@ -147,15 +212,55 @@ public struct R: Rswift.Validatable {
       return fileResource.bundle.url(forResource: fileResource)
     }
 
+    /// `bundle.url(forResource: "Inter-Bold", withExtension: "otf")`
+    public static func interBoldOtf(_: Void = ()) -> Foundation.URL? {
+      let fileResource = R.file.interBoldOtf
+      return fileResource.bundle.url(forResource: fileResource)
+    }
+
+    /// `bundle.url(forResource: "Inter-Medium", withExtension: "otf")`
+    public static func interMediumOtf(_: Void = ()) -> Foundation.URL? {
+      let fileResource = R.file.interMediumOtf
+      return fileResource.bundle.url(forResource: fileResource)
+    }
+
+    /// `bundle.url(forResource: "Inter-Regular", withExtension: "otf")`
+    public static func interRegularOtf(_: Void = ()) -> Foundation.URL? {
+      let fileResource = R.file.interRegularOtf
+      return fileResource.bundle.url(forResource: fileResource)
+    }
+
+    /// `bundle.url(forResource: "Inter-SemiBold", withExtension: "otf")`
+    public static func interSemiBoldOtf(_: Void = ()) -> Foundation.URL? {
+      let fileResource = R.file.interSemiBoldOtf
+      return fileResource.bundle.url(forResource: fileResource)
+    }
+
+    /// `bundle.url(forResource: "TiemposHeadline-Semibold", withExtension: "otf")`
+    public static func tiemposHeadlineSemiboldOtf(_: Void = ()) -> Foundation.URL? {
+      let fileResource = R.file.tiemposHeadlineSemiboldOtf
+      return fileResource.bundle.url(forResource: fileResource)
+    }
+
     fileprivate init() {}
   }
 
-  /// This `R.font` struct is generated, and contains static references to 2 fonts.
+  /// This `R.font` struct is generated, and contains static references to 7 fonts.
   public struct font: Rswift.Validatable {
     /// Font `IBMPlexSans-Medium`.
     public static let ibmPlexSansMedium = Rswift.FontResource(fontName: "IBMPlexSans-Medium")
     /// Font `IBMPlexSans`.
     public static let ibmPlexSans = Rswift.FontResource(fontName: "IBMPlexSans")
+    /// Font `Inter-Bold`.
+    public static let interBold = Rswift.FontResource(fontName: "Inter-Bold")
+    /// Font `Inter-Medium`.
+    public static let interMedium = Rswift.FontResource(fontName: "Inter-Medium")
+    /// Font `Inter-Regular`.
+    public static let interRegular = Rswift.FontResource(fontName: "Inter-Regular")
+    /// Font `Inter-SemiBold`.
+    public static let interSemiBold = Rswift.FontResource(fontName: "Inter-SemiBold")
+    /// Font `TiemposHeadline-Semibold`.
+    public static let tiemposHeadlineSemibold = Rswift.FontResource(fontName: "TiemposHeadline-Semibold")
 
     /// `UIFont(name: "IBMPlexSans", size: ...)`
     public static func ibmPlexSans(size: CGFloat) -> UIKit.UIFont? {
@@ -167,20 +272,52 @@ public struct R: Rswift.Validatable {
       return UIKit.UIFont(resource: ibmPlexSansMedium, size: size)
     }
 
+    /// `UIFont(name: "Inter-Bold", size: ...)`
+    public static func interBold(size: CGFloat) -> UIKit.UIFont? {
+      return UIKit.UIFont(resource: interBold, size: size)
+    }
+
+    /// `UIFont(name: "Inter-Medium", size: ...)`
+    public static func interMedium(size: CGFloat) -> UIKit.UIFont? {
+      return UIKit.UIFont(resource: interMedium, size: size)
+    }
+
+    /// `UIFont(name: "Inter-Regular", size: ...)`
+    public static func interRegular(size: CGFloat) -> UIKit.UIFont? {
+      return UIKit.UIFont(resource: interRegular, size: size)
+    }
+
+    /// `UIFont(name: "Inter-SemiBold", size: ...)`
+    public static func interSemiBold(size: CGFloat) -> UIKit.UIFont? {
+      return UIKit.UIFont(resource: interSemiBold, size: size)
+    }
+
+    /// `UIFont(name: "TiemposHeadline-Semibold", size: ...)`
+    public static func tiemposHeadlineSemibold(size: CGFloat) -> UIKit.UIFont? {
+      return UIKit.UIFont(resource: tiemposHeadlineSemibold, size: size)
+    }
+
     public static func validate() throws {
       if R.font.ibmPlexSans(size: 42) == nil { throw Rswift.ValidationError(description:"[R.swift] Font 'IBMPlexSans' could not be loaded, is 'IBMPlexSans-Regular.ttf' added to the UIAppFonts array in this targets Info.plist?") }
       if R.font.ibmPlexSansMedium(size: 42) == nil { throw Rswift.ValidationError(description:"[R.swift] Font 'IBMPlexSans-Medium' could not be loaded, is 'IBMPlexSans-Medium.ttf' added to the UIAppFonts array in this targets Info.plist?") }
+      if R.font.interBold(size: 42) == nil { throw Rswift.ValidationError(description:"[R.swift] Font 'Inter-Bold' could not be loaded, is 'Inter-Bold.otf' added to the UIAppFonts array in this targets Info.plist?") }
+      if R.font.interMedium(size: 42) == nil { throw Rswift.ValidationError(description:"[R.swift] Font 'Inter-Medium' could not be loaded, is 'Inter-Medium.otf' added to the UIAppFonts array in this targets Info.plist?") }
+      if R.font.interRegular(size: 42) == nil { throw Rswift.ValidationError(description:"[R.swift] Font 'Inter-Regular' could not be loaded, is 'Inter-Regular.otf' added to the UIAppFonts array in this targets Info.plist?") }
+      if R.font.interSemiBold(size: 42) == nil { throw Rswift.ValidationError(description:"[R.swift] Font 'Inter-SemiBold' could not be loaded, is 'Inter-SemiBold.otf' added to the UIAppFonts array in this targets Info.plist?") }
+      if R.font.tiemposHeadlineSemibold(size: 42) == nil { throw Rswift.ValidationError(description:"[R.swift] Font 'TiemposHeadline-Semibold' could not be loaded, is 'TiemposHeadline-Semibold.otf' added to the UIAppFonts array in this targets Info.plist?") }
     }
 
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 2 images.
+  /// This `R.image` struct is generated, and contains static references to 3 images.
   public struct image {
     /// Image `Composer`.
     public static let composer = Rswift.ImageResource(bundle: R.hostingBundle, name: "Composer")
     /// Image `Logo`.
     public static let logo = Rswift.ImageResource(bundle: R.hostingBundle, name: "Logo")
+    /// Image `Twitter`.
+    public static let twitter = Rswift.ImageResource(bundle: R.hostingBundle, name: "Twitter")
 
     #if os(iOS) || os(tvOS)
     /// `UIImage(named: "Composer", bundle: ..., traitCollection: ...)`
@@ -193,6 +330,13 @@ public struct R: Rswift.Validatable {
     /// `UIImage(named: "Logo", bundle: ..., traitCollection: ...)`
     public static func logo(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.logo, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Twitter", bundle: ..., traitCollection: ...)`
+    public static func twitter(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.twitter, compatibleWith: traitCollection)
     }
     #endif
 

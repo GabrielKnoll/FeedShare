@@ -28,11 +28,14 @@ public struct ComposerMessage: View {
             VStack {
                 if let episode = composerModel.episode {
                     EpisodeAttachment(data: episode)
+                        .padding(.horizontal, 20)
+                        .padding(.top, 10)
                 }
                 ZStack(alignment: .topLeading) {
                     if message.isEmpty {
                         Text("What makes you love this episode?")
-                            .foregroundColor(.secondary)
+                            .font(Typography.body)
+                            .foregroundColor(Color(R.color.secondaryColor.name))
                             .padding(.top, 8)
                             .padding(.leading, 5)
                     }
@@ -42,19 +45,31 @@ public struct ComposerMessage: View {
                         disabled: composerModel.isLoading == .createShare
                     )
                 }
+                .padding(.horizontal, 17)
                 
-                Text("\(message.count)/\(characterLimit)")
-                    .font(.footnote)
-                
-                HStack {
+                VStack(spacing: 10) {
+                    Divider().background(Color(R.color.tertiaryColor.name))
+                    
                     Toggle(isOn: $shareOnTwitter, label: {
                         Text("Share on Twitter")
+                            .font(Typography.caption)
+                            .foregroundColor(Color(shareOnTwitter ? R.color.primaryColor.name : R.color.secondaryColor.name))
                     })
+                    .toggleStyle(SwitchToggleStyle(tint: Color(R.color.brandColor.name)))
+                    .padding(.horizontal, 20)
+                    
+                    Divider().background(Color(R.color.tertiaryColor.name))
+                    
                     Toggle(isOn: $hideFromGlobalFeed, label: {
                         Text("Hide from Global Feed")
+                            .font(Typography.caption)
+                            .foregroundColor(Color(hideFromGlobalFeed ? R.color.primaryColor.name : R.color.secondaryColor.name))
                     })
+                    .toggleStyle(SwitchToggleStyle(tint: Color(R.color.brandColor.name)))
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 10)
                 }
-            }.padding(20)
+            }
             .onReceive(composerModel.$share) { share in
                 if let s = share {
                     NotificationCenter.default.post(name: .reloadFeed, object: s)
@@ -67,21 +82,24 @@ public struct ComposerMessage: View {
             if composerModel.isLoading == .createShare {
                 Rectangle()
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-                    .background(Color.black)
-                    .opacity(0.1)
+                    .foregroundColor(Color(R.color.lightWashColor.name))
+                    .opacity(0.5)
             }
         }
+        .foregroundColor(Color(R.color.primaryColor.name))
         .onDisappear(perform: {
             composerModel.episode = nil
         })
         .navigationBarItems(trailing:
                                 Button("Publish") {
+                                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                     composerModel.createShare(
                                         message: message,
                                         shareOnTwitter: shareOnTwitter,
                                         hideFromGlobalFeed: hideFromGlobalFeed
                                     )
                                 }
+                                .foregroundColor(Color(message.isEmpty ? R.color.secondaryColor.name : R.color.primaryColor.name))
                                 .opacity(composerModel.isLoading == .createShare ? 0 : 1)
                                 .background(
                                     composerModel.isLoading == .createShare

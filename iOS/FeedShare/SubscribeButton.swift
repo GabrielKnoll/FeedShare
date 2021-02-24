@@ -10,6 +10,8 @@ import SwiftUI
 
 public struct SubscribeButton: View {
     @EnvironmentObject var viewerModel: ViewerModel
+    @State private var showError = false
+    
     let feed: String?
     let callback: Callback?
     
@@ -31,22 +33,10 @@ public struct SubscribeButton: View {
         
         if let url = URL(string: urlToOpen ?? "") {
             UIApplication.shared.open(url, completionHandler: { success in
-                let alertController = UIAlertController(
-                    title: "Unable to Subscribe",
-                    message: "\(client.displayName) could not be launched to subscribe to this podcast. Please make sure the app is installed.",
-                    preferredStyle: .alert
-                )
-                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                UIApplication.shared.windows.first?.rootViewController?.present(
-                    alertController,
-                    animated: true,
-                    completion: nil
-                )
+                if let cb = callback {
+                    cb(success)
+                }
             })
-        }
-        
-        if let cb = callback {
-            cb(false)
         }
     }
     
@@ -54,13 +44,24 @@ public struct SubscribeButton: View {
         if let client = viewerModel.viewerClient {
             Button(action: {
                 SubscribeButton.openURL(client, feed: feed) { success in
+                    if !success {
+                        showError = true
+                    }
                     if let cb = self.callback {
                         cb(success)
                     }
                 }
             }) {
                 Text("Subscribe in \(client.displayName)")
-            }.disabled(feed == nil)
+            }
+            .disabled(feed == nil)
+            .alert(isPresented: $showError, content: {
+                Alert(
+                    title: Text("Unable to Subscribe"),
+                    message: Text("\(client.displayName) could not be launched to subscribe to this podcast. Please make sure the app is installed."),
+                    dismissButton: .default(Text("OK"))
+                )
+            })
         }
     }
 }

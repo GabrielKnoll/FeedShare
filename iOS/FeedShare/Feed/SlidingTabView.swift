@@ -22,6 +22,7 @@
 //  THE SOFTWARE.
 //
 import SwiftUI
+import Shared
 
 @available(iOS 13.0, *)
 public struct SlidingTabView: View {
@@ -124,12 +125,12 @@ public struct SlidingTabView: View {
                         .fill(self.selectionBarColor)
                         .frame(width: self.tabWidth(from: geometry.size.width), height: self.selectionBarHeight, alignment: .leading)
                         .offset(x: self.selectionBarXOffset(from: geometry.size.width), y: 0)
-                        .animation(self.animation)
+                        .animation(self.animation, value: self.selectionState)
                 }.fixedSize(horizontal: false, vertical: true)
             }
             .frame(height: max(selectionBarBackgroundHeight, selectionBarHeight))
             .fixedSize(horizontal: false, vertical: true)
-            Divider()
+            Divider().background(Color(R.color.tertiaryColor.name))
         }.padding(0)
     }
     
@@ -159,8 +160,8 @@ struct SlidingTabConsumerView: View {
             SlidingTabView(selection: self.$selectedTabIndex,
                            tabs: ["First", "Second"],
                            font: .body,
-                           activeAccentColor: Color.blue,
-                           selectionBarColor: Color.blue)
+                           activeAccentColor: Color(R.color.primaryColor.name),
+                           selectionBarColor: Color(R.color.primaryColor.name))
             (selectedTabIndex == 0 ? Text("First View") : Text("Second View")).padding()
             Spacer()
         }
@@ -170,7 +171,7 @@ struct SlidingTabConsumerView: View {
 }
 
 @available(iOS 13.0.0, *)
-struct SlidingTabView_Previews : PreviewProvider {
+struct SlidingTabView_Previews: PreviewProvider {
     static var previews: some View {
         SlidingTabConsumerView()
     }

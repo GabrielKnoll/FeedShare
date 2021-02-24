@@ -1,4 +1,4 @@
-import {interfaceType} from '@nexus/schema';
+import {interfaceType} from 'nexus';
 import {
   NexusGenInterfaces,
   NexusGenFieldTypes,

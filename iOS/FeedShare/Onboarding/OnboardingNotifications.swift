@@ -8,8 +8,14 @@ public struct OnboardingNotifications: View {
 
     public var body: some View {
         VStack {
-            Friends()
-            Text("Get notified when one of your friends shares a recommendation.")
+            Spacer()
+            OnboardingTextPairing(
+                title: "Get Notfied",
+                subtitle: "We’ll let you know when someone you follow recommends an episode.",
+                dark: false
+            )
+            Spacer()
+            Facepile().padding(.bottom, 24)
             Button(action: {
                 OneSignal.promptForPushNotifications(userResponse: { accepted in
                     print("User accepted notifications: \(accepted)")
@@ -19,12 +25,10 @@ public struct OnboardingNotifications: View {
                 Text("Turn on Notifications")
             }
             .buttonStyle(FilledButton())
-            Button(action: {
-                onNext()
-            }) {
+            Button(action: onNext) {
                 Text("Skip")
             }
-            .buttonStyle(SecondaryButton())
+            .buttonStyle(LinkButton())
         }
     }
 }

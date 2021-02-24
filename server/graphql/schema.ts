@@ -16,6 +16,7 @@ import pages from './queries/pages';
 import podcastClient from './queries/podcastClient';
 import createViewer from './mutations/createViewer';
 import createShare from './mutations/createShare';
+import addToPersonalFeed from './mutations/addToPersonalFeed';
 import Node from './models/Node';
 import User from './models/User';
 import Page from './models/Page';
@@ -72,6 +73,7 @@ export default makeSchema({
     // mutations
     createViewer,
     createShare,
+    addToPersonalFeed,
   ],
   plugins: [
     nexusPrisma({
@@ -80,7 +82,9 @@ export default makeSchema({
     fieldAuthorizePlugin({
       formatError: () => new AuthenticationError('Not authorized'),
     }),
-    connectionPlugin(),
+    connectionPlugin({
+      validateArgs: () => true,
+    }),
     connectionPlugin({
       typePrefix: 'Countable',
       nexusFieldName: 'countableConnection',
@@ -89,5 +93,5 @@ export default makeSchema({
       },
     }),
   ],
-  shouldGenerateArtifacts: process.env.NODE_ENV === 'development',
+  shouldGenerateArtifacts: process.env.NODE_ENV !== 'production',
 });

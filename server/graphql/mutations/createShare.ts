@@ -9,7 +9,7 @@ export default extendType({
     t.field('createShare', {
       type: 'Share',
       args: {
-        message: stringArg(),
+        message: nonNull(stringArg()),
         episodeId: nonNull(idArg()),
         shareOnTwitter: booleanArg(),
         hideFromGlobalFeed: booleanArg({
@@ -30,7 +30,7 @@ export default extendType({
                   id: parseId(episodeId).key,
                 },
               },
-              message,
+              message: message?.trim(),
               hideFromGlobalFeed: hideFromGlobalFeed ?? false,
               author: {
                 connect: {
@@ -42,7 +42,7 @@ export default extendType({
           return result;
         } catch (e) {
           if (e.code === 'P2002') {
-            throw new UserInputError('P2002');
+            throw new UserInputError(e.code);
           }
           throw e;
         }

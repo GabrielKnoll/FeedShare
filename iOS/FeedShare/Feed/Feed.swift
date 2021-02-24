@@ -18,13 +18,17 @@ public struct Feed: View {
     init(type: FeedType, paddingTop: CGFloat = 0) {
         self.paddingTop = paddingTop
         self.type = type
-        _feedModel = StateObject(wrappedValue: FeedModel(type: type))
-    }
-    
-    func inviteFriends() {
-        guard let data = URL(string: "https://feed.buechele.cc") else { return }
-        let av = UIActivityViewController(activityItems: [data], applicationActivities: nil)
-        UIApplication.shared.windows.first?.rootViewController?.present(av, animated: true, completion: nil)
+        switch self.type {
+        case .global:
+            _feedModel = StateObject(wrappedValue: FeedModel.global)
+        case .personal:
+            _feedModel = StateObject(wrappedValue: FeedModel.personal)
+        case .user:
+            _feedModel = StateObject(wrappedValue: FeedModel.user)
+        case .__unknown(_):
+            _feedModel = StateObject(wrappedValue: FeedModel.global)
+        }
+        
     }
     
     public var body: some View {
@@ -35,13 +39,7 @@ public struct Feed: View {
                 Spacer()
             } else if feedModel.initialized, feedModel.shares.isEmpty {
                 Spacer()
-                Text("It's quiet here...").fontWeight(.bold)
-                Text("Be the first of your friends to share an episode or explore the Global feed.")
-                    .multilineTextAlignment(.center)
-                Friends()
-                Button(action: inviteFriends) {
-                    Text("Invite Friends")
-                }
+                FeedEmpty(type: type)
                 Spacer()
             } else {
                 RefreshableScrollView(
@@ -53,6 +51,7 @@ public struct Feed: View {
                             if let fragment = edge.node?.fragments.shareFragment {
                                 FeedItem(data: fragment)
                                     .padding(.top, 5)
+                                    .padding(.horizontal, 15)
                             }
                         }
                     }
@@ -60,5 +59,20 @@ public struct Feed: View {
                 }
             }
         }
+        .frame(maxWidth: .infinity)
+        .overlay(LinearGradient(
+                    gradient: Gradient(colors: [
+                        Color(R.color.primaryColor.name).opacity(0.10),
+                        Color(R.color.primaryColor.name).opacity(0.0),
+                        .clear
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom)
+                    .allowsHitTesting(false)
+                    .frame(height: 32)
+                    .padding(.top, paddingTop - 10),
+                 alignment: .top)
+        .background(Color(R.color.lightWashColor.name))
+        .edgesIgnoringSafeArea(.bottom)
     }
 }
