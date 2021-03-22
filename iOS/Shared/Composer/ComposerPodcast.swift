@@ -10,7 +10,7 @@ import URLImage
 
 public struct ComposerPodcast: View {
     var podcast: ComposerPodcastFragment
-    
+
     public var body: some View {
         HStack {
             Artwork(url: podcast.artwork, size: 65.0)

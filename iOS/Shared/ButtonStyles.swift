@@ -9,16 +9,15 @@ import Foundation
 import SwiftUI
 
 public struct FilledButton: ButtonStyle {
-    
     public init() {}
-    
+
     public func makeBody(configuration: Configuration) -> some View {
         FilledButtonView(configuration: configuration)
     }
 
     struct FilledButtonView: View {
         let configuration: ButtonStyle.Configuration
-        
+
         @Environment(\.isEnabled) private var isEnabled: Bool
         var body: some View {
             configuration.label
@@ -36,9 +35,8 @@ public struct FilledButton: ButtonStyle {
 }
 
 public struct LinkButton: ButtonStyle {
-    
     public init() {}
-    
+
     public func makeBody(configuration: Configuration) -> some View {
         configuration
             .label
@@ -50,16 +48,15 @@ public struct LinkButton: ButtonStyle {
 }
 
 public struct InputButton: ButtonStyle {
-    
     public init() {}
-    
+
     public func makeBody(configuration: Configuration) -> some View {
         FilledButtonView(configuration: configuration)
     }
-    
+
     struct FilledButtonView: View {
         let configuration: ButtonStyle.Configuration
-        
+
         @Environment(\.isEnabled) private var isEnabled: Bool
         var body: some View {
             configuration.label
@@ -75,16 +72,15 @@ public struct InputButton: ButtonStyle {
 }
 
 public struct RowButton: ButtonStyle {
-    
     public init() {}
-    
+
     public func makeBody(configuration: Configuration) -> some View {
         FilledButtonView(configuration: configuration)
     }
 
     struct FilledButtonView: View {
         let configuration: ButtonStyle.Configuration
-        
+
         @Environment(\.isEnabled) private var isEnabled: Bool
         var body: some View {
             VStack(alignment: .leading, spacing: 0) {
@@ -92,11 +88,10 @@ public struct RowButton: ButtonStyle {
                     configuration.label
                         .font(Typography.button)
                         .frame(minHeight: 44)
-                    
+
                     Spacer()
                     Image(systemName: "chevron.right")
                         .foregroundColor(Color(R.color.secondaryColor.name))
-                    
                 }
                 .contentShape(Rectangle())
                 .foregroundColor(Color(R.color.primaryColor.name))

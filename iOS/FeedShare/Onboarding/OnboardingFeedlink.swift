@@ -3,9 +3,8 @@ import SwiftUI
 import URLImage
 
 public struct OnboardingFeedlink: View {
-    
     var onNext: () -> Void
-    
+
     public var body: some View {
         VStack {
             Spacer()
@@ -21,9 +20,9 @@ public struct OnboardingFeedlink: View {
                 .foregroundColor(Color(R.color.secondaryColor.name))
                 .font(Typography.body)
                 .multilineTextAlignment(.center)
-            
+
             Spacer()
-            
+
             Button(action: onNext) {
                 Text("Done")
             }

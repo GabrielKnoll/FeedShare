@@ -12,15 +12,15 @@ import URLImage
 public struct ComposerEpisode: View {
     @ObservedObject var composerModel: ComposerModel
     @State var selectedEpisode = false
-    
+
     static let taskDateFormat: DateFormatter = {
         let formatter = DateFormatter()
         let relativeFormatter = RelativeDateTimeFormatter()
-        
+
         formatter.dateStyle = .long
         return formatter
     }()
-    
+
     public var body: some View {
         VStack {
             if let data = composerModel.podcast {
@@ -28,7 +28,7 @@ public struct ComposerEpisode: View {
                     .padding(.horizontal, 20)
                     .padding(.top, 20)
             }
-            
+
             ScrollView {
                 NavigationLink(
                     destination: ComposerMessage(composerModel: composerModel),
@@ -36,7 +36,7 @@ public struct ComposerEpisode: View {
                 ) {
                     EmptyView()
                 }
-                
+
                 if let episodes = composerModel.latestEpisodes {
                     ForEach(episodes, id: \.id) { episode in
                         Button(action: {
@@ -47,13 +47,13 @@ public struct ComposerEpisode: View {
                     }
                     .padding(.horizontal, 20)
                 } else {
-                    ForEach(0..<5) { _ in
+                    ForEach(0 ..< 5) { _ in
                         ComposerEpisodeItem(episode: nil)
                     }
                     .padding(.horizontal, 20)
                 }
             }
-            .onReceive(composerModel.$episode, perform: {episode in
+            .onReceive(composerModel.$episode, perform: { episode in
                 if episode != nil {
                     self.selectedEpisode = true
                 }
@@ -69,17 +69,18 @@ public struct ComposerEpisode: View {
         })
     }
 }
-//}
+
+// }
 
 public struct ComposerEpisodeItem: View {
     let episode: EpisodeAttachmentFragment?
-    
+
     public var body: some View {
         HStack {
             VStack(alignment: .leading) {
                 Text(episode?.title)
                     .font(Typography.bodyBold)
-                    
+
                     .lineLimit(1)
                     .skeleton(with: episode == nil)
                     .shape(type: .capsule)

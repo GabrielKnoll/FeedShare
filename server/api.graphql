@@ -64,7 +64,7 @@ interface Node {
 }
 
 type Page {
-  contentHTML: String
+  content: String
   id: ID!
   title: String!
 }

@@ -12,7 +12,7 @@ public struct Artwork: View {
     private let url: URL?
     private let size: CGFloat
     @State private var loading = true
-    
+
     public init(url: String?, size: Double) {
         if let u = url, let uu = URL(string: u) {
             self.url = uu
@@ -21,21 +21,20 @@ public struct Artwork: View {
         }
         self.size = CGFloat(size)
     }
-    
+
     let placeholder = Rectangle()
         .skeleton(with: true)
         .shape(type: .rectangle)
-        
-    
+
     public var body: some View {
         VStack {
             if let u = url {
                 URLImage(
                     url: u,
-                    inProgress: {_ in
+                    inProgress: { _ in
                         placeholder
                     },
-                    failure: {_, _ in
+                    failure: { _, _ in
                         placeholder
                     },
                     content: { proxy in
@@ -44,7 +43,8 @@ public struct Artwork: View {
 //                            .strokeBorder(Color.black.opacity(0.15), lineWidth: 1)
 //                            .aspectRatio(contentMode: .fill)
                             .clipped()
-                    })
+                    }
+                )
             } else {
                 placeholder
             }

@@ -15,10 +15,10 @@ public struct Settings: View {
     @State private var notifications = OneSignal.getDeviceState()?.isSubscribed ?? false
     @State private var logoutAlert = false
     @ObservedObject var settingsModel = SettingsModel()
-    
+
     private var sectionPadding: CGFloat = 18
     private var titlePadding: CGFloat = 7
-    
+
     public var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
@@ -26,21 +26,21 @@ public struct Settings: View {
                     .font(Typography.button)
                     .padding(.top, sectionPadding)
                     .padding(.bottom, titlePadding)
-                
+
                 SettingsClient()
-                
+
                 Text("Personal Feed")
                     .font(Typography.button)
                     .padding(.top, sectionPadding)
                     .padding(.bottom, titlePadding)
-                
+
                 Text("Subscribe to your Personal Feed to listen to episodes recommended by people you follow right in your podcast app.")
                     .foregroundColor(Color(R.color.secondaryColor.name))
                     .font(Typography.body)
                     .padding(.bottom, titlePadding)
-                
+
                 FeedLink()
-                
+
                 if let client = viewerModel.viewerClient {
                     Button(action: {
                         SubscribeButton.openURL(client, feed: viewerModel.viewer?.personalFeed)
@@ -50,12 +50,12 @@ public struct Settings: View {
                     .buttonStyle(LinkButton())
                     .padding(.vertical, -5)
                 }
-                
+
                 Text("Notifications")
                     .font(Typography.button)
                     .padding(.top, sectionPadding)
                     .padding(.bottom, titlePadding)
-                
+
                 Toggle(isOn: $notifications) {
                     Text("Get notified when a person you follow recommends a new episode")
                         .fixedSize(horizontal: false, vertical: true)
@@ -70,19 +70,20 @@ public struct Settings: View {
                                 self.notifications = false
                                 let alertController = UIAlertController(
                                     title: "Notifications are Disabled",
-                                    message: "FeedShare will not be able to send notifications, because it's diabled in Settings. Please enable notifications from the Settings app.",
+                                    message: "Truffle will not be able to send notifications, because it's diabled in Settings. Please enable notifications from the Settings app.",
                                     preferredStyle: .alert
                                 )
                                 alertController.addAction(UIAlertAction(title: "Open Settings", style: .default, handler: { _ in
                                     if let bundleIdentifier = Bundle.main.bundleIdentifier,
-                                       let appSettings = URL(string: UIApplication.openSettingsURLString + bundleIdentifier) {
+                                       let appSettings = URL(string: UIApplication.openSettingsURLString + bundleIdentifier)
+                                    {
                                         if UIApplication.shared.canOpenURL(appSettings) {
                                             UIApplication.shared.open(appSettings)
                                         }
                                     }
                                 }))
                                 alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-                                
+
                                 UIApplication.shared.windows.first?.rootViewController?.present(
                                     alertController,
                                     animated: true,
@@ -93,11 +94,11 @@ public struct Settings: View {
                     }
                     OneSignal.disablePush(!value)
                 }
-                
+
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(settingsModel.pages, id: \.id) { page in
                         NavigationLink(
-                            destination: WebView(text: page.contentHtml ?? "")
+                            destination: MarkdownPage(content: page.content ?? "")
                                 .navigationBarTitle(page.title, displayMode: .large)
                         ) {
                             Text(page.title)
@@ -107,7 +108,7 @@ public struct Settings: View {
                     }
                 }
                 .padding(.top, sectionPadding)
-                
+
                 Button(action: {
                     self.logoutAlert = true
                 }) {
@@ -122,18 +123,17 @@ public struct Settings: View {
                         message: Text("Are you sure you want to log out?"),
                         primaryButton: .destructive(Text("Log Out"), action: {
                             self.viewerModel.logout()
+                            NotificationCenter.default.post(name: .logoutFeed, object: nil)
                         }),
                         secondaryButton: .cancel(Text("Cancel"), action: {
                             self.logoutAlert = false
                         })
                     )
                 }
-                
             }
             .padding(.horizontal, 20)
             .foregroundColor(Color(R.color.primaryColor.name))
         }
         .navigationBarTitle("Settings", displayMode: .large)
-        
     }
 }

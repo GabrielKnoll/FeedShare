@@ -13,7 +13,7 @@ public struct PodcastClientRow: View {
     let icon: String?
     let name: String
     let action: () -> Void
-    
+
     public var body: some View {
         Button(action: self.action) {
             VStack(alignment: .leading, spacing: 0) {

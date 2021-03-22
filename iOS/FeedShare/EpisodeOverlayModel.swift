@@ -12,7 +12,7 @@ import Shared
 
 public class EpisodeOverlayModel: ObservableObject {
     @Published public var fragment: EpisodeOverlayFragment?
-    
+
     public init(id: String) {
         Network.shared.apollo.fetch(query: EpisodeOverlayQuery(id: id),
                                     cachePolicy: .returnCacheDataAndFetch) { result in

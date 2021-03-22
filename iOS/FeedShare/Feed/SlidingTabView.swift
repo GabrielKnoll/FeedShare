@@ -21,57 +21,56 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 //
-import SwiftUI
 import Shared
+import SwiftUI
 
 @available(iOS 13.0, *)
 public struct SlidingTabView: View {
-    
     // MARK: Internal State
-    
+
     /// Internal state to keep track of the selection index
     @State private var selectionState: Int = 0 {
         didSet {
             selection = selectionState
         }
     }
-    
+
     // MARK: Required Properties
-    
+
     /// Binding the selection index which will  re-render the consuming view
     @Binding var selection: Int
-    
+
     /// The title of the tabs
     let tabs: [String]
-    
+
     // MARK: View Customization Properties
-    
+
     /// The font of the tab title
     let font: Font
-    
+
     /// The selection bar sliding animation type
     let animation: Animation
-    
+
     /// The accent color when the tab is selected
     let activeAccentColor: Color
-    
+
     /// The accent color when the tab is not selected
     let inactiveAccentColor: Color
-    
+
     /// The color of the selection bar
     let selectionBarColor: Color
-    
+
     /// The height of the selection bar
     let selectionBarHeight: CGFloat
-    
+
     /// The selection bar background color
     let selectionBarBackgroundColor: Color
-    
+
     /// The height of the selection bar background
     let selectionBarBackgroundHeight: CGFloat
-    
+
     // MARK: init
-    
+
     public init(selection: Binding<Int>,
                 tabs: [String],
                 font: Font = .body,
@@ -81,8 +80,9 @@ public struct SlidingTabView: View {
                 selectionBarColor: Color = .blue,
                 selectionBarHeight: CGFloat = 2,
                 selectionBarBackgroundColor: Color = Color.gray.opacity(0.2),
-                selectionBarBackgroundHeight: CGFloat = 1) {
-        self._selection = selection
+                selectionBarBackgroundHeight: CGFloat = 1)
+    {
+        _selection = selection
         self.tabs = tabs
         self.font = font
         self.animation = animation
@@ -93,12 +93,12 @@ public struct SlidingTabView: View {
         self.selectionBarBackgroundColor = selectionBarBackgroundColor
         self.selectionBarBackgroundHeight = selectionBarBackgroundHeight
     }
-    
+
     // MARK: View Construction
-    
+
     public var body: some View {
         assert(tabs.count > 1, "Must have at least 2 tabs")
-        
+
         return VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 0) {
                 ForEach(self.tabs, id: \.self) { tab in
@@ -133,47 +133,47 @@ public struct SlidingTabView: View {
             Divider().background(Color(R.color.tertiaryColor.name))
         }.padding(0)
     }
-    
+
     // MARK: Private Helper
-    
+
     private func isSelected(tabIdentifier: String) -> Bool {
-        return tabs[selectionState] == tabIdentifier
+        tabs[selectionState] == tabIdentifier
     }
-    
+
     private func selectionBarXOffset(from totalWidth: CGFloat) -> CGFloat {
-        return self.tabWidth(from: totalWidth) * CGFloat(selectionState)
+        tabWidth(from: totalWidth) * CGFloat(selectionState)
     }
-    
+
     private func tabWidth(from totalWidth: CGFloat) -> CGFloat {
-        return totalWidth / CGFloat(tabs.count)
+        totalWidth / CGFloat(tabs.count)
     }
 }
 
 #if DEBUG
 
-@available(iOS 13.0, *)
-struct SlidingTabConsumerView: View {
-    @State private var selectedTabIndex = 0
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            SlidingTabView(selection: self.$selectedTabIndex,
-                           tabs: ["First", "Second"],
-                           font: .body,
-                           activeAccentColor: Color(R.color.primaryColor.name),
-                           selectionBarColor: Color(R.color.primaryColor.name))
-            (selectedTabIndex == 0 ? Text("First View") : Text("Second View")).padding()
-            Spacer()
-        }
-        .padding(.top, 50)
-            .animation(.none)
-    }
-}
+    @available(iOS 13.0, *)
+    struct SlidingTabConsumerView: View {
+        @State private var selectedTabIndex = 0
 
-@available(iOS 13.0.0, *)
-struct SlidingTabView_Previews: PreviewProvider {
-    static var previews: some View {
-        SlidingTabConsumerView()
+        var body: some View {
+            VStack(alignment: .leading) {
+                SlidingTabView(selection: self.$selectedTabIndex,
+                               tabs: ["First", "Second"],
+                               font: .body,
+                               activeAccentColor: Color(R.color.primaryColor.name),
+                               selectionBarColor: Color(R.color.primaryColor.name))
+                (selectedTabIndex == 0 ? Text("First View") : Text("Second View")).padding()
+                Spacer()
+            }
+            .padding(.top, 50)
+            .animation(.none)
+        }
     }
-}
+
+    @available(iOS 13.0.0, *)
+    struct SlidingTabView_Previews: PreviewProvider {
+        static var previews: some View {
+            SlidingTabConsumerView()
+        }
+    }
 #endif

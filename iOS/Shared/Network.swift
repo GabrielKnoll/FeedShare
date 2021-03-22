@@ -46,8 +46,10 @@ public final class Network {
             .userDomainMask,
             true
         ).first!
+
+        let sharedContainerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.findtruffle")
         // swiftlint:enable force_unwrapping
-        let documentsURL = URL(fileURLWithPath: documentsPath)
+        let documentsURL = URL(fileURLWithPath: sharedContainerURL!.absoluteString)
         let sqliteFileURL = documentsURL.appendingPathComponent("apollo.sqlite")
         // swiftlint:disable:next force_try
         let sqliteCache = try! SQLiteNormalizedCache(fileURL: sqliteFileURL)
@@ -58,7 +60,7 @@ public final class Network {
         let transport = RequestChainNetworkTransport(
             interceptorProvider: NetworkInterceptorProvider(store: store, client: URLSessionClient()),
             // swiftlint:disable force_unwrapping
-            endpointURL: URL(string: "https://podcast-sharing.vercel.app/api/graphql")!
+            endpointURL: URL(string: "https://api.findtruffle.com/graphql")!
         )
 
         let client = ApolloClient(networkTransport: transport, store: self.store)

@@ -3,8 +3,6 @@ import CommonCrypto
 import Shared
 import SwiftUI
 
-let TWITTER_CONSUMER_KEY = "kNJJx5p6sScuPD3z7ZUg13WW2"
-let TWITTER_CONSUMER_SECRET = "1CkHK3Hc88m1st8odzx27dpDzl30YS4vZJ40xvdlNdAGkJj9jk"
 let TWITTER_URL_SCHEME = "twittersdk"
 
 struct RequestOAuthTokenInput {
@@ -46,6 +44,14 @@ class TwitterService: NSObject, ObservableObject {
     }
 
     func authorize(viewerModel: ViewerModel) {
+        guard let TWITTER_CONSUMER_KEY = Bundle.main.object(forInfoDictionaryKey: "TWITTER_CONSUMER_KEY") as? String else {
+            return
+        }
+
+        guard let TWITTER_CONSUMER_SECRET = Bundle.main.object(forInfoDictionaryKey: "TWITTER_CONSUMER_SECRET") as? String else {
+            return
+        }
+
         showSheet = true // opens the sheet containing our safari view
 
         // Start Step 1: Requesting an access token

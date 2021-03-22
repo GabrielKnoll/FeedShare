@@ -13,22 +13,21 @@ import SwiftUI
 public class ComposerModel: ObservableObject {
     private var searchDebounce: AnyCancellable?
     private var searchCounter = 0
-    
-    public enum ResolveError {
+
+    public enum ComposerError {
         case none
-        case notFound
+        case urlNotFound
         case noURL
+        case duplicateShare
+        case shareFailed
     }
-    
-    public var dismiss: (() -> Void)?
+
     @Published public var url: String = ""
     @Published public var searchResults: [ComposerPodcastFragment]?
     @Published public var latestEpisodes: [EpisodeAttachmentFragment]?
     @Published public var episode: EpisodeAttachmentFragment?
     @Published public var share: ShareFragment?
-    @Published public var duplicateError = false
-    @Published public var genericError = false
-    @Published public var unresolvedUrlAlert: ResolveError = .none
+    @Published public var composerError: ComposerError = .none
     @Published public var searchText = "" {
         didSet {
             if searchText.isEmpty {
@@ -36,6 +35,7 @@ public class ComposerModel: ObservableObject {
             }
         }
     }
+
     @Published public var podcast: ComposerPodcastFragment? {
         didSet {
             if latestEpisodes == nil {
@@ -43,8 +43,9 @@ public class ComposerModel: ObservableObject {
             }
         }
     }
+
     @Published public var isLoading: LoadingState = .none
-    
+
     public enum LoadingState {
         case none
         case resolveUrl
@@ -53,53 +54,64 @@ public class ComposerModel: ObservableObject {
         case findPodcastBlocking
         case findPodcastNonBlocking
     }
-    
-    init() {
+
+    init(url: String?) {
         searchDebounce = AnyCancellable(
             $searchText.removeDuplicates()
                 .debounce(for: 0.8, scheduler: DispatchQueue.main)
                 .sink { searchText in
                     self.findPodcast(query: searchText, isBlocking: false)
                 })
+
+        if let u = url {
+            resolveUrl(url: u)
+        }
     }
-    
+
     func resolveUrl(url: String?) {
-        unresolvedUrlAlert = .none
-        if let u = url?.lowercased(), (u.starts(with: "http://") || u.starts(with: "https://")) {
+        composerError = .none
+        if let u = url?.lowercased(), u.starts(with: "http://") || u.starts(with: "https://") {
             self.url = u
         } else {
-            unresolvedUrlAlert = .noURL
+            composerError = .noURL
             return
         }
-        
-        self.isLoading = .resolveUrl
+
+        isLoading = .resolveUrl
         Network.shared.apollo.fetch(query: ResolveQuery(url: self.url),
                                     cachePolicy: .fetchIgnoringCacheCompletely) { result in
-            self.isLoading = .none
             switch result {
             case let .success(graphQLResult):
                 if let episode = graphQLResult.data?.resolveShareUrl?.episode?.fragments.episodeAttachmentFragment {
                     self.episode = episode
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        self.isLoading = .none
+                    }
                 } else if let podcast = graphQLResult.data?.resolveShareUrl?.podcast?.fragments.composerPodcastFragment {
                     self.podcast = podcast
                     self.latestEpisodes = graphQLResult.data?.resolveShareUrl?.podcast?.latestEpisodes?.compactMap {
                         $0?.fragments.episodeAttachmentFragment
                     } ?? []
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        self.isLoading = .none
+                    }
                 } else {
-                    self.unresolvedUrlAlert = .notFound
+                    self.composerError = .urlNotFound
+                    self.isLoading = .none
                 }
             case .failure:
-                self.unresolvedUrlAlert = .notFound
+                self.composerError = .urlNotFound
                 self.episode = nil
                 self.podcast = nil
                 self.latestEpisodes = nil
+                self.isLoading = .none
             }
         }
     }
-    
+
     func getLatestEpisodes() {
         if let id = podcast?.id {
-            self.isLoading = .latestEpisodes
+            isLoading = .latestEpisodes
             Network.shared.apollo.fetch(query: LatestEpisodesQuery(podcast: id),
                                         cachePolicy: .returnCacheDataAndFetch) { result in
                 self.isLoading = .none
@@ -112,11 +124,9 @@ public class ComposerModel: ObservableObject {
                     self.latestEpisodes = nil
                 }
             }
-        } else {
-            print("------------podcast id nil")
         }
     }
-    
+
     func findPodcast(query: String, isBlocking: Bool = true) {
         if query.lowercased().starts(with: "http://") || query.lowercased().starts(with: "https://") {
             if isBlocking {
@@ -124,15 +134,15 @@ public class ComposerModel: ObservableObject {
             }
             return
         }
-        
+
         // cancel running request
         if searchText.count < 2 {
-            self.isLoading = .none
-            self.searchResults = nil
+            isLoading = .none
+            searchResults = nil
             return
         }
-        let current = self.searchCounter + 1
-        self.isLoading = isBlocking ? .findPodcastBlocking : .findPodcastNonBlocking
+        let current = searchCounter + 1
+        isLoading = isBlocking ? .findPodcastBlocking : .findPodcastNonBlocking
         Network.shared.apollo.fetch(query: FindPodcastQuery(query: query),
                                     cachePolicy: .returnCacheDataAndFetch) { result in
             self.isLoading = .none
@@ -142,39 +152,38 @@ public class ComposerModel: ObservableObject {
                     self.searchCounter = current
                     self.searchResults = graphQLResult.data?.typeaheadPodcast?.compactMap { $0?.fragments.composerPodcastFragment } ?? []
                 }
-                
+
             case .failure:
                 self.searchResults = nil
             }
         }
     }
-    
+
     func createShare(message: String!, shareOnTwitter: Bool, hideFromGlobalFeed: Bool) {
-        self.isLoading = .createShare
+        isLoading = .createShare
         if let id = episode?.id {
             Network.shared.apollo.perform(mutation: CreateShareMutation(message: message,
                                                                         episodeId: id,
                                                                         shareOnTwitter: shareOnTwitter,
-                                                                        hideFromGlobalFeed: hideFromGlobalFeed
-            )) { result in
+                                                                        hideFromGlobalFeed: hideFromGlobalFeed)) { result in
                 self.isLoading = .none
                 switch result {
                 case let .success(graphQLResult):
                     if graphQLResult.errors?.first?.message == "P2002" {
-                        self.duplicateError = true
+                        self.composerError = .duplicateShare
                     } else if let share = graphQLResult.data?.createShare?.fragments.shareFragment {
                         self.share = share
                     } else {
-                        self.genericError = true
+                        self.composerError = .shareFailed
                     }
                 case .failure:
-                    print(result)
-                    self.genericError = true
+                    print("createShare error: \(result)")
+                    self.composerError = .shareFailed
                 }
             }
         }
     }
-    
+
     func reset() {
         searchResults = nil
         latestEpisodes = nil

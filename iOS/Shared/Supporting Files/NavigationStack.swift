@@ -77,7 +77,7 @@ public class NavigationStack: ObservableObject {
             switch to {
             case .root:
                 viewStack.popToRoot()
-            case .view(let viewId):
+            case let .view(viewId):
                 viewStack.popToView(withId: viewId)
             default:
                 viewStack.popToPrevious()
@@ -85,7 +85,7 @@ public class NavigationStack: ObservableObject {
         }
     }
 
-    //the actual stack
+    // the actual stack
     private struct ViewStack {
         private var views = [ViewElement]()
 
@@ -125,7 +125,7 @@ public class NavigationStack: ObservableObject {
     }
 }
 
-//the actual element in the stack
+// the actual element in the stack
 private struct ViewElement: Identifiable, Equatable {
     let id: String
     let wrappedElement: AnyView
@@ -155,11 +155,11 @@ public struct NavigationStackView<Root>: View where Root: View {
         self.easing = easing
         switch transitionType {
         case .none:
-            self.transitions = (.identity, .identity)
-        case .custom(let trans):
-            self.transitions = (trans, trans)
+            transitions = (.identity, .identity)
+        case let .custom(trans):
+            transitions = (trans, trans)
         default:
-            self.transitions = NavigationTransition.defaultTransitions
+            transitions = NavigationTransition.defaultTransitions
         }
     }
 
@@ -205,19 +205,21 @@ public struct PushView<Label, Destination, Tag>: View where Label: View, Destina
     ///   - selection: A binding that triggers the navigation if and when its value matches the tag value.
     ///   - label: The actual view to tap to trigger the navigation.
     public init(destination: Destination, destinationId: String? = nil, tag: Tag, selection: Binding<Tag?>,
-         @ViewBuilder label: () -> Label) {
+                @ViewBuilder label: () -> Label)
+    {
         self.init(destination: destination, destinationId: destinationId, isActive: Binding.constant(false),
                   tag: tag, selection: selection, label: label)
     }
 
     private init(destination: Destination, destinationId: String?, isActive: Binding<Bool>,
-                 tag: Tag?, selection: Binding<Tag?>, @ViewBuilder label: () -> Label) {
+                 tag: Tag?, selection: Binding<Tag?>, @ViewBuilder label: () -> Label)
+    {
         self.label = label()
         self.destinationId = destinationId
-        self._isActive = isActive
+        _isActive = isActive
         self.tag = tag
         self.destination = destination
-        self._selection = selection
+        _selection = selection
     }
 
     public var body: some View {
@@ -239,12 +241,11 @@ public struct PushView<Label, Destination, Tag>: View where Label: View, Destina
     }
 
     private func push() {
-        self.navViewModel.push(self.destination, withId: self.destinationId)
+        navViewModel.push(destination, withId: destinationId)
     }
 }
 
 public extension PushView where Tag == Never {
-
     /// Creates a PushView that triggers the navigation on tap.
     /// - Parameters:
     ///   - destination: The view to navigate to.
@@ -262,7 +263,8 @@ public extension PushView where Tag == Never {
     ///   - isActive: A boolean binding that triggers the navigation if and when becomes true.
     ///   - label: The actual view to tap to trigger the navigation.
     init(destination: Destination, destinationId: String? = nil,
-         isActive: Binding<Bool>, @ViewBuilder label: () -> Label) {
+         isActive: Binding<Bool>, @ViewBuilder label: () -> Label)
+    {
         self.init(destination: destination, destinationId: destinationId, isActive: isActive,
                   tag: nil, selection: Binding.constant(nil), label: label)
     }
@@ -289,11 +291,12 @@ public struct PopView<Label, Tag>: View where Label: View, Tag: Hashable {
     }
 
     private init(destination: PopDestination, isActive: Binding<Bool>, tag: Tag?,
-                 selection: Binding<Tag?>, @ViewBuilder label: () -> Label) {
+                 selection: Binding<Tag?>, @ViewBuilder label: () -> Label)
+    {
         self.label = label()
         self.destination = destination
-        self._isActive = isActive
-        self._selection = selection
+        _isActive = isActive
+        _selection = selection
         self.tag = tag
     }
 
@@ -316,12 +319,11 @@ public struct PopView<Label, Tag>: View where Label: View, Tag: Hashable {
     }
 
     private func pop() {
-        self.navViewModel.pop(to: self.destination)
+        navViewModel.pop(to: destination)
     }
 }
 
 public extension PopView where Tag == Never {
-
     /// Creates a PopView  that triggers the navigation on tap.
     /// - Parameters:
     ///   - destination: The destination type of the pop operation.

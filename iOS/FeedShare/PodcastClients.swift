@@ -12,7 +12,7 @@ import URLImage
 public struct PodcastClients: View {
     @EnvironmentObject var viewerModel: ViewerModel
     var onSelect: () -> Void
-    
+
     public var body: some View {
         VStack {
             VStack(spacing: 0) {

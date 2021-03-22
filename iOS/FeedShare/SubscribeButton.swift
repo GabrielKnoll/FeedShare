@@ -11,17 +11,17 @@ import SwiftUI
 public struct SubscribeButton: View {
     @EnvironmentObject var viewerModel: ViewerModel
     @State private var showError = false
-    
+
     let feed: String?
     let callback: Callback?
-    
+
     typealias Callback = (Bool) -> Void
-    
+
     init(feed: String?, callback: (Callback)? = nil) {
         self.feed = feed
         self.callback = callback
     }
-    
+
     static func openURL(_ client: Client, feed: String?, callback: ((Bool) -> Void)? = nil) {
         var urlToOpen: String?
         if !client.subscribeUrlNeedsProtocol, let feedUrl = URL(string: feed ?? "") {
@@ -30,7 +30,7 @@ public struct SubscribeButton: View {
         } else if let f = feed {
             urlToOpen = client.subscribeUrl + f
         }
-        
+
         if let url = URL(string: urlToOpen ?? "") {
             UIApplication.shared.open(url, completionHandler: { success in
                 if let cb = callback {
@@ -39,7 +39,7 @@ public struct SubscribeButton: View {
             })
         }
     }
-    
+
     public var body: some View {
         if let client = viewerModel.viewerClient {
             Button(action: {

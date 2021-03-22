@@ -500,7 +500,7 @@ public final class SettingsQuery: GraphQLQuery {
         __typename
         id
         title
-        contentHTML
+        content
       }
     }
     """
@@ -546,7 +546,7 @@ public final class SettingsQuery: GraphQLQuery {
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
           GraphQLField("title", type: .nonNull(.scalar(String.self))),
-          GraphQLField("contentHTML", type: .scalar(String.self)),
+          GraphQLField("content", type: .scalar(String.self)),
         ]
       }
 
@@ -556,8 +556,8 @@ public final class SettingsQuery: GraphQLQuery {
         self.resultMap = unsafeResultMap
       }
 
-      public init(id: GraphQLID, title: String, contentHtml: String? = nil) {
-        self.init(unsafeResultMap: ["__typename": "Page", "id": id, "title": title, "contentHTML": contentHtml])
+      public init(id: GraphQLID, title: String, content: String? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Page", "id": id, "title": title, "content": content])
       }
 
       public var __typename: String {
@@ -587,12 +587,12 @@ public final class SettingsQuery: GraphQLQuery {
         }
       }
 
-      public var contentHtml: String? {
+      public var content: String? {
         get {
-          return resultMap["contentHTML"] as? String
+          return resultMap["content"] as? String
         }
         set {
-          resultMap.updateValue(newValue, forKey: "contentHTML")
+          resultMap.updateValue(newValue, forKey: "content")
         }
       }
     }

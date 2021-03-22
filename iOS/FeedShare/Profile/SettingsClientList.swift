@@ -10,7 +10,7 @@ import SwiftUI
 
 public struct SettingsClientList: View {
     @Environment(\.presentationMode) var presentationMode
-    
+
     public var body: some View {
         VStack(alignment: .leading) {
             Text("Your Podcast Client").fontWeight(.bold)

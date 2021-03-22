@@ -5,9 +5,9 @@ public struct OnboardingLogin: View {
     @EnvironmentObject var viewerModel: ViewerModel
     @StateObject var twitter = TwitterService()
     @State var buttonDisabled = false
-    
+
     var onNext: () -> Void
-    
+
     public var body: some View {
         VStack {
             Spacer()

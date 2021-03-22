@@ -428,7 +428,7 @@
         "description": null,
         "fields": [
           {
-            "name": "contentHTML",
+            "name": "content",
             "description": null,
             "args": [],
             "type": {"kind": "SCALAR", "name": "String", "ofType": null},

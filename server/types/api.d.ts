@@ -4,7 +4,7 @@
  */
 
 
-import { Context as ctx } from "./../utils/context"
+import { Context as ctx } from "./../src/context"
 import { FieldAuthorizeResolver } from "nexus/dist/plugins/fieldAuthorizePlugin"
 import { core, connectionPluginCore } from "nexus"
 declare global {
@@ -88,14 +88,13 @@ export interface NexusGenObjects {
   }
   Episode: { // root type
     datePublished: NexusGenScalars['DateTime']; // DateTime!
-    description?: string | null; // String
     durationSeconds?: number | null; // Int
     title: string; // String!
     url?: string | null; // String
   }
   Mutation: {};
   Page: { // root type
-    contentHTML?: string | null; // String
+    content?: string | null; // String
     id: string; // ID!
     title: string; // String!
   }
@@ -106,11 +105,8 @@ export interface NexusGenObjects {
     startCursor?: string | null; // String
   }
   Podcast: { // root type
-    description?: string | null; // String
-    feed: string; // String!
     publisher: string; // String!
     title: string; // String!
-    url?: string | null; // String
   }
   PodcastClient: { // root type
     displayName: string; // String!
@@ -185,7 +181,7 @@ export interface NexusGenFieldTypes {
     createViewer: NexusGenRootTypes['Viewer'] | null; // Viewer
   }
   Page: { // field return type
-    contentHTML: string | null; // String
+    content: string | null; // String
     id: string; // ID!
     title: string; // String!
   }
@@ -292,7 +288,7 @@ export interface NexusGenFieldTypeNames {
     createViewer: 'Viewer'
   }
   Page: { // field return type name
-    contentHTML: 'String'
+    content: 'String'
     id: 'ID'
     title: 'String'
   }

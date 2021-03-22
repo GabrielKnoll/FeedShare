@@ -8,5 +8,6 @@ const config: Config.InitialOptions = {
     '^.+\\.(js|jsx)$': 'babel-jest',
   },
   testPathIgnorePatterns: ['/dist/'],
+  setupFiles: ['dotenv/config'],
 };
 export default config;

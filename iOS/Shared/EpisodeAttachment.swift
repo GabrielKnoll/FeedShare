@@ -10,11 +10,11 @@ import URLImage
 
 public struct EpisodeAttachment: View {
     let data: EpisodeAttachmentFragment
-    
+
     public init(data: EpisodeAttachmentFragment) {
         self.data = data
     }
-    
+
     public static let durationFormatter: DateComponentsFormatter = {
         let formatter = DateComponentsFormatter()
         formatter.unitsStyle = .brief
@@ -22,11 +22,11 @@ public struct EpisodeAttachment: View {
         formatter.zeroFormattingBehavior = [.dropLeading]
         return formatter
     }()
-    
+
     public var body: some View {
         HStack(alignment: .center, spacing: 12) {
             Artwork(url: data.artwork ?? data.podcast.artwork, size: 75.0)
-            
+
             VStack(alignment: .leading) {
                 Text(data.title)
                     .font(Typography.headline)

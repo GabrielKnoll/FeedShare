@@ -10,7 +10,7 @@ import SwiftUI
 
 public struct FeedSubscribe: View {
     @EnvironmentObject var viewerModel: ViewerModel
-    
+
     public var body: some View {
         VStack(alignment: .center) {
             Text("Subscribe to your Personal Feed")

@@ -14,13 +14,13 @@ public struct FeedItem: View {
     let data: ShareFragment
     @EnvironmentObject var partialSheetManager: PartialSheetManager
     @State private var episodePresented = false
-    
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 15) {
             NavigationLink(destination: EpisodeOverlay(attachment: data.episode.fragments.episodeAttachmentFragment)) {
                 EpisodeAttachment(data: data.episode.fragments.episodeAttachmentFragment)
             }
-            
+
             if let message = data.message {
                 Text(message).font(Typography.body)
             }

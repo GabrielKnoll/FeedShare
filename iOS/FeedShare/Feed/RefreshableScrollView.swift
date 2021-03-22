@@ -18,12 +18,13 @@ struct RefreshableScrollView<Content: View>: View {
             showHideLoadingView()
         }
     }
+
     @State private var rotation: Angle = .degrees(0)
     @State private var state: PTRState = .nothing
     @State private var spacerVisible: Bool = false
 
     var threshold: CGFloat = 80
-    
+
     let paddingTop: CGFloat
     let content: Content
 
@@ -33,7 +34,7 @@ struct RefreshableScrollView<Content: View>: View {
         _refreshing = refreshing
         self.content = content()
     }
-    
+
     func showHideLoadingView() {
         if refreshing, frozen {
             spacerVisible = true
@@ -75,7 +76,7 @@ struct RefreshableScrollView<Content: View>: View {
             let fixedBounds = values.first { $0.vType == .fixedView }?.bounds ?? .zero
 
             self.scrollOffset = movingBounds.minY - fixedBounds.minY - paddingTop
-            
+
             self.rotation = self.symbolRotation(self.scrollOffset)
 
             // Crossing the threshold on the way down, we start the refresh process
@@ -86,7 +87,7 @@ struct RefreshableScrollView<Content: View>: View {
                 self.state = .waitingForRelease
                 self.refreshing = true
             }
-            
+
             if self.scrollOffset == 0 {
                 // reset state
                 self.state = .nothing

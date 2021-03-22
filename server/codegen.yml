@@ -5,21 +5,6 @@ generates:
       - introspection
     config:
       minify: true
-  utils/datoCMS.generated.ts:
-    documents: '{graphql,pages}/**/*.{ts,tsx}'
-    schema:
-      - https://graphql.datocms.com:
-          headers:
-            Authorization: Bearer ${DATO_CMS_KEY}
-    plugins:
-      - typescript
-      - typescript-operations
-      - typescript-graphql-request
-      - add:
-          content: '// @ts-nocheck'
-          placement: prepend
-    config:
-      avoidOptionals: true
 hooks:
   afterOneFileWrite:
     - prettier --write

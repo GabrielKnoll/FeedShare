@@ -5,12 +5,12 @@ public struct Onboarding: View {
     @EnvironmentObject var viewerModel: ViewerModel
     @State private var currentPage: Int
     @Binding var isDark: Bool
-    
+
     public init(_ isDark: Binding<Bool>) {
-        self._isDark = isDark
-        self._currentPage = State(initialValue: ViewerModel.shared.viewer == nil ? 0 : 1)
+        _isDark = isDark
+        _currentPage = State(initialValue: ViewerModel.shared.viewer == nil ? 0 : 1)
     }
-    
+
     func next(_ page: Int) {
         if page < currentPage {
             return
@@ -24,11 +24,11 @@ public struct Onboarding: View {
             }
         }
     }
-    
+
     func finishSetup() {
         viewerModel.setupFinshed = true
     }
-    
+
     public var body: some View {
         GeometryReader { geo in
             ZStack {
@@ -36,7 +36,7 @@ public struct Onboarding: View {
                     .fill(Color(isDark ? R.color.primaryColor.name : R.color.backgroundColor.name))
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .animation(.linear)
-                
+
                 VStack(alignment: .leading) {
                     Image(R.image.logo.name)
                         .resizable()
@@ -47,7 +47,7 @@ public struct Onboarding: View {
                         .padding(.horizontal, 25)
                         .padding(.top, 10)
                         .animation(.linear)
-                    
+
                     TabView(selection: $currentPage) {
                         OnboardingLogin(onNext: { next(1) }).padding(.horizontal, 25).tag(0)
                         OnboardingNotifications(onNext: { next(2) }).padding(.horizontal, 25).tag(1)
@@ -59,7 +59,7 @@ public struct Onboarding: View {
                         UIScrollView.appearance().isScrollEnabled = false
                     })
                 }
-                
+
                 .padding(.top, geo.safeAreaInsets.top)
                 .padding(.bottom, geo.safeAreaInsets.bottom)
             }

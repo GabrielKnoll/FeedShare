@@ -5,9 +5,9 @@ public struct OnboardingPodcastClient: View {
     @EnvironmentObject var viewerModel: ViewerModel
     @State var showingAlert = false
     @State var clientName: String?
-    
+
     var onNext: () -> Void
-    
+
     public var body: some View {
         VStack {
             Spacer()
@@ -40,7 +40,6 @@ public struct OnboardingPodcastClient: View {
                 Text("I’m using a different app")
             }
             .buttonStyle(LinkButton())
-            
         }
         .onAppear(perform: viewerModel.fetchPodcastClients)
         .alert(isPresented: $showingAlert) {
@@ -51,7 +50,8 @@ public struct OnboardingPodcastClient: View {
                 ) {
                     viewerModel.viewerClient = nil
                     onNext()
-                })
+                }
+            )
         }
     }
 }

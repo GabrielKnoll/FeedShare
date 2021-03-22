@@ -12,12 +12,12 @@ import SwiftUI
 public struct Home: View {
     @EnvironmentObject var viewerModel: ViewerModel
     @EnvironmentObject var partialSheetManager: PartialSheetManager
-    
+
     @State private var composerVisible = false
     @State private var activeFeedType = 0
-    
+
     public init() {}
-    
+
     public var body: some View {
         GeometryReader { geo in
             ZStack(alignment: .top) {
@@ -33,7 +33,7 @@ public struct Home: View {
                         UIScrollView.appearance().isScrollEnabled = false
                     })
                 }
-                
+
                 VStack {
                     ZStack {
                         Image(R.image.logo.name)
@@ -42,15 +42,15 @@ public struct Home: View {
                             .scaledToFit()
                             .foregroundColor(Color(R.color.primaryColor.name))
                             .frame(height: 20)
-                        
+
                         HStack {
                             NavigationLink(destination: Profile()) {
                                 ProfilePicture(url: viewerModel.viewer?.user.profilePicture, size: 28)
                                     .padding(7)
                             }
-                            
+
                             Spacer()
-                            
+
                             Button(action: {
                                 composerVisible = true
                             }) {
@@ -61,12 +61,12 @@ public struct Home: View {
                         }
                         .padding(.horizontal, 15)
                     }
-                    
+
                     SlidingTabView(
                         selection: $activeFeedType,
                         tabs: [
                             "Personal",
-                            "Global"
+                            "Global",
                         ],
                         font: Typography.caption,
                         activeAccentColor: Color(R.color.primaryColor.name),
@@ -87,7 +87,7 @@ public struct Home: View {
                 }
             }
             .sheet(isPresented: $composerVisible) {
-                Composer(dismiss: { composerVisible = false })
+                Composer(dismiss: { _ in composerVisible = false })
                     .environmentObject(viewerModel)
             }
         }

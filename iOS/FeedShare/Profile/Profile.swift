@@ -15,17 +15,17 @@ public struct Profile: View {
     @EnvironmentObject var viewerModel: ViewerModel
     @EnvironmentObject var partialSheetManager: PartialSheetManager
     @State private var settingsActive = false
-    
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
                 VStack(alignment: .leading) {
                     Text(viewerModel.viewer?.user.displayName ?? "")
                         .font(Typography.title2)
-                    Text("\(viewerModel.viewer?.user.followers.totalCount ?? 0) ").bold() +
-                        Text("Followers ") +
-                        Text("\(viewerModel.viewer?.user.following.totalCount ?? 0) ").bold() +
-                        Text("Following").font(Typography.bodyMedium)
+                    Text("\(viewerModel.viewer?.user.followers.totalCount ?? 0) ").font(Typography.bodyBold) +
+                        Text("Followers ").font(Typography.body) +
+                        Text("\(viewerModel.viewer?.user.following.totalCount ?? 0) ").font(Typography.bodyBold) +
+                        Text("Following").font(Typography.body)
                 }
                 .foregroundColor(Color(R.color.primaryColor.name))
                 Spacer()
@@ -33,7 +33,7 @@ public struct Profile: View {
             }
             .padding(20)
             .frame(minWidth: 0, maxWidth: .infinity)
-            
+
             Feed(type: .user, paddingTop: 10)
             NavigationLink(destination: Settings(), isActive: self.$settingsActive) {
                 EmptyView()
