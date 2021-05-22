@@ -1,4 +1,5 @@
-import Interface
+import OneSignal
+import Shared
 import SwiftUI
 
 public struct OnboardingNotifications: View {
@@ -7,15 +8,27 @@ public struct OnboardingNotifications: View {
 
     public var body: some View {
         VStack {
-            Text("Get notified when one of your friends shares a recommendation.")
-            Button(action: {}) {
+            Spacer()
+            OnboardingTextPairing(
+                title: "Get Notfied",
+                subtitle: "We’ll let you know when someone you follow recommends an episode.",
+                dark: false
+            )
+            Spacer()
+            Facepile().padding(.bottom, 24)
+            Button(action: {
+                OneSignal.promptForPushNotifications(userResponse: { accepted in
+                    print("User accepted notifications: \(accepted)")
+                    onNext()
+                })
+            }) {
                 Text("Turn on Notifications")
             }
-            Button(action: {
-                onNext()
-            }) {
+            .buttonStyle(FilledButton())
+            Button(action: onNext) {
                 Text("Skip")
             }
+            .buttonStyle(LinkButton())
         }
     }
 }

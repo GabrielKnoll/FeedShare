@@ -1,17 +1,14 @@
-import schema from './schema';
 import express from 'express';
 import {ApolloServer, ApolloError} from 'apollo-server-express';
-import context from './utils/context';
+import schema from './schema';
+import context from './context';
 import env from './utils/env';
-import NewRelicPlugin from '@newrelic/apollo-server-plugin';
 import feed from './routes/feed';
-
-const app = express();
+import tasks from './tasks';
 
 const server = new ApolloServer({
-  schema,
   context,
-  plugins: env.NODE_ENV === 'production' ? [NewRelicPlugin] : [],
+  schema,
   formatError: (err) => {
     if (!(err instanceof ApolloError)) {
       return new ApolloError(err.message);
@@ -22,12 +19,16 @@ const server = new ApolloServer({
   playground: true,
 });
 
-server.applyMiddleware({app, path: '/graphql'});
+(async () => {
+  await tasks();
 
-app.get(`/feed/:feedToken`, feed);
+  const app = express();
+  app.get('/feed/:token', feed);
+  server.applyMiddleware({app});
 
-app.listen({port: env.PORT}, () =>
-  console.info(
-    `🚀 Server ready at http://localhost:${env.PORT}${server.graphqlPath}`,
-  ),
-);
+  app.listen({port: env.PORT}, () =>
+    console.log(
+      `🚀 Server ready at http://localhost:${env.PORT}${server.graphqlPath}`,
+    ),
+  );
+})();

@@ -1,0 +1,16 @@
+fragment ShareFragment on Share {
+  id
+  author {
+    id
+    handle
+    displayName
+    profilePicture(size: 100, scale: 2)
+  }
+  message
+  createdAt
+  isInGlobalFeed: isInFeed(feedType: Global)
+  isInPersonalFeed: isInFeed(feedType: Personal)
+  episode {
+    ...EpisodeAttachmentFragment
+  }
+}

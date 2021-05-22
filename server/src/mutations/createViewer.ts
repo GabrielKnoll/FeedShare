@@ -1,8 +1,7 @@
-import {extendType, nonNull, stringArg} from '@nexus/schema';
-import {getViewer} from '../models/Viewer';
+import {extendType, nonNull, stringArg} from 'nexus';
 import {twitterFollowing, twitterProfile} from '../utils/twitterApi';
-import {generateToken} from '../utils/context';
-import feedToken from '../utils/feedToken';
+import shortkey from '../utils/shortkey';
+import {scheduleTask} from '../tasks';
 
 export default extendType({
   type: 'Mutation',
@@ -67,19 +66,18 @@ export default extendType({
           : await ctx.prismaClient.user.create({
               data: {
                 ...payload,
-                feedToken: feedToken(),
+                feedToken: shortkey(8),
                 twitterAccount: {
                   create: twitterPayload,
                 },
               },
             });
 
-        return getViewer(user, {
-          ...ctx,
-          token: generateToken({
-            userId: user.id,
-          }),
-        });
+        if (!twitterAccount) {
+          await scheduleTask('JoinNotification', {userId: user.id});
+        }
+
+        return {user};
       },
     });
   },

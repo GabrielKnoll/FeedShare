@@ -1,6 +1,6 @@
-import {enumType} from '@nexus/schema';
+import {enumType} from 'nexus';
 
-const members = ['Friends', 'Personal', 'Global'] as const;
+const members = ['User', 'Personal', 'Global'] as const;
 
 export type FeedTypeEnum = typeof members[number];
 

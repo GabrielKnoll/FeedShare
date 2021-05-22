@@ -1,22 +1,49 @@
 import {create} from 'xmlbuilder2';
-import {RequestHandler} from 'express';
 import prismaClient from '../utils/prismaClient';
-import {shareWhere} from '../models/Share';
+import {Request, Response} from 'express';
+import {gql} from 'graphql-request';
+import env from '../utils/env';
+import imagekit from '../utils/imagekit';
+import {personalFeedShares} from '../queries/shares';
 
-const requestHandler: RequestHandler<{
-  feedToken: string;
-}> = async (req, res) => {
+gql`
+  query Feed {
+    feed {
+      title
+      description
+      copyright
+      author
+      subtitle
+      artwork {
+        id
+        url(imgixParams: {w: 600, fm: jpg})
+      }
+    }
+  }
+`;
+
+const requestHandler = async (req: Request, res: Response) => {
+  const {token} = req.params;
+
   const user = await prismaClient.user.update({
     data: {
       feedCheckedAt: new Date(),
     },
     where: {
-      feedToken: req.params.feedToken,
+      feedToken: String(token),
     },
     include: {
       twitterAccount: true,
     },
   });
+
+  const shareIds = await personalFeedShares(
+    prismaClient,
+    false,
+    user.id,
+    50,
+    0,
+  ).then((s) => s.map((s) => s.id));
 
   const shares = await prismaClient.share.findMany({
     include: {
@@ -27,12 +54,14 @@ const requestHandler: RequestHandler<{
       },
       author: true,
     },
-    take: 100,
-    where: await shareWhere({userId: user.id, prismaClient}, 'Friends'),
-    orderBy: {
-      createdAt: 'desc',
+    where: {
+      id: {
+        in: shareIds,
+      },
     },
   });
+
+  shares.sort((a, b) => shareIds.indexOf(a.id) - shareIds.indexOf(b.id));
 
   // https://help.apple.com/itc/podcasts_connect/#/itcb54353390
   const root = create({version: '1.0', encoding: 'UTF-8'});
@@ -43,31 +72,39 @@ const requestHandler: RequestHandler<{
   });
 
   const channel = rss.ele('channel');
-  channel.ele('title').txt('FeedShare');
-  channel.ele('link').txt('https://feed.buechele.cc/');
+  channel.ele('title').txt('Truffle Recommendations');
+  channel.ele('link').txt(env.BASE_URL);
   channel
     .ele('itunes:subtitle')
     .txt('Podcast episodes receommended by your friends');
   channel.ele('itunes:block').txt('yes');
   channel.ele('language').txt('en-us');
-  channel.ele('itunes:author').txt('FeedShare');
+  channel.ele('itunes:author').txt('Truffle');
   channel
     .ele('description')
     .txt(
-      'Your personal feed of podcast episodes recommended by your friends on FeedShare.',
+      'Your personal feed of podcast episodes recommended by your friends on Truffle.',
     );
   channel
     .ele('copyright')
     .txt('All rights belong to the respective owners of each episode.');
-  channel.ele('itunes:image', {href: '...'});
 
-  for (const share of shares) {
+  channel.ele('itunes:image', {
+    href: imagekit.url({
+      signed: true,
+      path: 'icon-1024_ui3vgUFFL.png',
+    }),
+  });
+
+  for (let i = 0; i < shares.length; i++) {
+    const share = shares[i];
+
     const item = channel.ele('item');
 
     item
       .ele('title')
       .txt(
-        `${share.author.handle}: ${share.episode.title} – ${share.episode.podcast.title}`,
+        `${share.author.displayName}: ${share.episode.title} – ${share.episode.podcast.title}`,
       );
     item.ele('enclosure', {
       url: share.episode.enclosureUrl,
@@ -75,7 +112,15 @@ const requestHandler: RequestHandler<{
       type: share.episode.enclosureType,
     });
     item.ele('guid').txt(String(share.episode.id));
-    item.ele('description').txt([``, share.episode.description].join('\n\n'));
+    item.ele('pubDate').txt(share.createdAt.toUTCString());
+    item
+      .ele('description')
+      .txt(
+        [
+          `${share.author.displayName} shared this episode via FeedShare:\n${share.message}`,
+          share.episode.description,
+        ].join('\n\n'),
+      );
 
     if (share.episode.durationSeconds) {
       item.ele('itunes:duration').txt(String(share.episode.durationSeconds));
@@ -92,7 +137,8 @@ const requestHandler: RequestHandler<{
 
   // convert the XML tree to string
   const xml = root.end({prettyPrint: true});
-  res.type('xml').send(xml);
+  res.setHeader('Content-Type', 'application/rss+xml');
+  res.send(xml);
 };
 
 export default requestHandler;

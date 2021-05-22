@@ -1,21 +1,39 @@
-import Interface
+import Shared
 import SwiftUI
 
 public struct OnboardingLogin: View {
     @EnvironmentObject var viewerModel: ViewerModel
-    @ObservedObject var twitter = TwitterService()
+    @StateObject var twitter = TwitterService()
     @State var buttonDisabled = false
+
     var onNext: () -> Void
 
     public var body: some View {
         VStack {
-            Text("FeedShare allows you to recommend podcast episodes to your friends and listen to their recommendations")
+            Spacer()
+            OnboardingTextPairing(
+                title: "Podcast Recommendations",
+                subtitle: "Share episodes you like with your followers and discover new podcasts.",
+                dark: true
+            )
+            Spacer()
             Button(action: {
+                if buttonDisabled { return }
                 buttonDisabled = true
                 self.twitter.authorize(viewerModel: self.viewerModel)
             }) {
-                Text("Login with Twitter")
+                if buttonDisabled {
+                    ActivityIndicator(style: .white).colorScheme(.dark)
+                } else {
+                    HStack(alignment: .center) {
+                        Image(R.image.twitter.name)
+                        Text("Login with Twitter")
+                    }
+                }
             }
+            .disabled(buttonDisabled)
+            .buttonStyle(FilledButton())
+            .padding(.bottom, 44)
         }.onOpenURL { url in
             let callbackUrl = URL(string: "twittersdk://")
             let callbackScheme = callbackUrl?.scheme
@@ -27,6 +45,8 @@ public struct OnboardingLogin: View {
         }.onReceive(viewerModel.$viewer, perform: { viewer in
             if viewer != nil {
                 onNext()
+            } else {
+                buttonDisabled = false
             }
         })
     }

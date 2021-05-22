@@ -1,60 +1,45 @@
-import fetch from 'node-fetch';
 import queryString, {StringifiableRecord} from 'query-string';
-import {hmacsign} from 'oauth-sign';
+import {dataCallback, OAuth} from 'oauth';
 import env from './env';
+
+const oauth = new OAuth(
+  'https://api.twitter.com/oauth/request_token',
+  'https://api.twitter.com/oauth/access_token',
+  env.TWITTER_CONSUMER_KEY,
+  env.TWITTER_CONSUMER_SECRET,
+  '1.0A',
+  null,
+  'HMAC-SHA1',
+);
 
 async function twitterApiRequest<T>(
   path: string,
   token: string,
   tokenSecret: string,
   qs: StringifiableRecord = {},
+  method: 'GET' | 'POST' = 'GET',
 ): Promise<T> {
   // remove undefined properties from qs
   Object.keys(qs).forEach((key) => qs[key] === undefined && delete qs[key]);
 
-  const timestamp = Math.round(new Date().getTime() / 1000);
+  const url = `https://api.twitter.com${path}?${
+    qs ? queryString.stringify(qs) : ''
+  }`;
 
-  const url = 'https://api.twitter.com' + path;
-  const nonce = Math.random().toString(36);
-  const params = {
-    oauth_consumer_key: env.TWITTER_COMSUMER_KEY,
-    oauth_nonce: nonce,
-    oauth_signature_method: 'HMAC-SHA1' as const,
-    oauth_timestamp: String(timestamp),
-    oauth_token: token,
-    ...qs,
-  };
-  const method = 'GET';
-  const oauth_signature = hmacsign(
-    method,
-    url,
-    params,
-    env.TWITTER_CONSUMER_SECRET,
-    tokenSecret,
-  );
-
-  const a = Object.entries({
-    ...params,
-    oauth_signature: encodeURIComponent(oauth_signature),
-  })
-    .reduce<string[]>(
-      (acc, [key, value]) => acc.concat([`${key}="${value}"`]),
-      [],
-    )
-    .join(', ');
-
-  const result = await fetch(`${url}?${qs ? queryString.stringify(qs) : ''}`, {
-    method,
-    headers: {
-      Authorization: `OAuth ${a}`,
-    },
+  return new Promise((resolve, reject) => {
+    const cb: dataCallback = (error, result) => {
+      if (error) {
+        reject(error);
+      }
+      const data = JSON.parse(String(result));
+      resolve(data);
+    };
+    if (method === 'POST') {
+      oauth.post(url, token, tokenSecret, null, undefined, cb);
+    } else {
+      oauth.get(url, token, tokenSecret, cb);
+    }
   });
-  if (result.ok) {
-    return await result.json();
-  }
-
-  const text = await result.text();
-  throw new Error(`${result.status} ${result.statusText}\n${text}`);
 }
 
 export async function twitterProfile(
@@ -98,4 +83,20 @@ export async function twitterFollowing(token: string, tokenSecret: string) {
     allIds.push(...ids);
   }
   return allIds;
+}
+
+export async function sendTweet(
+  token: string,
+  tokenSecret: string,
+  content: string,
+) {
+  return twitterApiRequest(
+    '/1.1/statuses/update.json',
+    token,
+    tokenSecret,
+    {
+      status: content,
+    },
+    'POST',
+  );
 }

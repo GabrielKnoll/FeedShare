@@ -62,3 +62,20 @@ async function ampApiToken(): Promise<string | null> {
 
   return data.MEDIA_API.token;
 }
+
+export async function iTunesPodcast(
+  id: string | number,
+): Promise<AppleApi.Result | undefined> {
+  try {
+    const res = await fetch(`https://itunes.apple.com/lookup?id=${id}`);
+    if (res.status !== 200) {
+      return;
+    }
+    const data: AppleApi.iTunesRequest = await res.json();
+    if (data.results.length > 0 && data.results[0].kind === 'podcast') {
+      return data.results[0];
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}

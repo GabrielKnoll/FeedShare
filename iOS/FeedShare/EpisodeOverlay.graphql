@@ -1,12 +1,20 @@
 query EpisodeOverlay($id: ID!) {
   node(id: $id) {
     ...on Episode {
-      description
-      artwork(size: 100, scale: 2)
-      podcast {
-        feed
-        artwork(size: 100, scale: 2)
-      }
+      ...EpisodeOverlayFragment
     }
+  }
+}
+
+fragment EpisodeOverlayFragment on Episode {
+  description
+  artwork(size: 100, scale: 2)
+  datePublished
+  durationSeconds
+  url
+  podcast {
+    feed
+    url
+    artwork(size: 100, scale: 2)
   }
 }

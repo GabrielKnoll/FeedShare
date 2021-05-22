@@ -1,4 +1,4 @@
-import {extendType} from '@nexus/schema';
+import {extendType} from 'nexus';
 
 export default extendType({
   type: 'Query',

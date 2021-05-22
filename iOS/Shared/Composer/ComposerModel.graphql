@@ -1,0 +1,43 @@
+query Resolve($url: String!) {
+  resolveShareUrl(url: $url) {
+    episode {
+      ...EpisodeAttachmentFragment
+    }
+    podcast {
+      id
+      ...ComposerPodcastFragment
+      latestEpisodes {
+        ...EpisodeAttachmentFragment
+      }
+    }
+  }
+}
+
+query FindPodcast($query: String!) {
+  typeaheadPodcast(query: $query) {
+    ...ComposerPodcastFragment
+  }
+}
+
+query LatestEpisodes($podcast: ID!) {
+  node(id: $podcast) {
+    ... on Podcast {
+      latestEpisodes {
+        ...EpisodeAttachmentFragment
+      }
+    }
+  }
+}
+
+fragment ComposerPodcastFragment on Podcast {
+  id
+  title
+  publisher
+  artwork(size: 100, scale: 2)
+}
+
+mutation CreateShare($message: String!, $episodeId: ID!, $shareOnTwitter: Boolean, $hideFromGlobalFeed: Boolean) {
+  createShare(message: $message, episodeId: $episodeId, shareOnTwitter: $shareOnTwitter, hideFromGlobalFeed: $hideFromGlobalFeed) {
+    ...ShareFragment
+  }
+}

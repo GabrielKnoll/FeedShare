@@ -1,6 +1,5 @@
-import {extendType, intArg, nonNull, stringArg} from '@nexus/schema';
+import {extendType, nonNull, stringArg} from 'nexus';
 import requireAuthorization from '../utils/requireAuthorization';
-import {typeaheadPodcast} from '../utils/podcastIndex';
 
 export default extendType({
   type: 'Query',
@@ -11,7 +10,16 @@ export default extendType({
         query: nonNull(stringArg()),
       },
       ...requireAuthorization,
-      resolve: async (_root, {query}) => typeaheadPodcast(query),
+      resolve: async (_root, {query}, {prismaClient}) => {
+        const q = query.trim().replace(/\s/g, '<->') + ':*';
+
+        return prismaClient.$queryRaw`
+          SELECT "id", "title", "itunesId", "publisher", "artwork" FROM "Podcast"
+            WHERE tsv @@ to_tsquery('simple', f_unaccent(${q}))
+            ORDER BY ts_rank(tsv, to_tsquery('simple', f_unaccent(${q}))) DESC
+            LIMIT 20;
+        `;
+      },
     });
   },
 });

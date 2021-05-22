@@ -1,32 +1,24 @@
-import {Episode, Prisma, Podcast} from '@prisma/client';
+import {Episode, Podcast, Prisma} from '@prisma/client';
 import PodcastIndexClient from 'podcastdx-client';
-import {ApiResponse} from 'podcastdx-client/dist/types';
-import env from './env';
 import prismaClient from './prismaClient';
 import normalizeUrl from 'normalize-url';
 import {htmlToText} from 'html-to-text';
 import {decodeXML} from 'entities';
-import {NexusGenFieldTypes} from 'nexus-typegen';
-import {generateId} from '../queries/node';
+import {ParserResult} from '../queries/resolveShareUrl';
+import env from './env';
+import {iTunesPodcast} from './appleApi';
+import {
+  ApiResponse,
+  PIApiEpisodeInfo,
+  PIApiFeed,
+} from 'podcastdx-client/dist/src/types';
 
-const podcastIndexClient = new PodcastIndexClient({
+export const podcastIndexClient = new PodcastIndexClient({
   key: env.PODCAST_INDEX_KEY,
   secret: env.PODCAST_INDEX_SECRET,
 });
 
 async function podcastFromFeeds(feeds: string[]) {
-  const cached = await prismaClient.podcast.findFirst({
-    where: {
-      feed: {
-        in: feeds,
-      },
-    },
-  });
-
-  if (cached) {
-    return cached;
-  }
-
   const apiResponse = await Promise.all(
     feeds.map(async (feed) => {
       let res: ApiResponse.Podcast | undefined;
@@ -44,53 +36,52 @@ async function podcastFromFeeds(feeds: string[]) {
     .catch((result: ApiResponse.Podcast) => result);
 
   if (apiResponse) {
-    return await prismaClient.podcast.create({
-      data: podcastFromApiResponse(apiResponse.feed),
-    });
-  }
-}
-
-async function podcastFromItunesId(itunesId: number) {
-  const cached = await prismaClient.podcast.findUnique({
-    where: {
-      itunesId,
-    },
-  });
-  if (cached) {
-    return cached;
-  }
-
-  const apiResponse = await podcastIndexClient.podcastByItunesId(itunesId);
-  if (apiResponse?.status === ApiResponse.Status.Success) {
-    return await prismaClient.podcast.create({
-      data: podcastFromApiResponse(apiResponse.feed),
+    return prismaClient.podcast.upsert({
+      create: podcastFromApiResponse(apiResponse.feed),
+      update: podcastFromApiResponse(apiResponse.feed),
+      where: {
+        id: String(apiResponse.feed.id),
+      },
     });
   }
 }
 
 function podcastFromApiResponse(
-  apiResponse: ApiResponse.PodcastFeed,
+  apiResponse: PIApiFeed,
 ): Prisma.PodcastCreateInput {
   return {
     id: String(apiResponse.id),
-    feed: apiResponse.url,
     title: apiResponse.title,
     itunesId: apiResponse.itunesId,
-    description: apiResponse.description,
     publisher: apiResponse.author,
     artwork: apiResponse.image,
-    url: apiResponse.link,
-    apiResponse: apiResponse as any,
   };
 }
 
-export async function fetchPodcast(
-  itunesId: number | undefined,
-  feeds: string[] | undefined,
-): Promise<Podcast | undefined> {
-  return itunesId
-    ? await podcastFromItunesId(itunesId)
-    : await podcastFromFeeds(feeds!);
+export async function fetchPodcast({
+  itunesId,
+  feeds = [],
+}: ParserResult): Promise<Podcast | undefined | null> {
+  if (itunesId) {
+    const podcast = await prismaClient.podcast.findFirst({
+      where: {
+        itunesId,
+      },
+    });
+
+    if (podcast) {
+      return podcast;
+    }
+
+    const itunesPodcast = await iTunesPodcast(itunesId);
+    if (itunesPodcast) {
+      feeds.push(itunesPodcast?.feedUrl);
+    }
+  }
+
+  if (feeds.length > 0) {
+    return podcastFromFeeds(feeds);
+  }
 }
 
 function urlMatch(url1?: string, url2?: string): boolean {
@@ -98,8 +89,8 @@ function urlMatch(url1?: string, url2?: string): boolean {
     return false;
   }
   try {
-    url1 = normalizeUrl(url1, {stripProtocol: true});
-    url2 = normalizeUrl(url2, {stripProtocol: true});
+    url1 = normalizeUrl(url1, {stripProtocol: true, stripHash: true});
+    url2 = normalizeUrl(url2, {stripProtocol: true, stripHash: true});
   } catch (e) {
     return false;
   }
@@ -115,18 +106,16 @@ function titleMatch(title1?: string, title2?: string): boolean {
 
 export async function fetchEpisode(
   podcastId: number,
-  enclosureUrl: string | undefined,
-  title: string | undefined,
-  link: string | undefined,
+  {enclosureUrl, episodeTitle, episodeUrl}: ParserResult,
 ): Promise<Episode | undefined> {
-  const episodes = await podcastIndexClient.episodesByFeedId(podcastId);
+  const episodes = await fullEpisodeById(podcastId);
   if (episodes.status === ApiResponse.Status.Success) {
     const apiResponse = episodes.items.find((e) => {
       try {
         return (
           urlMatch(e.enclosureUrl, enclosureUrl) ||
-          titleMatch(e.title, title) ||
-          urlMatch(e.link, link)
+          titleMatch(e.title, episodeTitle) ||
+          urlMatch(e.link, episodeUrl)
         );
       } catch (e) {
         return false;
@@ -134,7 +123,7 @@ export async function fetchEpisode(
     });
 
     if (apiResponse) {
-      return await prismaClient.episode.upsert({
+      return prismaClient.episode.upsert({
         create: episodeFromApiResponse(apiResponse),
         update: episodeFromApiResponse(apiResponse),
         where: {
@@ -146,19 +135,10 @@ export async function fetchEpisode(
 }
 
 function episodeFromApiResponse(
-  apiResponse: ApiResponse.EpisodeInfo,
+  apiResponse: PIApiEpisodeInfo,
 ): Prisma.EpisodeCreateInput {
   return {
     id: String(apiResponse.id),
-    enclosureUrl: apiResponse.enclosureUrl,
-    enclosureType: apiResponse.enclosureType,
-    enclosureLength: apiResponse.enclosureLength || undefined,
-    description: htmlToText(apiResponse.description, {
-      tags: {
-        a: {options: {ignoreHref: true}},
-        ul: {options: {itemPrefix: '• '}},
-      },
-    }).trim(),
     datePublished: new Date(apiResponse.datePublished * 1000),
     artwork: apiResponse.image,
     title: decodeXML(apiResponse.title),
@@ -166,7 +146,10 @@ function episodeFromApiResponse(
       // @ts-ignore: Some episodes have hh:mm:ss format
       apiResponse.duration > 99 ? apiResponse.duration : undefined,
     url: apiResponse.link,
-    apiResponse: apiResponse as any,
+    enclosureLength: apiResponse.enclosureLength,
+    enclosureUrl: apiResponse.enclosureUrl,
+    enclosureType: apiResponse.enclosureType,
+    description: apiResponse.description,
     podcast: {
       connect: {
         id: String(apiResponse.feedId),
@@ -179,15 +162,12 @@ export async function latestEpisodes(
   podcast: Podcast,
   limit: number,
 ): Promise<Episode[] | null> {
-  const res = await podcastIndexClient.episodesByFeedId(
-    parseInt(podcast.id, 10),
-    {
-      max: limit,
-    },
-  );
+  const res = await fullEpisodeById(parseInt(podcast.id, 10), {
+    max: limit,
+  });
 
   if (res.status === ApiResponse.Status.Success) {
-    return await Promise.all(
+    return Promise.all(
       res.items.map((apiResponse) =>
         prismaClient.episode.upsert({
           create: episodeFromApiResponse(apiResponse),
@@ -208,7 +188,7 @@ export async function findPodcast(
 ): Promise<Podcast[] | null> {
   const res = await podcastIndexClient.search(query);
   if (res.status === ApiResponse.Status.Success) {
-    return await Promise.all(
+    return Promise.all(
       res.feeds.slice(0, limit).map((feed) =>
         prismaClient.podcast.upsert({
           create: podcastFromApiResponse(feed),
@@ -223,35 +203,26 @@ export async function findPodcast(
   return null;
 }
 
-export async function typeaheadPodcast(
-  query: string,
-): Promise<Podcast[] | null> {
-  const {
-    hints,
-  }: {
-    status: ApiResponse.Status;
-    hints: Array<{
-      feedId: string;
-      hint: string;
-    }>;
-    count: number;
-    query: string;
-    description: string;
-  } = await podcastIndexClient['fetch']('/search/hints', {
-    q: query,
+export const fullPodcastById: typeof podcastIndexClient.podcastById = async (
+  id,
+) => {
+  podcastIndexClient.podcastById;
+  const result = await podcastIndexClient['fetch']('/podcasts/byfeedid', {
+    id,
+    fulltext: true,
   });
+  if (!result.feed.categories) {
+    result.feed.categories = {};
+  }
+  return result;
+};
 
-  return await Promise.all(
-    hints.map(({feedId}) =>
-      podcastIndexClient.podcastById(parseInt(feedId, 10)).then((p) =>
-        prismaClient.podcast.upsert({
-          create: podcastFromApiResponse(p.feed),
-          update: podcastFromApiResponse(p.feed),
-          where: {
-            id: feedId,
-          },
-        }),
-      ),
-    ),
-  );
-}
+const fullEpisodeById: typeof podcastIndexClient.episodesByFeedId = (
+  id,
+  options,
+) =>
+  podcastIndexClient['fetch']('/episodes/byfeedid', {
+    ...options,
+    id,
+    fulltext: true,
+  });

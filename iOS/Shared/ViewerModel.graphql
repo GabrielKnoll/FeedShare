@@ -1,0 +1,52 @@
+fragment ViewerFragment on Viewer {
+  token
+  personalFeed
+  messageLimit
+  personalFeedLastChecked
+  user {
+    id
+    handle
+    displayName
+    profilePicture(size: 100, scale: 2)
+    following(first: 4) {
+      totalCount
+      edges {
+        node {
+          ...FollowFragment
+        }
+      }
+    }
+    followers(first: 4) {
+      totalCount
+      edges {
+        node {
+          ...FollowFragment
+        }
+      }
+    }
+  }
+}
+
+fragment FollowFragment on User {
+  id
+  displayName
+  profilePicture(size: 36, scale: 2)
+}
+
+query ViewerModel {
+  viewer {
+      ...ViewerFragment
+  }
+}
+
+mutation CreateViewer($twitterId: String!, $twitterToken: String!, $twitterTokenSecret: String!) {
+  createViewer(twitterId: $twitterId, twitterToken: $twitterToken, twitterTokenSecret: $twitterTokenSecret) {
+    ...ViewerFragment
+  }
+}
+
+query PodcastClients {
+  podcastClient {
+    ...Client
+  }
+}

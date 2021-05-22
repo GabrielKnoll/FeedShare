@@ -1,46 +1,38 @@
 import env from 'env-var';
-const {parsed = {}} = require('dotenv').config({
-  path: __dirname + '/../../../.env',
-});
 
 const ci = env.get('CI').asBool();
 
 const e = {
-  NODE_ENV: env.get('NODE_ENV').asString(),
+  NODE_ENV: env
+    .get('NODE_ENV')
+    .required(!ci)
+    .asEnum(['development', 'production', 'test']),
+  PORT: env.get('PORT').required(!ci).asIntPositive(),
   DATABASE_URL: env.get('DATABASE_URL').required(!ci).asString(),
   JWT_SECRET: env.get('JWT_SECRET').required(!ci).asString(),
-  PORT: env.get('PORT').required(!ci).asIntPositive(),
-  TWITTER_COMSUMER_KEY: env
-    .get('TWITTER_COMSUMER_KEY')
+  TWITTER_CONSUMER_KEY: env
+    .get('TWITTER_CONSUMER_KEY')
     .required(!ci)
     .asString(),
   TWITTER_CONSUMER_SECRET: env
     .get('TWITTER_CONSUMER_SECRET')
     .required(!ci)
     .asString(),
-  APOLLO_KEY: env.get('APOLLO_KEY').asString(),
-  APOLLO_GRAPH_VARIANT: env
-    .get('APOLLO_GRAPH_VARIANT')
-    .asEnum(['dev', 'current']),
-  APOLLO_SCHEMA_REPORTING: env
-    .get('APOLLO_SCHEMA_REPORTING')
-    .asEnum(['true', 'false']),
   PODCAST_INDEX_KEY: env.get('PODCAST_INDEX_KEY').required(!ci).asString(),
   PODCAST_INDEX_SECRET: env
     .get('PODCAST_INDEX_SECRET')
     .required(!ci)
     .asString(),
-  NEW_RELIC_LICENSE_KEY: env
-    .get('NEW_RELIC_LICENSE_KEY')
+  IMAGEKIT_PUBLIC_KEY: env.get('IMAGEKIT_PUBLIC_KEY').required(!ci).asString(),
+  IMAGEKIT_PRIVATE_KEY: env
+    .get('IMAGEKIT_PRIVATE_KEY')
     .required(!ci)
     .asString(),
-  IMGIX_TOKEN: env.get('IMGIX_TOKEN').required(!ci).asString(),
+  IMAGEKIT_ID: env.get('IMAGEKIT_ID').required(!ci).asString(),
+  ONESIGNAL_APP_ID: env.get('ONESIGNAL_APP_ID').required(!ci).asString(),
+  ONESIGNAL_API_KEY: env.get('ONESIGNAL_API_KEY').required(!ci).asString(),
+  DATO_CMS_KEY: env.get('DATO_CMS_KEY').required(!ci).asString(),
+  BASE_URL: env.get('BASE_URL').required(!ci).asString(),
 };
-
-const set = new Set(Object.keys(parsed));
-Object.keys(e).forEach((key) => set.delete(key));
-if (set.size > 0 && !ci) {
-  throw new Error(`${[...set].join(', ')} not declared in ${__filename}`);
-}
 
 export default e;

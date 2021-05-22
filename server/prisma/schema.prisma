@@ -1,23 +1,41 @@
+// CREATE EXTENSION "unaccent";
+//
+// ALTER TABLE "Podcast" DROP COLUMN tsv;
+//
+// CREATE OR REPLACE FUNCTION public.f_unaccent(text) RETURNS text AS
+//   $func$
+//     SELECT public.unaccent('public.unaccent', $1)
+//   $func$
+// LANGUAGE sql IMMUTABLE PARALLEL SAFE STRICT;
+//
+// ALTER TABLE "Podcast"
+//   ADD tsv tsvector
+//     GENERATED ALWAYS AS
+//       (setweight(to_tsvector('simple', f_unaccent(title)), 'A') || setweight(to_tsvector('simple', f_unaccent(publisher)), 'B')) STORED;
+//
+// CREATE INDEX "Podcast_tsv_idx" ON "Podcast" USING GIN (tsv tsvector_ops);
+
 generator prisma_client {
   provider      = "prisma-client-js"
-  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+  binaryTargets = ["native"]
 }
 
 datasource db {
-  provider = "postgres"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id             String          @id @default(uuid())
-  handle         String
-  displayName    String?
-  profilePicture String?
-  createdAt      DateTime        @default(now())
-  Share          Share[]
-  feedCheckedAt  DateTime?
-  twitterAccount TwitterAccount?
-  feedToken      String          @unique
+  id                  String                @id @default(uuid())
+  handle              String
+  displayName         String?
+  profilePicture      String?
+  createdAt           DateTime              @default(now())
+  feedCheckedAt       DateTime?
+  feedToken           String                @unique
+  AddedToPersonalFeed AddedToPersonalFeed[]
+  Share               Share[]
+  twitterAccount      TwitterAccount?
 }
 
 model TwitterAccount {
@@ -25,61 +43,62 @@ model TwitterAccount {
   token     String?
   secret    String?
   following String[]
-  user      User     @relation(fields: [userId], references: [id])
   userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Share {
-  id        String   @id @default(uuid())
-  authorId  String
-  author    User     @relation(fields: [authorId], references: [id])
-  episodeId String
-  episode   Episode  @relation(fields: [episodeId], references: [id])
-  message   String?
-  createdAt DateTime @default(now())
+  id                  String                @id
+  authorId            String
+  episodeId           String
+  message             String?
+  createdAt           DateTime              @default(now())
+  hideFromGlobalFeed  Boolean               @default(false)
+  author              User                  @relation(fields: [authorId], references: [id])
+  episode             Episode               @relation(fields: [episodeId], references: [id])
+  AddedToPersonalFeed AddedToPersonalFeed[]
 
-  @@unique([episodeId, authorId])
+  @@unique([episodeId, authorId], name: "Share_episodeId_authorId_unique")
+}
+
+model AddedToPersonalFeed {
+  shareId   String
+  userId    String
+  createdAt DateTime @default(now())
+  share     Share    @relation(fields: [shareId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@id([shareId, userId])
 }
 
 model Episode {
-  id              String       @id
+  id              String   @id
   title           String
-  share           Share[]
-  podcast         Podcast      @relation(fields: [podcastId], references: [id])
   podcastId       String
-  description     String?
   durationSeconds Int?
-  enclosureUrl    String
-  enclosureType   String
   datePublished   DateTime
-  enclosureLength Int?
   artwork         String?
   url             String?
-  apiResponse     Json
-  Reolve          UrlResolve[]
+  description     String?
+  enclosureUrl    String
+  enclosureLength Int?
+  enclosureType   String?
+  podcast         Podcast  @relation(fields: [podcastId], references: [id])
+  share           Share[]
 }
 
 model Podcast {
-  id          String       @id
-  title       String
-  Episode     Episode[]
-  itunesId    Int          @unique
-  publisher   String
-  description String?
-  feed        String       @unique
-  url         String?
-  artwork     String?
-  apiResponse Json
-  Reolve      UrlResolve[]
-}
+  id        String                   @id
+  title     String
+  itunesId  Int?
+  publisher String
+  artwork   String?
+  tsv       Unsupported("tsvector")?
+  Episode   Episode[]
 
-model UrlResolve {
-  url       String   @id
-  createdAt DateTime @default(now())
-  podcast   Podcast? @relation(fields: [podcastId], references: [id])
-  episode   Episode? @relation(fields: [episodeId], references: [id])
-  episodeId String?
-  podcastId String?
+  @@index([tsv], name: "Podcast_tsv_idx")
+  @@index([itunesId], name: "Podcast_itunesId_idx")
 }
 
 model PodcastClient {
@@ -88,4 +107,29 @@ model PodcastClient {
   icon                      String
   subscribeUrl              String
   subscribeUrlNeedsProtocol Boolean
+}
+
+enum JobStatus {
+  START
+  FAILED
+  SUCCESS
+}
+
+model JobLog {
+  id             Int       @id @default(autoincrement())
+  jobId          String
+  workerId       String
+  taskIdentifier String
+  status         JobStatus
+  time           DateTime  @default(now())
+  meta           String?
+}
+
+enum ConfigKey {
+  LastIndexImport
+}
+
+model Config {
+  key   ConfigKey @id
+  value String
 }

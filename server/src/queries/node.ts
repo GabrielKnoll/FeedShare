@@ -1,11 +1,11 @@
-import {extendType, idArg, nonNull} from '@nexus/schema';
+import {extendType, idArg, nonNull} from 'nexus';
 import Node from '../models/Node';
 import requireAuthorization from '../utils/requireAuthorization';
-import {NexusGenAbstractTypeMembers} from 'nexus-typegen';
+import {NexusGenAbstractTypeMembers} from '../../types/api';
 import UnreachableCaseError from '../utils/UnreachableCaseError';
 import {Prisma} from '@prisma/client';
-import {ResultValue} from '@nexus/schema/dist/core';
 import {ApolloError} from 'apollo-server-express';
+import {ResultValue} from 'nexus/dist/core';
 
 export default extendType({
   type: 'Query',
@@ -48,7 +48,7 @@ export default extendType({
         const node: ResultValue<
           'Query',
           'node'
-        > | null = await (delegate as Prisma.PodcastDelegate).findUnique({
+        > | null = await (delegate as Prisma.PodcastDelegate<any>).findUnique({
           where: {
             id: key,
           },

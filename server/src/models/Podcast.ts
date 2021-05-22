@@ -1,6 +1,6 @@
-import {objectType, intArg} from '@nexus/schema';
+import {objectType, intArg} from 'nexus';
 import {Podcast} from '@prisma/client';
-import {latestEpisodes} from '../utils/podcastIndex';
+import {fullPodcastById, latestEpisodes} from '../utils/podcastIndex';
 import imageField from '../utils/imageField';
 import Node from './Node';
 
@@ -11,8 +11,38 @@ export default objectType({
     t.implements(Node);
 
     t.model.title();
-    t.model.description();
-    t.model.feed();
+    t.field('description', {
+      type: 'String',
+      resolve: async (root, _args, context) => {
+        context.podcastApiRequest =
+          context.podcastApiRequest ??
+          fullPodcastById(parseInt((root as Podcast).id, 10));
+        const data = await context.podcastApiRequest;
+        return data.feed.description;
+      },
+    });
+
+    t.field('url', {
+      type: 'String',
+      resolve: async (root, _args, context) => {
+        context.podcastApiRequest =
+          context.podcastApiRequest ??
+          fullPodcastById(parseInt((root as Podcast).id, 10));
+        const data = await context.podcastApiRequest;
+        return data.feed.link;
+      },
+    });
+
+    t.nonNull.field('feed', {
+      type: 'String',
+      resolve: async (root, _args, context) => {
+        context.podcastApiRequest =
+          context.podcastApiRequest ??
+          fullPodcastById(parseInt((root as Podcast).id, 10));
+        const data = await context.podcastApiRequest;
+        return data.feed.url;
+      },
+    });
     t.model.publisher();
     t.list.field('latestEpisodes', {
       type: 'Episode',

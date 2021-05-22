@@ -1,65 +1,57 @@
-import {
-  objectType,
-  extendType,
-  stringArg,
-  nonNull,
-  intArg,
-} from '@nexus/schema';
-import FeedType from '../models/FeedType';
-import PageInfo from '../models/PageInfo';
-import requireAuthorization from '../utils/requireAuthorization';
-import {shareWhere} from '../models/Share';
+import {PrismaClient, Share} from '@prisma/client';
+import {AuthenticationError, UserInputError} from 'apollo-server-express';
+import {extendType, nonNull} from 'nexus';
+import UnreachableCaseError from '../utils/UnreachableCaseError';
 
 export default extendType({
   type: 'Query',
   definition: (t) => {
-    t.nonNull.field('shares', {
-      type: objectType({
-        name: 'ShareConnection',
-        definition(t) {
-          t.field('pageInfo', {
-            type: PageInfo,
-          });
-          t.list.field('edges', {
-            type: objectType({
-              name: 'ShareEdge',
-              definition(t) {
-                t.string('cursor');
-                t.field('node', {type: 'Share'});
-              },
-            }),
-          });
-        },
-      }),
-      args: {
-        last: nonNull(intArg()),
-        after: stringArg(),
-        before: stringArg(),
-        feedType: FeedType,
+    t.nonNull.connectionField('shares', {
+      type: 'Share',
+      additionalArgs: {
+        feedType: nonNull('FeedType'),
       },
-      ...requireAuthorization,
-      resolve: async (_parent, args, ctx) => {
-        if (args?.last < 0) {
-          throw new Error('last is less than 0');
+      resolve: async (_parent, {feedType, ...args}, ctx) => {
+        if (!args.last || args.last < 0) {
+          throw new UserInputError('last is less than 0');
+        }
+        if (!ctx.userId && feedType !== 'Global') {
+          throw new AuthenticationError('Not authorized');
         }
 
-        let skip, cursor;
+        let skip = 0;
         const take = args.last + 1;
 
         if (args.before) {
-          skip = 1;
-          cursor = {id: args.before};
+          throw new UserInputError('before arg not supported');
         }
 
-        let nodes = await ctx.prismaClient.share.findMany({
-          take,
-          skip,
-          cursor,
-          where: await shareWhere(ctx, args.feedType),
-          orderBy: {
-            createdAt: 'desc',
-          },
-        });
+        let nodes: Share[];
+        switch (feedType) {
+          case 'User':
+            nodes = await userFeedShares(
+              ctx.prismaClient,
+              ctx.userId!,
+              take,
+              skip,
+            );
+            break;
+          case 'Global':
+            nodes = await globalFeedShares(ctx.prismaClient, take, skip);
+            break;
+          case 'Personal':
+            nodes = await personalFeedShares(
+              ctx.prismaClient,
+              true,
+              ctx.userId!,
+              take,
+              skip,
+            );
+            break;
+          default:
+            throw new UnreachableCaseError(feedType);
+        }
+
         const hasExtraNode = nodes.length === take;
 
         // Remove the extra node from the results
@@ -70,9 +62,8 @@ export default extendType({
         // cut off list before the cursor
         if (args.after) {
           let found = false;
-          const cursor = args.after;
           nodes = nodes.filter((n) => {
-            found = found || n.id === cursor;
+            found = found || n.id === args.after;
             return !found;
           });
         }
@@ -99,3 +90,61 @@ export default extendType({
     });
   },
 });
+
+function globalFeedShares(
+  prismaClient: PrismaClient,
+  take: number,
+  skip: number,
+): Promise<Share[]> {
+  return prismaClient.share.findMany({
+    take,
+    skip,
+    where: {
+      hideFromGlobalFeed: false,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+}
+
+function userFeedShares(
+  prismaClient: PrismaClient,
+  userId: string,
+  take: number,
+  skip: number,
+): Promise<Share[]> {
+  return prismaClient.share.findMany({
+    take,
+    skip,
+    where: {
+      authorId: userId,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+}
+
+export async function personalFeedShares(
+  prismaClient: PrismaClient,
+  includeMyShares: boolean,
+  userId: string,
+  take: number,
+  skip: number,
+): Promise<Share[]> {
+  return prismaClient.$queryRaw(
+    `SELECT s.* FROM "Share" s
+     LEFT JOIN "AddedToPersonalFeed" a ON a."shareId" = s."id"
+       WHERE 
+         "authorId" = ANY(SELECT UNNEST(following) FROM "TwitterAccount" WHERE "userId" = $1)
+         OR "id" IN (SELECT "shareId" FROM "AddedToPersonalFeed" WHERE "userId" = $1)
+         ${includeMyShares ? `OR "authorId" = $1` : ''}
+     ORDER BY COALESCE(a."createdAt", s."createdAt") DESC
+     LIMIT $2 OFFSET $3;
+    `,
+    userId,
+    take,
+    skip,
+  );
+}

@@ -1,9 +1,7 @@
-import env from './env';
-import {createHash} from 'crypto';
-import qs from 'query-string';
-import {intArg} from '@nexus/schema';
-import {nonNull, ObjectDefinitionBlock} from '@nexus/schema/dist/core';
-import {NexusGenObjectNames, NexusGenFieldTypes} from 'nexus-typegen';
+import {intArg, nonNull} from 'nexus';
+import {NexusGenObjectNames, NexusGenFieldTypes} from '../../types/api';
+import {ObjectDefinitionBlock} from 'nexus/dist/core';
+import imagekit, {urlEndpoint} from './imagekit';
 
 export default function fieldConfig<TypeName extends NexusGenObjectNames>(
   t: ObjectDefinitionBlock<TypeName>,
@@ -23,19 +21,21 @@ export default function fieldConfig<TypeName extends NexusGenObjectNames>(
       if (!root[fieldName]) {
         return null;
       }
-      const path = `/${encodeURIComponent(
-        String(root[fieldName]),
-      )}?${qs.stringify({
-        fm: 'jpg',
-        q: scale > 1 ? 40 : 60,
-        h: size * scale,
-        w: size * scale,
-        fit: 'crop',
-      })}`;
-      const toSign = `${env.IMGIX_TOKEN}${path}`;
-      return `https://feedshare.imgix.net${path}&s=${createHash('md5')
-        .update(toSign)
-        .digest('hex')}`;
+
+      return imagekit.url({
+        signed: true,
+        src: `${urlEndpoint}/${root[fieldName]}`,
+        transformationPosition: 'path',
+        transformation: [
+          {
+            format: 'webp',
+            width: String(size * scale),
+            height: String(size * scale),
+            quality: String(scale > 1 ? 40 : 60),
+            cropMode: 'center',
+          },
+        ],
+      });
     },
   });
 }

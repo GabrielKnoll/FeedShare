@@ -1,9 +1,9 @@
-import {interfaceType} from '@nexus/schema';
+import {interfaceType} from 'nexus';
 import {
   NexusGenInterfaces,
   NexusGenFieldTypes,
   NexusGenAbstractTypeMembers,
-} from 'nexus-typegen';
+} from '../../types/api';
 import {generateId} from '../queries/node';
 
 export default interfaceType({
