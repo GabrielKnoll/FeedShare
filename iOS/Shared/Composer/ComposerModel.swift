@@ -173,6 +173,7 @@ public class ComposerModel: ObservableObject {
                         self.composerError = .duplicateShare
                     } else if let share = graphQLResult.data?.createShare?.fragments.shareFragment {
                         self.share = share
+                        NotificationCenter.default.post(name: .reloadFeed, object: share)
                     } else {
                         self.composerError = .shareFailed
                     }

@@ -2,7 +2,7 @@
   "__schema": {
     "queryType": {"name": "Query"},
     "mutationType": {"name": "Mutation"},
-    "subscriptionType": null,
+    "subscriptionType": {"name": "Subscription"},
     "types": [
       {
         "kind": "OBJECT",
@@ -129,7 +129,9 @@
                   "name": null,
                   "ofType": {"kind": "SCALAR", "name": "Int", "ofType": null}
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "size",
@@ -139,7 +141,9 @@
                   "name": null,
                   "ofType": {"kind": "SCALAR", "name": "Int", "ofType": null}
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {"kind": "SCALAR", "name": "String", "ofType": null},
@@ -290,7 +294,9 @@
                   "name": null,
                   "ofType": {"kind": "SCALAR", "name": "ID", "ofType": null}
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {"kind": "OBJECT", "name": "Share", "ofType": null},
@@ -309,13 +315,17 @@
                   "name": null,
                   "ofType": {"kind": "SCALAR", "name": "ID", "ofType": null}
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "hideFromGlobalFeed",
                 "description": null,
                 "type": {"kind": "SCALAR", "name": "Boolean", "ofType": null},
-                "defaultValue": "false"
+                "defaultValue": "false",
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "message",
@@ -325,13 +335,17 @@
                   "name": null,
                   "ofType": {"kind": "SCALAR", "name": "String", "ofType": null}
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "shareOnTwitter",
                 "description": null,
                 "type": {"kind": "SCALAR", "name": "Boolean", "ofType": null},
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {"kind": "OBJECT", "name": "Share", "ofType": null},
@@ -350,7 +364,9 @@
                   "name": null,
                   "ofType": {"kind": "SCALAR", "name": "String", "ofType": null}
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "twitterToken",
@@ -360,7 +376,9 @@
                   "name": null,
                   "ofType": {"kind": "SCALAR", "name": "String", "ofType": null}
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "twitterTokenSecret",
@@ -370,7 +388,9 @@
                   "name": null,
                   "ofType": {"kind": "SCALAR", "name": "String", "ofType": null}
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {"kind": "OBJECT", "name": "Viewer", "ofType": null},
@@ -533,7 +553,9 @@
                   "name": null,
                   "ofType": {"kind": "SCALAR", "name": "Int", "ofType": null}
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "size",
@@ -543,7 +565,9 @@
                   "name": null,
                   "ofType": {"kind": "SCALAR", "name": "Int", "ofType": null}
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {"kind": "SCALAR", "name": "String", "ofType": null},
@@ -590,7 +614,9 @@
                 "name": "length",
                 "description": null,
                 "type": {"kind": "SCALAR", "name": "Int", "ofType": null},
-                "defaultValue": "10"
+                "defaultValue": "10",
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -727,7 +753,9 @@
                   "name": null,
                   "ofType": {"kind": "SCALAR", "name": "String", "ofType": null}
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -750,7 +778,9 @@
                   "name": null,
                   "ofType": {"kind": "SCALAR", "name": "ID", "ofType": null}
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {"kind": "INTERFACE", "name": "Node", "ofType": null},
@@ -797,7 +827,9 @@
                   "name": null,
                   "ofType": {"kind": "SCALAR", "name": "String", "ofType": null}
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -816,13 +848,17 @@
                 "name": "after",
                 "description": "Returns the elements in the list that come after the specified cursor",
                 "type": {"kind": "SCALAR", "name": "String", "ofType": null},
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "before",
                 "description": "Returns the elements in the list that come before the specified cursor",
                 "type": {"kind": "SCALAR", "name": "String", "ofType": null},
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "feedType",
@@ -832,19 +868,25 @@
                   "name": null,
                   "ofType": {"kind": "ENUM", "name": "FeedType", "ofType": null}
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "first",
                 "description": "Returns the first n elements from the list.",
                 "type": {"kind": "SCALAR", "name": "Int", "ofType": null},
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "last",
                 "description": "Returns the last n elements from the list.",
                 "type": {"kind": "SCALAR", "name": "Int", "ofType": null},
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -871,7 +913,9 @@
                   "name": null,
                   "ofType": {"kind": "SCALAR", "name": "String", "ofType": null}
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -1019,7 +1063,9 @@
                   "name": null,
                   "ofType": {"kind": "ENUM", "name": "FeedType", "ofType": null}
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {"kind": "SCALAR", "name": "Boolean", "ofType": null},
@@ -1108,6 +1154,25 @@
       },
       {
         "kind": "OBJECT",
+        "name": "Subscription",
+        "description": null,
+        "fields": [
+          {
+            "name": "truths",
+            "description": null,
+            "args": [],
+            "type": {"kind": "SCALAR", "name": "Boolean", "ofType": null},
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
         "name": "User",
         "description": null,
         "fields": [
@@ -1127,25 +1192,33 @@
                 "name": "after",
                 "description": "Returns the elements in the list that come after the specified cursor",
                 "type": {"kind": "SCALAR", "name": "String", "ofType": null},
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "before",
                 "description": "Returns the elements in the list that come before the specified cursor",
                 "type": {"kind": "SCALAR", "name": "String", "ofType": null},
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "first",
                 "description": "Returns the first n elements from the list.",
                 "type": {"kind": "SCALAR", "name": "Int", "ofType": null},
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "last",
                 "description": "Returns the last n elements from the list.",
                 "type": {"kind": "SCALAR", "name": "Int", "ofType": null},
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -1168,25 +1241,33 @@
                 "name": "after",
                 "description": "Returns the elements in the list that come after the specified cursor",
                 "type": {"kind": "SCALAR", "name": "String", "ofType": null},
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "before",
                 "description": "Returns the elements in the list that come before the specified cursor",
                 "type": {"kind": "SCALAR", "name": "String", "ofType": null},
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "first",
                 "description": "Returns the first n elements from the list.",
                 "type": {"kind": "SCALAR", "name": "Int", "ofType": null},
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "last",
                 "description": "Returns the last n elements from the list.",
                 "type": {"kind": "SCALAR", "name": "Int", "ofType": null},
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -1237,7 +1318,9 @@
                   "name": null,
                   "ofType": {"kind": "SCALAR", "name": "Int", "ofType": null}
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "size",
@@ -1247,7 +1330,9 @@
                   "name": null,
                   "ofType": {"kind": "SCALAR", "name": "Int", "ofType": null}
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {"kind": "SCALAR", "name": "String", "ofType": null},
@@ -1467,7 +1552,9 @@
                 "name": "includeDeprecated",
                 "description": null,
                 "type": {"kind": "SCALAR", "name": "Boolean", "ofType": null},
-                "defaultValue": "false"
+                "defaultValue": "false",
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -1522,7 +1609,9 @@
                 "name": "includeDeprecated",
                 "description": null,
                 "type": {"kind": "SCALAR", "name": "Boolean", "ofType": null},
-                "defaultValue": "false"
+                "defaultValue": "false",
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -1549,7 +1638,9 @@
                 "name": "includeDeprecated",
                 "description": null,
                 "type": {"kind": "SCALAR", "name": "Boolean", "ofType": null},
-                "defaultValue": "false"
+                "defaultValue": "false",
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -1674,7 +1765,9 @@
                 "name": "includeDeprecated",
                 "description": null,
                 "type": {"kind": "SCALAR", "name": "Boolean", "ofType": null},
-                "defaultValue": "false"
+                "defaultValue": "false",
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -2089,7 +2182,9 @@
               "name": null,
               "ofType": {"kind": "SCALAR", "name": "Boolean", "ofType": null}
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ]
       },
@@ -2107,7 +2202,9 @@
               "name": null,
               "ofType": {"kind": "SCALAR", "name": "Boolean", "ofType": null}
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ]
       },
@@ -2126,7 +2223,9 @@
             "name": "reason",
             "description": "Explains why this element was deprecated, usually also including a suggestion for how to access supported similar data. Formatted using the Markdown syntax, as specified by [CommonMark](https://commonmark.org/).",
             "type": {"kind": "SCALAR", "name": "String", "ofType": null},
-            "defaultValue": "\"No longer supported\""
+            "defaultValue": "\"No longer supported\"",
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ]
       },
@@ -2144,7 +2243,9 @@
               "name": null,
               "ofType": {"kind": "SCALAR", "name": "String", "ofType": null}
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ]
       }

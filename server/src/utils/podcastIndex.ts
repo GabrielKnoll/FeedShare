@@ -1,6 +1,5 @@
 import {Episode, Podcast, Prisma} from '@prisma/client';
 import PodcastIndexClient from 'podcastdx-client';
-import {ApiResponse} from 'podcastdx-client/dist/types';
 import prismaClient from './prismaClient';
 import normalizeUrl from 'normalize-url';
 import {htmlToText} from 'html-to-text';
@@ -8,6 +7,11 @@ import {decodeXML} from 'entities';
 import {ParserResult} from '../queries/resolveShareUrl';
 import env from './env';
 import {iTunesPodcast} from './appleApi';
+import {
+  ApiResponse,
+  PIApiEpisodeInfo,
+  PIApiFeed,
+} from 'podcastdx-client/dist/src/types';
 
 export const podcastIndexClient = new PodcastIndexClient({
   key: env.PODCAST_INDEX_KEY,
@@ -43,7 +47,7 @@ async function podcastFromFeeds(feeds: string[]) {
 }
 
 function podcastFromApiResponse(
-  apiResponse: ApiResponse.PodcastFeed,
+  apiResponse: PIApiFeed,
 ): Prisma.PodcastCreateInput {
   return {
     id: String(apiResponse.id),
@@ -131,7 +135,7 @@ export async function fetchEpisode(
 }
 
 function episodeFromApiResponse(
-  apiResponse: ApiResponse.EpisodeInfo,
+  apiResponse: PIApiEpisodeInfo,
 ): Prisma.EpisodeCreateInput {
   return {
     id: String(apiResponse.id),

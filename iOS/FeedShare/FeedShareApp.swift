@@ -11,6 +11,8 @@ import Shared
 import SwiftUI
 
 class AppDelegate: NSObject, UIApplicationDelegate {
+    private var logoutObserver: NSObjectProtocol?
+    
     func application(
         _: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -19,6 +21,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         if let appId = Bundle.main.object(forInfoDictionaryKey: "ONE_SIGNAL_APP_ID") as? String {
             OneSignal.initWithLaunchOptions(launchOptions)
             OneSignal.setAppId(appId)
+        }
+        logoutObserver = NotificationCenter.default.addObserver(forName: .logoutFeed, object: nil, queue: .main) { _ in
+            OneSignal.removeExternalUserId()
         }
         return true
     }

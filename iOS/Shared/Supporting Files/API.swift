@@ -65,7 +65,11 @@ public final class EpisodeOverlayQuery: GraphQLQuery {
 
   public let operationName: String = "EpisodeOverlay"
 
-  public var queryDocument: String { return operationDefinition.appending("\n" + EpisodeOverlayFragment.fragmentDefinition) }
+  public var queryDocument: String {
+    var document: String = operationDefinition
+    document.append("\n" + EpisodeOverlayFragment.fragmentDefinition)
+    return document
+  }
 
   public var id: GraphQLID
 
@@ -242,7 +246,12 @@ public final class FeedQuery: GraphQLQuery {
 
   public let operationName: String = "Feed"
 
-  public var queryDocument: String { return operationDefinition.appending("\n" + ShareFragment.fragmentDefinition).appending("\n" + EpisodeAttachmentFragment.fragmentDefinition) }
+  public var queryDocument: String {
+    var document: String = operationDefinition
+    document.append("\n" + ShareFragment.fragmentDefinition)
+    document.append("\n" + EpisodeAttachmentFragment.fragmentDefinition)
+    return document
+  }
 
   public var after: String?
   public var feedType: FeedType
@@ -491,6 +500,119 @@ public final class FeedQuery: GraphQLQuery {
   }
 }
 
+public final class AddToPersonalFeedMutation: GraphQLMutation {
+  /// The raw GraphQL definition of this operation.
+  public let operationDefinition: String =
+    """
+    mutation AddToPersonalFeed($id: ID!) {
+      addToPersonalFeed(shareId: $id) {
+        __typename
+        ...ShareFragment
+      }
+    }
+    """
+
+  public let operationName: String = "AddToPersonalFeed"
+
+  public var queryDocument: String {
+    var document: String = operationDefinition
+    document.append("\n" + ShareFragment.fragmentDefinition)
+    document.append("\n" + EpisodeAttachmentFragment.fragmentDefinition)
+    return document
+  }
+
+  public var id: GraphQLID
+
+  public init(id: GraphQLID) {
+    self.id = id
+  }
+
+  public var variables: GraphQLMap? {
+    return ["id": id]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes: [String] = ["Mutation"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("addToPersonalFeed", arguments: ["shareId": GraphQLVariable("id")], type: .object(AddToPersonalFeed.selections)),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(addToPersonalFeed: AddToPersonalFeed? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "addToPersonalFeed": addToPersonalFeed.flatMap { (value: AddToPersonalFeed) -> ResultMap in value.resultMap }])
+    }
+
+    public var addToPersonalFeed: AddToPersonalFeed? {
+      get {
+        return (resultMap["addToPersonalFeed"] as? ResultMap).flatMap { AddToPersonalFeed(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "addToPersonalFeed")
+      }
+    }
+
+    public struct AddToPersonalFeed: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Share"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLFragmentSpread(ShareFragment.self),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(unsafeResultMap: resultMap)
+        }
+        set {
+          resultMap += newValue.resultMap
+        }
+      }
+
+      public struct Fragments {
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public var shareFragment: ShareFragment {
+          get {
+            return ShareFragment(unsafeResultMap: resultMap)
+          }
+          set {
+            resultMap += newValue.resultMap
+          }
+        }
+      }
+    }
+  }
+}
+
 public final class SettingsQuery: GraphQLQuery {
   /// The raw GraphQL definition of this operation.
   public let operationDefinition: String =
@@ -625,7 +747,12 @@ public final class ResolveQuery: GraphQLQuery {
 
   public let operationName: String = "Resolve"
 
-  public var queryDocument: String { return operationDefinition.appending("\n" + EpisodeAttachmentFragment.fragmentDefinition).appending("\n" + ComposerPodcastFragment.fragmentDefinition) }
+  public var queryDocument: String {
+    var document: String = operationDefinition
+    document.append("\n" + EpisodeAttachmentFragment.fragmentDefinition)
+    document.append("\n" + ComposerPodcastFragment.fragmentDefinition)
+    return document
+  }
 
   public var url: String
 
@@ -907,7 +1034,11 @@ public final class FindPodcastQuery: GraphQLQuery {
 
   public let operationName: String = "FindPodcast"
 
-  public var queryDocument: String { return operationDefinition.appending("\n" + ComposerPodcastFragment.fragmentDefinition) }
+  public var queryDocument: String {
+    var document: String = operationDefinition
+    document.append("\n" + ComposerPodcastFragment.fragmentDefinition)
+    return document
+  }
 
   public var query: String
 
@@ -1024,7 +1155,11 @@ public final class LatestEpisodesQuery: GraphQLQuery {
 
   public let operationName: String = "LatestEpisodes"
 
-  public var queryDocument: String { return operationDefinition.appending("\n" + EpisodeAttachmentFragment.fragmentDefinition) }
+  public var queryDocument: String {
+    var document: String = operationDefinition
+    document.append("\n" + EpisodeAttachmentFragment.fragmentDefinition)
+    return document
+  }
 
   public var podcast: GraphQLID
 
@@ -1223,7 +1358,12 @@ public final class CreateShareMutation: GraphQLMutation {
   public let operationDefinition: String =
     """
     mutation CreateShare($message: String!, $episodeId: ID!, $shareOnTwitter: Boolean, $hideFromGlobalFeed: Boolean) {
-      createShare(message: $message, episodeId: $episodeId, shareOnTwitter: $shareOnTwitter, hideFromGlobalFeed: $hideFromGlobalFeed) {
+      createShare(
+        message: $message
+        episodeId: $episodeId
+        shareOnTwitter: $shareOnTwitter
+        hideFromGlobalFeed: $hideFromGlobalFeed
+      ) {
         __typename
         ...ShareFragment
       }
@@ -1232,7 +1372,12 @@ public final class CreateShareMutation: GraphQLMutation {
 
   public let operationName: String = "CreateShare"
 
-  public var queryDocument: String { return operationDefinition.appending("\n" + ShareFragment.fragmentDefinition).appending("\n" + EpisodeAttachmentFragment.fragmentDefinition) }
+  public var queryDocument: String {
+    var document: String = operationDefinition
+    document.append("\n" + ShareFragment.fragmentDefinition)
+    document.append("\n" + EpisodeAttachmentFragment.fragmentDefinition)
+    return document
+  }
 
   public var message: String
   public var episodeId: GraphQLID
@@ -1346,7 +1491,12 @@ public final class ViewerModelQuery: GraphQLQuery {
 
   public let operationName: String = "ViewerModel"
 
-  public var queryDocument: String { return operationDefinition.appending("\n" + ViewerFragment.fragmentDefinition).appending("\n" + FollowFragment.fragmentDefinition) }
+  public var queryDocument: String {
+    var document: String = operationDefinition
+    document.append("\n" + ViewerFragment.fragmentDefinition)
+    document.append("\n" + FollowFragment.fragmentDefinition)
+    return document
+  }
 
   public init() {
   }
@@ -1438,7 +1588,11 @@ public final class CreateViewerMutation: GraphQLMutation {
   public let operationDefinition: String =
     """
     mutation CreateViewer($twitterId: String!, $twitterToken: String!, $twitterTokenSecret: String!) {
-      createViewer(twitterId: $twitterId, twitterToken: $twitterToken, twitterTokenSecret: $twitterTokenSecret) {
+      createViewer(
+        twitterId: $twitterId
+        twitterToken: $twitterToken
+        twitterTokenSecret: $twitterTokenSecret
+      ) {
         __typename
         ...ViewerFragment
       }
@@ -1447,7 +1601,12 @@ public final class CreateViewerMutation: GraphQLMutation {
 
   public let operationName: String = "CreateViewer"
 
-  public var queryDocument: String { return operationDefinition.appending("\n" + ViewerFragment.fragmentDefinition).appending("\n" + FollowFragment.fragmentDefinition) }
+  public var queryDocument: String {
+    var document: String = operationDefinition
+    document.append("\n" + ViewerFragment.fragmentDefinition)
+    document.append("\n" + FollowFragment.fragmentDefinition)
+    return document
+  }
 
   public var twitterId: String
   public var twitterToken: String
@@ -1559,7 +1718,11 @@ public final class PodcastClientsQuery: GraphQLQuery {
 
   public let operationName: String = "PodcastClients"
 
-  public var queryDocument: String { return operationDefinition.appending("\n" + Client.fragmentDefinition) }
+  public var queryDocument: String {
+    var document: String = operationDefinition
+    document.append("\n" + Client.fragmentDefinition)
+    return document
+  }
 
   public init() {
   }
@@ -1823,8 +1986,10 @@ public struct ShareFragment: GraphQLFragment {
     """
     fragment ShareFragment on Share {
       __typename
+      id
       author {
         __typename
+        id
         handle
         displayName
         profilePicture(size: 100, scale: 2)
@@ -1832,6 +1997,7 @@ public struct ShareFragment: GraphQLFragment {
       message
       createdAt
       isInGlobalFeed: isInFeed(feedType: Global)
+      isInPersonalFeed: isInFeed(feedType: Personal)
       episode {
         __typename
         ...EpisodeAttachmentFragment
@@ -1844,10 +2010,12 @@ public struct ShareFragment: GraphQLFragment {
   public static var selections: [GraphQLSelection] {
     return [
       GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+      GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
       GraphQLField("author", type: .nonNull(.object(Author.selections))),
       GraphQLField("message", type: .scalar(String.self)),
       GraphQLField("createdAt", type: .nonNull(.scalar(String.self))),
       GraphQLField("isInFeed", alias: "isInGlobalFeed", arguments: ["feedType": "Global"], type: .scalar(Bool.self)),
+      GraphQLField("isInFeed", alias: "isInPersonalFeed", arguments: ["feedType": "Personal"], type: .scalar(Bool.self)),
       GraphQLField("episode", type: .nonNull(.object(Episode.selections))),
     ]
   }
@@ -1858,8 +2026,8 @@ public struct ShareFragment: GraphQLFragment {
     self.resultMap = unsafeResultMap
   }
 
-  public init(author: Author, message: String? = nil, createdAt: String, isInGlobalFeed: Bool? = nil, episode: Episode) {
-    self.init(unsafeResultMap: ["__typename": "Share", "author": author.resultMap, "message": message, "createdAt": createdAt, "isInGlobalFeed": isInGlobalFeed, "episode": episode.resultMap])
+  public init(id: GraphQLID, author: Author, message: String? = nil, createdAt: String, isInGlobalFeed: Bool? = nil, isInPersonalFeed: Bool? = nil, episode: Episode) {
+    self.init(unsafeResultMap: ["__typename": "Share", "id": id, "author": author.resultMap, "message": message, "createdAt": createdAt, "isInGlobalFeed": isInGlobalFeed, "isInPersonalFeed": isInPersonalFeed, "episode": episode.resultMap])
   }
 
   public var __typename: String {
@@ -1868,6 +2036,16 @@ public struct ShareFragment: GraphQLFragment {
     }
     set {
       resultMap.updateValue(newValue, forKey: "__typename")
+    }
+  }
+
+  /// Unique identifier for the resource
+  public var id: GraphQLID {
+    get {
+      return resultMap["id"]! as! GraphQLID
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "id")
     }
   }
 
@@ -1907,6 +2085,15 @@ public struct ShareFragment: GraphQLFragment {
     }
   }
 
+  public var isInPersonalFeed: Bool? {
+    get {
+      return resultMap["isInPersonalFeed"] as? Bool
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "isInPersonalFeed")
+    }
+  }
+
   public var episode: Episode {
     get {
       return Episode(unsafeResultMap: resultMap["episode"]! as! ResultMap)
@@ -1922,6 +2109,7 @@ public struct ShareFragment: GraphQLFragment {
     public static var selections: [GraphQLSelection] {
       return [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
         GraphQLField("handle", type: .nonNull(.scalar(String.self))),
         GraphQLField("displayName", type: .scalar(String.self)),
         GraphQLField("profilePicture", arguments: ["size": 100, "scale": 2], type: .scalar(String.self)),
@@ -1934,8 +2122,8 @@ public struct ShareFragment: GraphQLFragment {
       self.resultMap = unsafeResultMap
     }
 
-    public init(handle: String, displayName: String? = nil, profilePicture: String? = nil) {
-      self.init(unsafeResultMap: ["__typename": "User", "handle": handle, "displayName": displayName, "profilePicture": profilePicture])
+    public init(id: GraphQLID, handle: String, displayName: String? = nil, profilePicture: String? = nil) {
+      self.init(unsafeResultMap: ["__typename": "User", "id": id, "handle": handle, "displayName": displayName, "profilePicture": profilePicture])
     }
 
     public var __typename: String {
@@ -1944,6 +2132,16 @@ public struct ShareFragment: GraphQLFragment {
       }
       set {
         resultMap.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    /// Unique identifier for the resource
+    public var id: GraphQLID {
+      get {
+        return resultMap["id"]! as! GraphQLID
+      }
+      set {
+        resultMap.updateValue(newValue, forKey: "id")
       }
     }
 

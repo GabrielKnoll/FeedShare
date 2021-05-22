@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -e
 HOST="buechele@buechele.cc"
 DIR="~/feedshare"
 

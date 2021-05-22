@@ -1,4 +1,5 @@
 import {sub} from 'date-fns';
+import {JobHelpers} from 'graphile-worker';
 import {scheduleTask} from '.';
 import prismaClient from '../utils/prismaClient';
 

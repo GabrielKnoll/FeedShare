@@ -18,7 +18,7 @@
 		673324AE25F3C87C008F0F58 /* EmptyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673324AD25F3C87C008F0F58 /* EmptyState.swift */; };
 		673324D325F59B7B008F0F58 /* Rswift in Frameworks */ = {isa = PBXBuildFile; productRef = 673324D225F59B7B008F0F58 /* Rswift */; };
 		673324DA25F5A4C9008F0F58 /* Shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F533026D25815DE5005C5250 /* Shared.framework */; };
-		673324DB25F5A4C9008F0F58 /* Shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F533026D25815DE5005C5250 /* Shared.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		673324DB25F5A4C9008F0F58 /* Shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F533026D25815DE5005C5250 /* Shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		673324DD25F5A4D6008F0F58 /* Shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F533026D25815DE5005C5250 /* Shared.framework */; };
 		678C2AD725B0F8AB00576884 /* OnboardingTextPairing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678C2AD625B0F8AB00576884 /* OnboardingTextPairing.swift */; };
 		678C2AED25B3ACFC00576884 /* Inter-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 678C2AEA25B3ACFC00576884 /* Inter-Regular.otf */; };
@@ -650,7 +650,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1230;
-				LastUpgradeCheck = 1200;
+				LastUpgradeCheck = 1250;
 				TargetAttributes = {
 					67CEA5BE258EBAB800516BA4 = {
 						CreatedOnToolsVersion = 12.3;
@@ -1395,7 +1395,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apollographql/apollo-ios.git";
 			requirement = {
-				kind = upToNextMinorVersion;
+				kind = upToNextMajorVersion;
 				minimumVersion = 0.36.0;
 			};
 		};

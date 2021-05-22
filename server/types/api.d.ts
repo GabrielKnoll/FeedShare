@@ -135,6 +135,7 @@ export interface NexusGenObjects {
     cursor: string; // String!
     node?: NexusGenRootTypes['Share'] | null; // Share
   }
+  Subscription: {};
   User: { // root type
     displayName?: string | null; // String
     handle: string; // String!
@@ -242,6 +243,9 @@ export interface NexusGenFieldTypes {
     cursor: string; // String!
     node: NexusGenRootTypes['Share'] | null; // Share
   }
+  Subscription: { // field return type
+    truths: boolean | null; // Boolean
+  }
   User: { // field return type
     displayName: string | null; // String
     followers: NexusGenRootTypes['CountableUserConnection']; // CountableUserConnection!
@@ -348,6 +352,9 @@ export interface NexusGenFieldTypeNames {
   ShareEdge: { // field return type name
     cursor: 'String'
     node: 'Share'
+  }
+  Subscription: { // field return type name
+    truths: 'Boolean'
   }
   User: { // field return type name
     displayName: 'String'

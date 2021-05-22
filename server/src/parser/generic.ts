@@ -24,10 +24,12 @@ const parser: Parser = async function (url) {
     itunesId = $('a[href*="apple.com/"]')
       .toArray()
       .map((el) => {
-        const url = el.attribs['href'];
-        if (url.includes('podcast')) {
-          const [_, id] = url.match(/\Wid(\d+)/) ?? [];
-          return id;
+        if (el.type === 'tag') {
+          const url = el.attribs['href'];
+          if (url.includes('podcast')) {
+            const [_, id] = url.match(/\Wid(\d+)/) ?? [];
+            return id;
+          }
         }
       })
       .filter(Boolean)
@@ -38,7 +40,12 @@ const parser: Parser = async function (url) {
   feeds.push(
     ...$('link[type="application/rss+xml"]')
       .toArray()
-      .map((e) => e.attribs['href'])
+      .map((e) => {
+        if (e.type === 'tag') {
+          return e.attribs['href'];
+        }
+        return '';
+      })
       .filter(Boolean),
   );
 

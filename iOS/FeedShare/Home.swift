@@ -57,7 +57,9 @@ public struct Home: View {
                                 Image(R.image.composer.name)
                                     .renderingMode(.template)
                                     .foregroundColor(Color(R.color.primaryColor.name))
+                                    .padding(7)
                             }.foregroundColor(Color.primary)
+                            
                         }
                         .padding(.horizontal, 15)
                     }

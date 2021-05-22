@@ -16,9 +16,8 @@
 // CREATE INDEX "Podcast_tsv_idx" ON "Podcast" USING GIN (tsv tsvector_ops);
 
 generator prisma_client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["createMany"]
-  binaryTargets   = ["native"]
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
 }
 
 datasource db {
@@ -64,10 +63,11 @@ model Share {
 }
 
 model AddedToPersonalFeed {
-  shareId String
-  userId  String
-  share   Share  @relation(fields: [shareId], references: [id])
-  user    User   @relation(fields: [userId], references: [id])
+  shareId   String
+  userId    String
+  createdAt DateTime @default(now())
+  share     Share    @relation(fields: [shareId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 
   @@id([shareId, userId])
 }
@@ -109,9 +109,27 @@ model PodcastClient {
   subscribeUrlNeedsProtocol Boolean
 }
 
-enum AsyncJobStatus {
-  Scheduled
-  Running
-  Completed
-  Failed
+enum JobStatus {
+  START
+  FAILED
+  SUCCESS
+}
+
+model JobLog {
+  id             Int       @id @default(autoincrement())
+  jobId          String
+  workerId       String
+  taskIdentifier String
+  status         JobStatus
+  time           DateTime  @default(now())
+  meta           String?
+}
+
+enum ConfigKey {
+  LastIndexImport
+}
+
+model Config {
+  key   ConfigKey @id
+  value String
 }

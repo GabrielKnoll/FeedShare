@@ -1,7 +1,5 @@
 import {objectType, nonNull} from 'nexus';
-import {Prisma, Share} from '@prisma/client';
-import {FeedTypeEnum} from './FeedType';
-import {Context} from '../context';
+import {Share} from '@prisma/client';
 import Node from './Node';
 import {userFollowing} from './User';
 import UnreachableCaseError from '../utils/UnreachableCaseError';
@@ -62,49 +60,3 @@ export default objectType({
     });
   },
 });
-
-export async function shareWhere(
-  {userId, prismaClient}: Context,
-  feedType: FeedTypeEnum,
-): Promise<Prisma.ShareWhereInput | undefined> {
-  switch (feedType) {
-    case 'User':
-      return {
-        authorId: userId,
-      };
-    case 'Personal':
-      const following = await userFollowing(prismaClient, userId!);
-
-      return {
-        OR: [
-          {
-            AddedToPersonalFeed: {
-              some: {
-                userId,
-              },
-            },
-          },
-          {
-            author: {
-              OR: [
-                {
-                  id: userId,
-                },
-                {
-                  id: {
-                    in: following.map(({id}) => id),
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      };
-    case 'Global':
-      return {
-        hideFromGlobalFeed: false,
-      };
-    default:
-      throw new UnreachableCaseError(feedType);
-  }
-}

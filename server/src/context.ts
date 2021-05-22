@@ -3,7 +3,7 @@ import prismaClient from './utils/prismaClient';
 import jwt from 'jsonwebtoken';
 import {ContextFunction} from 'apollo-server-core';
 import env from './utils/env';
-import {ApiResponse} from 'podcastdx-client/dist/types';
+import {ApiResponse} from 'podcastdx-client/dist/src/types';
 
 type ParsedToken = {
   userId: string;

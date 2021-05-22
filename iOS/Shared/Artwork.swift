@@ -21,32 +21,30 @@ public struct Artwork: View {
         }
         self.size = CGFloat(size)
     }
-
-    let placeholder = Rectangle()
-        .skeleton(with: true)
-        .shape(type: .rectangle)
-
+    
     public var body: some View {
         VStack {
             if let u = url {
                 URLImage(
                     url: u,
                     inProgress: { _ in
-                        placeholder
+                        Rectangle()
+                            .skeleton(with: true)
+                            .shape(type: .rectangle)
                     },
                     failure: { _, _ in
-                        placeholder
+                        Rectangle()
+                            .fill(Color(R.color.washColor.name))
                     },
                     content: { proxy in
                         proxy
                             .resizable()
-//                            .strokeBorder(Color.black.opacity(0.15), lineWidth: 1)
-//                            .aspectRatio(contentMode: .fill)
                             .clipped()
                     }
                 )
             } else {
-                placeholder
+                Rectangle()
+                    .fill(Color(R.color.washColor.name))
             }
         }
         .frame(width: size, height: size)

@@ -5,6 +5,7 @@ import {
   fieldAuthorizePlugin,
   makeSchema,
   connectionPlugin,
+  subscriptionType,
 } from 'nexus';
 import resolveShareUrl from './queries/resolveShareUrl';
 import viewer from './queries/viewer';
@@ -45,6 +46,24 @@ export default makeSchema({
   types: [
     asNexusMethod(JSONObjectResolver, 'json'),
     asNexusMethod(DateTimeResolver, 'date'),
+
+    subscriptionType({
+      definition(t) {
+        t.boolean('truths', {
+          subscribe() {
+            return (async function* () {
+              while (true) {
+                await new Promise((res) => setTimeout(res, 1000));
+                yield Math.random() > 0.5;
+              }
+            })();
+          },
+          resolve(eventData: boolean) {
+            return eventData;
+          },
+        });
+      },
+    }),
 
     // models
     Node,

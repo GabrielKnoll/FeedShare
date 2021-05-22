@@ -5,6 +5,7 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
+import MarkdownUI
 import Shared
 import SkeletonUI
 import SwiftUI
@@ -61,10 +62,15 @@ public struct EpisodeOverlay: View {
                     }
                 }
 
-                Text(data.fragment?.description)
-                    .lineSpacing(4)
-                    .padding(0)
-                    .font(Typography.body)
+                Markdown(Document(data.fragment?.description ?? ""))
+                    .markdownStyle(
+                        DefaultMarkdownStyle(
+                            font: R.font.interRegular(size: 16.0)!,
+                            foregroundColor: R.color.primaryColor()!,
+                            headingFontSizeMultiples: [1.0]
+                        )
+                    )
+                    .accentColor(Color(R.color.brandColor.name))
                     .skeleton(with: data.fragment?.description == nil)
                     .shape(type: .capsule)
                     .multiline(lines: 8, scales: [

@@ -4,8 +4,7 @@ import schema from './schema';
 import context from './context';
 import env from './utils/env';
 import feed from './routes/feed';
-import {run} from 'graphile-scheduler';
-import {taskList, schedules} from './tasks/index';
+import tasks from './tasks';
 
 const server = new ApolloServer({
   context,
@@ -21,12 +20,8 @@ const server = new ApolloServer({
 });
 
 (async () => {
-  await run({
-    connectionString: env.DATABASE_URL,
-    concurrency: 1,
-    taskList: taskList as any,
-    schedules,
-  });
+  await tasks();
+
   const app = express();
   app.get('/feed/:token', feed);
   server.applyMiddleware({app});

@@ -12,3 +12,9 @@ query Feed($after: String, $feedType: FeedType!) {
     }
   }
 }
+
+mutation AddToPersonalFeed($id: ID!) {
+  addToPersonalFeed(shareId: $id) {
+    ...ShareFragment
+  }
+}

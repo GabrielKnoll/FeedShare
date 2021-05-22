@@ -1,10 +1,10 @@
 import {create} from 'xmlbuilder2';
 import prismaClient from '../utils/prismaClient';
-import {shareWhere} from '../models/Share';
 import {Request, Response} from 'express';
 import {gql} from 'graphql-request';
 import env from '../utils/env';
 import imagekit from '../utils/imagekit';
+import {personalFeedShares} from '../queries/shares';
 
 gql`
   query Feed {
@@ -37,6 +37,14 @@ const requestHandler = async (req: Request, res: Response) => {
     },
   });
 
+  const shareIds = await personalFeedShares(
+    prismaClient,
+    false,
+    user.id,
+    50,
+    0,
+  ).then((s) => s.map((s) => s.id));
+
   const shares = await prismaClient.share.findMany({
     include: {
       episode: {
@@ -46,23 +54,14 @@ const requestHandler = async (req: Request, res: Response) => {
       },
       author: true,
     },
-    take: 50,
     where: {
-      AND: [
-        {
-          ...(await shareWhere({userId: user.id, prismaClient}, 'Personal')),
-        },
-        {
-          authorId: {
-            not: user.id,
-          },
-        },
-      ],
-    },
-    orderBy: {
-      createdAt: 'desc',
+      id: {
+        in: shareIds,
+      },
     },
   });
+
+  shares.sort((a, b) => shareIds.indexOf(a.id) - shareIds.indexOf(b.id));
 
   // https://help.apple.com/itc/podcasts_connect/#/itcb54353390
   const root = create({version: '1.0', encoding: 'UTF-8'});
