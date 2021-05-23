@@ -9,122 +9,128 @@ import PartialSheet
 import Shared
 import SwiftUI
 import URLImage
+import JGProgressHUD_SwiftUI
 
 public struct FeedItem: View {
     let data: ShareFragment
     @EnvironmentObject var viewerModel: ViewerModel
-    @State private var episodePresented = false
-    @State private var showingActionSheet = false
-    @State private var showingAddToFeedError = false
+    @EnvironmentObject var hudCoordinator: JGProgressHUDCoordinator
+    @State private var isPressed = false
+    
     
     public var body: some View {
-        NavigationLink(destination: EpisodeOverlay(attachment: data.episode.fragments.episodeAttachmentFragment)) {
-            VStack(alignment: .leading, spacing: 15) {
-                EpisodeAttachment(data: data.episode.fragments.episodeAttachmentFragment)
-                
-                if let message = data.message {
-                    Text(message).font(Typography.body)
-                }
-                HStack(alignment: .center, spacing: 5) {
-                    ProfilePicture(url: data.author.profilePicture, size: 28.0)
-                        .padding(.trailing, 4)
-                    if let displayName = data.author.displayName {
-                        Text(displayName)
-                            .font(Typography.meta)
-                            .lineLimit(1)
+        VStack(alignment: .leading, spacing: 15) {
+            
+            NavigationLink(
+                destination: EpisodeOverlay(attachment: data.episode.fragments.episodeAttachmentFragment).environmentObject(viewerModel),
+                label: {
+                    VStack(alignment: .leading, spacing: 0) {
+                        EpisodeAttachment(data: data.episode.fragments.episodeAttachmentFragment)
+                        
+                        if let message = data.message {
+                            Text(message).font(Typography.body).padding(.top, 15)
+                        }
                     }
-                    Text("·")
-                        .foregroundColor(Color(R.color.secondaryColor.name))
-                        .font(Typography.meta)
-                    RelativeTime(data.createdAt)
-                        .foregroundColor(Color(R.color.secondaryColor.name))
+                }).buttonStyle(PressedButtonStyle {
+                    DispatchQueue.main.async {
+                        self.isPressed = true
+                    }
+                    
+                } touchUp: {
+                    DispatchQueue.main.async {
+                        self.isPressed = false
+                    }
+                })
+            
+            HStack(alignment: .center, spacing: 5) {
+                ProfilePicture(url: data.author.profilePicture, size: 28.0)
+                    .padding(.trailing, 4)
+                if let displayName = data.author.displayName {
+                    Text(displayName)
                         .font(Typography.meta)
                         .lineLimit(1)
-                    if data.isInGlobalFeed != true {
-                        Image(systemName: "lock.fill")
-                            .foregroundColor(Color(R.color.secondaryColor.name))
-                            .font(.system(size: 13))
-                    }
-                    Spacer()
-                    
-                    Button(action: {
-                        showingActionSheet = true
-                    }) {
-                        Image(systemName: "ellipsis")
-                            .foregroundColor(Color(R.color.secondaryColor.name))
-                            .font(.system(size: 16))
-                            .frame(width: 44, height: 44, alignment: .center)
-                            .padding(.vertical, -8/*@END_MENU_TOKEN@*/)
-                            .padding(.trailing, -8/*@END_MENU_TOKEN@*/)
-                    }
                 }
-                .font(Typography.bodyMedium)
-            }
-            .actionSheet(isPresented: $showingActionSheet) {
-                var buttons = [
-                    Alert.Button.cancel()
-                ]
+                Text("·")
+                    .foregroundColor(Color(R.color.secondaryColor.name))
+                    .font(Typography.meta)
+                RelativeTime(data.createdAt)
+                    .foregroundColor(Color(R.color.secondaryColor.name))
+                    .font(Typography.meta)
+                    .lineLimit(1)
+                if data.isInGlobalFeed != true {
+                    Image(systemName: "lock.fill")
+                        .foregroundColor(Color(R.color.secondaryColor.name))
+                        .font(.system(size: 13))
+                }
+                Spacer()
                 
-//                if !(data.isInPersonalFeed ?? false) {
-                    buttons.append(Alert.Button.default(Text("Add to Personal Feed"), action: {
-                        FeedModel.addToPersonalFeed(id: data.id) { share in
-                            self.showingActionSheet = false
-                            if share == nil {
-                                self.showingAddToFeedError = true
-                            } else {
-                                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                Menu {
+                    Button(action: {
+                    }) {
+                        Label((data.author.displayName ?? "User Profile"), systemImage: "person.crop.circle")
+                    }
+                    
+                    if !(data.isInPersonalFeed ?? true) {
+                        Button(action: {
+                            FeedModel.addToPersonalFeed(id: data.id) { share in
+                                hudCoordinator.showHUD {
+                                    let hud = JGProgressHUD()
+                                    hud.square = true
+                                    hud.indicatorView = (share != nil) ? JGProgressHUDSuccessIndicatorView() : JGProgressHUDErrorIndicatorView()
+                                    hud.textLabel.text = (share != nil) ? "Added Episode\nto Personal Feed" : "Failed to Add\nto Personal Feed"
+                                    let animation = JGProgressHUDFadeAnimation()
+                                    animation.duration = 0.2
+                                    hud.animation = animation
+                                    hud.cornerRadius = 15.0
+                                    hud.dismiss(afterDelay: 4)
+                                    return hud
+                                }
                             }
+                        }) {
+                            Label("Add to Personal Feed", systemImage: "plus.circle")
                         }
-                    }))
-//                }
-                
-//                if data.author.id == viewerModel.viewer?.user.id {
-//                    if data.isInGlobalFeed ?? false {
-//                        buttons.append(Alert.Button.destructive(Text("Hide from Global Feed"), action: {
-//
-//                        }))
-//                    }
-//
-//                    buttons.append(Alert.Button.destructive(Text("Delete"), action: {
-//
-//                    }))
-//                }
-
-                return ActionSheet(
-                    title: Text(data.episode.fragments.episodeAttachmentFragment.title),
-                    message: Text(data.episode.fragments.episodeAttachmentFragment.podcast.title),
-                    buttons: buttons
-                )
+                    }
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .foregroundColor(Color(R.color.secondaryColor.name))
+                        .font(.system(size: 16))
+                        .frame(width: 44, height: 44, alignment: .center)
+                        .padding(.vertical, -8/*@END_MENU_TOKEN@*/)
+                        .padding(.trailing, -8/*@END_MENU_TOKEN@*/)
+                }
             }
-            .alert(isPresented: $showingAddToFeedError, content: {
-                Alert(
-                    title: Text("Failed to Add"),
-                    message: Text("Adding this episode to your Peronsal Feed failed. Maybe try again."),
-                    dismissButton: .default(Text("OK"))
-                )
-            })
-        }.buttonStyle(FeedItemButtonStyle())
+            .font(Typography.bodyMedium)
+        }
+        .foregroundColor(Color(R.color.primaryColor.name))
+        .padding(15)
+        .background(Color(.systemBackground))
+        .cornerRadius(20)
+        .scaleEffect(isPressed ? 0.98 : 1)
+        .shadow(
+            color: Color(R.color.primaryColor.name).opacity(0.05),
+            radius: isPressed ? 2 : 4,
+            x: 0,
+            y: isPressed ? 0 : 2
+        )
+        .animation(.easeInOut(duration: 0.15))
     }
 }
 
-struct FeedItemButtonStyle: ButtonStyle {
-    public init() {}
+struct PressedButtonStyle: ButtonStyle {
+    let touchDown: () -> ()
+    let touchUp: () -> ()
+    func makeBody(configuration: Self.Configuration) -> some View {
+        configuration.label
+            .background(configuration.isPressed ? self.handlePressed() : handleReleased())
+    }
     
-    public func makeBody(configuration: Configuration) -> some View {
-        configuration
-            .label
-            .foregroundColor(Color(R.color.primaryColor.name))
-            .padding(15)
-            .background(Color(.systemBackground))
-            .cornerRadius(20)
-            
-            .scaleEffect(configuration.isPressed ? 0.98 : 1)
-            .shadow(
-                color: Color(R.color.primaryColor.name).opacity(0.05),
-                radius: configuration.isPressed ? 2 : 4,
-                x: 0,
-                y: configuration.isPressed ? 0 : 2
-            )
-            .animation(.easeInOut(duration: 0.15))
+    private func handlePressed() -> Color {
+        touchDown()
+        return Color.clear
+    }
+    
+    private func handleReleased() -> Color {
+        touchUp()
+        return Color.clear
     }
 }

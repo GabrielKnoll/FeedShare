@@ -20,6 +20,7 @@
 		673324DA25F5A4C9008F0F58 /* Shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F533026D25815DE5005C5250 /* Shared.framework */; };
 		673324DB25F5A4C9008F0F58 /* Shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F533026D25815DE5005C5250 /* Shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		673324DD25F5A4D6008F0F58 /* Shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F533026D25815DE5005C5250 /* Shared.framework */; };
+		6769CCBF265964A800282389 /* JGProgressHUD-SwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 6769CCBE265964A800282389 /* JGProgressHUD-SwiftUI */; };
 		678C2AD725B0F8AB00576884 /* OnboardingTextPairing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678C2AD625B0F8AB00576884 /* OnboardingTextPairing.swift */; };
 		678C2AED25B3ACFC00576884 /* Inter-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 678C2AEA25B3ACFC00576884 /* Inter-Regular.otf */; };
 		678C2AEE25B3ACFC00576884 /* Inter-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 678C2AEB25B3ACFC00576884 /* Inter-Medium.otf */; };
@@ -304,6 +305,7 @@
 			files = (
 				67D317C5259964A500C9C4DD /* PartialSheet in Frameworks */,
 				67CEA5DF258EBD0000516BA4 /* OneSignal in Frameworks */,
+				6769CCBF265964A800282389 /* JGProgressHUD-SwiftUI in Frameworks */,
 				673324AB25F30894008F0F58 /* MarkdownUI in Frameworks */,
 				673324DA25F5A4C9008F0F58 /* Shared.framework in Frameworks */,
 			);
@@ -638,6 +640,7 @@
 				67CEA5DE258EBD0000516BA4 /* OneSignal */,
 				67D317C4259964A500C9C4DD /* PartialSheet */,
 				673324AA25F30894008F0F58 /* MarkdownUI */,
+				6769CCBE265964A800282389 /* JGProgressHUD-SwiftUI */,
 			);
 			productName = FeedShare;
 			productReference = F5E7F8E82516527A0036448D /* Truffle.app */;
@@ -685,6 +688,7 @@
 				67D317D0259C07E800C9C4DD /* XCRemoteSwiftPackageReference "url-image" */,
 				67BED47F25E1F5BD00783477 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				673324A925F30894008F0F58 /* XCRemoteSwiftPackageReference "MarkdownUI" */,
+				6769CCBD265964A700282389 /* XCRemoteSwiftPackageReference "JGProgressHUD-SwiftUI" */,
 			);
 			productRefGroup = F5E7F8E92516527A0036448D /* Products */;
 			projectDirPath = "";
@@ -1343,6 +1347,14 @@
 				minimumVersion = 0.5.1;
 			};
 		};
+		6769CCBD265964A700282389 /* XCRemoteSwiftPackageReference "JGProgressHUD-SwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/JonasGessner/JGProgressHUD-SwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.1;
+			};
+		};
 		67B9427B25745F9E00412CDC /* XCRemoteSwiftPackageReference "R.swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mac-cain13/R.swift.Library";
@@ -1411,6 +1423,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 67B9427B25745F9E00412CDC /* XCRemoteSwiftPackageReference "R.swift" */;
 			productName = Rswift;
+		};
+		6769CCBE265964A800282389 /* JGProgressHUD-SwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6769CCBD265964A700282389 /* XCRemoteSwiftPackageReference "JGProgressHUD-SwiftUI" */;
+			productName = "JGProgressHUD-SwiftUI";
 		};
 		67BED48425E1F6C700783477 /* Introspect */ = {
 			isa = XCSwiftPackageProductDependency;
