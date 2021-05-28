@@ -31,7 +31,6 @@ const e = {
   IMAGEKIT_ID: env.get('IMAGEKIT_ID').required(!ci).asString(),
   ONESIGNAL_APP_ID: env.get('ONESIGNAL_APP_ID').required(!ci).asString(),
   ONESIGNAL_API_KEY: env.get('ONESIGNAL_API_KEY').required(!ci).asString(),
-  DATO_CMS_KEY: env.get('DATO_CMS_KEY').required(!ci).asString(),
   BASE_URL: env.get('BASE_URL').required(!ci).asString(),
 };
 

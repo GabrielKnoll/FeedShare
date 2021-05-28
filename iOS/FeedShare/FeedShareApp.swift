@@ -38,14 +38,14 @@ struct FeedShareApp: App {
             UIApplication.shared.windows.first?.rootViewController?.setNeedsStatusBarAppearanceUpdate()
         }
     }
-
+    
     let sheetManager = PartialSheetManager()
-
+    
     init() {
         _isDark = State(initialValue: ViewerModel.shared.viewer == nil)
         UIAppearanceHelper.setup()
     }
-
+    
     var body: some Scene {
         WindowGroup {
             if viewerModel.initialized {
@@ -80,7 +80,7 @@ struct FeedShareApp: App {
                 .environmentObject(sheetManager)
                 .onReceive(viewerModel.$viewer, perform: { viewer in
                     isDark = viewer == nil
-
+                    
                     if let id = viewer?.user.id.components(separatedBy: ":").last {
                         OneSignal.setExternalUserId(id)
                     }

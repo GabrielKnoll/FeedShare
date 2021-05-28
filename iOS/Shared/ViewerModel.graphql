@@ -9,7 +9,6 @@ fragment ViewerFragment on Viewer {
     displayName
     profilePicture(size: 100, scale: 2)
     following(first: 4) {
-      totalCount
       edges {
         node {
           ...FollowFragment
@@ -17,7 +16,6 @@ fragment ViewerFragment on Viewer {
       }
     }
     followers(first: 4) {
-      totalCount
       edges {
         node {
           ...FollowFragment

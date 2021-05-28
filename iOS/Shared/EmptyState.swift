@@ -24,6 +24,7 @@ public struct EmptyState: View {
             Text(title)
                 .font(Typography.bodyBold)
                 .foregroundColor(Color(R.color.primaryColor.name))
+                .padding(.bottom, 1)
             Text(message)
                 .font(Typography.body)
                 .multilineTextAlignment(.center)

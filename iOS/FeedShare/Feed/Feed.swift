@@ -23,8 +23,8 @@ public struct Feed: View {
             _feedModel = StateObject(wrappedValue: FeedModel.shared(.Global))
         case .Personal:
             _feedModel = StateObject(wrappedValue: FeedModel.shared(.Personal))
-//        case .user:
-//            _feedModel = StateObject(wrappedValue: FeedModel.shared(.user))
+        case .User(let id):
+            _feedModel = StateObject(wrappedValue: FeedModel.shared(.User(id: id)))
         }
     }
 

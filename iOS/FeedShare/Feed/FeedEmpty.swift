@@ -10,6 +10,7 @@ import Shared
 import SwiftUI
 
 public struct FeedEmpty: View {
+    @EnvironmentObject var viewerModel: ViewerModel
     let type: FeedType
 
     func inviteFriends() {
@@ -20,11 +21,19 @@ public struct FeedEmpty: View {
 
     public var body: some View {
         switch type {
-//        case .user:
-//            EmptyState(
-//                title: "You haven't shared anything",
-//                message: "Episodes you shared with your followers will appear here."
-//            )
+        case .User(let id):
+            if id == viewerModel.viewer?.user.id {
+                EmptyState(
+                    title: "You haven't shared anything",
+                    message: "Episodes you shared with your followers will appear here."
+                )
+            } else {
+                EmptyState(
+                    title: "Nothing shared",
+                    message: "The user hasn't yet shared anything."
+                )
+            }
+            
         case .Personal:
             EmptyState(
                 title: "It's quiet here...",
