@@ -1,14 +1,36 @@
-query Feed($after: String, $feedType: FeedType!) {
-  shares(last: 40, after: $after, feedType: $feedType){
-    pageInfo {
-      hasNextPage
+query GlobalFeed($after: String) {
+  globalFeed(after: $after) {
+    ...ShareConnectionFragment
+  }
+}
+
+query PersonalFeed($after: String) {
+  viewer {
+    personalFeed(after: $after) {
+      ...ShareConnectionFragment
     }
-    edges {
-      cursor
-      node {
-        id
-        ...ShareFragment
+  }
+}
+
+query UserFeed($after: String, $userId: ID!) {
+  node(id: $userId) {
+    ... on User {
+      feed(after: $after) {
+        ...ShareConnectionFragment
       }
+    }
+  }
+}
+
+fragment ShareConnectionFragment on ShareConnection {
+  pageInfo {
+    hasNextPage
+  }
+  edges {
+    cursor
+    node {
+      id
+      ...ShareFragment
     }
   }
 }

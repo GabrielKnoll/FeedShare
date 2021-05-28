@@ -9,7 +9,7 @@ import {
 } from 'nexus';
 import resolveShareUrl from './queries/resolveShareUrl';
 import viewer from './queries/viewer';
-import shares from './queries/shares';
+import {globalFeed, personalFeed, userFeed} from './queries/shares';
 import findPodcast from './queries/findPodcast';
 import typeaheadPodcast from './queries/typeaheadPodcast';
 import node from './queries/node';
@@ -25,7 +25,6 @@ import Viewer from './models/Viewer';
 import Podcast from './models/Podcast';
 import SearchResult from './models/SearchResult';
 import PodcastClient from './models/PodcastClient';
-import FeedType from './models/FeedType';
 import Episode from './models/Episode';
 import Share from './models/Share';
 import {DateTimeResolver, JSONObjectResolver} from 'graphql-scalars';
@@ -73,13 +72,14 @@ export default makeSchema({
     Episode,
     Share,
     PodcastClient,
-    FeedType,
     SearchResult,
     Page,
 
     // queries
     resolveShareUrl,
-    shares,
+    globalFeed,
+    personalFeed,
+    userFeed,
     viewer,
     podcastClient,
     findPodcast,

@@ -43,7 +43,7 @@ public struct Settings: View {
 
                 if let client = viewerModel.viewerClient {
                     Button(action: {
-                        SubscribeButton.openURL(client, feed: viewerModel.viewer?.personalFeed)
+                        SubscribeButton.openURL(client, feed: viewerModel.viewer?.personalFeedUrl)
                     }) {
                         Text("Subscribe in \(client.displayName)").foregroundColor(Color(R.color.primaryColor.name))
                     }

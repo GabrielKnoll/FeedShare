@@ -6,7 +6,7 @@ import env from '../utils/env';
 export default objectType({
   name: 'Viewer',
   definition(t) {
-    t.nonNull.field('personalFeed', {
+    t.nonNull.field('personalFeedUrl', {
       type: 'String',
       resolve: ({user}: {user: Partial<User>}) =>
         `${env.BASE_URL}/feed/${user.feedToken}`,

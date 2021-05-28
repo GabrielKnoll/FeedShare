@@ -1,129 +1,143 @@
-import {PrismaClient, Share} from '@prisma/client';
-import {AuthenticationError, UserInputError} from 'apollo-server-express';
-import {extendType, nonNull} from 'nexus';
-import UnreachableCaseError from '../utils/UnreachableCaseError';
+import {PrismaClient, Share, User} from '@prisma/client';
+import {UserInputError} from 'apollo-server-express';
+import {extendType} from 'nexus';
 
-export default extendType({
+export const globalFeed = extendType({
   type: 'Query',
   definition: (t) => {
-    t.nonNull.connectionField('shares', {
+    t.nonNull.connectionField('globalFeed', {
       type: 'Share',
-      additionalArgs: {
-        feedType: nonNull('FeedType'),
-      },
-      resolve: async (_parent, {feedType, ...args}, ctx) => {
-        if (!args.last || args.last < 0) {
-          throw new UserInputError('last is less than 0');
-        }
-        if (!ctx.userId && feedType !== 'Global') {
-          throw new AuthenticationError('Not authorized');
-        }
+      description: 'Shares on the global feed',
+      resolve: async (_parent, args, ctx) => {
+        const {take, skip, after} = argsValidation(args);
 
-        let skip = 0;
-        const take = args.last + 1;
-
-        if (args.before) {
-          throw new UserInputError('before arg not supported');
-        }
-
-        let nodes: Share[];
-        switch (feedType) {
-          case 'User':
-            nodes = await userFeedShares(
-              ctx.prismaClient,
-              ctx.userId!,
-              take,
-              skip,
-            );
-            break;
-          case 'Global':
-            nodes = await globalFeedShares(ctx.prismaClient, take, skip);
-            break;
-          case 'Personal':
-            nodes = await personalFeedShares(
-              ctx.prismaClient,
-              true,
-              ctx.userId!,
-              take,
-              skip,
-            );
-            break;
-          default:
-            throw new UnreachableCaseError(feedType);
-        }
-
-        const hasExtraNode = nodes.length === take;
-
-        // Remove the extra node from the results
-        if (hasExtraNode) {
-          nodes.pop();
-        }
-
-        // cut off list before the cursor
-        if (args.after) {
-          let found = false;
-          nodes = nodes.filter((n) => {
-            found = found || n.id === args.after;
-            return !found;
-          });
-        }
-
-        nodes = nodes.reverse();
-
-        // Get the start and end cursors
-        const startCursor = nodes.length > 0 ? nodes[0].id : undefined;
-        const endCursor =
-          nodes.length > 0 ? nodes[nodes.length - 1].id : undefined;
-        const hasPreviousPage = hasExtraNode;
-        const hasNextPage = (skip ?? 0) > 0;
-
-        return {
-          pageInfo: {
-            startCursor,
-            endCursor,
-            hasNextPage,
-            hasPreviousPage,
+        const nodes = await ctx.prismaClient.share.findMany({
+          take,
+          skip,
+          where: {
+            hideFromGlobalFeed: false,
           },
-          edges: nodes.map((node) => ({cursor: node.id, node})),
-        };
+          orderBy: {
+            createdAt: 'desc',
+          },
+        });
+
+        return shareConnection(nodes, take, skip, after);
       },
     });
   },
 });
 
-function globalFeedShares(
-  prismaClient: PrismaClient,
-  take: number,
-  skip: number,
-): Promise<Share[]> {
-  return prismaClient.share.findMany({
+export const personalFeed = extendType({
+  type: 'Viewer',
+  definition: (t) => {
+    t.nonNull.connectionField('personalFeed', {
+      type: 'Share',
+      description: 'Personal feed for the viewer',
+      resolve: async (_parent, args, ctx) => {
+        const {take, skip, after} = argsValidation(args);
+
+        const nodes = await personalFeedShares(
+          ctx.prismaClient,
+          true,
+          ctx.userId!,
+          take,
+          skip,
+        );
+
+        return shareConnection(nodes, take, skip, after);
+      },
+    });
+  },
+});
+
+export const userFeed = extendType({
+  type: 'User',
+  definition: (t) => {
+    t.nonNull.connectionField('feed', {
+      type: 'Share',
+      description:
+        'Shares from a user, not including hidden shares for other users than self',
+      resolve: async (user, args, ctx) => {
+        const {take, skip, after} = argsValidation(args);
+        const userID = (user as User).id;
+
+        const nodes = await ctx.prismaClient.share.findMany({
+          where: {
+            authorId: userID,
+            hideFromGlobalFeed: ctx.userId != userID ? false : undefined,
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        });
+
+        return shareConnection(nodes, take, skip, after);
+      },
+    });
+  },
+});
+
+function argsValidation(args: {
+  after?: string | null;
+  before?: string | null;
+  first?: number | null;
+  last?: number | null;
+}) {
+  if (args.before) {
+    throw new UserInputError('before arg not supported');
+  }
+  if ((args.last ?? 0) < 0) {
+    throw new UserInputError('last is less than 0');
+  }
+  const take = (args.last ?? 40) + 1;
+
+  return {
     take,
-    skip,
-    where: {
-      hideFromGlobalFeed: false,
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
+    skip: 0, // never skipping, because we only allow querying from last
+    after: args.after,
+  };
 }
 
-function userFeedShares(
-  prismaClient: PrismaClient,
-  userId: string,
+function shareConnection(
+  nodes: Share[],
   take: number,
-  skip: number,
-): Promise<Share[]> {
-  return prismaClient.share.findMany({
-    take,
-    skip,
-    where: {
-      authorId: userId,
+  skip: number = 0,
+  after?: string | null,
+) {
+  const hasExtraNode = nodes.length === take;
+
+  // Remove the extra node from the results
+  if (hasExtraNode) {
+    nodes.pop();
+  }
+
+  // cut off list before the cursor
+  if (after) {
+    let found = false;
+    nodes = nodes.filter((n) => {
+      found = found || n.id === after;
+      return !found;
+    });
+  }
+
+  nodes = nodes.reverse();
+
+  // Get the start and end cursors
+  const startCursor = nodes.length > 0 ? nodes[0].id : undefined;
+  const endCursor = nodes.length > 0 ? nodes[nodes.length - 1].id : undefined;
+  const hasPreviousPage = hasExtraNode;
+  const hasNextPage = (skip ?? 0) > 0;
+
+  return {
+    pageInfo: {
+      startCursor,
+      endCursor,
+      hasNextPage,
+      hasPreviousPage,
     },
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
+    edges: nodes.map((node) => ({cursor: node.id, node})),
+  };
 }
 
 export async function personalFeedShares(
@@ -131,7 +145,7 @@ export async function personalFeedShares(
   includeMyShares: boolean,
   userId: string,
   take: number,
-  skip: number,
+  skip: number = 0,
 ): Promise<Share[]> {
   return prismaClient.$queryRaw(
     `SELECT s.* FROM "Share" s

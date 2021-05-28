@@ -17,7 +17,6 @@ export function sendPush(
   withBadge?: boolean,
 ) {
   return client.createNotification({
-    included_segments: ['All'],
     headings: {
       en: content.title,
     },

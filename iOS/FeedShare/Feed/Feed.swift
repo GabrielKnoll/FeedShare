@@ -19,14 +19,12 @@ public struct Feed: View {
         self.paddingTop = paddingTop
         self.type = type
         switch self.type {
-        case .global:
-            _feedModel = StateObject(wrappedValue: FeedModel.shared(.global))
-        case .personal:
-            _feedModel = StateObject(wrappedValue: FeedModel.shared(.personal))
-        case .user:
-            _feedModel = StateObject(wrappedValue: FeedModel.shared(.user))
-        case .__unknown:
-            _feedModel = StateObject(wrappedValue: FeedModel.shared(.global))
+        case .Global:
+            _feedModel = StateObject(wrappedValue: FeedModel.shared(.Global))
+        case .Personal:
+            _feedModel = StateObject(wrappedValue: FeedModel.shared(.Personal))
+//        case .user:
+//            _feedModel = StateObject(wrappedValue: FeedModel.shared(.user))
         }
     }
 

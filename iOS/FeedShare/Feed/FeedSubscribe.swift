@@ -21,7 +21,7 @@ public struct FeedSubscribe: View {
                 .foregroundColor(Color(R.color.secondaryColor.name))
                 .multilineTextAlignment(.center)
             FeedLink()
-            SubscribeButton(feed: viewerModel.viewer?.personalFeed)
+            SubscribeButton(feed: viewerModel.viewer?.personalFeedUrl)
         }
         .padding(.horizontal, 20)
         .foregroundColor(Color(R.color.primaryColor.name))

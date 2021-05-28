@@ -8,8 +8,8 @@ fragment ShareFragment on Share {
   }
   message
   createdAt
-  isInGlobalFeed: isInFeed(feedType: Global)
-  isInPersonalFeed: isInFeed(feedType: Personal)
+  isInGlobalFeed
+  isInPersonalFeed
   episode {
     ...EpisodeAttachmentFragment
   }

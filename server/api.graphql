@@ -41,12 +41,6 @@ type Episode implements Node {
   url: String
 }
 
-enum FeedType {
-  Global
-  Personal
-  User
-}
-
 """
 The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -119,17 +113,14 @@ type PodcastClient implements Node {
 
 type Query {
   findPodcast(query: String!): [Podcast]
-  node(id: ID!): Node
-  pages: [Page]
-  podcastClient: [PodcastClient]
-  resolveShareUrl(url: String!): ResolvedShareUrl
-  shares(
+
+  """Shares on the global feed"""
+  globalFeed(
     """Returns the elements in the list that come after the specified cursor"""
     after: String
 
     """Returns the elements in the list that come before the specified cursor"""
     before: String
-    feedType: FeedType!
 
     """Returns the first n elements from the list."""
     first: Int
@@ -137,6 +128,10 @@ type Query {
     """Returns the last n elements from the list."""
     last: Int
   ): ShareConnection!
+  node(id: ID!): Node
+  pages: [Page]
+  podcastClient: [PodcastClient]
+  resolveShareUrl(url: String!): ResolvedShareUrl
   typeaheadPodcast(query: String!): [Podcast]
   viewer: Viewer
 }
@@ -158,7 +153,8 @@ type Share implements Node {
 
   """Unique identifier for the resource"""
   id: ID!
-  isInFeed(feedType: FeedType!): Boolean
+  isInGlobalFeed: Boolean
+  isInPersonalFeed: Boolean
   message: String
 }
 
@@ -188,6 +184,23 @@ type Subscription {
 
 type User implements Node {
   displayName: String
+
+  """
+  Shares from a user, not including hidden shares for other users than self
+  """
+  feed(
+    """Returns the elements in the list that come after the specified cursor"""
+    after: String
+
+    """Returns the elements in the list that come before the specified cursor"""
+    before: String
+
+    """Returns the first n elements from the list."""
+    first: Int
+
+    """Returns the last n elements from the list."""
+    last: Int
+  ): ShareConnection!
   followers(
     """Returns the elements in the list that come after the specified cursor"""
     after: String
@@ -223,8 +236,23 @@ type User implements Node {
 
 type Viewer {
   messageLimit: Int!
-  personalFeed: String!
+
+  """Personal feed for the viewer"""
+  personalFeed(
+    """Returns the elements in the list that come after the specified cursor"""
+    after: String
+
+    """Returns the elements in the list that come before the specified cursor"""
+    before: String
+
+    """Returns the first n elements from the list."""
+    first: Int
+
+    """Returns the last n elements from the list."""
+    last: Int
+  ): ShareConnection!
   personalFeedLastChecked: DateTime
+  personalFeedUrl: String!
   token: String!
   user: User!
 }

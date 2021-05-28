@@ -19,7 +19,7 @@ public struct OnboardingPodcastClient: View {
             VStack(spacing: 0) {
                 ForEach(viewerModel.podcastClients, id: \.id) { client in
                     PodcastClientRow(icon: client.icon, name: client.displayName) {
-                        SubscribeButton.openURL(client, feed: viewerModel.viewer?.personalFeed) { success in
+                        SubscribeButton.openURL(client, feed: viewerModel.viewer?.personalFeedUrl) { success in
                             if success {
                                 viewerModel.viewerClient = client
                                 onNext()

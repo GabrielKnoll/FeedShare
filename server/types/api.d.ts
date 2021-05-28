@@ -64,7 +64,6 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
-  FeedType: "Global" | "Personal" | "User"
 }
 
 export interface NexusGenScalars {
@@ -154,7 +153,7 @@ export interface NexusGenUnions {
 
 export type NexusGenRootTypes = NexusGenInterfaces & NexusGenObjects
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   CountableUserConnection: { // field return type
@@ -211,11 +210,11 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     findPodcast: Array<NexusGenRootTypes['Podcast'] | null> | null; // [Podcast]
+    globalFeed: NexusGenRootTypes['ShareConnection']; // ShareConnection!
     node: NexusGenRootTypes['Node'] | null; // Node
     pages: Array<NexusGenRootTypes['Page'] | null> | null; // [Page]
     podcastClient: Array<NexusGenRootTypes['PodcastClient'] | null> | null; // [PodcastClient]
     resolveShareUrl: NexusGenRootTypes['ResolvedShareUrl'] | null; // ResolvedShareUrl
-    shares: NexusGenRootTypes['ShareConnection']; // ShareConnection!
     typeaheadPodcast: Array<NexusGenRootTypes['Podcast'] | null> | null; // [Podcast]
     viewer: NexusGenRootTypes['Viewer'] | null; // Viewer
   }
@@ -232,7 +231,8 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     episode: NexusGenRootTypes['Episode']; // Episode!
     id: string; // ID!
-    isInFeed: boolean | null; // Boolean
+    isInGlobalFeed: boolean | null; // Boolean
+    isInPersonalFeed: boolean | null; // Boolean
     message: string | null; // String
   }
   ShareConnection: { // field return type
@@ -248,6 +248,7 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     displayName: string | null; // String
+    feed: NexusGenRootTypes['ShareConnection']; // ShareConnection!
     followers: NexusGenRootTypes['CountableUserConnection']; // CountableUserConnection!
     following: NexusGenRootTypes['CountableUserConnection']; // CountableUserConnection!
     handle: string; // String!
@@ -256,8 +257,9 @@ export interface NexusGenFieldTypes {
   }
   Viewer: { // field return type
     messageLimit: number; // Int!
-    personalFeed: string; // String!
+    personalFeed: NexusGenRootTypes['ShareConnection']; // ShareConnection!
     personalFeedLastChecked: NexusGenScalars['DateTime'] | null; // DateTime
+    personalFeedUrl: string; // String!
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
   }
@@ -321,11 +323,11 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     findPodcast: 'Podcast'
+    globalFeed: 'ShareConnection'
     node: 'Node'
     pages: 'Page'
     podcastClient: 'PodcastClient'
     resolveShareUrl: 'ResolvedShareUrl'
-    shares: 'ShareConnection'
     typeaheadPodcast: 'Podcast'
     viewer: 'Viewer'
   }
@@ -342,7 +344,8 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'DateTime'
     episode: 'Episode'
     id: 'ID'
-    isInFeed: 'Boolean'
+    isInGlobalFeed: 'Boolean'
+    isInPersonalFeed: 'Boolean'
     message: 'String'
   }
   ShareConnection: { // field return type name
@@ -358,6 +361,7 @@ export interface NexusGenFieldTypeNames {
   }
   User: { // field return type name
     displayName: 'String'
+    feed: 'ShareConnection'
     followers: 'CountableUserConnection'
     following: 'CountableUserConnection'
     handle: 'String'
@@ -366,8 +370,9 @@ export interface NexusGenFieldTypeNames {
   }
   Viewer: { // field return type name
     messageLimit: 'Int'
-    personalFeed: 'String'
+    personalFeed: 'ShareConnection'
     personalFeedLastChecked: 'DateTime'
+    personalFeedUrl: 'String'
     token: 'String'
     user: 'User'
   }
@@ -412,29 +417,29 @@ export interface NexusGenArgTypes {
     findPodcast: { // args
       query: string; // String!
     }
+    globalFeed: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      first?: number | null; // Int
+      last?: number | null; // Int
+    }
     node: { // args
       id: string; // ID!
     }
     resolveShareUrl: { // args
       url: string; // String!
     }
-    shares: { // args
-      after?: string | null; // String
-      before?: string | null; // String
-      feedType: NexusGenEnums['FeedType']; // FeedType!
-      first?: number | null; // Int
-      last?: number | null; // Int
-    }
     typeaheadPodcast: { // args
       query: string; // String!
     }
   }
-  Share: {
-    isInFeed: { // args
-      feedType: NexusGenEnums['FeedType']; // FeedType!
-    }
-  }
   User: {
+    feed: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      first?: number | null; // Int
+      last?: number | null; // Int
+    }
     followers: { // args
       after?: string | null; // String
       before?: string | null; // String
@@ -450,6 +455,14 @@ export interface NexusGenArgTypes {
     profilePicture: { // args
       scale: number; // Int!
       size: number; // Int!
+    }
+  }
+  Viewer: {
+    personalFeed: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      first?: number | null; // Int
+      last?: number | null; // Int
     }
   }
 }
@@ -470,7 +483,7 @@ export type NexusGenObjectNames = keyof NexusGenObjects;
 
 export type NexusGenInputNames = never;
 
-export type NexusGenEnumNames = keyof NexusGenEnums;
+export type NexusGenEnumNames = never;
 
 export type NexusGenInterfaceNames = keyof NexusGenInterfaces;
 

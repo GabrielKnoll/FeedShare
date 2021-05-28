@@ -144,7 +144,7 @@ public struct FeedLink: View {
     @State var isCopied: Bool = false
 
     public var body: some View {
-        let text = viewerModel.viewer?.personalFeed ?? ""
+        let text = viewerModel.viewer?.personalFeedUrl ?? ""
 
         Button(action: {
             UIPasteboard.general.string = text

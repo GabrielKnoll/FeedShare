@@ -1,6 +1,6 @@
 fragment ViewerFragment on Viewer {
   token
-  personalFeed
+  personalFeedUrl
   messageLimit
   personalFeedLastChecked
   user {

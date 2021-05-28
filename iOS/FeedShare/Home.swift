@@ -24,8 +24,8 @@ public struct Home: View {
                 VStack {
                     let paddingTop = geo.safeAreaInsets.top + 57
                     TabView(selection: $activeFeedType) {
-                        Feed(type: FeedType.personal, paddingTop: paddingTop).tag(0)
-                        Feed(type: FeedType.global, paddingTop: paddingTop).tag(1)
+                        Feed(type: .Personal, paddingTop: paddingTop).tag(0)
+                        Feed(type: .Global, paddingTop: paddingTop).tag(1)
                     }
                     .animation(.default, value: activeFeedType)
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
