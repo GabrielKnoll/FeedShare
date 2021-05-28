@@ -8,6 +8,6 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-TWITTER_CONSUMER_KEY = NMQVkaj3OCtytlF8JI9WZPRT5
-TWITTER_CONSUMER_SECRET = EZFW1R0roeRzFV3aO06YSawu3eXahAmW6AfFzhH3CYq4vYeOzx
-ONE_SIGNAL_APP_ID = 5f5335b9-b7e0-4cfa-9123-81fb6329113c
+TWITTER_CONSUMER_KEY = 
+TWITTER_CONSUMER_SECRET = 
+ONE_SIGNAL_APP_ID = 
