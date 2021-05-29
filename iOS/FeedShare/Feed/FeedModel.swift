@@ -116,18 +116,9 @@ public class FeedModel: ObservableObject {
                         self.initializeFromCacheDone()
                     }
                 }
-            case .User(let id):
-                return Network.shared.apollo.fetch(
-                    query: UserFeedQuery(userId: id),
-                    cachePolicy: cachePolicy
-                ) { result in
-                    switch result {
-                    case let .success(graphQLResult):
-                        self.initializeFromCacheDone(data: graphQLResult.data?.node?.asUser?.feed.fragments.shareConnectionFragment)
-                    case .failure:
-                        self.initializeFromCacheDone()
-                    }
-                }
+            default:
+                self.initializeFromCacheDone()
+                return nil
             }
         }()
     }
