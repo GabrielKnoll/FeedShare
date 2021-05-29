@@ -5,11 +5,10 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
-import PartialSheet
+import JGProgressHUD_SwiftUI
 import Shared
 import SwiftUI
 import URLImage
-import JGProgressHUD_SwiftUI
 
 public struct FeedItem: View {
     let data: ShareFragment
@@ -17,12 +16,14 @@ public struct FeedItem: View {
     @EnvironmentObject var hudCoordinator: JGProgressHUDCoordinator
     @State private var isPressed = false
     
-    
     public var body: some View {
         VStack(alignment: .leading, spacing: 15) {
             
             NavigationLink(
-                destination: EpisodeOverlay(attachment: data.episode.fragments.episodeAttachmentFragment).environmentObject(viewerModel),
+                destination: EpisodeOverlay(attachment: data.episode.fragments.episodeAttachmentFragment)
+                    .environmentObject(viewerModel)
+                    .environmentObject(hudCoordinator)
+                ,
                 label: {
                     VStack(alignment: .leading, spacing: 0) {
                         EpisodeAttachment(data: data.episode.fragments.episodeAttachmentFragment)
@@ -31,7 +32,8 @@ public struct FeedItem: View {
                             Text(message).font(Typography.body).padding(.top, 15)
                         }
                     }
-                }).buttonStyle(PressedButtonStyle {
+                })
+                .buttonStyle(PressedButtonStyle {
                     DispatchQueue.main.async {
                         self.isPressed = true
                     }
@@ -66,6 +68,7 @@ public struct FeedItem: View {
                 
                 Menu {
                     Button(action: {
+                        
                     }) {
                         Label((data.author.displayName ?? "User Profile"), systemImage: "person.crop.circle")
                     }
@@ -117,8 +120,9 @@ public struct FeedItem: View {
 }
 
 struct PressedButtonStyle: ButtonStyle {
-    let touchDown: () -> ()
-    let touchUp: () -> ()
+    let touchDown: () -> Void
+    let touchUp: () -> Void
+    
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .background(configuration.isPressed ? self.handlePressed() : handleReleased())

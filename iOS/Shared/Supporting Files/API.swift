@@ -782,6 +782,279 @@ public final class AddToPersonalFeedMutation: GraphQLMutation {
   }
 }
 
+public final class ProfileQuery: GraphQLQuery {
+  /// The raw GraphQL definition of this operation.
+  public let operationDefinition: String =
+    """
+    query Profile($id: ID!) {
+      node(id: $id) {
+        __typename
+        ... on User {
+          profilePicture(size: 80, scale: 2)
+          displayName
+          followers(first: 0) {
+            __typename
+            totalCount
+          }
+          following(first: 0) {
+            __typename
+            totalCount
+          }
+        }
+      }
+    }
+    """
+
+  public let operationName: String = "Profile"
+
+  public var id: GraphQLID
+
+  public init(id: GraphQLID) {
+    self.id = id
+  }
+
+  public var variables: GraphQLMap? {
+    return ["id": id]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes: [String] = ["Query"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("node", arguments: ["id": GraphQLVariable("id")], type: .object(Node.selections)),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(node: Node? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Query", "node": node.flatMap { (value: Node) -> ResultMap in value.resultMap }])
+    }
+
+    public var node: Node? {
+      get {
+        return (resultMap["node"] as? ResultMap).flatMap { Node(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "node")
+      }
+    }
+
+    public struct Node: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Episode", "Podcast", "PodcastClient", "Share", "User"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLTypeCase(
+            variants: ["User": AsUser.selections],
+            default: [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            ]
+          )
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public static func makeEpisode() -> Node {
+        return Node(unsafeResultMap: ["__typename": "Episode"])
+      }
+
+      public static func makePodcast() -> Node {
+        return Node(unsafeResultMap: ["__typename": "Podcast"])
+      }
+
+      public static func makePodcastClient() -> Node {
+        return Node(unsafeResultMap: ["__typename": "PodcastClient"])
+      }
+
+      public static func makeShare() -> Node {
+        return Node(unsafeResultMap: ["__typename": "Share"])
+      }
+
+      public static func makeUser(profilePicture: String? = nil, displayName: String? = nil, followers: AsUser.Follower, following: AsUser.Following) -> Node {
+        return Node(unsafeResultMap: ["__typename": "User", "profilePicture": profilePicture, "displayName": displayName, "followers": followers.resultMap, "following": following.resultMap])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var asUser: AsUser? {
+        get {
+          if !AsUser.possibleTypes.contains(__typename) { return nil }
+          return AsUser(unsafeResultMap: resultMap)
+        }
+        set {
+          guard let newValue = newValue else { return }
+          resultMap = newValue.resultMap
+        }
+      }
+
+      public struct AsUser: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["User"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("profilePicture", arguments: ["size": 80, "scale": 2], type: .scalar(String.self)),
+            GraphQLField("displayName", type: .scalar(String.self)),
+            GraphQLField("followers", arguments: ["first": 0], type: .nonNull(.object(Follower.selections))),
+            GraphQLField("following", arguments: ["first": 0], type: .nonNull(.object(Following.selections))),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(profilePicture: String? = nil, displayName: String? = nil, followers: Follower, following: Following) {
+          self.init(unsafeResultMap: ["__typename": "User", "profilePicture": profilePicture, "displayName": displayName, "followers": followers.resultMap, "following": following.resultMap])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var profilePicture: String? {
+          get {
+            return resultMap["profilePicture"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "profilePicture")
+          }
+        }
+
+        public var displayName: String? {
+          get {
+            return resultMap["displayName"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "displayName")
+          }
+        }
+
+        public var followers: Follower {
+          get {
+            return Follower(unsafeResultMap: resultMap["followers"]! as! ResultMap)
+          }
+          set {
+            resultMap.updateValue(newValue.resultMap, forKey: "followers")
+          }
+        }
+
+        public var following: Following {
+          get {
+            return Following(unsafeResultMap: resultMap["following"]! as! ResultMap)
+          }
+          set {
+            resultMap.updateValue(newValue.resultMap, forKey: "following")
+          }
+        }
+
+        public struct Follower: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["CountableUserConnection"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("totalCount", type: .scalar(Int.self)),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(totalCount: Int? = nil) {
+            self.init(unsafeResultMap: ["__typename": "CountableUserConnection", "totalCount": totalCount])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          public var totalCount: Int? {
+            get {
+              return resultMap["totalCount"] as? Int
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "totalCount")
+            }
+          }
+        }
+
+        public struct Following: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["CountableUserConnection"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("totalCount", type: .scalar(Int.self)),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(totalCount: Int? = nil) {
+            self.init(unsafeResultMap: ["__typename": "CountableUserConnection", "totalCount": totalCount])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          public var totalCount: Int? {
+            get {
+              return resultMap["totalCount"] as? Int
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "totalCount")
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 public final class SettingsQuery: GraphQLQuery {
   /// The raw GraphQL definition of this operation.
   public let operationDefinition: String =
@@ -3004,7 +3277,6 @@ public struct ViewerFragment: GraphQLFragment {
         profilePicture(size: 100, scale: 2)
         following(first: 4) {
           __typename
-          totalCount
           edges {
             __typename
             node {
@@ -3015,7 +3287,6 @@ public struct ViewerFragment: GraphQLFragment {
         }
         followers(first: 4) {
           __typename
-          totalCount
           edges {
             __typename
             node {
@@ -3200,7 +3471,6 @@ public struct ViewerFragment: GraphQLFragment {
       public static var selections: [GraphQLSelection] {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("totalCount", type: .scalar(Int.self)),
           GraphQLField("edges", type: .list(.object(Edge.selections))),
         ]
       }
@@ -3211,8 +3481,8 @@ public struct ViewerFragment: GraphQLFragment {
         self.resultMap = unsafeResultMap
       }
 
-      public init(totalCount: Int? = nil, edges: [Edge?]? = nil) {
-        self.init(unsafeResultMap: ["__typename": "CountableUserConnection", "totalCount": totalCount, "edges": edges.flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in value.resultMap } } }])
+      public init(edges: [Edge?]? = nil) {
+        self.init(unsafeResultMap: ["__typename": "CountableUserConnection", "edges": edges.flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in value.resultMap } } }])
       }
 
       public var __typename: String {
@@ -3221,15 +3491,6 @@ public struct ViewerFragment: GraphQLFragment {
         }
         set {
           resultMap.updateValue(newValue, forKey: "__typename")
-        }
-      }
-
-      public var totalCount: Int? {
-        get {
-          return resultMap["totalCount"] as? Int
-        }
-        set {
-          resultMap.updateValue(newValue, forKey: "totalCount")
         }
       }
 
@@ -3346,7 +3607,6 @@ public struct ViewerFragment: GraphQLFragment {
       public static var selections: [GraphQLSelection] {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("totalCount", type: .scalar(Int.self)),
           GraphQLField("edges", type: .list(.object(Edge.selections))),
         ]
       }
@@ -3357,8 +3617,8 @@ public struct ViewerFragment: GraphQLFragment {
         self.resultMap = unsafeResultMap
       }
 
-      public init(totalCount: Int? = nil, edges: [Edge?]? = nil) {
-        self.init(unsafeResultMap: ["__typename": "CountableUserConnection", "totalCount": totalCount, "edges": edges.flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in value.resultMap } } }])
+      public init(edges: [Edge?]? = nil) {
+        self.init(unsafeResultMap: ["__typename": "CountableUserConnection", "edges": edges.flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in value.resultMap } } }])
       }
 
       public var __typename: String {
@@ -3367,15 +3627,6 @@ public struct ViewerFragment: GraphQLFragment {
         }
         set {
           resultMap.updateValue(newValue, forKey: "__typename")
-        }
-      }
-
-      public var totalCount: Int? {
-        get {
-          return resultMap["totalCount"] as? Int
-        }
-        set {
-          resultMap.updateValue(newValue, forKey: "totalCount")
         }
       }
 

@@ -12,9 +12,9 @@ import SwiftUI
 public struct Feed: View {
     let type: FeedType
     let paddingTop: CGFloat
-
+    
     @StateObject var feedModel: FeedModel
-
+    
     init(type: FeedType, paddingTop: CGFloat = 0) {
         self.paddingTop = paddingTop
         self.type = type
@@ -27,7 +27,7 @@ public struct Feed: View {
             _feedModel = StateObject(wrappedValue: FeedModel.shared(.User(id: id)))
         }
     }
-
+    
     public var body: some View {
         VStack {
             if !feedModel.initialized {
@@ -57,19 +57,20 @@ public struct Feed: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .overlay(LinearGradient(
-            gradient: Gradient(colors: [
-                Color(R.color.primaryColor.name).opacity(0.10),
-                Color(R.color.primaryColor.name).opacity(0.0),
-                .clear,
-            ]),
-            startPoint: .top,
-            endPoint: .bottom
-        )
-        .allowsHitTesting(false)
-        .frame(height: 32)
-        .padding(.top, paddingTop - 10),
-        alignment: .top)
+        .overlay(
+            LinearGradient(
+                gradient: Gradient(colors: [
+                    Color(R.color.primaryColor.name).opacity(0.10),
+                    Color(R.color.primaryColor.name).opacity(0.0),
+                    .clear,
+                ]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .allowsHitTesting(false)
+            .frame(height: 32)
+            .padding(.top, paddingTop - 10),
+            alignment: .top)
         .background(Color(R.color.lightWashColor.name))
         .edgesIgnoringSafeArea(.bottom)
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in

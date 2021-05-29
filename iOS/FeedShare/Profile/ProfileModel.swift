@@ -9,17 +9,17 @@ import Shared
 import SwiftUI
 
 public class ProfileModel: ObservableObject {
-    @Published var user = [ProfileQuery.Data.Page]()
-
-    public init() {
-        Network.shared.apollo.fetch(query: ProfileQuery(), cachePolicy: .returnCacheDataAndFetch) { result in
+    @Published var user: ProfileQuery.Data.Node.AsUser?
+    
+    public init(id: String) {
+        Network.shared.apollo.fetch(query: ProfileQuery(id: id), cachePolicy: .returnCacheDataAndFetch) { result in
             switch result {
             case let .success(graphQLResult):
-                if let pages = graphQLResult.data?.pages {
-                    self.pages = pages.compactMap { $0 }
+                if let user = graphQLResult.data?.node?.asUser {
+                    self.user = user
                 }
             case .failure:
-                print("Error loading SettinsQuery")
+                print("Error loading ProfileQuery")
             }
         }
     }

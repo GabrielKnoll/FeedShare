@@ -5,6 +5,7 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
+import JGProgressHUD_SwiftUI
 import MarkdownUI
 import Shared
 import SkeletonUI
@@ -15,6 +16,7 @@ public struct EpisodeOverlay: View {
 
     @ObservedObject var data: EpisodeOverlayModel
     @EnvironmentObject var viewerModel: ViewerModel
+    @EnvironmentObject var hudCoordinator: JGProgressHUDCoordinator
     @State var isLoaded = true
     @State var safariViewPresented = false
     @State var url: URL?
@@ -50,6 +52,15 @@ public struct EpisodeOverlay: View {
                     } else {
                         Button("Copy Podcast Feed", action: {
                             UIPasteboard.general.string = data.fragment?.podcast.feed
+                            hudCoordinator.showHUD {
+                                let hud = JGProgressHUD()
+                                hud.square = true
+                                hud.indicatorView = JGProgressHUDSuccessIndicatorView()
+                                hud.textLabel.text = "Copied Feed URL"
+                                hud.cornerRadius = 15.0
+                                return hud
+                            }
+                            
                         })
                             .buttonStyle(RowButton())
                     }
