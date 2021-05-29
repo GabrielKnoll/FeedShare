@@ -1,6 +1,6 @@
 generates:
-  api.json:
-    schema: ./api.graphql
+  schema.json:
+    schema: ./schema.graphql
     plugins:
       - introspection
     config:

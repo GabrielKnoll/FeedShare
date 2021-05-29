@@ -97,3 +97,5 @@ fastlane/test_output
 # R.swift
 .env
 /iOS/BuildConfig/Config.xcconfig
+
+/iOS/ApolloCodegen/ApolloCLI

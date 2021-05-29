@@ -39,7 +39,7 @@ export default makeSchema({
     export: 'Context',
   },
   outputs: {
-    schema: join(__dirname, '..', 'api.graphql'),
+    schema: join(__dirname, '..', 'schema.graphql'),
     typegen: join(__dirname, '..', 'types', 'api.d.ts'),
   },
   types: [
