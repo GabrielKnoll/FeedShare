@@ -12,6 +12,7 @@ import URLImage
 public struct Profile: View {
     let userId: String
     @ObservedObject var profileModel: ProfileModel
+    @EnvironmentObject var viewerModel: ViewerModel
     @State private var settingsActive = false
     
     init(userId: String) {
@@ -20,6 +21,8 @@ public struct Profile: View {
     }
 
     public var body: some View {
+        let isViewer = viewerModel.viewer?.user.id == userId
+        
         VStack(alignment: .leading, spacing: 0) {
             HStack {
                 VStack(alignment: .leading) {
@@ -44,9 +47,11 @@ public struct Profile: View {
         }
         .edgesIgnoringSafeArea(.bottom)
         .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle("Profile")
+        .navigationTitle(isViewer ? "Profile" : "")
         .navigationBarItems(trailing: Button(action: { settingsActive = true }) {
-            Image(systemName: "gearshape")
+            if isViewer {
+                Image(systemName: "gearshape")
+            }
         }
         .contentShape(Rectangle())
         .padding(10))

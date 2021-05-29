@@ -15,15 +15,14 @@ public struct FeedItem: View {
     @EnvironmentObject var viewerModel: ViewerModel
     @EnvironmentObject var hudCoordinator: JGProgressHUDCoordinator
     @State private var isPressed = false
+    @State private var showProfile = false
     
     public var body: some View {
         VStack(alignment: .leading, spacing: 15) {
             
             NavigationLink(
                 destination: EpisodeOverlay(attachment: data.episode.fragments.episodeAttachmentFragment)
-                    .environmentObject(viewerModel)
-                    .environmentObject(hudCoordinator)
-                ,
+                    .environmentObject(viewerModel),
                 label: {
                     VStack(alignment: .leading, spacing: 0) {
                         EpisodeAttachment(data: data.episode.fragments.episodeAttachmentFragment)
@@ -43,15 +42,27 @@ public struct FeedItem: View {
                         self.isPressed = false
                     }
                 })
+                .background(
+                    NavigationLink(destination: Profile(userId: data.author.id), isActive: $showProfile) {
+                        EmptyView()
+                    }
+                )
             
             HStack(alignment: .center, spacing: 5) {
-                ProfilePicture(url: data.author.profilePicture, size: 28.0)
-                    .padding(.trailing, 4)
-                if let displayName = data.author.displayName {
-                    Text(displayName)
-                        .font(Typography.meta)
-                        .lineLimit(1)
-                }
+                Button(action: {
+                    showProfile = true
+                }, label: {
+                    HStack(alignment: .center, spacing: 5, content: {
+                        ProfilePicture(url: data.author.profilePicture, size: 28.0)
+                            .padding(.trailing, 4)
+                        if let displayName = data.author.displayName {
+                            Text(displayName)
+                                .font(Typography.meta)
+                                .lineLimit(1)
+                        }
+                    })
+                })
+                
                 Text("·")
                     .foregroundColor(Color(R.color.secondaryColor.name))
                     .font(Typography.meta)
@@ -68,7 +79,7 @@ public struct FeedItem: View {
                 
                 Menu {
                     Button(action: {
-                        
+                        showProfile = true
                     }) {
                         Label((data.author.displayName ?? "User Profile"), systemImage: "person.crop.circle")
                     }

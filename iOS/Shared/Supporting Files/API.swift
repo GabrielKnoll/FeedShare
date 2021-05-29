@@ -65,7 +65,7 @@ public final class EpisodeOverlayQuery: GraphQLQuery {
     }
 
     public struct Node: GraphQLSelectionSet {
-      public static let possibleTypes: [String] = ["User", "Podcast", "Episode", "Share", "PodcastClient"]
+      public static let possibleTypes: [String] = ["Episode", "Podcast", "PodcastClient", "Share", "User"]
 
       public static var selections: [GraphQLSelection] {
         return [
@@ -84,20 +84,20 @@ public final class EpisodeOverlayQuery: GraphQLQuery {
         self.resultMap = unsafeResultMap
       }
 
-      public static func makeUser() -> Node {
-        return Node(unsafeResultMap: ["__typename": "User"])
-      }
-
       public static func makePodcast() -> Node {
         return Node(unsafeResultMap: ["__typename": "Podcast"])
+      }
+
+      public static func makePodcastClient() -> Node {
+        return Node(unsafeResultMap: ["__typename": "PodcastClient"])
       }
 
       public static func makeShare() -> Node {
         return Node(unsafeResultMap: ["__typename": "Share"])
       }
 
-      public static func makePodcastClient() -> Node {
-        return Node(unsafeResultMap: ["__typename": "PodcastClient"])
+      public static func makeUser() -> Node {
+        return Node(unsafeResultMap: ["__typename": "User"])
       }
 
       public static func makeEpisode(description: String? = nil, artwork: String? = nil, datePublished: String, durationSeconds: Int? = nil, url: String? = nil, podcast: AsEpisode.Podcast) -> Node {
@@ -1664,7 +1664,7 @@ public final class UserFeedQuery: GraphQLQuery {
     }
 
     public struct Node: GraphQLSelectionSet {
-      public static let possibleTypes: [String] = ["User", "Podcast", "Episode", "Share", "PodcastClient"]
+      public static let possibleTypes: [String] = ["Episode", "Podcast", "PodcastClient", "Share", "User"]
 
       public static var selections: [GraphQLSelection] {
         return [
@@ -1683,20 +1683,20 @@ public final class UserFeedQuery: GraphQLQuery {
         self.resultMap = unsafeResultMap
       }
 
-      public static func makePodcast() -> Node {
-        return Node(unsafeResultMap: ["__typename": "Podcast"])
-      }
-
       public static func makeEpisode() -> Node {
         return Node(unsafeResultMap: ["__typename": "Episode"])
       }
 
-      public static func makeShare() -> Node {
-        return Node(unsafeResultMap: ["__typename": "Share"])
+      public static func makePodcast() -> Node {
+        return Node(unsafeResultMap: ["__typename": "Podcast"])
       }
 
       public static func makePodcastClient() -> Node {
         return Node(unsafeResultMap: ["__typename": "PodcastClient"])
+      }
+
+      public static func makeShare() -> Node {
+        return Node(unsafeResultMap: ["__typename": "Share"])
       }
 
       public static func makeUser(feed: AsUser.Feed) -> Node {
@@ -2847,7 +2847,7 @@ public final class ProfileQuery: GraphQLQuery {
     }
 
     public struct Node: GraphQLSelectionSet {
-      public static let possibleTypes: [String] = ["User", "Podcast", "Episode", "Share", "PodcastClient"]
+      public static let possibleTypes: [String] = ["Episode", "Podcast", "PodcastClient", "Share", "User"]
 
       public static var selections: [GraphQLSelection] {
         return [
@@ -2866,20 +2866,20 @@ public final class ProfileQuery: GraphQLQuery {
         self.resultMap = unsafeResultMap
       }
 
-      public static func makePodcast() -> Node {
-        return Node(unsafeResultMap: ["__typename": "Podcast"])
-      }
-
       public static func makeEpisode() -> Node {
         return Node(unsafeResultMap: ["__typename": "Episode"])
       }
 
-      public static func makeShare() -> Node {
-        return Node(unsafeResultMap: ["__typename": "Share"])
+      public static func makePodcast() -> Node {
+        return Node(unsafeResultMap: ["__typename": "Podcast"])
       }
 
       public static func makePodcastClient() -> Node {
         return Node(unsafeResultMap: ["__typename": "PodcastClient"])
+      }
+
+      public static func makeShare() -> Node {
+        return Node(unsafeResultMap: ["__typename": "Share"])
       }
 
       public static func makeUser(profilePicture: String? = nil, displayName: String? = nil, followers: AsUser.Follower, following: AsUser.Following) -> Node {
@@ -4007,7 +4007,7 @@ public final class LatestEpisodesQuery: GraphQLQuery {
     }
 
     public struct Node: GraphQLSelectionSet {
-      public static let possibleTypes: [String] = ["User", "Podcast", "Episode", "Share", "PodcastClient"]
+      public static let possibleTypes: [String] = ["Episode", "Podcast", "PodcastClient", "Share", "User"]
 
       public static var selections: [GraphQLSelection] {
         return [
@@ -4026,20 +4026,20 @@ public final class LatestEpisodesQuery: GraphQLQuery {
         self.resultMap = unsafeResultMap
       }
 
-      public static func makeUser() -> Node {
-        return Node(unsafeResultMap: ["__typename": "User"])
-      }
-
       public static func makeEpisode() -> Node {
         return Node(unsafeResultMap: ["__typename": "Episode"])
+      }
+
+      public static func makePodcastClient() -> Node {
+        return Node(unsafeResultMap: ["__typename": "PodcastClient"])
       }
 
       public static func makeShare() -> Node {
         return Node(unsafeResultMap: ["__typename": "Share"])
       }
 
-      public static func makePodcastClient() -> Node {
-        return Node(unsafeResultMap: ["__typename": "PodcastClient"])
+      public static func makeUser() -> Node {
+        return Node(unsafeResultMap: ["__typename": "User"])
       }
 
       public static func makePodcast(latestEpisodes: [AsPodcast.LatestEpisode?]? = nil) -> Node {

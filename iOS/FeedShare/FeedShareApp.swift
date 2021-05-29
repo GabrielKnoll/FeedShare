@@ -5,6 +5,7 @@
 //  Created by Gabriel Knoll on 19.09.20.
 //
 
+import JGProgressHUD_SwiftUI
 import OneSignal
 import PartialSheet
 import Shared
@@ -55,20 +56,23 @@ struct FeedShareApp: App {
                 )
                 ZStack {
                     if viewerModel.setupFinshed, viewerModel.viewer != nil {
-                        NavigationView {
-                            Home()
-                                .navigationBarTitle("Home")
-                                .navigationBarHidden(true)
+                        JGProgressHUDPresenter {
+                            NavigationView {
+                                Home()
+                                    .navigationBarTitle("Home")
+                                    .navigationBarHidden(true)
+                            }
+                            .addPartialSheet(
+                                style: PartialSheetStyle(
+                                    background: .solid(Color(UIColor.systemBackground)),
+                                    handlerBarColor: Color(R.color.secondaryColor.name),
+                                    enableCover: true,
+                                    coverColor: Color.black.opacity(0.4),
+                                    cornerRadius: 38.5,
+                                    minTopDistance: 50
+                                )
+                            )
                         }
-                        .addPartialSheet(style: PartialSheetStyle(
-                            background: .solid(Color(UIColor.systemBackground)),
-                            handlerBarColor: Color(R.color.secondaryColor.name),
-                            enableCover: true,
-                            coverColor: Color.black.opacity(0.4),
-                            cornerRadius: 38.5,
-                            minTopDistance: 50
-                        )
-                        )
                     }
                 }
                 .preferredColorScheme(isDark ? .dark : .light)
