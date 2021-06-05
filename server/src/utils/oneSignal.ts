@@ -20,6 +20,7 @@ export function sendPush(
     headings: {
       en: content.title,
     },
+    included_segments: ['empty'], // need to have a segment, using an empty one
     subtitle: content.subtitle
       ? {
           en: content.subtitle,
