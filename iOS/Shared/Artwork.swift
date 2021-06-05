@@ -21,7 +21,7 @@ public struct Artwork: View {
         }
         self.size = CGFloat(size)
     }
-    
+
     public var body: some View {
         VStack {
             if let u = url {

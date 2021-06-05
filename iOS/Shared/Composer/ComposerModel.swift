@@ -70,31 +70,29 @@ public class ComposerModel: ObservableObject {
 
     func resolveUrl(url: String?) {
         composerError = .none
-        if let u = url?.lowercased(), u.starts(with: "http://") || u.starts(with: "https://") {
+        if let u = url, u.lowercased().starts(with: "http://") || u.lowercased().starts(with: "https://") {
             self.url = u
         } else {
             composerError = .noURL
             return
         }
-
+        
         isLoading = .resolveUrl
-        Network.shared.apollo.fetch(query: ResolveQuery(url: self.url),
-                                    cachePolicy: .fetchIgnoringCacheCompletely) { result in
+        Network.shared.apollo.fetch(
+            query: ResolveQuery(url: self.url),
+            cachePolicy: .fetchIgnoringCacheCompletely
+        ) { result in
             switch result {
             case let .success(graphQLResult):
                 if let episode = graphQLResult.data?.resolveShareUrl?.episode?.fragments.episodeAttachmentFragment {
                     self.episode = episode
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                        self.isLoading = .none
-                    }
+                    self.isLoading = .none
                 } else if let podcast = graphQLResult.data?.resolveShareUrl?.podcast?.fragments.composerPodcastFragment {
                     self.podcast = podcast
                     self.latestEpisodes = graphQLResult.data?.resolveShareUrl?.podcast?.latestEpisodes?.compactMap {
                         $0?.fragments.episodeAttachmentFragment
                     } ?? []
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                        self.isLoading = .none
-                    }
+                    self.isLoading = .none
                 } else {
                     self.composerError = .urlNotFound
                     self.isLoading = .none
@@ -128,6 +126,10 @@ public class ComposerModel: ObservableObject {
     }
 
     func findPodcast(query: String, isBlocking: Bool = true) {
+        if self.isLoading == .resolveUrl {
+            return
+        }
+        
         if query.lowercased().starts(with: "http://") || query.lowercased().starts(with: "https://") {
             if isBlocking {
                 resolveUrl(url: query)

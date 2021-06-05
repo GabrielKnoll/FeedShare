@@ -12,12 +12,12 @@ import SwiftUI
 public struct Home: View {
     @EnvironmentObject var viewerModel: ViewerModel
     @EnvironmentObject var partialSheetManager: PartialSheetManager
-    
+
     @State private var composerVisible = false
     @State private var activeFeedType = 0
-    
+
     public init() {}
-    
+
     public var body: some View {
         GeometryReader { geo in
             ZStack(alignment: .top) {
@@ -33,7 +33,7 @@ public struct Home: View {
                         UIScrollView.appearance().isScrollEnabled = false
                     })
                 }
-                
+
                 VStack {
                     ZStack {
                         Image(R.image.logo.name)
@@ -42,7 +42,7 @@ public struct Home: View {
                             .scaledToFit()
                             .foregroundColor(Color(R.color.primaryColor.name))
                             .frame(height: 20)
-                        
+
                         HStack {
                             if let userId = viewerModel.viewer?.user.id {
                                 NavigationLink(destination: Profile(userId: userId)) {
@@ -50,9 +50,9 @@ public struct Home: View {
                                         .padding(7)
                                 }
                             }
-                            
+
                             Spacer()
-                            
+
                             Button(action: {
                                 composerVisible = true
                             }) {
@@ -61,11 +61,10 @@ public struct Home: View {
                                     .foregroundColor(Color(R.color.primaryColor.name))
                                     .padding(7)
                             }.foregroundColor(Color.primary)
-                            
                         }
                         .padding(.horizontal, 15)
                     }
-                    
+
                     SlidingTabView(
                         selection: $activeFeedType,
                         tabs: [

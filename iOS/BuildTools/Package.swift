@@ -6,8 +6,8 @@ let package = Package(
     dependencies: [
         // Define any tools you want available from your build phases
         // Here's an example with SwiftFormat
-        .package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.41.2"),
-        .package(url: "https://github.com/mac-cain13/R.swift", from: "5.1.0"),
+        .package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.48.4"),
+        .package(url: "https://github.com/mac-cain13/R.swift", from: "5.4.0"),
     ],
     targets: [.target(name: "BuildTools", path: "")]
 )

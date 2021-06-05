@@ -88,7 +88,6 @@ public class ViewerModel: ObservableObject {
         twitterToken: String,
         twitterTokenSecret: String
     ) {
-        
         Network.shared.apollo.perform(mutation: CreateViewerMutation(twitterId: twitterId,
                                                                      twitterToken: twitterToken,
                                                                      twitterTokenSecret: twitterTokenSecret)) { result in

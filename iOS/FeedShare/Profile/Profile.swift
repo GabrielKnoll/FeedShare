@@ -14,15 +14,15 @@ public struct Profile: View {
     @ObservedObject var profileModel: ProfileModel
     @EnvironmentObject var viewerModel: ViewerModel
     @State private var settingsActive = false
-    
+
     init(userId: String) {
         self.userId = userId
-        self.profileModel = ProfileModel(id: userId)
+        profileModel = ProfileModel(id: userId)
     }
 
     public var body: some View {
         let isViewer = viewerModel.viewer?.user.id == userId
-        
+
         VStack(alignment: .leading, spacing: 0) {
             HStack {
                 VStack(alignment: .leading) {

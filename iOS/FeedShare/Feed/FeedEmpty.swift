@@ -21,7 +21,7 @@ public struct FeedEmpty: View {
 
     public var body: some View {
         switch type {
-        case .User(let id):
+        case let .User(id):
             if id == viewerModel.viewer?.user.id {
                 EmptyState(
                     title: "You haven't shared anything",
@@ -33,7 +33,7 @@ public struct FeedEmpty: View {
                     message: "The user hasn't yet shared anything."
                 )
             }
-            
+
         case .Personal:
             EmptyState(
                 title: "It's quiet here...",
