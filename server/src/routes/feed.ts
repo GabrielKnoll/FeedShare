@@ -89,6 +89,16 @@ const requestHandler = async (req: Request, res: Response) => {
     .ele('copyright')
     .txt('All rights belong to the respective owners of each episode.');
 
+  const owner = channel.ele('itunes:owner');
+  owner.ele('itunes:name').txt('Truffle');
+  owner.ele('itunes:email').txt('hello@findtruffle.com');
+
+  channel
+    .ele('itunes:category')
+    .att('text', 'Technology')
+    .ele('itunes:category')
+    .att('text', 'Podcasting');
+
   channel.ele('itunes:image', {
     href: imagekit.url({
       signed: true,
@@ -133,6 +143,24 @@ const requestHandler = async (req: Request, res: Response) => {
     if (share.episode.podcast.artwork) {
       item.ele('itunes:image').txt(share.episode.podcast.artwork);
     }
+  }
+
+  if (shares.length === 0) {
+    const initialItem = channel.ele('item');
+    initialItem.ele('title').txt('Welcome to Truffle');
+    initialItem.ele('enclosure', {
+      url: 'https://api.findtruffle.com/public/welcome.mp3',
+      length: '1',
+      type: 'audio/mpeg',
+    });
+    initialItem.ele('guid').txt('com.findtruffle.initial-episode');
+    initialItem.ele('pubDate').txt(new Date('2020-01-01').toUTCString());
+    initialItem
+      .ele('description')
+      .txt(
+        'Episodes shared by people you follow on Truffle will appear here automatically.',
+      );
+    initialItem.ele('itunes:duration').txt('1');
   }
 
   // convert the XML tree to string
