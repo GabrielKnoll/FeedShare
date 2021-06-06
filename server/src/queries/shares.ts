@@ -9,11 +9,12 @@ export const globalFeed = extendType({
       type: 'Share',
       description: 'Shares on the global feed',
       resolve: async (_parent, args, ctx) => {
-        const {take, skip, after} = argsValidation(args);
+        const {take, skip, cursor} = argsValidation(args);
 
         const nodes = await ctx.prismaClient.share.findMany({
           take,
           skip,
+          cursor,
           where: {
             hideFromGlobalFeed: false,
           },
@@ -22,7 +23,7 @@ export const globalFeed = extendType({
           },
         });
 
-        return shareConnection(nodes, take, skip, after);
+        return shareConnection(nodes, take, cursor);
       },
     });
   },
@@ -35,7 +36,7 @@ export const personalFeed = extendType({
       type: 'Share',
       description: 'Personal feed for the viewer',
       resolve: async (_parent, args, ctx) => {
-        const {take, skip, after} = argsValidation(args);
+        const {take, skip, cursor} = argsValidation(args);
 
         const nodes = await personalFeedShares(
           ctx.prismaClient,
@@ -43,9 +44,10 @@ export const personalFeed = extendType({
           ctx.userId!,
           take,
           skip,
+          cursor,
         );
 
-        return shareConnection(nodes, take, skip, after);
+        return shareConnection(nodes, take, cursor);
       },
     });
   },
@@ -59,7 +61,7 @@ export const userFeed = extendType({
       description:
         'Shares from a user, not including hidden shares for other users than self',
       resolve: async (user, args, ctx) => {
-        const {take, skip, after} = argsValidation(args);
+        const {take, skip, cursor} = argsValidation(args);
         const userID = (user as User).id;
 
         const nodes = await ctx.prismaClient.share.findMany({
@@ -67,12 +69,15 @@ export const userFeed = extendType({
             authorId: userID,
             hideFromGlobalFeed: ctx.userId != userID ? false : undefined,
           },
+          take,
+          skip,
+          cursor,
           orderBy: {
             createdAt: 'desc',
           },
         });
 
-        return shareConnection(nodes, take, skip, after);
+        return shareConnection(nodes, take, cursor);
       },
     });
   },
@@ -84,57 +89,44 @@ function argsValidation(args: {
   first?: number | null;
   last?: number | null;
 }) {
-  if (args.before) {
-    throw new UserInputError('before arg not supported');
+  if (args.after) {
+    throw new UserInputError('after arg not supported');
   }
-  if ((args.last ?? 0) < 0) {
-    throw new UserInputError('last is less than 0');
+  if (args.last) {
+    throw new UserInputError('last arg not supported');
   }
-  const take = (args.last ?? 40) + 1;
+  if ((args.first ?? 0) < 0) {
+    throw new UserInputError('first is less than 0');
+  }
+
+  const first = args.first ?? 40;
+  const before = args.before;
 
   return {
-    take,
-    skip: 0, // never skipping, because we only allow querying from last
-    after: args.after,
+    take: first + 1, // take one more, so we know if more before that
+    skip: before ? 1 : 0,
+    cursor: before
+      ? {
+          id: before,
+        }
+      : undefined,
   };
 }
 
-function shareConnection(
-  nodes: Share[],
-  take: number,
-  skip: number = 0,
-  after?: string | null,
-) {
-  const hasExtraNode = nodes.length === take;
-
-  // Remove the extra node from the results
-  if (hasExtraNode) {
+function shareConnection(nodes: Share[], take: number, cursor?: {id: string}) {
+  let hasPreviousPage = false;
+  if (nodes.length === take) {
+    // we have one too many
     nodes.pop();
+    hasPreviousPage = true;
   }
-
-  // cut off list before the cursor
-  if (after) {
-    let found = false;
-    nodes = nodes.filter((n) => {
-      found = found || n.id === after;
-      return !found;
-    });
-  }
-
-  nodes = nodes.reverse();
-
-  // Get the start and end cursors
-  const startCursor = nodes.length > 0 ? nodes[0].id : undefined;
-  const endCursor = nodes.length > 0 ? nodes[nodes.length - 1].id : undefined;
-  const hasPreviousPage = hasExtraNode;
-  const hasNextPage = (skip ?? 0) > 0;
 
   return {
     pageInfo: {
-      startCursor,
-      endCursor,
-      hasNextPage,
       hasPreviousPage,
+      hasNextPage: cursor?.id != null,
+      startCursor: nodes.length > 0 ? nodes[0].id : undefined,
+      endCursor: nodes.length > 0 ? nodes[nodes.length - 1].id : undefined,
     },
     edges: nodes.map((node) => ({cursor: node.id, node})),
   };
@@ -145,20 +137,39 @@ export async function personalFeedShares(
   includeMyShares: boolean,
   userId: string,
   take: number,
-  skip: number = 0,
+  skip: number,
+  cursor?: {id: string},
 ): Promise<Share[]> {
-  return prismaClient.$queryRaw(
-    `SELECT s.* FROM "Share" s
-     LEFT JOIN "AddedToPersonalFeed" a ON a."shareId" = s."id"
-       WHERE 
-         "authorId" = ANY(SELECT UNNEST(following) FROM "TwitterAccount" WHERE "userId" = $1)
-         OR "id" IN (SELECT "shareId" FROM "AddedToPersonalFeed" WHERE "userId" = $1)
-         ${includeMyShares ? `OR "authorId" = $1` : ''}
-     ORDER BY COALESCE(a."createdAt", s."createdAt") DESC
-     LIMIT $2 OFFSET $3;
-    `,
-    userId,
-    take,
-    skip,
-  );
+  const query = `
+    SELECT s.* FROM "Share" s
+    LEFT JOIN "AddedToPersonalFeed" a ON a."shareId" = s."id"
+      WHERE (
+        "authorId" = ANY(
+          -- Twitter follows on platform
+               SELECT "userId" FROM "TwitterAccount" WHERE "id" = ANY(
+                 -- Twitter followers
+                 SELECT UNNEST(following) FROM "TwitterAccount" WHERE "userId" = $1
+               )
+             )
+             -- Added to personal feed
+             OR "id" IN (SELECT "shareId" FROM "AddedToPersonalFeed" WHERE "userId" = $1)
+             -- Share from user themselves
+             ${includeMyShares ? `OR "authorId" = $1` : ''}
+      )
+      -- is before cursor
+      ${
+        cursor
+          ? `AND (s."createdAt" <= (SELECT "createdAt" FROM "Share" WHERE "id" = $4))`
+          : ''
+      }
+      ORDER BY COALESCE(a."createdAt", s."createdAt") DESC
+      LIMIT $2 OFFSET $3;
+    `;
+
+  const args: [string, ...any] = [query, userId, take, skip];
+  if (cursor) {
+    args.push(cursor.id);
+  }
+
+  return prismaClient.$queryRaw(...args);
 }
