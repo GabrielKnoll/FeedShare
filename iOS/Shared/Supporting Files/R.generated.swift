@@ -180,6 +180,70 @@ public struct R: Rswift.Validatable {
             }
         #endif
 
+        #if os(watchOS)
+            /// `UIColor(named: "BackgroundColor", bundle: ..., traitCollection: ...)`
+            @available(watchOSApplicationExtension 4.0, *)
+            public static func backgroundColor(_: Void = ()) -> UIKit.UIColor? {
+                UIKit.UIColor(named: R.color.backgroundColor.name)
+            }
+        #endif
+
+        #if os(watchOS)
+            /// `UIColor(named: "BrandColor", bundle: ..., traitCollection: ...)`
+            @available(watchOSApplicationExtension 4.0, *)
+            public static func brandColor(_: Void = ()) -> UIKit.UIColor? {
+                UIKit.UIColor(named: R.color.brandColor.name)
+            }
+        #endif
+
+        #if os(watchOS)
+            /// `UIColor(named: "DangerColor", bundle: ..., traitCollection: ...)`
+            @available(watchOSApplicationExtension 4.0, *)
+            public static func dangerColor(_: Void = ()) -> UIKit.UIColor? {
+                UIKit.UIColor(named: R.color.dangerColor.name)
+            }
+        #endif
+
+        #if os(watchOS)
+            /// `UIColor(named: "LightWashColor", bundle: ..., traitCollection: ...)`
+            @available(watchOSApplicationExtension 4.0, *)
+            public static func lightWashColor(_: Void = ()) -> UIKit.UIColor? {
+                UIKit.UIColor(named: R.color.lightWashColor.name)
+            }
+        #endif
+
+        #if os(watchOS)
+            /// `UIColor(named: "PrimaryColor", bundle: ..., traitCollection: ...)`
+            @available(watchOSApplicationExtension 4.0, *)
+            public static func primaryColor(_: Void = ()) -> UIKit.UIColor? {
+                UIKit.UIColor(named: R.color.primaryColor.name)
+            }
+        #endif
+
+        #if os(watchOS)
+            /// `UIColor(named: "SecondaryColor", bundle: ..., traitCollection: ...)`
+            @available(watchOSApplicationExtension 4.0, *)
+            public static func secondaryColor(_: Void = ()) -> UIKit.UIColor? {
+                UIKit.UIColor(named: R.color.secondaryColor.name)
+            }
+        #endif
+
+        #if os(watchOS)
+            /// `UIColor(named: "TertiaryColor", bundle: ..., traitCollection: ...)`
+            @available(watchOSApplicationExtension 4.0, *)
+            public static func tertiaryColor(_: Void = ()) -> UIKit.UIColor? {
+                UIKit.UIColor(named: R.color.tertiaryColor.name)
+            }
+        #endif
+
+        #if os(watchOS)
+            /// `UIColor(named: "WashColor", bundle: ..., traitCollection: ...)`
+            @available(watchOSApplicationExtension 4.0, *)
+            public static func washColor(_: Void = ()) -> UIKit.UIColor? {
+                UIKit.UIColor(named: R.color.washColor.name)
+            }
+        #endif
+
         fileprivate init() {}
     }
 

@@ -13,19 +13,19 @@ import SwiftUI
 
 public struct EpisodeOverlay: View {
     let attachment: EpisodeAttachmentFragment
-    
+
     @ObservedObject var data: EpisodeOverlayModel
     @EnvironmentObject var viewerModel: ViewerModel
     @EnvironmentObject var hudCoordinator: JGProgressHUDCoordinator
     @State var isLoaded = true
     @State var safariViewPresented = false
     @State var url: URL?
-    
+
     init(attachment: EpisodeAttachmentFragment) {
         self.attachment = attachment
         data = EpisodeOverlayModel(id: attachment.id)
     }
-    
+
     public var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 14) {
@@ -34,21 +34,21 @@ public struct EpisodeOverlay: View {
                     title2: attachment.podcast.title,
                     artwork: data.fragment?.artwork ?? data.fragment?.podcast.artwork ?? attachment.artwork ?? attachment.podcast.artwork
                 )
-                
+
                 Details(attachment: attachment)
-                
+
                 if let duration = attachment.durationSeconds {
                     Text(EpisodeAttachment.durationFormatter.string(from: TimeInterval(duration)))
                         .font(Typography.bodyBold)
                 }
-                
+
                 VStack(spacing: 0) {
                     Divider().background(Color(R.color.tertiaryColor.name)).frame(height: 1)
                     if let client = viewerModel.viewerClient {
                         Button("Subscribe in \(client.displayName)", action: {
                             SubscribeButton.openURL(client, feed: data.fragment?.podcast.feed)
                         })
-                        .buttonStyle(RowButton())
+                            .buttonStyle(RowButton())
                     } else {
                         Button("Copy Podcast Feed URL", action: {
                             UIPasteboard.general.string = data.fragment?.podcast.feed
@@ -62,17 +62,17 @@ public struct EpisodeOverlay: View {
                                 return hud
                             }
                         })
-                        .buttonStyle(RowButton())
+                            .buttonStyle(RowButton())
                     }
-                    
+
                     if url != nil {
                         Button("Website", action: {
                             self.safariViewPresented = true
                         })
-                        .buttonStyle(RowButton())
+                            .buttonStyle(RowButton())
                     }
                 }
-                
+
                 Markdown(Document(data.fragment?.description ?? ""))
                     .markdownStyle(
                         DefaultMarkdownStyle(
@@ -94,7 +94,7 @@ public struct EpisodeOverlay: View {
                         6: 0.82,
                         7: 0.90,
                     ])
-                
+
                 Spacer()
             }
             .padding(20)
@@ -109,7 +109,7 @@ public struct EpisodeOverlay: View {
         .navigationBarHidden(false)
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(attachment.title)
-        .navigationBarItems(trailing: Button(action: {  }) {
+        .navigationBarItems(trailing: Button(action: {}) {
             // needed to show navbar
             // Image(systemName: "square.and.arrow.up")
             // Share?
@@ -119,7 +119,7 @@ public struct EpisodeOverlay: View {
 
 public struct Details: View {
     let attachment: EpisodeAttachmentFragment
-    
+
     public var body: some View {
         Text("Published by ").font(Typography.body) +
             Text(attachment.podcast.publisher).font(Typography.bodyBold) +

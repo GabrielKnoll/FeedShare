@@ -36,12 +36,12 @@ describe('personalFeedShares', () => {
         {
           id: 'twitter1',
           userId: 'user1',
-          following: ['user2'],
+          following: ['twitter2'],
         },
         {
           id: 'twitter2',
           userId: 'user2',
-          following: ['user1'],
+          following: ['twitter1'],
         },
       ],
       skipDuplicates: true,

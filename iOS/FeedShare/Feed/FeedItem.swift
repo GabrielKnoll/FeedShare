@@ -16,38 +16,38 @@ public struct FeedItem: View {
     @EnvironmentObject var hudCoordinator: JGProgressHUDCoordinator
     @State private var isPressed = false
     @State private var showProfile = false
-    
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 15) {
-            
             NavigationLink(
                 destination: EpisodeOverlay(attachment: data.episode.fragments.episodeAttachmentFragment)
                     .environmentObject(viewerModel),
                 label: {
                     VStack(alignment: .leading, spacing: 0) {
                         EpisodeAttachment(data: data.episode.fragments.episodeAttachmentFragment)
-                        
+
                         if let message = data.message {
                             Text(message).font(Typography.body).padding(.top, 15)
                         }
                     }
-                })
-                .buttonStyle(PressedButtonStyle {
-                    DispatchQueue.main.async {
-                        self.isPressed = true
-                    }
-                    
-                } touchUp: {
-                    DispatchQueue.main.async {
-                        self.isPressed = false
-                    }
-                })
-                .background(
-                    NavigationLink(destination: Profile(userId: data.author.id), isActive: $showProfile) {
-                        EmptyView()
-                    }
-                )
-            
+                }
+            )
+            .buttonStyle(PressedButtonStyle {
+                DispatchQueue.main.async {
+                    self.isPressed = true
+                }
+
+            } touchUp: {
+                DispatchQueue.main.async {
+                    self.isPressed = false
+                }
+            })
+            .background(
+                NavigationLink(destination: Profile(userId: data.author.id), isActive: $showProfile) {
+                    EmptyView()
+                }
+            )
+
             HStack(alignment: .center, spacing: 5) {
                 Button(action: {
                     showProfile = true
@@ -62,7 +62,7 @@ public struct FeedItem: View {
                         }
                     })
                 })
-                
+
                 Text("·")
                     .foregroundColor(Color(R.color.secondaryColor.name))
                     .font(Typography.meta)
@@ -76,14 +76,14 @@ public struct FeedItem: View {
                         .font(.system(size: 13))
                 }
                 Spacer()
-                
+
                 Menu {
                     Button(action: {
                         showProfile = true
                     }) {
-                        Label((data.author.displayName ?? "User Profile"), systemImage: "person.crop.circle")
+                        Label(data.author.displayName ?? "User Profile", systemImage: "person.crop.circle")
                     }
-                    
+
                     if !(data.isInPersonalFeed ?? true) {
                         Button(action: {
                             FeedModel.addToPersonalFeed(id: data.id) { share in
@@ -133,17 +133,17 @@ public struct FeedItem: View {
 struct PressedButtonStyle: ButtonStyle {
     let touchDown: () -> Void
     let touchUp: () -> Void
-    
+
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
-            .background(configuration.isPressed ? self.handlePressed() : handleReleased())
+            .background(configuration.isPressed ? handlePressed() : handleReleased())
     }
-    
+
     private func handlePressed() -> Color {
         touchDown()
         return Color.clear
     }
-    
+
     private func handleReleased() -> Color {
         touchUp()
         return Color.clear

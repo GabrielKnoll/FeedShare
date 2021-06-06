@@ -21,7 +21,7 @@ extension FeedType: Equatable {
         switch (lhs, rhs) {
         case (.Global, .Global), (.Personal, .Personal):
             return true
-        case (.User(let id1), .User(let id2)):
+        case let (.User(id1), .User(id2)):
             return id1 == id2
         default:
             return false
@@ -31,7 +31,7 @@ extension FeedType: Equatable {
 
 public class FeedModel: ObservableObject {
     private static var instances = [FeedType: FeedModel]()
-    
+
     @Published public var shares = [ShareConnectionFragment.Edge]()
     @Published public var loading = false {
         didSet {
@@ -40,13 +40,13 @@ public class FeedModel: ObservableObject {
             }
         }
     }
-    
+
     private var loadRequest: Apollo.Cancellable?
     private let feedType: FeedType
     private var reloadObserver: NSObjectProtocol?
     private var logoutObserver: NSObjectProtocol?
     public var initialized = false
-    
+
     class func shared(_ type: FeedType) -> FeedModel {
         guard let instance = instances[type] else {
             let instance = FeedModel(type: type)
@@ -55,11 +55,11 @@ public class FeedModel: ObservableObject {
         }
         return instance
     }
-    
+
     class func destroy(_ type: FeedType) {
         instances.removeValue(forKey: type)
     }
-    
+
     public init(type: FeedType) {
         feedType = type
         initializeFromCache()
@@ -73,7 +73,7 @@ public class FeedModel: ObservableObject {
             FeedModel.instances.removeValue(forKey: type)
         }
     }
-    
+
     deinit {
         if let observer = self.reloadObserver {
             NotificationCenter.default.removeObserver(observer)
@@ -82,14 +82,14 @@ public class FeedModel: ObservableObject {
             NotificationCenter.default.removeObserver(observer)
         }
     }
-    
+
     private func initializeFromCache() {
         if let lr = loadRequest {
             lr.cancel()
         }
-        
+
         let cachePolicy = CachePolicy.returnCacheDataDontFetch
-        
+
         loadRequest = {
             switch self.feedType {
             case .Global:
@@ -122,24 +122,24 @@ public class FeedModel: ObservableObject {
             }
         }()
     }
-    
+
     private func initializeFromCacheDone(data: ShareConnectionFragment? = nil) {
         if let edges = data?.edges {
-            self.shares.append(contentsOf: edges.compactMap { $0 })
-            if !self.shares.isEmpty {
-                self.initialized = true
+            shares.append(contentsOf: edges.compactMap { $0 })
+            if !shares.isEmpty {
+                initialized = true
             }
         }
-        self.loading = true
+        loading = true
     }
-    
+
     private func loadData(after: String? = nil) {
         if let lr = loadRequest {
             lr.cancel()
         }
         let startTime = DispatchTime.now()
         let cachPolicy = CachePolicy.fetchIgnoringCacheCompletely
-        
+
         loadRequest = {
             switch self.feedType {
             case .Global:
@@ -149,9 +149,9 @@ public class FeedModel: ObservableObject {
                 ) { result in
                     switch result {
                     case let .success(graphQLResult):
-                        let edges = graphQLResult.data?.globalFeed.fragments.shareConnectionFragment.edges?.compactMap({ $0 })
+                        let edges = graphQLResult.data?.globalFeed.fragments.shareConnectionFragment.edges?.compactMap { $0 }
                         self.loadDataDone(startTime, data: edges)
-                        
+
                         if let nonNullEdges = edges {
                             // manually update to cache
                             Network.shared.apollo.store.withinReadWriteTransaction { transaction in
@@ -182,10 +182,10 @@ public class FeedModel: ObservableObject {
                 ) { result in
                     switch result {
                     case let .success(graphQLResult):
-                        let edges = graphQLResult.data?.viewer?.personalFeed.fragments.shareConnectionFragment.edges?.compactMap({ $0 })
-                        
+                        let edges = graphQLResult.data?.viewer?.personalFeed.fragments.shareConnectionFragment.edges?.compactMap { $0 }
+
                         self.loadDataDone(startTime, data: edges)
-                        
+
                         if let nonNullEdges = edges {
                             // manually update to cache
                             Network.shared.apollo.store.withinReadWriteTransaction { transaction in
@@ -209,7 +209,7 @@ public class FeedModel: ObservableObject {
                         self.loadDataDone(startTime)
                     }
                 }
-            case .User(let id):
+            case let .User(id):
                 return Network.shared.apollo.fetch(
                     query: UserFeedQuery(after: after, userId: id),
                     cachePolicy: cachPolicy
@@ -217,7 +217,7 @@ public class FeedModel: ObservableObject {
                     switch result {
                     case let .success(graphQLResult):
                         // not caching results for individual users
-                        self.loadDataDone(startTime, data: graphQLResult.data?.node?.asUser?.feed.fragments.shareConnectionFragment.edges?.compactMap({ $0 }))
+                        self.loadDataDone(startTime, data: graphQLResult.data?.node?.asUser?.feed.fragments.shareConnectionFragment.edges?.compactMap { $0 })
                     case .failure:
                         self.loadDataDone(startTime)
                     }
@@ -225,17 +225,17 @@ public class FeedModel: ObservableObject {
             }
         }()
     }
-    
+
     private func loadDataDone(_ startTime: DispatchTime, data: [ShareConnectionFragment.Edge]? = nil) {
         DispatchQueue.main.asyncAfter(deadline: startTime + 1.5) {
             self.loading = false
         }
         if let edges = data {
-            self.shares.append(contentsOf: edges)
+            shares.append(contentsOf: edges)
         }
-        self.initialized = true
+        initialized = true
     }
-    
+
     public static func addToPersonalFeed(id: String, callback: @escaping (ShareFragment?) -> Void) {
         Network.shared.apollo.perform(mutation: AddToPersonalFeedMutation(id: id)) { result in
             switch result {
@@ -249,9 +249,8 @@ public class FeedModel: ObservableObject {
                 }
             case let .failure(error):
                 print("addToPersonalFeed Failure! Error: \(error)")
-                
             }
-            
+
             callback(nil)
         }
     }

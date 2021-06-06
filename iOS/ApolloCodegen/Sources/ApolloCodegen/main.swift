@@ -1,24 +1,25 @@
-import Foundation
 import ApolloCodegenLib
 import ArgumentParser
+import Foundation
 
 // An outer structure to hold all commands and sub-commands handled by this script.
 struct SwiftScript: ParsableCommand {
-
     static var configuration = CommandConfiguration(
-            abstract: """
+        abstract: """
         A swift-based utility for performing Apollo-related tasks.
-        
+
         NOTE: If running from a compiled binary, prefix subcommands with `swift-script`. Otherwise use `swift run ApolloCodegen [subcommand]`.
         """,
-            subcommands: [GenerateCode.self])
-    
+        subcommands: [GenerateCode.self]
+    )
+
     /// The sub-command to actually generate code.
     struct GenerateCode: ParsableCommand {
         static var configuration = CommandConfiguration(
             commandName: "generate",
-            abstract: "Generates swift code from your schema + your operations based on information set up in the `GenerateCode` command.")
-        
+            abstract: "Generates swift code from your schema + your operations based on information set up in the `GenerateCode` command."
+        )
+
         mutating func run() throws {
             let fileStructure = try FileStructure()
             CodegenLogger.log("File structure: \(fileStructure)")
@@ -28,8 +29,7 @@ struct SwiftScript: ParsableCommand {
                 outputFormat: .singleFile(atFileURL: fileStructure.outputURL),
                 urlToSchemaFile: fileStructure.schemaURL
             )
-        
-            
+
             // Actually attempt to generate code.
             try ApolloCodegen.run(
                 from: fileStructure.sourceRootURL,

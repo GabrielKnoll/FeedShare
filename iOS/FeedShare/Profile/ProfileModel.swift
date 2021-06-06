@@ -10,7 +10,7 @@ import SwiftUI
 
 public class ProfileModel: ObservableObject {
     @Published var user: ProfileQuery.Data.Node.AsUser?
-    
+
     public init(id: String) {
         Network.shared.apollo.fetch(query: ProfileQuery(id: id), cachePolicy: .returnCacheDataAndFetch) { result in
             switch result {

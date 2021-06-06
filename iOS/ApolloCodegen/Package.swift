@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "ApolloCodegen",
     platforms: [
-        .macOS(.v10_14)
+        .macOS(.v10_14),
     ],
     dependencies: [
         // The actual Apollo library
@@ -14,7 +14,7 @@ let package = Package(
                  url: "https://github.com/apollographql/apollo-ios.git",
                  /// Make sure this version matches the version in your iOS project!
                  .upToNextMinor(from: "0.42.0")),
-        
+
         // The official Swift argument parser.
         .package(url: "https://github.com/apple/swift-argument-parser.git",
                  .upToNextMinor(from: "0.3.0")),
@@ -26,7 +26,8 @@ let package = Package(
             name: "ApolloCodegen",
             dependencies: [
                 .product(name: "ApolloCodegenLib", package: "Apollo"),
-                .product(name: "ArgumentParser", package: "swift-argument-parser")
-            ])
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+            ]
+        ),
     ]
 )

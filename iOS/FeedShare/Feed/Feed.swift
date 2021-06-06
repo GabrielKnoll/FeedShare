@@ -12,9 +12,9 @@ import SwiftUI
 public struct Feed: View {
     let type: FeedType
     let paddingTop: CGFloat
-    
+
     @StateObject var feedModel: FeedModel
-    
+
     init(type: FeedType, paddingTop: CGFloat = 0) {
         self.paddingTop = paddingTop
         self.type = type
@@ -23,11 +23,11 @@ public struct Feed: View {
             _feedModel = StateObject(wrappedValue: FeedModel.shared(.Global))
         case .Personal:
             _feedModel = StateObject(wrappedValue: FeedModel.shared(.Personal))
-        case .User(let id):
+        case let .User(id):
             _feedModel = StateObject(wrappedValue: FeedModel.shared(.User(id: id)))
         }
     }
-    
+
     public var body: some View {
         VStack {
             if !feedModel.initialized {
@@ -70,7 +70,8 @@ public struct Feed: View {
             .allowsHitTesting(false)
             .frame(height: 32)
             .padding(.top, paddingTop - 10),
-            alignment: .top)
+            alignment: .top
+        )
         .background(Color(R.color.lightWashColor.name))
         .edgesIgnoringSafeArea(.bottom)
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
