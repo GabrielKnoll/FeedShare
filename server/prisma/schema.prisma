@@ -20,6 +20,10 @@ generator prisma_client {
   binaryTargets = ["native"]
 }
 
+generator nexusPrisma {
+  provider = "nexus-prisma"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")

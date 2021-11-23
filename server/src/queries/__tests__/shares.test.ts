@@ -1,11 +1,12 @@
+import {sqltag} from '@prisma/client/runtime';
 import prismaClient from '../../utils/prismaClient';
 import {personalFeedShares} from '../shares';
 
 describe('personalFeedShares', () => {
   beforeAll(async () => {
-    const [{current_database}] = await prismaClient.$queryRaw(
-      'SELECT current_database();',
-    );
+    const [{current_database}] = await prismaClient.$queryRaw<
+      [{current_database: string}]
+    >(sqltag`SELECT current_database();`);
     if (current_database !== 'podcast_test') {
       process.exit(1);
     }

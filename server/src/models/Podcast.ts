@@ -3,6 +3,7 @@ import {Podcast} from '@prisma/client';
 import {fullPodcastById, latestEpisodes} from '../utils/podcastIndex';
 import imageField from '../utils/imageField';
 import Node from './Node';
+import {Podcast as P} from 'nexus-prisma';
 
 export default objectType({
   name: 'Podcast',
@@ -10,7 +11,7 @@ export default objectType({
     imageField(t, 'artwork');
     t.implements(Node);
 
-    t.model.title();
+    t.field(P.title);
     t.field('description', {
       type: 'String',
       resolve: async (root, _args, context) => {
@@ -43,7 +44,7 @@ export default objectType({
         return data.feed.url;
       },
     });
-    t.model.publisher();
+    t.field(P.publisher);
     t.list.field('latestEpisodes', {
       type: 'Episode',
       args: {

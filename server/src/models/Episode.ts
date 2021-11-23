@@ -4,6 +4,7 @@ import {objectType} from 'nexus';
 import imageField from '../utils/imageField';
 import Node from './Node';
 import {decodeHTML} from 'entities';
+import {Episode as E} from 'nexus-prisma';
 
 const turndownService = new TurndownService({});
 
@@ -12,16 +13,16 @@ export default objectType({
   definition(t) {
     t.implements(Node);
 
-    t.model.title();
+    t.field(E.title);
     t.field('description', {
       type: 'String',
       resolve: async (root) =>
         parseDescription((root as Episode).description ?? ''),
     });
-    t.model.podcast();
-    t.model.durationSeconds();
-    t.model.datePublished();
-    t.model.url();
+    t.field(E.podcast);
+    t.field(E.durationSeconds);
+    t.field(E.datePublished);
+    t.field(E.url);
     imageField(t, 'artwork');
   },
 });

@@ -4,6 +4,7 @@ import {parseId} from '../queries/node';
 import requireAuthorization from '../utils/requireAuthorization';
 import shortkey from '../utils/shortkey';
 import {scheduleTask} from '../tasks';
+import {Prisma} from '.prisma/client';
 
 export default extendType({
   type: 'Mutation',
@@ -51,7 +52,10 @@ export default extendType({
 
           return result;
         } catch (e) {
-          if (e.code === 'P2002') {
+          if (
+            e instanceof Prisma.PrismaClientKnownRequestError &&
+            e.code === 'P2002'
+          ) {
             throw new UserInputError(e.code);
           }
           throw e;

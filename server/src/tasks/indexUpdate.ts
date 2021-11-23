@@ -135,7 +135,7 @@ export default async function (
         ON CONFLICT ("id") DO UPDATE SET (publisher, title, artwork) = (EXCLUDED.publisher, EXCLUDED.title, EXCLUDED.artwork)
         `),
       );
-    } catch (e) {
+    } catch (e: any) {
       logger.error(e);
       throw e;
     }

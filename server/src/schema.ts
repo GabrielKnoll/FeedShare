@@ -1,4 +1,3 @@
-import {nexusPrisma} from 'nexus-plugin-prisma';
 import prismaClient from './utils/prismaClient';
 import {
   asNexusMethod,
@@ -93,9 +92,6 @@ export default makeSchema({
     addToPersonalFeed,
   ],
   plugins: [
-    nexusPrisma({
-      prismaClient: () => prismaClient,
-    }),
     fieldAuthorizePlugin({
       formatError: () => new AuthenticationError('Not authorized'),
     }),

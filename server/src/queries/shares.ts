@@ -1,4 +1,5 @@
 import {PrismaClient, Share, User} from '@prisma/client';
+import {empty, sqltag} from '@prisma/client/runtime';
 import {UserInputError} from 'apollo-server-express';
 import {extendType} from 'nexus';
 
@@ -140,36 +141,29 @@ export async function personalFeedShares(
   skip: number,
   cursor?: {id: string},
 ): Promise<Share[]> {
-  const query = `
+  return prismaClient.$queryRaw`
     SELECT s.* FROM "Share" s
     LEFT JOIN "AddedToPersonalFeed" a ON a."shareId" = s."id"
       WHERE (
         "authorId" = ANY(
           -- Twitter follows on platform
-               SELECT "userId" FROM "TwitterAccount" WHERE "id" = ANY(
-                 -- Twitter followers
-                 SELECT UNNEST(following) FROM "TwitterAccount" WHERE "userId" = $1
-               )
-             )
-             -- Added to personal feed
-             OR "id" IN (SELECT "shareId" FROM "AddedToPersonalFeed" WHERE "userId" = $1)
-             -- Share from user themselves
-             ${includeMyShares ? `OR "authorId" = $1` : ''}
+              SELECT "userId" FROM "TwitterAccount" WHERE "id" = ANY(
+                -- Twitter followers
+                SELECT UNNEST(following) FROM "TwitterAccount" WHERE "userId" = ${userId}
+              )
+            )
+            -- Added to personal feed
+            OR "id" IN (SELECT "shareId" FROM "AddedToPersonalFeed" WHERE "userId" = ${userId})
+            -- Share from user themselves
+            ${includeMyShares ? sqltag`OR "authorId" = ${userId}` : empty}
       )
       -- is before cursor
       ${
         cursor
-          ? `AND (s."createdAt" <= (SELECT "createdAt" FROM "Share" WHERE "id" = $4))`
-          : ''
+          ? sqltag`AND (s."createdAt" <= (SELECT "createdAt" FROM "Share" WHERE "id" = ${cursor.id}))`
+          : empty
       }
       ORDER BY COALESCE(a."createdAt", s."createdAt") DESC
-      LIMIT $2 OFFSET $3;
-    `;
-
-  const args: [string, ...any] = [query, userId, take, skip];
-  if (cursor) {
-    args.push(cursor.id);
-  }
-
-  return prismaClient.$queryRaw(...args);
+      LIMIT ${take} OFFSET ${skip};
+`;
 }

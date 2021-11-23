@@ -2,6 +2,7 @@ import {objectType} from 'nexus';
 import {PrismaClient, User} from '@prisma/client';
 import imageField from '../utils/imageField';
 import Node from './Node';
+import {User as U} from 'nexus-prisma';
 
 export default objectType({
   name: 'User',
@@ -9,8 +10,8 @@ export default objectType({
     t.implements(Node);
     imageField(t, 'profilePicture');
 
-    t.model.handle();
-    t.model.displayName();
+    t.field(U.handle);
+    t.field(U.displayName);
     t.nonNull.countableConnection('followers', {
       type: 'User',
       totalCount: async (source) => (source as any)._totalCount,

@@ -2,15 +2,16 @@ import {objectType} from 'nexus';
 import {Share} from '@prisma/client';
 import Node from './Node';
 import {userFollowing} from './User';
+import {Share as S} from 'nexus-prisma';
 
 export default objectType({
   name: 'Share',
   definition(t) {
     t.implements(Node);
-    t.model.author();
-    t.model.message();
-    t.model.createdAt();
-    t.model.episode();
+    t.field(S.author);
+    t.field(S.message);
+    t.field(S.createdAt);
+    t.field(S.episode);
     t.field('isInGlobalFeed', {
       type: 'Boolean',
       resolve: async ({hideFromGlobalFeed}: Partial<Share>) => {
@@ -27,16 +28,15 @@ export default objectType({
         if (authorId === userId) {
           return true;
         }
-        const addedToPersonalFeed = await prismaClient.addedToPersonalFeed.findUnique(
-          {
+        const addedToPersonalFeed =
+          await prismaClient.addedToPersonalFeed.findUnique({
             where: {
               shareId_userId: {
                 userId: userId!,
                 shareId: id!,
               },
             },
-          },
-        );
+          });
         if (addedToPersonalFeed != null) {
           return true;
         }
