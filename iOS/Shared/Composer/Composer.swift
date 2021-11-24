@@ -70,7 +70,7 @@ public struct Composer: View {
             }
         })
         .onReceive(composerModel.$share) { share in
-            if let s = share {
+            if let _ = share {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                     dismiss(true)
                 }

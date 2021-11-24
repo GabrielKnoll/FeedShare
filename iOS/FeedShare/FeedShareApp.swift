@@ -65,7 +65,7 @@ struct FeedShareApp: App {
                             .addPartialSheet(
                                 style: PartialSheetStyle(
                                     background: .solid(Color(UIColor.systemBackground)),
-                                    handlerBarColor: Color(R.color.secondaryColor.name),
+                                    accentColor: Color(R.color.secondaryColor.name),
                                     enableCover: true,
                                     coverColor: Color.black.opacity(0.4),
                                     cornerRadius: 38.5,

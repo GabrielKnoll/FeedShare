@@ -20,7 +20,7 @@
 		673324DA25F5A4C9008F0F58 /* Shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F533026D25815DE5005C5250 /* Shared.framework */; };
 		673324DB25F5A4C9008F0F58 /* Shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F533026D25815DE5005C5250 /* Shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		675B8041266AD91E008BF124 /* Shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F533026D25815DE5005C5250 /* Shared.framework */; };
-		675B8042266AD91E008BF124 /* Shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F533026D25815DE5005C5250 /* Shared.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		675B8042266AD91E008BF124 /* Shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F533026D25815DE5005C5250 /* Shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6769CCBF265964A800282389 /* JGProgressHUD-SwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 6769CCBE265964A800282389 /* JGProgressHUD-SwiftUI */; };
 		678C2AD725B0F8AB00576884 /* OnboardingTextPairing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678C2AD625B0F8AB00576884 /* OnboardingTextPairing.swift */; };
 		678C2AED25B3ACFC00576884 /* Inter-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 678C2AEA25B3ACFC00576884 /* Inter-Regular.otf */; };
@@ -672,7 +672,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1230;
-				LastUpgradeCheck = 1250;
+				LastUpgradeCheck = 1310;
 				TargetAttributes = {
 					67CEA5BE258EBAB800516BA4 = {
 						CreatedOnToolsVersion = 12.3;
@@ -1421,7 +1421,7 @@
 			repositoryURL = "https://github.com/dmytro-anokhin/url-image.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.2.0;
+				minimumVersion = 3.0.0;
 			};
 		};
 		F598287E25278C4300A8C2CB /* XCRemoteSwiftPackageReference "apollo-ios" */ = {

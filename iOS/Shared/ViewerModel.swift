@@ -93,7 +93,7 @@ public class ViewerModel: ObservableObject {
                                                                      twitterTokenSecret: twitterTokenSecret)) { result in
             switch result {
             case let .success(graphQLResult):
-                print("twitterSignIn", graphQLResult.errors?.first?.description)
+                print("twitterSignIn", graphQLResult.errors?.first?.description ?? "")
                 guard let viewerFragment = graphQLResult.data?.createViewer?.fragments.viewerFragment else {
                     self.viewer = nil
                     return

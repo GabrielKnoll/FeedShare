@@ -24,9 +24,9 @@ public struct Artwork: View {
 
     public var body: some View {
         VStack {
-            if let u = url {
+            if let _url = url {
                 URLImage(
-                    url: u,
+                    _url,
                     inProgress: { _ in
                         Rectangle()
                             .skeleton(with: true)

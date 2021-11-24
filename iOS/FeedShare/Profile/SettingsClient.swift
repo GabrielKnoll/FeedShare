@@ -21,7 +21,7 @@ public struct SettingsClient: View {
             HStack {
                 if let url = URL(string: viewerModel.viewerClient?.icon ?? "") {
                     URLImage(
-                        url: url,
+                        url,
                         content: { proxy in
                             proxy
                                 .resizable()
