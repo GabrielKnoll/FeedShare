@@ -34,12 +34,16 @@ public struct FeedItem: View {
             )
             .buttonStyle(PressedButtonStyle {
                 DispatchQueue.main.async {
-                    self.isPressed = true
+                    withAnimation(.easeInOut(duration: 0.15)) {
+                        self.isPressed = true
+                    }
                 }
 
             } touchUp: {
                 DispatchQueue.main.async {
-                    self.isPressed = false
+                    withAnimation(.easeInOut(duration: 0.15)) {
+                        self.isPressed = false
+                    }
                 }
             })
             .background(
@@ -126,7 +130,6 @@ public struct FeedItem: View {
             x: 0,
             y: isPressed ? 0 : 2
         )
-        .animation(.easeInOut(duration: 0.15))
     }
 }
 
