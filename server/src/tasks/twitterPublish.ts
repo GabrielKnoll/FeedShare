@@ -29,22 +29,21 @@ export default async function ({shareId}: {shareId?: string}) {
     throw new Error(`Could not find Twitter account for ${shareId}`);
   }
 
-  let status = `${env.BASE_URL}/s/${share.id}`;
-  let availableLength = () => 280 - status.length;
+  const status = [`${env.BASE_URL}/s/${share.id}`];
+  const message = share.message?.trim();
+  const maxLength = 280;
 
-  let message = share.message?.trim();
-  if (message) {
-    status = `\n${status}`;
-
-    if (message.length > availableLength()) {
-      status = `…${status}`;
-      const spaceIndex = message.substr(0, availableLength()).lastIndexOf(' ');
-      message = message.substr(
-        0,
-        spaceIndex > -1 ? spaceIndex : availableLength(),
-      );
+  if (message && message.length > 0) {
+    status.unshift(message, '\n\n');
+    if (status.join().length > maxLength) {
+      status.splice(1, 0, '…');
     }
-    status = `${message}${status}`;
+    while (status.join().length > maxLength) {
+      const m = status[0].split(' ');
+      m.pop();
+      status[0] = m.join(' ');
+    }
   }
-  return await sendTweet(token, secret, status);
+
+  return await sendTweet(token, secret, status.join());
 }
