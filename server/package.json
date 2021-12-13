@@ -10,7 +10,7 @@
     "generate": "yarn generate:prisma && yarn generate:graphql",
     "generate:graphql": "graphql-codegen -r dotenv/config",
     "generate:prisma": "prisma generate",
-    "update:db": "export $(cat .env | xargs) && prisma db push --accept-data-loss"
+    "update:db": "export $(cat .env | xargs) && prisma db push"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",

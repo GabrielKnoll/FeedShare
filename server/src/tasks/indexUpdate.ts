@@ -107,9 +107,14 @@ export default async function (
 
   logger.info('Starting import...');
   const statement = db.prepare<[number, number]>(
-    `SELECT * FROM Podcasts WHERE lastUpdate > ${lastImport.value} LIMIT ? OFFSET ?`,
+    `SELECT * FROM Podcasts WHERE
+      itunesAuthor IS NOT NULL AND TRIM(itunesAuthor) != "" AND
+      title        IS NOT NULL AND TRIM(title       ) != ""
+    LIMIT ? OFFSET ?`,
   );
   let offset = 0;
+
+  const startTime = new Date();
 
   while (true) {
     const podcasts: PodcastImportRow[] = statement.all(BATCH_SIZE, offset);
@@ -118,22 +123,32 @@ export default async function (
       break;
     }
 
-    const data = podcasts.map(
-      (p) =>
-        `(${p.id}, ${sanitize(p.itunesId)}, '${sanitize(
-          p.itunesAuthor,
-        )}', '${sanitize(p.title)}', '${sanitize(p.imageUrl)}')`,
-    );
-
-    logger.info(`Batch ${offset}`);
+    logger.info(`Batch ${offset}-${offset + podcasts.length}`);
 
     try {
+      const numberInsertValues = 5;
       await withPgClient((pgClient) =>
-        pgClient.query(`
+        pgClient.query(
+          `
         INSERT INTO "Podcast"("id", "itunesId", "publisher", "title", "artwork")
-        VALUES ${data.join(',')}
+        VALUES ${podcasts
+          .map(
+            (_, i) =>
+              `(${Array.from(Array(numberInsertValues))
+                .map((_, j) => `$${i * numberInsertValues + j + 1}`)
+                .join(',')})`,
+          )
+          .join(',')}
         ON CONFLICT ("id") DO UPDATE SET (publisher, title, artwork) = (EXCLUDED.publisher, EXCLUDED.title, EXCLUDED.artwork)
-        `),
+        `,
+          podcasts.flatMap((p) => [
+            p.id,
+            p.itunesId,
+            p.itunesAuthor,
+            p.title,
+            p.imageUrl,
+          ]),
+        ),
       );
     } catch (e: any) {
       logger.error(e);
@@ -143,31 +158,18 @@ export default async function (
     offset += BATCH_SIZE;
   }
 
-  if (offset > 0) {
-    const lastUpdate: string = db
-      .prepare(
-        `SELECT MAX(lastUpdate) FROM "podcasts" WHERE lastUpdate < strftime('%s', 'now');`,
-      )
-      .pluck()
-      .get();
-
-    await withPgClient((pgClient) =>
-      pgClient.query(`
-        INSERT INTO "Config"("key", "value")
-        VALUES ('LastIndexImport', ${lastUpdate})
-        ON CONFLICT ("key") DO UPDATE SET "value" = EXCLUDED.value;
-      `),
-    );
-  }
+  // Delete podcasts that don't exist anymore
+  await withPgClient((pgClient) =>
+    pgClient.query(
+      `DELETE FROM "Podcast" p
+       WHERE
+          "updatedAt" < $1 AND
+          NOT EXISTS (SELECT FROM "Episode" WHERE "podcastId" = p.id);`,
+      [startTime.toISOString()],
+    ),
+  );
 
   logger.info(`Done!`);
 
   unlinkSync(dbFile);
-}
-
-function sanitize(input: string) {
-  if (!input) {
-    return 'NULL';
-  }
-  return String(input).replace(/'/g, "''");
 }
