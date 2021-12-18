@@ -15,8 +15,12 @@ export default extendType({
       args: {
         id: nonNull(idArg()),
       },
-      ...requireAuthorization,
-      resolve: async (_parent, {id}, {prismaClient}) => {
+      authorize: (_, {id}, {userId}) => {
+        const {__typename} = parseId(id);
+        // Shares don't need authentication
+        return __typename === 'Share' || Boolean(userId);
+      },
+      resolve: async (_parent, {id}, {prismaClient, userId}) => {
         const {__typename, key} = parseId(id);
 
         if (!__typename) {
@@ -45,10 +49,9 @@ export default extendType({
             return null;
         }
 
-        const node: ResultValue<
-          'Query',
-          'node'
-        > | null = await (delegate as Prisma.PodcastDelegate<any>).findUnique({
+        const node: ResultValue<'Query', 'node'> | null = await (
+          delegate as Prisma.PodcastDelegate<any>
+        ).findUnique({
           where: {
             id: key,
           },
@@ -64,9 +67,7 @@ export default extendType({
   },
 });
 
-export function parseId(
-  id: string,
-): {
+export function parseId(id: string): {
   __typename?: NexusGenAbstractTypeMembers['Node'];
   key: string;
 } {

@@ -106,6 +106,7 @@ export default async function (
   logger.info('Starting import...');
   const statement = db.prepare<[number, number]>(
     `SELECT * FROM podcasts WHERE
+      episodeCount > 0 AND
       itunesAuthor IS NOT NULL AND TRIM(itunesAuthor) != '' AND
       title        IS NOT NULL AND TRIM(title       ) != ''
     LIMIT ? OFFSET ?`,
